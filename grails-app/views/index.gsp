@@ -7,7 +7,6 @@
 	<r:img dir="images" file="logo_big.png" 
 	alt="The logo of Deutsche Digitale Bibliothek shows three red flying dandelion seeds and contains the name of the German Digital Library and the subtitle Das Netzwerk f&#252;r Kultur und Wissenschaft." class="bigLogo" title="The Deutsche Digitale Bibliothek is the central national portal for culture and science. It gives internet access to the nation’s cultural heritage. In future, digital objects from all sectors and of all possible media types (text, sound, images, moving images) will be offered. First, the portal provides a simple search function for searching the complete inventory." />
 
-		
 	<form method="get"
 		action="http://www.deutsche-digitale-bibliothek.de/searchresults"
 		role="search" id="formSearch">
@@ -34,14 +33,8 @@
 		</div>
 	</form>
 </div>
-
-
-
-
-<div >
-	<div class="image_carousel">
-		<a class="prev" id="carouselPrev" href="#" title="Previous"></a>
-		<div id="carouselItems">
+	<div>
+		<div>
 			<div class="article">
 				<a href="http://www.ddb.de//content/news/2012-11-28-004"
 					title="This is the Deutsche Digitale Bibliothek!"> <img
@@ -84,7 +77,8 @@
 			<div class="article">
 				<a href="http://www.ddb.de/content/news/2012-11-28-001"
 					title="Object of the month: The Model Bust of Queen Nefertiti">
-					<img src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
+					<img
+					src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
 					alt="Object of the month: The Model Bust of Queen Nefertiti"
 					width="204" height="180" />
 				</a>
@@ -123,10 +117,5 @@
 			</div>
 		</div>
 		<div class="clearfix"></div>
-
-		<a class="next" id="carouselNext" href="#" title="Next"></a>
 	</div>
-</div>
-
-
 </div>
