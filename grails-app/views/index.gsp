@@ -1,4 +1,6 @@
 <meta name="layout" content="main" />
+
+
 <div class="container" role="main">
 <div class="widget searchQueryWidget" data-widget="SearchQueryWidget">
 	<h1 class="a11y">Site Search</h1>
