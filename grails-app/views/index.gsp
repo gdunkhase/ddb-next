@@ -32,15 +32,15 @@
       <div class="tutorial tooltip">
         <div>
           Enter the keyword in the search field. Click the magnifying glass
-          icon or press the Enter key. <a href="="http://ddb.de/content/help/search-simple">Help
+          icon or press the Enter key. <a href="http://ddb.de/content/help/search-simple">Help
             about simple search</a>
         </div>
       </div>
     </form>
   </div><!-- end of .searchQueryWidget -->
-	<div>
-		<div>
-        <div class="article">
+  <div>
+    <div>
+      <div class="article">
           <a href="http://www.ddb.de//content/news/2012-11-28-004"
             title="This is the Deutsche Digitale Bibliothek!"> <img
             src="http://www.ddb.de/static/de/sc_images/teaser-film.jpg"
@@ -82,8 +82,7 @@
         <div class="article">
           <a href="http://www.ddb.de/content/news/2012-11-28-001"
             title="Object of the month: The Model Bust of Queen Nefertiti">
-					<img
-					src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
+            <img src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
             alt="Object of the month: The Model Bust of Queen Nefertiti"
             width="204" height="180" />
           </a>
@@ -122,4 +121,4 @@
         </div>
       </div>
       <div class="clearfix"></div>
-	</div>
+  </div>
