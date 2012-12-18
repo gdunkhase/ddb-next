@@ -5,23 +5,23 @@
 <!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"><!--<![endif]-->
     <head>
-        <title><g:layoutTitle default="Deutsche Digitale Bibliothek"/></title>                         
+        <title><g:layoutTitle default="Deutsche Digitale Bibliothek"/></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
         <meta name="description" content="Deutsche Digitale Bibliothek" />
         <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
-        
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.min.css')}" type="text/css"><%--
+
+        <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.min.css')}" type="text/css"><%--
         <link rel="stylesheet" href="Content/themes/base/styles/ddbPrint.min.css" media="print" />
         --%><link rel="search" title="Deutsche Digitale Bibliothek" href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx" type="application/opensearchdescription+xml" />
         <!--[if lt IE 9]>
             <script src="Scripts/html5shim.googlecode.html5.js"> </script>
-        <![endif]-->  
+        <![endif]-->
         <g:layoutHead/>
-		<r:layoutResources />              
+        <r:layoutResources />
     </head>
     <body class="nojs start">
-    	<header class="main">
+        <header class="main">
 
     <!--[if lt IE 9]>
         <div class="nav widget" data-widget="NavigationWidget">
@@ -31,28 +31,28 @@
             <div role="banner">
               <a href="http://www.deutsche-digitale-bibliothek.de/" class="navigationHeaderLogo" title="Deutsche Digitale Bibliothek" tabindex="-1">
                     <r:img dir="images" file="logo_header.png" class="siteLogo" />
-				</a>
+                </a>
             </div>
             <ul class="navigation" role="navigation">
-                    <li class="active root"><a href="http://www.deutsche-digitale-bibliothek.de/">Search</a> 
-                    	<ul>
-                    		<li class=""><a href="http://www.deutsche-digitale-bibliothek.de/advancedsearch">Advanced Search</a></li>
-						</ul>
-    				</li>
+                    <li class="active root"><a href="http://www.deutsche-digitale-bibliothek.de/">Search</a>
+                        <ul>
+                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/advancedsearch">Advanced Search</a></li>
+                        </ul>
+                    </li>
                     <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/about">About Us</a>
-						<ul>
-							<li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/news">News</a></li>
-							<li class=""><a href="http://www.deutsche-digitale-bibliothek.de/about-us/institutions">Institutions</a></li>
-							<li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/ddb">Join Us</a></li>
-							<li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/competence-network">Competence Network</a></li>
-						</ul>
-    				</li>
+                        <ul>
+                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/news">News</a></li>
+                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/about-us/institutions">Institutions</a></li>
+                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/ddb">Join Us</a></li>
+                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/competence-network">Competence Network</a></li>
+                        </ul>
+                    </li>
                     <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/help">Help</a>
-                    	<ul>
-                        	<li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/faq">FAQ</a></li>
-							<li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/tutorial">Tutorial</a></li>
-						</ul>
-					</li>
+                        <ul>
+                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/faq">FAQ</a></li>
+                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/tutorial">Tutorial</a></li>
+                        </ul>
+                    </li>
             </ul>
             <div>
                 <ul class="toolbar" role="navigation">
@@ -60,21 +60,21 @@
                         <a href="http://www.deutsche-digitale-bibliothek.de/language">English</a>
                     </li>
                 </ul>
-				<div class="widget languageWidget" data-widget="LanguageWidget">
-				    <div class="flag"></div>
-				    <form action="http://www.deutsche-digitale-bibliothek.de/language" method="post">
-				        <label>
-				            <span>Change Language</span>
-				            <select name="language">
-				                <option value='de'>Deutsch</option>
-				                <option selected='selected' value='en'>English</option>
-				            </select>
-				        </label>
-				        <input type="hidden" name="referrer" value="http://www.deutsche-digitale-bibliothek.de/" />
-				        <button type="submit" title="Select"><span>Select</span></button>
-				    </form>
-				</div>            
-			</div>
+                <div class="widget languageWidget" data-widget="LanguageWidget">
+                    <div class="flag"></div>
+                    <form action="http://www.deutsche-digitale-bibliothek.de/language" method="post">
+                        <label>
+                            <span>Change Language</span>
+                            <select name="language">
+                                <option value='de'>Deutsch</option>
+                                <option selected='selected' value='en'>English</option>
+                            </select>
+                        </label>
+                        <input type="hidden" name="referrer" value="http://www.deutsche-digitale-bibliothek.de/" />
+                        <button type="submit" title="Select"><span>Select</span></button>
+                    </form>
+                </div>
+            </div>
         </nav>
         <!--[if lt IE 9]>
             </div>
@@ -83,12 +83,12 @@
         <!--[if lt IE 9]>
             </div>
         <![endif]-->
-		
-		<g:layoutBody/>
-        
+
+        <g:layoutBody/>
+
         <!--[if lt IE 9]>
     <div class="footer" role="contentinfo">
-		<![endif]-->
+        <![endif]-->
     <footer role="contentinfo">
         <h1 class="a11y">Site Footer</h1>
         <div class="legal">
@@ -112,17 +112,19 @@
     <!--[if lt IE 9]>
         </div>
     <![endif]-->
-<div class="widget tooltip" data-widget="TooltipWidget" data-bind="style: { 
-                                                                    'display' : isVisible() ? 'block' : 'none',
-                                                                    'left': xpx,
-                                                                    'top': ypx,
-                                                                    'position': positionMode
-                                                                   },
-                                                                   attr: { 'class': 'widget tooltip ' +layout() }">
+<div class="widget tooltip"
+     data-widget="TooltipWidget"
+     data-bind="style: {
+        'display' : isVisible() ? 'block' : 'none',
+        'left': xpx,
+        'top': ypx,
+        'position': positionMode
+        },
+     attr: { 'class': 'widget tooltip ' +layout() }">
     <div data-bind="html: content"></div>
-</div>    
-		<r:external uri="${resource(dir: '../js', file: 'json2.js')}"/>
-		<r:external uri="${resource(dir: '../js', file: 'jquery-1.7.2.min.js')}"/>    
+</div>
+        <r:external uri="${resource(dir: '../js', file: 'json2.js')}"/>
+        <r:external uri="${resource(dir: '../js', file: 'jquery-1.7.2.min.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'jquery.scrollTo-min.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'rx.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'rx.jQuery.js')}"/>
@@ -139,8 +141,6 @@
         <r:external uri="${resource(dir: '../js', file: 'jquery.carouFredSel-5.6.4-packed.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'HomePage.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'ddb.min.js')}"/>
-            
-
         <script type="text/javascript">
             Ddb.Data.Language = 'en-US';
             Ddb.Data.TwoLetterLanguage = 'en';
@@ -151,7 +151,7 @@
                 NumberNegativePattern: '1',
                 NumberGroupSeparator: ','
             };
-            
+
             (function (old, NumberFormat) {
                 var numberFormatRex = new RegExp("(?=(?!^)(?:\\d{" + NumberFormat.NumberGroupSize + "})+(?!\\d))", "g");
                 Number.prototype.toLocaleString = function () {
@@ -161,7 +161,7 @@
                 };
             })(Number.prototype.toLocaleString, Ddb.Data.NumberFormat);
         </script>
-    
+
         <script>
             var global;
             var resources;
@@ -170,7 +170,7 @@
 
             $(function () {
 
-                // workaround for ffox + ie click focus - prevents links that load dynamic content to be focussed/active. 
+                // workaround for ffox + ie click focus - prevents links that load dynamic content to be focussed/active.
                 $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
 
                 var languageCookie = $.cookies.get('language');
@@ -215,7 +215,6 @@
                         }
                     }
                 });
-
             });
         </script>
     </body>
