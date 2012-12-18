@@ -1,4 +1,5 @@
 <meta name="layout" content="main">
+<%=content %>
 <div class="container" role="main">
   <div class="widget searchQueryWidget" data-widget="SearchQueryWidget">
     <h1 class="a11y">Site Search</h1>
@@ -37,11 +38,8 @@
       </div>
     </form>
   </div><!-- end of .searchQueryWidget -->
-
-  <div class="editorialWidget">
-    <div class="image_carousel">
-      <a class="prev" id="carouselPrev" href="#" title="Previous"></a>
-      <div id="carouselItems">
+	<div>
+		<div>
         <div class="article">
           <a href="http://www.ddb.de//content/news/2012-11-28-004"
             title="This is the Deutsche Digitale Bibliothek!"> <img
@@ -84,7 +82,8 @@
         <div class="article">
           <a href="http://www.ddb.de/content/news/2012-11-28-001"
             title="Object of the month: The Model Bust of Queen Nefertiti">
-            <img src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
+					<img
+					src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
             alt="Object of the month: The Model Bust of Queen Nefertiti"
             width="204" height="180" />
           </a>
@@ -123,7 +122,4 @@
         </div>
       </div>
       <div class="clearfix"></div>
-      <a class="next" id="carouselNext" href="#" title="Next"></a>
-    </div>
-  </div><!-- end of .editorialWidget -->
-</div><!-- end of .container -->
+	</div>

@@ -122,7 +122,7 @@
         },
      attr: { 'class': 'widget tooltip ' +layout() }">
     <div data-bind="html: content"></div>
-</div>
+</div><%--    
         <r:external uri="${resource(dir: '../js', file: 'json2.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'jquery-1.7.2.min.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'jquery.scrollTo-min.js')}"/>
@@ -138,10 +138,9 @@
         <r:external uri="${resource(dir: '../js', file: 'amplify.min.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'jquery.carouFredSel-5.6.4-packed.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'jquery.dotdotdot-1.5.1.js')}"/>
-        <r:external uri="${resource(dir: '../js', file: 'jquery.carouFredSel-5.6.4-packed.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'HomePage.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'ddb.min.js')}"/>
-        <script type="text/javascript">
+        --%><script type="text/javascript">
             Ddb.Data.Language = 'en-US';
             Ddb.Data.TwoLetterLanguage = 'en';
             Ddb.Data.NumberFormat = {
