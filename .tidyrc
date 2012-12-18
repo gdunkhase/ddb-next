@@ -1,0 +1,28 @@
+doctype: html5
+char-encoding: utf8
+// ? output-encoding: uft8
+output-bom: no
+
+indent: auto
+indent-attributes: yes
+indent-space: 2
+wrap: 80
+vertical-space: no
+newline: LF
+
+// http://www.bei-ekke.de/htmltidy/www.aprompt.ca/Tidy/accessibilitychecks.html
+accessibility-check: 3
+show-warnings: yes
+
+// images
+//alt-text: "TODO: add alt-text
+
+tidy-mark: no
+uppercase-attributes: no
+uppercase-tags: no
+drop-empty-elements: no
+drop-empty-paras: yes
+drop-proprietary-attributes: no
+logical-emphasis: yes
+omit-optional-tags: yes
+replace-color: yes
