@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="layout" content="main"/>
-    <title>Welcome to Grails</title>
-    <style type="text/css" media="screen"></style>
+    <meta name="layout" content="main">
+    <title>Deutsche Digitale Bibliothek</title>
   </head>
   <body>
   <%= content %>
@@ -16,7 +15,7 @@
       action="http://www.deutsche-digitale-bibliothek.de/searchresults" role="search" id="formSearch">
         <label style="float: left;">
           <span>Search text field</span>
-          <input type="search" class="query" name="query" value="" data-bind="value: searchTerm" />
+          <input type="search" class="query" name="query" value="" data-bind="value: searchTerm">
         </label>
         <button type="submit">Go</button>
         <span class="contextualHelp" title="Enter the keyword in the search field.
@@ -40,7 +39,7 @@
           <div>
             Enter the keyword in the search field. Click the magnifying glass
             icon or press the Enter key. <a href="http://ddb.de/content/help/search-simple">Help
-              about simple search</a>
+            about simple search</a>
           </div>
         </div>
       </form>
@@ -54,7 +53,7 @@
              <img src="http://www.ddb.de/static/de/sc_images/teaser-film.jpg"
                   alt="This is the Deutsche Digitale Bibliothek!"
                   width="204"
-                  height="180" />
+                  height="180">
           </a>
           <div class="caption">
             <a href="http://www.ddb.de//content/news/2012-11-28-004"
@@ -67,7 +66,7 @@
             title="Discover the DDB with the Culture Map!"> <img
             src="http://www.ddb.de//static/de/sc_images/teaser-map.jpg"
             alt="Discover the DDB with the Culture Map!" width="204"
-            height="180" />
+            height="180">
           </a>
           <div class="caption">
             <a href="http://www.ddb.de//about-us/institutions"

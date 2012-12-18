@@ -5,54 +5,70 @@
 <!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"><!--<![endif]-->
     <head>
-        <title><g:layoutTitle default="Deutsche Digitale Bibliothek"/></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title><g:layoutTitle default="Deutsche Digitale Bibliothek"/></title>
+      <meta charset="utf-8">
+      <meta name="description" content="Deutsche Digitale Bibliothek">
+      <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+      <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.min.css')}">
+      <%--
+      <link rel="stylesheet" href="Content/themes/base/styles/ddbPrint.min.css" media="print">
+      --%>
+      <link rel="search"
+            title="Deutsche Digitale Bibliothek"
+            href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx"
+            type="application/opensearchdescription+xml">
 
-        <meta name="description" content="Deutsche Digitale Bibliothek" />
-        <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+      <!-- TODO: file is not exist -->
+      <!--[if lt IE 9]>
+      <script src="Scripts/html5shim.googlecode.html5.js"> </script>
+      <![endif]-->
 
-        <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.min.css')}" type="text/css"><%--
-        <link rel="stylesheet" href="Content/themes/base/styles/ddbPrint.min.css" media="print" />
-        --%><link rel="search" title="Deutsche Digitale Bibliothek" href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx" type="application/opensearchdescription+xml" />
-        <!--[if lt IE 9]>
-            <script src="Scripts/html5shim.googlecode.html5.js"> </script>
-        <![endif]-->
-        <g:layoutHead/>
-        <r:layoutResources />
+      <!-- GSP tags -->
+      <g:layoutHead />
+      <r:layoutResources />
     </head>
     <body class="nojs start">
-        <header class="main">
+      <header class="main">
     <!--[if lt IE 9]>
-        <div class="nav widget" data-widget="NavigationWidget">
+       <div class="nav widget" data-widget="NavigationWidget">
     <![endif]-->
         <h1 class="a11y">Site Header</h1>
+        <!-- TODO why do we use propritary attribute role -->
         <nav class="widget" data-widget="NavigationWidget">
-            <div role="banner">
-              <a href="http://www.deutsche-digitale-bibliothek.de/" class="navigationHeaderLogo" title="Deutsche Digitale Bibliothek" tabindex="-1">
-                    <r:img dir="images" file="logo_header.png" class="siteLogo" />
-                </a>
-            </div>
-            <ul class="navigation" role="navigation">
-                    <li class="active root"><a href="http://www.deutsche-digitale-bibliothek.de/">Search</a>
-                        <ul>
-                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/advancedsearch">Advanced Search</a></li>
-                        </ul>
-                    </li>
-                    <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/about">About Us</a>
-                        <ul>
-                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/news">News</a></li>
-                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/about-us/institutions">Institutions</a></li>
-                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/ddb">Join Us</a></li>
-                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/competence-network">Competence Network</a></li>
-                        </ul>
-                    </li>
-                    <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/help">Help</a>
-                        <ul>
-                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/faq">FAQ</a></li>
-                            <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/tutorial">Tutorial</a></li>
-                        </ul>
-                    </li>
-            </ul>
+          <div role="banner">
+            <!-- TODO: tabindex has invalid value -1 -->
+            <a href="http://www.deutsche-digitale-bibliothek.de/"
+               class="navigationHeaderLogo"
+               title="Deutsche Digitale Bibliothek"
+               tabindex="-1">
+              <r:img dir="images" file="logo_header.png" class="siteLogo" />
+            </a>
+           </div>
+             <ul class="navigation" role="navigation">
+
+               <li class="active root"><a href="http://www.deutsche-digitale-bibliothek.de/">Search</a>
+                 <ul>
+                   <li class="">
+                     <a href="http://www.deutsche-digitale-bibliothek.de/advancedsearch">Advanced Search</a>
+                   </li>
+                 </ul>
+               </li>
+
+                <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/about">About Us</a>
+                  <ul>
+                        <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/news">News</a></li>
+                        <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/about-us/institutions">Institutions</a></li>
+                        <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/ddb">Join Us</a></li>
+                        <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/competence-network">Competence Network</a></li>
+                  </ul>
+                </li>
+                <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/help">Help</a>
+                    <ul>
+                        <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/faq">FAQ</a></li>
+                        <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/content/tutorial">Tutorial</a></li>
+                    </ul>
+                </li>
+            </ul><!-- /end of .navigation -->
             <div>
                 <ul class="toolbar" role="navigation">
                     <li class="language">
@@ -73,7 +89,7 @@
                         <button type="submit" title="Select"><span>Select</span></button>
                     </form>
                 </div>
-            </div>
+            </div><!-- /end of .toolbar -->
         </nav>
         <!--[if lt IE 9]>
             </div>
@@ -89,28 +105,26 @@
     <div class="footer" role="contentinfo">
         <![endif]-->
     <footer role="contentinfo">
-        <h1 class="a11y">Site Footer</h1>
-        <div class="legal">
-            <div class="inner">
-                <small>Copyright &#169; 2012 Deutsche Digitale Bibliothek</small>
-
-                <ul>
-                    <li><a href="http://www.deutsche-digitale-bibliothek.de/content/terms">Terms of Use</a></li>
-                    <li><a href="http://www.deutsche-digitale-bibliothek.de/content/privacy">Privacy Policy</a></li>
-                    <li><a href="http://www.deutsche-digitale-bibliothek.de/content/publisher">Legal Notice</a></li>
-                    <li><a href="http://www.deutsche-digitale-bibliothek.de/content/sitemap">Sitemap</a></li>
-                    <li><a href="http://www.deutsche-digitale-bibliothek.de/content/contact">Contact</a></li>
-                </ul>
-                <div class="build">
-                    3.11.1 / 1.0/r13474
-                </div>
-            </div>
-        </div>
-
+      <h1 class="a11y">Site Footer</h1>
+      <div class="legal">
+        <div class="inner">
+          <small>Copyright &#169; 2012 Deutsche Digitale Bibliothek</small>
+          <ul>
+            <li><a href="http://www.deutsche-digitale-bibliothek.de/content/terms">Terms of Use</a></li>
+            <li><a href="http://www.deutsche-digitale-bibliothek.de/content/privacy">Privacy Policy</a></li>
+            <li><a href="http://www.deutsche-digitale-bibliothek.de/content/publisher">Legal Notice</a></li>
+            <li><a href="http://www.deutsche-digitale-bibliothek.de/content/sitemap">Sitemap</a></li>
+            <li><a href="http://www.deutsche-digitale-bibliothek.de/content/contact">Contact</a></li>
+          </ul>
+          <div class="build">3.11.1 / 1.0/r13474</div>
+        </div><!-- /end of .inner -->
+      </div><!-- /end of .legal -->
     </footer>
     <!--[if lt IE 9]>
         </div>
     <![endif]-->
+
+<!-- TODO: why do have style declaration in HTML ? -->
 <div class="widget tooltip"
      data-widget="TooltipWidget"
      data-bind="style: {
@@ -121,7 +135,8 @@
         },
      attr: { 'class': 'widget tooltip ' +layout() }">
     <div data-bind="html: content"></div>
-</div><%--
+</div>
+        <%--
         <r:external uri="${resource(dir: '../js', file: 'json2.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'jquery-1.7.2.min.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'jquery.scrollTo-min.js')}"/>
@@ -139,7 +154,9 @@
         <r:external uri="${resource(dir: '../js', file: 'jquery.dotdotdot-1.5.1.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'HomePage.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'ddb.min.js')}"/>
-        --%><script type="text/javascript">
+        --%>
+        <!-- TODO: remove all scripts to external files -->
+        <script type="text/javascript">
             Ddb.Data.Language = 'en-US';
             Ddb.Data.TwoLetterLanguage = 'en';
             Ddb.Data.NumberFormat = {
@@ -160,6 +177,7 @@
             })(Number.prototype.toLocaleString, Ddb.Data.NumberFormat);
         </script>
 
+        <!-- TODO: remove all scripts to external files -->
         <script>
             var global;
             var resources;
