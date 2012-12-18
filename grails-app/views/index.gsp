@@ -127,6 +127,4 @@
 		<a class="next" id="carouselNext" href="#" title="Next"></a>
 	</div>
 </div>
-
-
 </div>
