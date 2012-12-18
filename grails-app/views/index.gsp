@@ -34,7 +34,7 @@
       <div class="tutorial tooltip">
         <div>
           Enter the keyword in the search field. Click the magnifying glass
-          icon or press the Enter key. <a href="="http://ddb.de/content/help/search-simple">Help
+          icon or press the Enter key. <a href="http://ddb.de/content/help/search-simple">Help
             about simple search</a>
         </div>
       </div>
@@ -42,7 +42,7 @@
   </div><!-- end of .searchQueryWidget -->
   <div>
     <div>
-        <div class="article">
+      <div class="article">
           <a href="http://www.ddb.de//content/news/2012-11-28-004"
             title="This is the Deutsche Digitale Bibliothek!"> <img
             src="http://www.ddb.de/static/de/sc_images/teaser-film.jpg"
@@ -123,4 +123,4 @@
         </div>
       </div>
       <div class="clearfix"></div>
-</div>
+  </div>
