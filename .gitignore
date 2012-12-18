@@ -6,3 +6,5 @@ target-eclipse
 .classpath
 .project
 .settings
+
+*.orig
