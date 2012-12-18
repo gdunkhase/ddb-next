@@ -1,6 +1,8 @@
-/.link_to_grails_plugins
-/.settings
-/target
-/target-eclipse
-/.classpath
-/.project
+target
+target-eclipse
+
+.link_to_grails_plugins
+
+.classpath
+.project
+.settings
