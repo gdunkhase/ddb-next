@@ -22,7 +22,6 @@
     </head>
     <body class="nojs start">
         <header class="main">
-
     <!--[if lt IE 9]>
         <div class="nav widget" data-widget="NavigationWidget">
     <![endif]-->
@@ -122,7 +121,7 @@
         },
      attr: { 'class': 'widget tooltip ' +layout() }">
     <div data-bind="html: content"></div>
-</div><%--    
+</div><%--
         <r:external uri="${resource(dir: '../js', file: 'json2.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'jquery-1.7.2.min.js')}"/>
         <r:external uri="${resource(dir: '../js', file: 'jquery.scrollTo-min.js')}"/>
