@@ -15,11 +15,11 @@ class ApiConsumer {
 				uri.query = query
 				headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
 				response.success = { resp, reader ->
-					println "response status: ${resp.statusLine}"
-					println 'Headers: -----------'
-					resp.headers.each { h ->
-						println " ${h.name} : ${h.value}"
-					}
+//					println "response status: ${resp.statusLine}"
+//					println 'Headers: -----------'
+//					resp.headers.each { h ->
+//						println " ${h.name} : ${h.value}"
+//					}
 					ret = reader.getText()
 				}
 				response.'404' = { 

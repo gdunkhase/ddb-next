@@ -15,6 +15,10 @@ class ContentController {
 		// Submit a request via GET
 		def response = ApiConsumer.getText(url, path, query)
 
+		if (response == "Not found"){
+			 redirect(controller: "error", action: "notfound")
+		}
+
 		def map = [content: response]
 		render(view: "news", model: map)
 	}
