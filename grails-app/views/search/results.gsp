@@ -6,5 +6,7 @@
 <meta name="robots" content="${robots}" />
 <meta name="layout" content="main" />
 </head>
-<body><%=content %></body>
+<body>
+  
+<%=content %></body>
 </html>

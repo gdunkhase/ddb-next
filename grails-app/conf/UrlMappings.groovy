@@ -6,6 +6,11 @@ class UrlMappings {
 				// apply constraints here
 			}
 		}
+		"/item1/$id?"{
+			constraints {
+				// apply constraints here
+			}
+		}
 
 		"/"(view:"/index")
 		"500"(view:'/error')

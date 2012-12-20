@@ -8,7 +8,7 @@
       data-widget="NavigationWidget">
       <div role="banner">
         <a
-          href="http://www.deutsche-digitale-bibliothek.de/"
+          href="/"
           class="navigationHeaderLogo"
           title="Deutsche Digitale Bibliothek"
           tabindex="-1"> <r:img
@@ -62,7 +62,7 @@
             </label> <input
               type="hidden"
               name="referrer"
-              value="http://www.deutsche-digitale-bibliothek.de/" />
+              value="/" />
             <button
               type="submit"
               title="Select">
