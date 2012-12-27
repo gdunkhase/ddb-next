@@ -27,8 +27,8 @@ No special configurations right now
 Developed with [Groovy/Grails Tool Suite](http://www.grails.org/products/ggts) ([download tool link](http://www.springsource.org/groovy-grails-tool-suite-download)). 
 The Grails Tool Suite is an Eclipse based application with built in support for Grails and [vFabric tc Server](http://www.vmware.com/products/application-platform/vfabric-tcserver/overview.html) a neat solution to help developers launch apps easily. 
 
-#### Github 
-You are probably on Github, or you received this file from there
+#### Collaboration 
+We are using [GitHub](https://github.com/Deutsche-Digitale-Bibliothek/ddb-next) for collaboration. Feel free to make a pull request.
 
 #### Usages 
 In order to run the app from Grails Tools Suite a developer can navigate to the project, right click and Select ''Run As'' > ''Grails Command (run-app)'' or ''Grails Command (test-app)''
