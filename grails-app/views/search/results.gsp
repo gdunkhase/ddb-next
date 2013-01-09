@@ -8,5 +8,5 @@
 </head>
 <body>
   
-<%=content %></body>
+<%=results %></body>
 </html>

@@ -59,7 +59,6 @@ class ApiConsumer {
 					resp.headers.each { h ->
 						println " ${h.name} : ${h.value}"
 					}
-					println reader
 					ret = reader
 				}
 				response.failure = { resp ->
