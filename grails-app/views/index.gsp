@@ -38,14 +38,14 @@
         </a>
 	  </li>
 	  <li>
-	  	<a href="/news/2012-11-28-000"
+	  	<a href="http://www.ddb.de/content/news/2012-11-28-000"
           title="The Deutsche Digitale Bibliothek is online!"> <img
           src="http://www.ddb.de/static/de/sc_images/teaser-launch.jpg"
           alt="The Deutsche Digitale Bibliothek is online!" width="204" height="180" />
         </a>
 	  </li>
 	  <li>
-	  	<a href="/news/2012-11-28-001"
+	  	<a href="http://www.ddb.de/content/news/2012-11-28-001"
           title="Object of the month: The Model Bust of Queen Nefertiti"> <img
           src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
           alt="Object of the month: The Model Bust of Queen Nefertiti" width="204" height="180" />
