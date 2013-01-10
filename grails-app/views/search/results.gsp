@@ -9,6 +9,7 @@
 	href="${resource(dir: 'css', file: 'ddb.tiz.css')}" />
 </head>
 <body>
+	<div class="searchResults">
 <%
 //id category preview longitude label latitude view
 
@@ -24,7 +25,7 @@ for (HashMap s : hashResults) {
 
 	
 %>
-	<div class="searchResults">
+	
 		<%
 		if(json != null){ 
 	%>	
