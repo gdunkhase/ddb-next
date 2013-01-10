@@ -1,0 +1,16 @@
+div.searchResults .item .title {
+	font-family: KarbidWeb,Calibri,Arial,sans-serif;
+	font-weight: bold;
+	font-size: 1.375em;
+	color: #A5003B;
+}
+
+div.searchResults .item .subtitle {
+	font-size: 17px;
+	font-family: Calibri,Arial,sans-serif;
+	line-height: 1em;
+	margin: 7px 0 0;
+	color: #3E3A37;
+	margin-top: 3px;
+	word-wrap: break-word;
+}
