@@ -7,16 +7,16 @@ import de.ddb.next.ApiConsumer;
 class ContentController {
 
 	static defaultAction = "news"
-
+	
+	def url = "http://141.66.130.151:8003"
+	
 	def news() {
 		def lang = "de"
-		def url = "http://141.66.130.151:8003"
 		def path = "/static/"+lang+"/news/index.html"
 		if (params.id!=null){
 			path = "/static/"+lang+"/news/"+params.id+".html"
 		}
 		def query = [ client: "DDB-NEXT" ]
-		println path
 		// Submit a request via GET
 		def response = ApiConsumer.getText(url, path, query)
 

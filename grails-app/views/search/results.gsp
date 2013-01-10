@@ -9,6 +9,21 @@
 	href="${resource(dir: 'css', file: 'ddb.tiz.css')}" />
 </head>
 <body>
+<%
+//id category preview longitude label latitude view
+
+for (HashMap s : hashResults) {
+    Iterator it = s.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry)it.next();
+			println(pairs.getKey()+": "+pairs.getValue());
+			println "<br>"
+			it.remove();
+		}
+}
+
+	
+%>
 	<div class="searchResults">
 		<%
 		if(json != null){ 

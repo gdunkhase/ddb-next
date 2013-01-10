@@ -37,19 +37,10 @@ class SearchController {
 		def slurper = new JsonSlurper()
 		def jsonObject = slurper.parseText(content.toString())
 		def results = jsonObject.get("results");
-//		println results;
-//		Iterator it = results.entrySet().iterator();
-//		while (it.hasNext()) {
-//			Map.Entry pairs = (Map.Entry)it.next();
-//			System.out.println(pairs.getKey());
-//			it.remove(); // avoids a ConcurrentModificationException
-//		}
-//		
-//		//println (results.getAt(0))
-//		def list = new JsonSlurper().parseText( results.get("docs").toString() )
-		
-		println new ReflectionToStringBuilder(results ).toString()
-		return [content:jsonObject,randomSeed:jsonObject.get("randomSeed"),results:jsonObject.get("results"),numberOfResults:jsonObject.get("numberOfResults"),facets:jsonObject.get("facets"),highlightedTerms:jsonObject.get("highlightedTerms")]
+		def hashResults= results.get(0).get("docs")
+	
+		//println new ReflectionToStringBuilder(hashResults).toString()
+		return [content:jsonObject,randomSeed:jsonObject.get("randomSeed"),hashResults:hashResults,results:jsonObject.get("results"),numberOfResults:jsonObject.get("numberOfResults"),facets:jsonObject.get("facets"),highlightedTerms:jsonObject.get("highlightedTerms")]
 
 	}
 }
