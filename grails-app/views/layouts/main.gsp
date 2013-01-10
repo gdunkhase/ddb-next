@@ -39,24 +39,25 @@
                       attr: { 'class': 'widget tooltip ' +layout() }">
     <div data-bind="html: content"></div>
   </div>
-  <r:external uri="${resource(dir: '../js', file: 'json2.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'jquery-1.7.2.min.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'jquery.scrollTo-min.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'rx.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'rx.jQuery.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'jquery.cookies.2.2.0.min.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'underscore-min.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'dateformat.min.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'knockout-latest.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'knockout.mapping-latest.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'jquery.mousewheel.min.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'jquery.microdata.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'amplify.min.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'jquery.carouFredSel-5.6.4-packed.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'jquery.dotdotdot-1.5.1.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'jquery.carouFredSel-5.6.4-packed.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'HomePage.js')}" />
-  <r:external uri="${resource(dir: '../js', file: 'ddb.min.js')}" />
+  <script type="text/javascript" src="${resource(dir:'js', file:'json2.js')}"></script>
+  <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.7.2.min.js')}"></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery-1.7.2.min.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.scrollTo-min.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.jQuery.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'underscore-min.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'dateformat.min.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout-latest.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout.mapping-latest.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.mousewheel.min.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.microdata.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'amplify.min.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-5.6.4-packed.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-5.6.4-packed.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'HomePage.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
   <script type="text/javascript">
             Ddb.Data.Language = 'en-US';
             Ddb.Data.TwoLetterLanguage = 'en';
