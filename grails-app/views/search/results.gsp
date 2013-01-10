@@ -11,11 +11,11 @@
 <body>
 	<div class="searchResults">	
 		<%
-		if(ress != null){ 
-	%>	
+		if(results){ 
+		%>	
 		<ul class="result">
 			<%
-				ress.each{ i->
+				results.each{ i->
 			%>			
 			<li class="item" style="z-index: 1;">
 				<div class="summary">
