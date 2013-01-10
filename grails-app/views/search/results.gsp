@@ -9,28 +9,13 @@
 	href="${resource(dir: 'css', file: 'ddb.tiz.css')}" />
 </head>
 <body>
-	<div class="searchResults">
-<%
-//id category preview longitude label latitude view
-
-for (HashMap s : hashResults) {
-    Iterator it = s.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pairs = (Map.Entry)it.next();
-			println(pairs.getKey()+": "+pairs.getValue());
-			println "<br>"
-			it.remove();
-		}
-}
-
-%>
-	
+	<div class="searchResults">	
 		<%
-		if(json != null){ 
+		if(ress != null){ 
 	%>	
 		<ul class="result">
 			<%
-				json.each{ i->
+				ress.each{ i->
 			%>			
 			<li class="item" style="z-index: 1;">
 				<div class="summary">
@@ -60,7 +45,7 @@ for (HashMap s : hashResults) {
 							<span>
 							 	<strong>
 										<%
-										println "${i.match}"
+										println "${i.title}"
 										%>
 								</strong>
 							</span> …

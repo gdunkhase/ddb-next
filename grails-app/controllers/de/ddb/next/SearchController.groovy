@@ -25,14 +25,7 @@ class SearchController {
 		if (response == "Not found"){
 			redirect(controller: "error", action: "notfound")
 		}
-		def unstructuredcontent=retrieveArguments(response)
-		//		def myRegularExpression = /\{id=+(*.)+\]}/
-		//		def matcher = ( unstructuredcontent =~ myRegularExpression )
-		//		if (matcher.matches()) {
-		//			println(matcher.getCount()+ " occurrence of the regular expression was found in the string.");
-		//
-		//		}
-		def map= retrieveArguments(response)
+		
 		def ress = []
 		
 		//TODO Give a look to ApiConsumer. THis part is trivial and useless (EMA)
@@ -46,7 +39,7 @@ class SearchController {
 			def tmp_itemRes = new ItemResult(it)
 			ress.add(tmp_itemRes)
 		}
-		
-		render(view: "results", model: map)
+		System.out.println ("----->"+ress[0].title)
+		render(view: "results", model: ress)
 	}
 }
