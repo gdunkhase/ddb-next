@@ -1,5 +1,7 @@
 package de.ddb.next
+import net.sf.json.JSONArray
 import org.apache.commons.lang.builder.ReflectionToStringBuilder
+import grails.converters.JSON
 import groovy.json.JsonSlurper
 
 
@@ -17,6 +19,7 @@ class SearchController {
 		}
 		 
 		println url+path
+		
 		// Submit a request via GET
 		def response = ApiConsumer.getTextAsJson(url, path, query)
 		if (response == "Not found"){
@@ -30,17 +33,20 @@ class SearchController {
 		//
 		//		}
 		def map= retrieveArguments(response)
-		render(view: "results", model: map)
-	}
-	
-	private def retrieveArguments(def content){
+		def ress = []
+		
+		//TODO Give a look to ApiConsumer. THis part is trivial and useless (EMA)
 		def slurper = new JsonSlurper()
-		def jsonObject = slurper.parseText(content.toString())
+		def jsonObject = slurper.parseText(response.toString())
 		def results = jsonObject.get("results");
 		def hashResults= results.get(0).get("docs")
-	
-		//println new ReflectionToStringBuilder(hashResults).toString()
-		return [content:jsonObject,randomSeed:jsonObject.get("randomSeed"),hashResults:hashResults,results:jsonObject.get("results"),numberOfResults:jsonObject.get("numberOfResults"),facets:jsonObject.get("facets"),highlightedTerms:jsonObject.get("highlightedTerms")]
-
+		
+		System.out.println (response)
+		hashResults.each{
+			def tmp_itemRes = new ItemResult(it)
+			ress.add(tmp_itemRes)
+		}
+		
+		render(view: "results", model: map)
 	}
 }
