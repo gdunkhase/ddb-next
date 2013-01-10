@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.tiz.css')}" />
 <meta name="layout" content="main" />
 <div class="container" role="main">
   <div class="widget searchQueryWidget" data-widget="SearchQueryWidget">
@@ -29,6 +30,53 @@
     </form>
   </div>
   <div class="image_carousel">
+  	<ul class="images">
+	  <li>
+	  	<a href="/content/news/2012-11-28-004"
+           title="This is the Deutsche Digitale Bibliothek!"> <img
+           src="http://www.ddb.de/static/de/sc_images/teaser-film.jpg"
+           alt="This is the Deutsche Digitale Bibliothek!" width="204" height="180" />
+        </a>
+      </li>
+	  <li>
+	  	<a href="http://www.ddb.de//about-us/institutions" title="Discover the DDB with the Culture Map!">
+          <img src="http://www.ddb.de//static/de/sc_images/teaser-map.jpg"
+          alt="Discover the DDB with the Culture Map!" width="204" height="180" />
+        </a>
+	  </li>
+	  <li>
+	  	<a href="/news/2012-11-28-000"
+          title="The Deutsche Digitale Bibliothek is online!"> <img
+          src="http://www.ddb.de/static/de/sc_images/teaser-launch.jpg"
+          alt="The Deutsche Digitale Bibliothek is online!" width="204" height="180" />
+        </a>
+	  </li>
+	  <li>
+	  	<a href="/news/2012-11-28-001"
+          title="Object of the month: The Model Bust of Queen Nefertiti"> <img
+          src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
+          alt="Object of the month: The Model Bust of Queen Nefertiti" width="204" height="180" />
+        </a>
+      </li>
+      <li>
+      	<a href="http://www.ddb.de/content/news/2012-11-28-002"
+          title="Search term of the month: Johann Sebastian Bach"> <img
+          src="http://www.ddb.de/static/de/sc_images/teaser-bach.jpg"
+          alt="Search term of the month: Johann Sebastian Bach" width="204" height="180" />
+        </a>
+      </li>
+      <li>
+      	<a href="/content/news/2012-11-28-003"
+          title="We are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s largest collection of ceramics">
+          <img src="http://www.ddb.de/static/de/sc_images/teaser-hetjens.jpg"
+          alt="We are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s largest collection of ceramics"
+          width="204" height="180" />
+        </a>
+      </li>
+	</ul>
+    
+    <!-- 
+    
     <a class="prev" id="carouselPrev" href="#" title="Previous"></a>
     <div id="carouselItems">
       <div class="article">
@@ -104,5 +152,8 @@
     </div>
     <div class="clearfix"></div>
     <a class="next" id="carouselNext" href="#" title="Next"></a>
+    
+     -->
+    
   </div>
 </div>

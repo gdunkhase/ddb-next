@@ -23,7 +23,6 @@ for (HashMap s : hashResults) {
 		}
 }
 
-	
 %>
 	
 		<%
