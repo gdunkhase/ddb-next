@@ -7,11 +7,11 @@
       alt="The logo of Deutsche Digitale Bibliothek shows three red flying dandelion seeds and contains the name of the German Digital Library and the subtitle Das Netzwerk f&#252;r Kultur und Wissenschaft."
       class="bigLogo"
       title="The Deutsche Digitale Bibliothek is the central national portal for culture and science. It gives internet access to the nation’s cultural heritage. In future, digital objects from all sectors and of all possible media types (text, sound, images, moving images) will be offered. First, the portal provides a simple search function for searching the complete inventory." />
-    <form method="get" action="/search/" role="search"
+    <form method="get" action="search" role="search"
       id="formSearch">
       <label style="float: left;"> <span>Search text field</span> 
       <input type="search" class="query"
-        name="id" value="" data-bind="value: searchTerm" />
+        name="q" value="" data-bind="value: searchTerm" />
       </label>
       <button type="submit">Go</button>
       <span class="contextualHelp"

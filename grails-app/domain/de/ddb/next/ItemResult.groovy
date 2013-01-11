@@ -16,6 +16,7 @@ class ItemResult {
 	String subtitle
 	String thumbnail
 	
+	/*
 	public ItemResult(net.sf.json.JSONObject res){
 		this.fillItemResultData(res)
 	}
@@ -51,6 +52,7 @@ class ItemResult {
 			this.thumbnail= thumbnailMatch[0][1]
 		
 	}
+	*/
 	
 	static List getAllItemsResult(query){
 		def http = new HTTPBuilder("http://dev-backend.deutsche-digitale-bibliothek.de:9998")
@@ -62,7 +64,25 @@ class ItemResult {
 			//JSONArray itemsResultList = new JsonSlurper().parseText(json.results.toString())
 			// itemsResultlist = new JsonSlurper().parseText( json.results["docs"].get(0) )
 			json.results["docs"].get(0).each{
-				res.add(new ItemResult(it))
+				def itr_tmp = new ItemResult()
+				itr_tmp.id = it.id
+				itr_tmp.view = it.view
+				itr_tmp.label = it.label
+				itr_tmp.latitude = it.latitude
+				itr_tmp.longitude = it.longitude
+				itr_tmp.category = it.category
+				def titleMatch = it.preview.toString() =~ /(?m)<div class="title">(.*?)<\/div>$/
+				if (titleMatch)
+					itr_tmp.title= titleMatch[0][1]
+					
+				def subtitleMatch = it.preview.toString() =~ /(?m)<div class="subtitle">(.*?)<\/div>$/
+				if (subtitleMatch)
+					itr_tmp.subtitle= subtitleMatch[0][1]
+				
+				def thumbnailMatch = it.preview.toString() =~ /(?m)<img src="(.*?)>$/
+				if (thumbnailMatch)
+					itr_tmp.thumbnail= thumbnailMatch[0][1]
+				res.add(itr_tmp)
 			}
 		}
 		//println res

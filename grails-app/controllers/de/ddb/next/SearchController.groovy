@@ -14,8 +14,8 @@ class SearchController {
 
     def results() { 
 		def query = [ client: "DDB-NEXT" ]
-		if (params.id!=null){
-			query = [ query: params.id ]
+		if (params.q!=null){
+			query = [ query: params.q ]
 		}
 		def results = ItemResult.getAllItemsResult(query)
 		

@@ -6,7 +6,7 @@ class UrlMappings {
 				// apply constraints here
 			}
 		}
-		"/search/$id?" {
+		"/search/$q?" {
 			controller="search"
 			action=results
 		}
