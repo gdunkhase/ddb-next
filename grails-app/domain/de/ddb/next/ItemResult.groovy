@@ -65,6 +65,7 @@ class ItemResult {
 				res.add(new ItemResult(it))
 			}
 		}
+		//println res
 		return res
 	}
 }

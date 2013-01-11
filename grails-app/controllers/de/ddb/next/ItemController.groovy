@@ -14,6 +14,7 @@ class ItemController {
 		println url+path
 		// Submit a request via GET
 		def response = ApiConsumer.getAnyText(url, path, query)
+		println response
 		if (response == "Not found"){
 			redirect(controller: "error", action: "notfound")
 		}
