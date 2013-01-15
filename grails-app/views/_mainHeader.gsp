@@ -20,7 +20,7 @@
       <ul
         class="navigation"
         role="navigation">
-        <li class="active root"><a href="/">Search</a>
+        <li class="active root"><a href="/ddb-next/">Search</a>
           <ul>
             <li class=""><a href="http://www.deutsche-digitale-bibliothek.de/advancedsearch">Advanced
                 Search</a></li>
