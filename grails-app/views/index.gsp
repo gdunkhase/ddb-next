@@ -32,103 +32,90 @@
 		</div>
 	</div>
 </div>
-<div class="row">
-	<div class="teaser span12">
-		<ul class="images">
-			<li>
-				<div class="article">
-					<a href="/content/news/2012-11-28-004"
-						title="This is the Deutsche Digitale Bibliothek!"> <img
-						src="http://www.ddb.de/static/de/sc_images/teaser-film.jpg"
-						alt="This is the Deutsche Digitale Bibliothek!" width="204"
-						height="180" />
-					</a>
-					<div class="caption">
-						<a href="/content/news/2012-11-28-004"
-							title="This is the Deutsche Digitale Bibliothek!">This is the
-							Deutsche Digitale Bibliothek!</a>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="article">
-					<a href="/about-us/institutions"
-						title="Discover the DDB with the Culture Map!"> <img
-						src="http://www.ddb.de/static/de/sc_images/teaser-map.jpg"
-						alt="Discover the DDB with the Culture Map!" width="204"
-						height="180" />
-					</a>
-					<div class="caption">
-						<a href="/about-us/institutions"
-							title="Discover the DDB with the Culture Map!">Discover the
-							DDB with the Culture Map!</a>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="article">
-					<a href="/content/news/2012-11-28-000"
-						title="The Deutsche Digitale Bibliothek is online!"> <img
-						src="http://www.ddb.de/static/de/sc_images/teaser-launch.jpg"
-						alt="The Deutsche Digitale Bibliothek is online!" width="204"
-						height="180" />
-					</a>
-					<div class="caption">
-						<a href="/content/news/2012-11-28-000"
-							title="The Deutsche Digitale Bibliothek is online!">The
-							Deutsche Digitale Bibliothek is online!</a>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="article">
-					<a href="/content/news/2012-11-28-001"
-						title="Object of the month: The Model Bust of Queen Nefertiti">
-						<img
-						src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
-						alt="Object of the month: The Model Bust of Queen Nefertiti"
-						width="204" height="180" />
-					</a>
-					<div class="caption">
-						<a href="/news/2012-11-28-001"
-							title="Object of the month: The Model Bust of Queen Nefertiti">Object
-							of the month: The Model Bust of Queen Nefertiti</a>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="article">
-					<a href="/content/news/2012-11-28-002"
-						title="Search term of the month: Johann Sebastian Bach"> <img
-						src="http://www.ddb.de/static/de/sc_images/teaser-bach.jpg"
-						alt="Search term of the month: Johann Sebastian Bach" width="204"
-						height="180" />
-					</a>
-					<div class="caption">
-						<a href="/content/news/2012-11-28-002"
-							title="Search term of the month: Johann Sebastian Bach">Search
-							term of the month: Johann Sebastian Bach</a>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="article">
-					<a href="/content/news/2012-11-28-003"
-						title="We are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s largest collection of ceramics">
-						<img
-						src="http://www.ddb.de/static/de/sc_images/teaser-hetjens.jpg"
-						alt="We are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s largest collection of ceramics"
-						width="204" height="180" />
-					</a>
-					<div class="caption">
-						<a href="/content/news/2012-11-28-003"
-							title="We are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s largest collection of ceramics">We
-							are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s
-							largest collection of ceramics</a>
-					</div>
-				</div>
-			</li>
-		</ul>
+<div class="row teaser">
+<div class="span12">
+	<div class="span3">
+		<a href="/content/news/2012-11-28-004"
+			title="This is the Deutsche Digitale Bibliothek!"> <img
+			src="http://www.ddb.de/static/de/sc_images/teaser-film.jpg"
+			alt="This is the Deutsche Digitale Bibliothek!" width="204"
+			height="180" />
+		</a>
+		<div class="caption">
+			<a href="/content/news/2012-11-28-004"
+				title="This is the Deutsche Digitale Bibliothek!">This is the
+				Deutsche Digitale Bibliothek!</a>
+		</div>
+	</div>
+
+	<div class="span3">
+		<a href="/about-us/institutions"
+			title="Discover the DDB with the Culture Map!"> <img
+			src="http://www.ddb.de/static/de/sc_images/teaser-map.jpg"
+			alt="Discover the DDB with the Culture Map!" width="204" height="180" />
+		</a>
+		<div class="caption">
+			<a href="/about-us/institutions"
+				title="Discover the DDB with the Culture Map!">Discover the DDB
+				with the Culture Map!</a>
+		</div>
+	</div>
+
+	<div class="span3">
+		<a href="/content/news/2012-11-28-000"
+			title="The Deutsche Digitale Bibliothek is online!"> <img
+			src="http://www.ddb.de/static/de/sc_images/teaser-launch.jpg"
+			alt="The Deutsche Digitale Bibliothek is online!" width="204"
+			height="180" />
+		</a>
+		<div class="caption">
+			<a href="/content/news/2012-11-28-000"
+				title="The Deutsche Digitale Bibliothek is online!">The Deutsche
+				Digitale Bibliothek is online!</a>
+		</div>
+	</div>
+
+	<div class="span3">
+		<a href="/content/news/2012-11-28-001"
+			title="Object of the month: The Model Bust of Queen Nefertiti"> <img
+			src="http://www.ddb.de/static/de/sc_images/teaser-nofretete.jpg"
+			alt="Object of the month: The Model Bust of Queen Nefertiti"
+			width="204" height="180" />
+		</a>
+		<div class="caption">
+			<a href="/news/2012-11-28-001"
+				title="Object of the month: The Model Bust of Queen Nefertiti">Object
+				of the month: The Model Bust of Queen Nefertiti</a>
+		</div>
+	</div>
+
+	<div class="span3">
+		<a href="/content/news/2012-11-28-002"
+			title="Search term of the month: Johann Sebastian Bach"> <img
+			src="http://www.ddb.de/static/de/sc_images/teaser-bach.jpg"
+			alt="Search term of the month: Johann Sebastian Bach" width="204"
+			height="180" />
+		</a>
+		<div class="caption">
+			<a href="/content/news/2012-11-28-002"
+				title="Search term of the month: Johann Sebastian Bach">Search
+				term of the month: Johann Sebastian Bach</a>
+		</div>
+	</div>
+
+	<div class="span3">
+		<a href="/content/news/2012-11-28-003"
+			title="We are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s largest collection of ceramics">
+			<img src="http://www.ddb.de/static/de/sc_images/teaser-hetjens.jpg"
+			alt="We are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s largest collection of ceramics"
+			width="204" height="180" />
+		</a>
+		<div class="caption">
+			<a href="/content/news/2012-11-28-003"
+				title="We are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s largest collection of ceramics">We
+				are the DDB: D&#252;sseldorf’s Hetjens Museum with the world’s
+				largest collection of ceramics</a>
+		</div>
 	</div>
 </div>
-
+</div>

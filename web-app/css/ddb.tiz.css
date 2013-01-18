@@ -16,28 +16,16 @@ div.searchResults .item .subtitle {
 }
 /* result.gsp - end */
 /* index.gsp */
-ul.images li {
-    display: inline;
-    width: 150px;
-    height: 150px;
-}
-ul.images img{
-    border: 0;
-    margin: 0;
-}
-div.teaser .images div.article {
-    margin:12px;
+div.teaser div.span3 {
     display:block;
     float:left;
     position:relative;
-}    
-div.teaser .images div.article>a {
-    display:block;
-}    
-div.teaser .imagesl div.article>a img {
-    margin:0px;
+    margin-left:0px;
 }
-div.teaser .images .caption {
+div.teaser div.span12{
+	margin-left: 60px;
+}
+div.teaser .caption {
     background-color:#e8eae9;
     opacity:0.8;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
@@ -51,11 +39,27 @@ div.teaser .images .caption {
     height:20px;
     padding:5px;
     line-height:18px;
-}
-
-div.caption {
-	white-space:nowrap;  
+    margin:15px;
+    white-space:nowrap;  
 	overflow:hidden; 
 	text-overflow:ellipsis;
 }
 /* index.gsp - end*/
+/* header.gsp */
+body.nojs header nav ul.navigation li.root ul li {
+display: inline;
+}
+/* header.gsp - end */
+/* footer.gsp */
+.build {
+	text-align: right;
+}
+footer .row{
+	border-top: 1px solid #e9e5e2;
+	padding-top: 24px;
+	overflow: hidden;
+}
+footer .span4{
+	margin-left: 0px;
+}
+/* footer.gsp - end */
