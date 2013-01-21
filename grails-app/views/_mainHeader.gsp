@@ -1,10 +1,13 @@
+<!--[if lt IE 9]>
+    <div class="header" role="contentinfo">
+<![endif]-->
 <header class="main">
 	<div class="container">
 		<div class="row">
 			<div class="span12">
 				<!--[if lt IE 9]>
-        <div class="nav widget" data-widget="NavigationWidget">
-    <![endif]-->
+			        <div class="nav widget" data-widget="NavigationWidget">
+			    <![endif]-->
 				<h1 class="a11y">Site Header</h1>
 				<nav class="widget" data-widget="NavigationWidget">
 					<div role="banner">
@@ -55,9 +58,12 @@
 					</div>
 				</nav>
 				<!--[if lt IE 9]>
-            </div>
-        <![endif]-->
+		            </div>
+		        <![endif]-->
 			</div>
 		</div>
 	</div>
 </header>
+<!--[if lt IE 9]>
+        </div>
+<![endif]-->
