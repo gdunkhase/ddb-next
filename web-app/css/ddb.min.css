@@ -362,6 +362,7 @@ body.start header ul.toolbar,body.start div.header ul.toolbar {
     filter:inherit}
 .ie8 .navigation ul li a {
     display:inline-block}
+/*    
 footer,div.footer {
     width:100%;
     background-color:#fff;
@@ -393,6 +394,7 @@ footer div.legal ul li,div.footer div.legal ul li {
 footer div.legal ul li+li,div.footer div.legal ul li+li {
     border-left:1px solid #d1cdcb;
     padding-left:17px}
+*/    
 body.infiniteScrollMode footer,body.infiniteScrollMode div.footer {
     position:fixed;
     bottom:0;
