@@ -36,4 +36,10 @@ This operation is the same as a direct execution from the command line on the
 
     grails run-app
 
+#### External Configurations
+In case additional configurations are needed, then the following apply:
+In development mode the external configuration is located on: $USER_HOME/.grails/$appname.properties 
+In Production Mode: /grails/app-config/$appname.properties
 
+####Proxy configuration 
+In development environment, proxies are read from $USER_HOME/.grails/ProxySettings.groovy by default. 
