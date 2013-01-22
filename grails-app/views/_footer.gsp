@@ -9,7 +9,7 @@
         	<small>Copyright &#169; 2012 Deutsche Digitale Bibliothek</small>
         </div>
         <div class="span6">
-	        <ul>
+	        <ul class="nav nav-list">
 	          <li><a href="http://www.deutsche-digitale-bibliothek.de/content/terms">Terms of Use</a></li>
 	          <li><a href="http://www.deutsche-digitale-bibliothek.de/content/privacy">Privacy Policy</a></li>
 	          <li><a href="http://www.deutsche-digitale-bibliothek.de/content/publisher">Legal Notice</a></li>

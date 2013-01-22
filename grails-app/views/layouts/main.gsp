@@ -11,6 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="Deutsche Digitale Bibliothek" />
 <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.min.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.tiz.css')}" type="text/css">
