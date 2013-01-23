@@ -6,7 +6,7 @@
 <meta name="robots" content="${robots}" />
 <meta name="layout" content="main" />
 <link rel="stylesheet"
-	href="${resource(dir: 'css', file: 'ddb.tiz.css')}" />
+	href="${resource(dir: 'css', file: 'ddb.css')}" />
 </head>
 <body>
 	<div class="searchResults">	
