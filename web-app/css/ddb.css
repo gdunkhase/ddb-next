@@ -33,6 +33,115 @@ div.teaser .caption {
 body.nojs header nav ul.navigation li.root ul li {
 display: inline;
 }
+
+header,div.header {
+    background:transparent url("../images/bg/back_header.png") no-repeat center bottom;
+    width:100%;
+    height:160px;
+    margin-bottom:20px}
+header img.printLogo,div.header img.printLogo {
+    display:none}
+header a.navigationHeaderLogo,div.header a.navigationHeaderLogo {
+    float:left;
+    height:85px;
+    width:350px;
+    border:0px;
+    padding:0px;
+    overflow:hidden}
+header a.navigationHeaderLogo:focus,div.header a.navigationHeaderLogo:focus,header a.navigationHeaderLogo:hover,div.header a.navigationHeaderLogo:hover,header a.navigationHeaderLogo:active,div.header a.navigationHeaderLogo:active {
+    background:#fff;
+    color:#ff6c6c}
+header a.navigationHeaderLogo .siteLogo p,div.header a.navigationHeaderLogo .siteLogo p {
+    text-indent:-9999px}
+header ul,div.header ul {
+    margin:0;
+    padding:0;
+    list-style:none}
+header ul li,div.header ul li {
+    float:left}
+header ul li.active a,div.header ul li.active a {
+    color:#a5003b;
+    font-weight:bold}
+header ul.navigation,div.header ul.navigation {
+    text-transform:uppercase;
+    clear:left}
+header ul.navigation li,div.header ul.navigation li {
+    padding-right:20px;
+    margin-left:0;
+    position:relative}
+header ul.navigation li.active ul,div.header ul.navigation li.active ul {
+    display:block}
+header ul.navigation li:last-child,div.header ul.navigation li:last-child {
+    padding-right:0}
+header ul.navigation ul,div.header ul.navigation ul {
+    position:absolute;
+    display:none;
+    top:22px;
+    left:0;
+    text-transform:none;
+    width:auto;
+    min-width:600px}
+header ul.navigation ul li,div.header ul.navigation ul li {
+    padding-right:16px;
+    border-top:1px solid #e9e5e2;
+    float:none;
+    display:inline;
+    white-space:nowrap}
+header ul.navigation ul li.active a,div.header ul.navigation ul li.active a {
+    color:#a5003b;
+    font-weight:bold}
+header ul.navigation ul a,div.header ul.navigation ul a {
+    color:#3e3a37;
+    font-weight:normal;
+    font-size:0.938em}
+header ul.navigation a,div.header ul.navigation a {
+    color:#3e3a37;
+    padding-bottom:3px}
+header ul.navigation a:hover,div.header ul.navigation a:hover,header ul.navigation a:active,div.header ul.navigation a:active,header ul.navigation a:focus,div.header ul.navigation a:focus {
+    color:#a5003b}
+header ul.toolbar,div.header ul.toolbar,header ul.login,div.header ul.login {
+    float:right;
+    font-size:0.814em;
+    padding-top:10px;
+    margin-top:-70px}
+header ul.toolbar li,div.header ul.toolbar li,header ul.login li,div.header ul.login li {
+    padding:0 12px}
+header ul.toolbar li+li,div.header ul.toolbar li+li,header ul.login li+li,div.header ul.login li+li {
+    border-left:1px solid #d1cdcb}
+header ul.toolbar a,div.header ul.toolbar a,header ul.login a,div.header ul.login a {
+    background:transparent url("../images/icons/aux_nav_icons.png") no-repeat -20px 0}
+header ul.toolbar a.home,div.header ul.toolbar a.home,header ul.login a.home,div.header ul.login a.home {
+    background-position:0 -4px;
+    padding-left:17px}
+header ul.toolbar a.help,div.header ul.toolbar a.help,header ul.login a.help,div.header ul.login a.help {
+    background-position:0 -23px;
+    padding-left:13px;
+    cursor:help}
+header ul.toolbar a:hover,div.header ul.toolbar a:hover,header ul.login a:hover,div.header ul.login a:hover {
+    text-decoration:underline;
+    color:#a5003b}
+header ul.toolbar li.language,div.header ul.toolbar li.language,header ul.login li.language,div.header ul.login li.language {
+    border-left:none}
+header ul.toolbar li.language.loggedin,div.header ul.toolbar li.language.loggedin,header ul.login li.language.loggedin,div.header ul.login li.language.loggedin {
+    border-left:1px solid #d1cdcb}
+header ul.toolbar li.language a,div.header ul.toolbar li.language a,header ul.login li.language a,div.header ul.login li.language a {
+    float:left;
+    background-position:right -42px;
+    padding-right:15px}
+header ul.toolbar li.language a:focus,div.header ul.toolbar li.language a:focus,header ul.login li.language a:focus,div.header ul.login li.language a:focus {
+    text-decoration:underline;
+    color:#a5003b}
+header ul.login,div.header ul.login {
+    padding-left:30px;
+    display:none}
+header ul.login li+li,div.header ul.login li+li {
+    padding-right:0}
+header ul.login li.user,div.header ul.login li.user {
+    border:none;
+    padding-right:8px}
+header nav,div.header nav,header div.nav,div.header div.nav {
+    width:980px;
+    margin:0 auto}
 /* header - end */
 
 /* footer */
