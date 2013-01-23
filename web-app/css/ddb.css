@@ -188,4 +188,7 @@ div.heading {
   border-bottom:1px solid #d1cdcb;
   padding-bottom:15px;
 }
+div.heading > h1{
+	display: inline-block;
+}
 /* genaral rules - end */
