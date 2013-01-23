@@ -5,12 +5,11 @@
 <meta name="keywords" content="${keywords}" />
 <meta name="robots" content="${robots}" />
 <meta name="layout" content="main" />
-<link rel="stylesheet"
-	href="${resource(dir: 'css', file: 'ddb.css')}" />
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
 </head>
 <body>
-	<div class="searchResults">	
-		<%
+  <div class="searchResults">
+    <%
 		if(results){ 
 		%>	
 		<ul class="result">
@@ -36,7 +35,7 @@
 						</div>
 						<div class="thumbnail">
 							<a class="persist" tabindex="-1" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>">
-								<img src="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/<%=i.id%>/list/1.jpg" alt="<%=i.title%>">
+								<img src="<% print grailsApplication.config.ddb.binary %>/binary/<%=i.id%>/list/1.jpg" alt="<%=i.title%>">
 							</a>
 						</div>
 					</div>
@@ -70,6 +69,6 @@
 		}
 	%>
 
-	</div>
+  </div>
 </body>
 </html>
