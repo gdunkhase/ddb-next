@@ -1,4 +1,4 @@
-/* index.gsp */
+/* index */
 div.teaser div.span3 {
     display:block;
     float:left;
@@ -27,12 +27,14 @@ div.teaser .caption {
 	overflow:hidden; 
 	text-overflow:ellipsis;
 }
-/* index.gsp - end*/
-/* header.gsp */
+/* index - end*/
+
+/* header */
 body.nojs header nav ul.navigation li.root ul li {
 display: inline;
 }
-/* header.gsp - end */
+/* header - end */
+
 /* footer */
 footer.container,div.footer .container{
   padding:20px 0 70px 0;
@@ -70,12 +72,5 @@ footer div.legal ul li,div.footer div.legal ul li {
 footer div.legal ul li+li,div.footer div.legal ul li+li {
   border-left:1px solid #d1cdcb;
   padding-left:17px;
-}
-/*
-footer .row{
-	border-top: 1px solid #e9e5e2;
-	padding-top: 24px;
-	overflow: hidden;
-}
-*/  
+} 
 /* footer - end */
