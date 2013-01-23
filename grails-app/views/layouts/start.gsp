@@ -38,7 +38,6 @@
   </div>
   <script type="text/javascript" src="${resource(dir:'js', file:'json2.js')}"></script>
   <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.7.2.min.js')}"></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery-1.7.2.min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.scrollTo-min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.jQuery.js')}" /></script>

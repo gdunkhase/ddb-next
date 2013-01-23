@@ -183,3 +183,9 @@ footer div.legal ul li+li,div.footer div.legal ul li+li {
   padding-left:17px;
 } 
 /* footer - end */
+/* genaral rules */
+div.heading {
+  border-bottom:1px solid #d1cdcb;
+  padding-bottom:15px;
+}
+/* genaral rules - end */
