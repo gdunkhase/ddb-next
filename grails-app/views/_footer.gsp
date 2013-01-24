@@ -13,7 +13,7 @@
         <li><a href="http://www.deutsche-digitale-bibliothek.de/content/sitemap">Sitemap</a></li>
         <li><a href="http://www.deutsche-digitale-bibliothek.de/content/contact">Contact</a></li>
       </ul>
-      <div class="build">3.11.1 / 1.0/r13474</div>
+      <div class="build">3.11.1 / <g:backendVersion/></div>
     </div>
   </div>
 </footer>
