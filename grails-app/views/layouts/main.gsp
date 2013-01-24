@@ -23,7 +23,7 @@
 <g:layoutHead />
 <r:layoutResources />
 </head>
-<body class="nojs start">
+<body>
   <g:render template="/mainHeader" />
   <div class="container" role="main">
     <g:layoutBody />

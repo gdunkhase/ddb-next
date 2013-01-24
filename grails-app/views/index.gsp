@@ -1,5 +1,5 @@
 <meta name="layout" content="start" />
-
+<!--  
 <div class="row">
   <div class="span12">
     <div class="widget searchQueryWidget" data-widget="SearchQueryWidget">
@@ -32,6 +32,7 @@
     </div>
   </div>
 </div>
+-->
 <div class="row teaser">
 <div class="span12">
   <div class="span3">
