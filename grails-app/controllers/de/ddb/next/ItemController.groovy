@@ -1,57 +1,70 @@
 package de.ddb.next
+
 import groovyx.net.http.HTTPBuilder
-import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.ContentType.XML
 
 class ItemController {
 
-    // ddb-next/item/:id
+    final def SERVER_URI = "http://dev-backend.deutsche-digitale-bibliothek.de:9998"
+    final def ITEM_ID = "W6H3LQUK2X3HQPBQ2ED7GPTPX6FCVE6A"
+    final def PATH = "/access/${ITEM_ID}/components/view"
+    final def http = new HTTPBuilder(SERVER_URI)
+
+    // the URI is {app-name}/item/:id
     def findById() {
-      log.error "init item controller"
+        log.error "find item with the id: " + params.id
 
-/*
-      def serverUri = "http://dev-backend.deutsche-digitale-bibliothek.de:9998"
+        /* TODO remove this hack, once the server deliver the right content
+         type*/
+        http.parser.'application/json' = http.parser.'application/xml'
 
-      http.setProxy('proxy.fiz-karlsruhe.de', 8888, 'http')
+        def ins = new Institution()
 
-      def itemId = "3W53MBF4MJTYDBXZE7AIKJXWCOH6VTTB"
-      def pathX = "/access/" + params.id + "/components/view"
-      */
+        // fetch item from the server
+        http.get( path : PATH ) { resp, xml ->
+            println "response status: ${resp.statusLine}"
+            println 'Headers: -----------'
 
-      def lang = "de"
-      def url = "http://dev-backend.deutsche-digitale-bibliothek.de:9998"
-//      def path = "/access/"+params.id+"/components/title"
+            resp.headers.each { h -> println " ${h.name} : ${h.value}" }
 
+            println 'Response data: -----'
+            assert xml.name() == "cortex-item"
+            println '--- institution ---'
+            println "name: " + xml.institution.name
+            println "id: " + xml.institution.id
 
-      def http = new HTTPBuilder(url)
-      def pathX = "/access/W6H3LQUK2X3HQPBQ2ED7GPTPX6FCVE6A/components/view"
-      def query = [ client: "DDB-NEXT" ]
+            println "uri: " + xml.institution.uri
+            println "logo uri: " + xml.institution.logo.a
+            println '\n--------------------'
 
-      try {
-        http.get( path : pathX, contentType: JSON) { resp, xml ->
+            ins.id = xml.institution.id
+            ins.name = xml.institution.name
+            ins.uri = xml.institution.uri
+            ins.logoUri = xml.institution.logo.a
 
-         setContentType(XML)
-          println "response status: ${resp.statusLine}"
-          println 'Headers: -----------'
+            println "name: " + ins.name
+            println "id: " + ins.id
 
-          resp.headers.each { h ->
-            println " ${h.name} : ${h.value}"
-          }
+            println "uri: " + ins.uri
+            println "logo uri: " + ins.logoUri
 
-          println 'Response data: -----'
-          System.out << xml
-          println '\n--------------------'
         }
-      } catch (Exception e) {
-          println "exception: " + e
-      }
 
+        // render item view
+        log.error "render item view"
+        def msg = """\
+        You are going to see the detail view of cultural item with
+        the id ${params.id}
+        """
 
-      log.error "finished"
-
-      def msg = 'You are going to see the detail view of cultural item with the id ' + params.id
-      render(view: "item", model: [content: msg])
-
+        render(view: "item", model: [content: msg, ins: ins])
     }
+
+}
+
+class Institution {
+    def uri
+    def name
+    def id
+    def logoUri
 
 }

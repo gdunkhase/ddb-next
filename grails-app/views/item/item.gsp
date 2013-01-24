@@ -1,5 +1,6 @@
 <meta name="layout" content="main" />
 
+<%= content %>
 
 <div class="culture-item-page">
 
@@ -251,5 +252,3 @@
 
 </div>
 <!-- /end of culture-item-page -->
-
-<%= content %>
