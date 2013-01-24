@@ -58,6 +58,7 @@ class ItemResult {
 		def http = new HTTPBuilder("http://dev-backend.deutsche-digitale-bibliothek.de:9998")
 		def res = []
 		def json_resp = ApiConsumer.getTextAsJson("http://dev-backend.deutsche-digitale-bibliothek.de:9998",'/search', query)
+		print json_resp
 		json_resp.results["docs"].get(0).each{
 			def itr_tmp = new ItemResult()
 			itr_tmp.id = it.id
