@@ -15,7 +15,7 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
     <div class="span3 facets-container">
       <div class="facets-head">
         <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <span class="contextualHelp" title="" data-content="<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />">
+        <span class="contextualHelp" title="" data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'>
       </div>
       <div class="facets-list">
         <div class="facets-item">
@@ -53,6 +53,9 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
             <select class="select">
               <option value="10">10</option>
               <option value="20">20</option>
+              <option value="20">40</option>
+              <option value="20">60</option>
+              <option value="20">100</option>
             </select>
           </span>
         </div>
@@ -96,72 +99,81 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
       </div>
       
       <div class="results-paginator-view">
-        
+        <div id="group-actions" class="span7">
+          <input id="thumbnail-filter" type="checkbox">
+          <label for="thumbnail-filter" title="<g:message code="ddbnext.Show_items_with_thumbnails" />"><g:message code="ddbnext.Show_items_with_thumbnails" /></label>
+          <input id="toggle-cluster" type="checkbox">
+          <label for="toggle-cluster" title="<g:message code="ddbnext.View_as_Cluster" />"><g:message code="ddbnext.View_as_Cluster" /></label>
+        </div>
+        <div class="span2">
+          <button id="view-list" type="button" class="list selected" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
+          <button id="view-grid" type="button" class="list selected" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
+        </div>
+      </div>
+      
+      <div class="searchResults">
+        <%
+        if(results){ 
+        %>  
+        <ul class="result">
+          <%
+            results.each{ i->
+          %>      
+          <li class="item" style="z-index: 1;">
+            <div class="summary">
+              <div class="summaryWrapper">
+                <h2 class="title">
+                  <a class="persist" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>" title="<%=i.title%>">
+                    <strong>
+                      <%
+                      println "${i.title}"
+                      %>
+                    </strong>
+                  </a>
+                </h2>
+                <div class="subtitle">
+                  <%
+                  println "${i.subtitle}"
+                  %>
+                </div>
+                <div class="thumbnail">
+                  <a class="persist" tabindex="-1" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>">
+                    <img src="<% print grailsApplication.config.ddb.binary %>/binary/<%=i.id%>/list/1.jpg" alt="<%=i.title%>">
+                  </a>
+                </div>
+              </div>
+              <ul class="matches">
+                <li class="matchingItem">
+                  <span>
+                    <strong>
+                        <%
+                        println "${i.title}"
+                        %>
+                    </strong>
+                  </span> …
+                </li>
+              </ul>
+            </div>
+            <div class="extra">
+              <ul class="types">
+                <li class="image" classname="image" title="Image">
+                  Image
+                </li>
+              </ul>
+            </div>
+            <div class="information"></div>   
+          </li> 
+              <li class="divider"><hr></li>
+          <%
+            }
+          %>
+          </ul>
+      <%
+        }
+      %>
       </div>
       
     </div>
-  </div>
-  <div class="searchResults">
-    <%
-		if(results){ 
-		%>	
-		<ul class="result">
-			<%
-				results.each{ i->
-			%>			
-			<li class="item" style="z-index: 1;">
-				<div class="summary">
-					<div class="summaryWrapper">
-						<h2 class="title">
-							<a class="persist" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>" title="<%=i.title%>">
-								<strong>
-									<%
-									println "${i.title}"
-									%>
-								</strong>
-							</a>
-						</h2>
-						<div class="subtitle">
-							<%
-							println "${i.subtitle}"
-							%>
-						</div>
-						<div class="thumbnail">
-							<a class="persist" tabindex="-1" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>">
-								<img src="<% print grailsApplication.config.ddb.binary %>/binary/<%=i.id%>/list/1.jpg" alt="<%=i.title%>">
-							</a>
-						</div>
-					</div>
-					<ul class="matches">
-						<li class="matchingItem">
-							<span>
-							 	<strong>
-										<%
-										println "${i.title}"
-										%>
-								</strong>
-							</span> …
-						</li>
-					</ul>
-				</div>
-				<div class="extra">
-					<ul class="types">
-						<li class="image" classname="image" title="Image">
-							Image
-						</li>
-					</ul>
-				</div>
-				<div class="information"></div>		
-			</li>	
-	        <li class="divider"><hr></li>
-			<%
-				}
-			%>
-	    </ul>
-	<%
-		}
-	%>
-
   </div>
 </body>
 </html>
