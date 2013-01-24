@@ -1,4 +1,4 @@
-<meta name="layout" content="main" />
+<meta name="layout" content="start" />
 
 <div class="row">
   <div class="span12">
