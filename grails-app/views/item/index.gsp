@@ -3,6 +3,6 @@
 <title><%=title%></title>
 </head>
 <body>
-  
-<%=content %></body>
+<%=content %>
+</body>
 </html>
