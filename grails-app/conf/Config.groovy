@@ -62,13 +62,13 @@ grails.hibernate.cache.queries = false
 environments {
     development {
         grails.logging.jul.usebridge = true
-		grails.config.locations = [ "file:${userHome}/.grails/${appName}.properties" ]
-		
+    grails.config.locations = [ "file:${userHome}/.grails/${appName}.properties" ]
+
     }
     production {
         grails.logging.jul.usebridge = false
-		grails.config.locations = [ "file:/grails/app-config/${appName}.properties" ]
-		//grails.config.locations = [ "file:System.getProperty('catalina.base') ?: 'target') + '/ProxySettings.groovy'" ]
+    grails.config.locations = [ "file:/grails/app-config/${appName}.properties" ]
+    //grails.config.locations = [ "file:System.getProperty('catalina.base') ?: 'target') + '/ProxySettings.groovy'" ]
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
@@ -76,11 +76,12 @@ environments {
 // log4j configuration
 log4j = {
     // Example of changing the log pattern for the default console appender:
-    //
     appenders {
-        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-		rollingFile name: "stacktrace", maxFileSize: 1024, file: (System.getProperty('catalina.base') ?: 'target') + '/logs/ddbnext-stacktrace.log'
+      console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+      rollingFile name: "stacktrace", maxFileSize: 1024, file: (System.getProperty('catalina.base') ?: 'target') + '/logs/ddbnext-stacktrace.log'
     }
+
+    debug  'de.ddb.next.ItemController'
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
