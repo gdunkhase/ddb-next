@@ -326,6 +326,21 @@ footer div.legal ul li+li,div.footer div.legal ul li+li {
 }
 /* footer - end */
 /* genaral rules */
+h1, h2, h3, h4 {
+line-height: 1.5em;
+}
+h2, h2 a {
+font-family: KarbidWeb,Calibri,Arial,sans-serif;
+font-weight: bold;
+font-size: 1.375em;
+color: #a5003b;
+}
+h3, h3 a {
+font-family: Calibri,Arial,sans-serif;
+font-weight: bold;
+font-size: 1.125em;
+color: #3e3a37;
+}
 .a11y {
   position:absolute;
   left:-999em;
@@ -441,5 +456,20 @@ div.heading {
 }
 div.heading > h1{
 	display: inline-block;
+}
+select {
+  font-family: Calibri,Arial,sans-serif;
+  font-size: 1em;
+  border: 1px solid #858280;
+}
+.contextual-help {
+  display: block;
+  width: 17px;
+  height: 17px;
+  background: url("../images/icons/tooltips.png") no-repeat 0px -60px;
+  text-indent: -999em;
+}
+.contextual-help, .contextual-help a, .contextual-help img {
+  cursor: help;
 }
 /* genaral rules - end */
