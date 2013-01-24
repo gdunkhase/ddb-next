@@ -15,7 +15,7 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
     <div class="span3 facets-container">
       <div class="facets-head">
         <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <span class="contextualHelp" title="" data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'>
+        <span class="contextual-help" title="" data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'>
       </div>
       <div class="facets-list">
         <div class="facets-item">
@@ -71,7 +71,7 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
         </div>
       </div>
       
-      <div class="page-info-nav">
+      <div class="row page-info-nav">
         <div class="span3 page-info">
           <span id="results-overall-index">1 - 20</span>
           <span><g:message code="ddbnext.Of" /></span>
@@ -98,7 +98,7 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
         </div>
       </div>
       
-      <div class="results-paginator-view">
+      <div class="row results-paginator-view">
         <div id="group-actions" class="span7">
           <input id="thumbnail-filter" type="checkbox">
           <label for="thumbnail-filter" title="<g:message code="ddbnext.Show_items_with_thumbnails" />"><g:message code="ddbnext.Show_items_with_thumbnails" /></label>
@@ -111,11 +111,11 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
         </div>
       </div>
       
-      <div class="searchResults">
+      <div class="row searchResults">
         <%
         if(results){ 
         %>  
-        <ul class="result">
+        <ul class="result unstyled">
           <%
             results.each{ i->
           %>      
@@ -138,7 +138,7 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
                 </div>
                 <div class="thumbnail">
                   <a class="persist" tabindex="-1" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>">
-                    <img src="<% print grailsApplication.config.ddb.binary %>/binary/<%=i.id%>/list/1.jpg" alt="<%=i.title%>">
+                    <img src="<% if(i.thumbnail.contains("binary")) print grailsApplication.config.ddb.binary+i.thumbnail else print i.thumbnail %>" alt="<%=i.title%>">
                   </a>
                 </div>
               </div>
