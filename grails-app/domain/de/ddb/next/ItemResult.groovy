@@ -55,14 +55,13 @@ class ItemResult {
 	*/
 	
 	static List getAllItemsResult(query){
-		def http = new HTTPBuilder("http://dev-backend.deutsche-digitale-bibliothek.de:9998")
 		def res = []
-		def json_resp = ApiConsumer.getTextAsJson("http://dev-backend.deutsche-digitale-bibliothek.de:9998",'/search', query)
+		def json_resp = ApiConsumer.getTextAsJson("http://backend-p1.deutsche-digitale-bibliothek.de:9998",'/search', query)
 		print json_resp
 		json_resp.results["docs"].get(0).each{
 			def itr_tmp = new ItemResult()
 			itr_tmp.id = it.id
-			itr_tmp.view = it.view
+			itr_tmp.view = it.view[0]
 			itr_tmp.label = it.label
 			itr_tmp.latitude = it.latitude
 			itr_tmp.longitude = it.longitude

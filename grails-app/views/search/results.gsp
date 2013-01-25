@@ -157,7 +157,7 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
                             println "${i.title}"
                             %>
                         </strong>
-                      </span> …
+                      </span>
                     </li>
                   </ul>
                 </div>
