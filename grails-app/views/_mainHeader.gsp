@@ -54,7 +54,7 @@
         </div> 
       </div>
       <div class="search-header">
-        <form method="get" action="search" role="search" id="formSearchHeader">
+        <form method="get" action="search" role="search" id="form-search-header">
             <label style="float: left;"> 
               <span><g:message code="ddbnext.Search_text_field"/></span>
               <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />

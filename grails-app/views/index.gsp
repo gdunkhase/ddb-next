@@ -1,26 +1,24 @@
 <meta name="layout" content="start" />
-<!--  
+ 
 <div class="row">
   <div class="span12">
-    <div class="widget searchQueryWidget" data-widget="SearchQueryWidget">
-      <h1 class="a11y">Site Search</h1>
+    <div class="search-widget">
+      <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Search_Widget"/></h1>
       <r:img dir="images" file="logo_big.png"
         alt="The logo of Deutsche Digitale Bibliothek shows three red flying dandelion seeds and contains the name of the German Digital Library and the subtitle Das Netzwerk f&#252;r Kultur und Wissenschaft."
         class="bigLogo"
         title="The Deutsche Digitale Bibliothek is the central national portal for culture and science. It gives internet access to the nation’s cultural heritage. In future, digital objects from all sectors and of all possible media types (text, sound, images, moving images) will be offered. First, the portal provides a simple search function for searching the complete inventory." />
-      <form method="get" action="search" role="search" id="formSearch">
-        <label style="float: left;"> <span>Search text field</span>
+      <form method="get" action="search" role="search" id="form-search">
+        <label style="float: left;"> <span><g:message code="ddbnext.Search_text_field"/></span>
           <input type="search" class="query" name="q" value=""
           data-bind="value: searchTerm" />
         </label>
-        <button type="submit">Go</button>
-        <span class="contextualHelp"
+        <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
+        <span class="contextual-help"
           title="Enter the keyword in the search field. Click the magnifying glass icon or press the Enter key. &lt;a href=&quot;=&quot;/content/help/search-simple&quot;&gt;Help about simple search&lt;/a&gt;"
           data-content="Enter the keyword in the search field. Click the magnifying glass icon or press the Enter key. &lt;a href=&quot;=&quot;/content/help/search-simple&quot;&gt;Help about simple search&lt;/a&gt;">
-          <a href="#"> <r:img dir="images" file="tooltips.png"
-              alt="Enter the keyword in the search field. Click the magnifying glass icon or press the Enter key. &lt;a href=&quot;=&quot;/content/help/search-simple&quot;&gt;Help about simple search&lt;/a&gt;" />
-        </a>
-        </span> <a class="linkAdvSearch" href="advancedsearch">Advanced Search</a>
+        </span> 
+        <a class="linkAdvSearch" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
         <div class="tutorial tooltip">
           <div>
             Enter the keyword in the search field. Click the magnifying glass
@@ -32,7 +30,6 @@
     </div>
   </div>
 </div>
--->
 <div class="row teaser">
 <div class="span12">
   <div class="span3">
