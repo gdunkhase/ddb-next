@@ -1,5 +1,6 @@
 <%
 def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext.Of")+" xxxxx"
+def testVar
 %>
 <html>
 <head>
