@@ -5,9 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="Deutsche Digitale Bibliothek" />
 <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.min.css')}" type="text/css">
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}" type="text/css">
 <link rel="search" title="Deutsche Digitale Bibliothek"
   href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx"
@@ -18,7 +17,7 @@
 <g:layoutHead />
 <r:layoutResources />
 </head>
-<body class="nojs start">
+<body class="start">
   <g:render template="/mainHeader" />
   <div class="container" role="main">
     <g:layoutBody />
