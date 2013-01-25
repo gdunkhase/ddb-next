@@ -46,7 +46,7 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
     </div>
     <div class="span9 search-results-content">
     
-      <div class="row results-paginator-options bb">
+      <div class="results-paginator-options bb">
         <div class="page-filter">
           <label><g:message code="ddbnext.SearchResultsPagination_Display" /></label>
           <span>
@@ -83,13 +83,13 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
             <li class="first-page">
               <a href="#"><g:message code="ddbnext.First_Label" /></a>  
             </li>
-            <li class="prev-page">
+            <li class="prev-page br">
               <a href="#"><g:message code="ddbnext.Previous_Label" /></a> 
             </li>
             <li class="pages-overall-index">
               <span><% print pagesOverallIndex %></span>
             </li>
-            <li class="next-page">
+            <li class="next-page bl">
               <a href="#"><g:message code="ddbnext.Next_Label" /></a> 
             </li>
             <li class="last-page">
@@ -99,79 +99,87 @@ def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext
         </div>
       </div>
       
-      <div class="row results-paginator-view">
-        <div class="group-actions">
-          <input id="thumbnail-filter" type="checkbox">
-          <label for="thumbnail-filter" title="<g:message code="ddbnext.Show_items_with_thumbnails" />"><g:message code="ddbnext.Show_items_with_thumbnails" /></label>
-          <input id="toggle-cluster" type="checkbox">
-          <label for="toggle-cluster" title="<g:message code="ddbnext.View_as_Cluster" />"><g:message code="ddbnext.View_as_Cluster" /></label>
-        </div>
-        <div class="view-type-switch">
-          <button id="view-list" type="button" class="selected" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
-          <button id="view-grid" type="button" class="" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
+      <div class="row">
+        <div class="span9">
+          <div class="results-paginator-view">
+            <div class="group-actions">
+              <input id="thumbnail-filter" type="checkbox">
+              <label for="thumbnail-filter" title="<g:message code="ddbnext.Show_items_with_thumbnails" />"><g:message code="ddbnext.Show_items_with_thumbnails" /></label>
+              <input id="toggle-cluster" type="checkbox">
+              <label for="toggle-cluster" title="<g:message code="ddbnext.View_as_Cluster" />"><g:message code="ddbnext.View_as_Cluster" /></label>
+            </div>
+            <div class="view-type-switch">
+              <button id="view-list" type="button" class="selected" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
+              <button id="view-grid" type="button" class="" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
+            </div>
+          </div>
         </div>
       </div>
       
-      <div class="row searchResults">
-        <%
-        if(results){ 
-        %>  
-        <ul class="result unstyled">
-          <%
-            results.each{ i->
-          %>      
-          <li class="item" style="z-index: 1;">
-            <div class="summary">
-              <div class="summaryWrapper">
-                <h2 class="title">
-                  <a class="persist" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>" title="<%=i.title%>">
-                    <strong>
+      <div class="row">
+        <div class="span9">
+          <div class="searchResults">
+            <%
+            if(results){ 
+            %>  
+            <ul class="result unstyled">
+              <%
+                results.each{ i->
+              %>      
+              <li class="item" style="z-index: 1;">
+                <div class="summary">
+                  <div class="summaryWrapper">
+                    <h2 class="title">
+                      <a class="persist" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>" title="<%=i.title%>">
+                        <strong>
+                          <%
+                          println "${i.title}"
+                          %>
+                        </strong>
+                      </a>
+                    </h2>
+                    <div class="subtitle">
                       <%
-                      println "${i.title}"
+                      println "${i.subtitle}"
                       %>
-                    </strong>
-                  </a>
-                </h2>
-                <div class="subtitle">
-                  <%
-                  println "${i.subtitle}"
-                  %>
+                    </div>
+                    <div class="thumbnail">
+                      <a class="persist" tabindex="-1" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>">
+                        <img src="<% if(i.thumbnail.contains("binary")) print grailsApplication.config.ddb.binary+i.thumbnail else print i.thumbnail %>" alt="<%=i.title%>">
+                      </a>
+                    </div>
+                  </div>
+                  <ul class="matches">
+                    <li class="matchingItem">
+                      <span>
+                        <strong>
+                            <%
+                            println "${i.title}"
+                            %>
+                        </strong>
+                      </span> …
+                    </li>
+                  </ul>
                 </div>
-                <div class="thumbnail">
-                  <a class="persist" tabindex="-1" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>">
-                    <img src="<% if(i.thumbnail.contains("binary")) print grailsApplication.config.ddb.binary+i.thumbnail else print i.thumbnail %>" alt="<%=i.title%>">
-                  </a>
+                <div class="extra">
+                  <ul class="types">
+                    <li class="image" classname="image" title="Image">
+                      Image
+                    </li>
+                  </ul>
                 </div>
-              </div>
-              <ul class="matches">
-                <li class="matchingItem">
-                  <span>
-                    <strong>
-                        <%
-                        println "${i.title}"
-                        %>
-                    </strong>
-                  </span> …
-                </li>
+                <div class="information"></div>   
+              </li> 
+                  <li class="divider"><hr></li>
+              <%
+                }
+              %>
               </ul>
-            </div>
-            <div class="extra">
-              <ul class="types">
-                <li class="image" classname="image" title="Image">
-                  Image
-                </li>
-              </ul>
-            </div>
-            <div class="information"></div>   
-          </li> 
-              <li class="divider"><hr></li>
           <%
             }
           %>
-          </ul>
-      <%
-        }
-      %>
+          </div>
+        </div>
       </div>
       
     </div>
