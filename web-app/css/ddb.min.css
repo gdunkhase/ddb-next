@@ -362,7 +362,7 @@ body.start header ul.toolbar,body.start div.header ul.toolbar {
     filter:inherit}
 .ie8 .navigation ul li a {
     display:inline-block}
-/*    
+/*
 footer,div.footer {
     width:100%;
     background-color:#fff;
@@ -394,7 +394,7 @@ footer div.legal ul li,div.footer div.legal ul li {
 footer div.legal ul li+li,div.footer div.legal ul li+li {
     border-left:1px solid #d1cdcb;
     padding-left:17px}
-*/    
+*/
 body.infiniteScrollMode footer,body.infiniteScrollMode div.footer {
     position:fixed;
     bottom:0;
@@ -3093,7 +3093,7 @@ div.searchResults ul.types li.institution {
     padding-left:17px;
     height:25px;
     line-height:20px;
-    background:url("/Content/themes/base/icons/list_arrows.png") no-repeat 0px 0px}
+    background:url(""../images/icons/list_arrows.png"") no-repeat 0px 0px}
 .cultureItemPage .institution>div a.institutionName:hover {
     color:#a5003b}
 .cultureItemPage .institution>a>img {
@@ -3109,7 +3109,7 @@ div.searchResults ul.types li.institution {
 .cultureItemPage .originHeader {
     font-weight:bold}
 .cultureItemPage .origin span {
-    background:url("/Content/themes/base/icons/objectviewer_actions.png") no-repeat;
+    background:url("../images/icons/objectviewer_actions.png") no-repeat;
     display:inline-block;
     padding-left:23px;
     line-height:20px;
@@ -3274,7 +3274,7 @@ div.objectDisplayWidget.cultureItemPage.hasBanaries dd {
     width:10px;
     height:10px;
     margin-right:10px;
-    background:transparent url(/Content/themes/base/icons/list_arrows.png) no-repeat left -45px}
+    background:transparent url("../images/icons/list_arrows.png") no-repeat left -45px}
 .institutionItemPage .locations .locationContainer .hierarchy li i.active {
     background-position:left -5px}
 .institutionItemPage .description {
@@ -3376,7 +3376,7 @@ div.objectDisplayWidget.cultureItemPage.hasBanaries dd {
     display:inline-block;
     width:13px;
     height:10px;
-    background:transparent url(/Content/themes/base/icons/list_arrows.png) no-repeat left -45px}
+    background:transparent url("../images/icons/list_arrows.png") no-repeat left -45px}
 .institutions #listview #root>li>i {
     background-position:left -5px}
 .institutions #listview #root>li ul {
@@ -3994,7 +3994,7 @@ div.objectDisplayWidget div.objectControls {
 div.objectDisplayWidget div.objectControls .buttons {
     float:left}
 div.objectDisplayWidget div.objectControls .buttons>a,div.objectDisplayWidget div.objectControls .buttons>span {
-    background:url("/Content/themes/base/icons/objectviewer_actions.png") no-repeat;
+    background:url("../images/icons/objectviewer_actions.png") no-repeat;
     display:inline-block}
 div.objectDisplayWidget div.objectControls .buttons>a.link,div.objectDisplayWidget div.objectControls .buttons>span.link {
     margin-left:2px;
@@ -4026,7 +4026,7 @@ div.objectDisplayWidget div.objectControls ul.viewers li {
     display:inline;
     margin-left:15px}
 div.objectDisplayWidget div.objectControls ul.viewers li span {
-    background:url("/Content/themes/base/icons/objectviewer_actions.png") no-repeat;
+    background:url("../images/icons/objectviewer_actions.png") no-repeat;
     display:inline-block;
     padding-left:25px;
     line-height:20px}
@@ -4998,7 +4998,7 @@ display:table-cell;
     padding-left:17px;
     height:25px;
     line-height:20px;
-    background:url("/Content/themes/base/icons/list_arrows.png") no-repeat 0px 0px}
+    background:url(""../images/icons/list_arrows.png"") no-repeat 0px 0px}
 .cultureItemPage .institution>div a.institutionName:hover {
     color:#a5003b}
 .cultureItemPage .institution>a>img {
@@ -5014,7 +5014,7 @@ display:table-cell;
 .cultureItemPage .originHeader {
     font-weight:bold}
 .cultureItemPage .origin span {
-    background:url("/Content/themes/base/icons/objectviewer_actions.png") no-repeat;
+    background:url("../images/icons/objectviewer_actions.png") no-repeat;
     display:inline-block;
     padding-left:23px;
     line-height:20px;
@@ -5179,7 +5179,7 @@ div.objectDisplayWidget.cultureItemPage.hasBanaries dd {
     width:10px;
     height:10px;
     margin-right:10px;
-    background:transparent url(/Content/themes/base/icons/list_arrows.png) no-repeat left -45px}
+    background:transparent url("../images/icons/list_arrows.png") no-repeat left -45px}
 .institutionItemPage .locations .locationContainer .hierarchy li i.active {
     background-position:left -5px}
 .institutionItemPage .description {
@@ -5281,7 +5281,7 @@ div.objectDisplayWidget.cultureItemPage.hasBanaries dd {
     display:inline-block;
     width:13px;
     height:10px;
-    background:transparent url(/Content/themes/base/icons/list_arrows.png) no-repeat left -45px}
+    background:transparent url("../images/icons/list_arrows.png") no-repeat left -45px}
 .institutions #listview #root>li>i {
     background-position:left -5px}
 .institutions #listview #root>li ul {
@@ -5899,7 +5899,7 @@ div.objectDisplayWidget div.objectControls {
 div.objectDisplayWidget div.objectControls .buttons {
     float:left}
 div.objectDisplayWidget div.objectControls .buttons>a,div.objectDisplayWidget div.objectControls .buttons>span {
-    background:url("/Content/themes/base/icons/objectviewer_actions.png") no-repeat;
+    background:url("../images/icons/objectviewer_actions.png") no-repeat;
     display:inline-block}
 div.objectDisplayWidget div.objectControls .buttons>a.link,div.objectDisplayWidget div.objectControls .buttons>span.link {
     margin-left:2px;
@@ -5931,7 +5931,7 @@ div.objectDisplayWidget div.objectControls ul.viewers li {
     display:inline;
     margin-left:15px}
 div.objectDisplayWidget div.objectControls ul.viewers li span {
-    background:url("/Content/themes/base/icons/objectviewer_actions.png") no-repeat;
+    background:url("../images/icons/objectviewer_actions.png") no-repeat;
     display:inline-block;
     padding-left:25px;
     line-height:20px}

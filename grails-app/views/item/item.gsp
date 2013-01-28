@@ -3,7 +3,6 @@
 <div class="widget objectDisplayWidget cultureItemPage hasBanaries">
   <g:render template="controls" />
   <g:render template="institution" />
-  <g:render template="binaries" />
   <h2>${item.title}</h2>
   <g:render template="fields" />
   <g:render template="rights" />

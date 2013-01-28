@@ -9,8 +9,7 @@ class ItemController {
     def findById() {
         def itemUri = request.getHeader('Host') + request.forwardURI
         def item = itemService.findItemById()
-        def binary = itemService.findBinariesById()
         render(view: "item", model: [itemUri: itemUri, item: item.item, institution : item.institution,
-                    fields: item.fields, binary: binary])
+                    fields: item.fields])
     }
 }
