@@ -57,7 +57,7 @@ class ItemResult {
 	static List getAllItemsResult(query){
 		def res = []
 		def json_resp = ApiConsumer.getTextAsJson("http://backend-p1.deutsche-digitale-bibliothek.de:9998",'/search', query)
-		print json_resp
+		//print json_resp
 		json_resp.results["docs"].get(0).each{
 			def itr_tmp = new ItemResult()
 			itr_tmp.id = it.id
@@ -66,6 +66,7 @@ class ItemResult {
 			itr_tmp.latitude = it.latitude
 			itr_tmp.longitude = it.longitude
 			itr_tmp.category = it.category
+			itr_tmp.preview = it.preview
 			def titleMatch = it.preview.toString() =~ /(?m)<div class="title">(.*?)<\/div>$/
 			if (titleMatch)
 				itr_tmp.title= titleMatch[0][1]

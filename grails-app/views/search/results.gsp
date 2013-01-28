@@ -116,69 +116,16 @@ def testVar
           </div>
         </div>
       </div>
-      
       <div class="row">
         <div class="span9">
-          <div class="searchResults">
+          <div class="search-results">
             <%
-            if(results){ 
-            %>  
-            <ul class="result unstyled">
-              <%
-                results.each{ i->
-              %>      
-              <li class="item" style="z-index: 1;">
-                <div class="summary">
-                  <div class="summaryWrapper">
-                    <h2 class="title">
-                      <a class="persist" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>" title="<%=i.title%>">
-                        <strong>
-                          <%
-                          println "${i.title}"
-                          %>
-                        </strong>
-                      </a>
-                    </h2>
-                    <div class="subtitle">
-                      <%
-                      println "${i.subtitle}"
-                      %>
-                    </div>
-                    <div class="thumbnail">
-                      <a class="persist" tabindex="-1" href="http://www.deutsche-digitale-bibliothek.de/item/<%=i.id%>">
-                        <img src="<% if(i.thumbnail.contains("binary")) print grailsApplication.config.ddb.binary+i.thumbnail else print i.thumbnail %>" alt="<%=i.title%>">
-                      </a>
-                    </div>
-                  </div>
-                  <ul class="matches">
-                    <li class="matchingItem">
-                      <span>
-                        <strong>
-                            <%
-                            println "${i.title}"
-                            %>
-                        </strong>
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-                <div class="extra">
-                  <ul class="types">
-                    <li class="image" classname="image" title="Image">
-                      Image
-                    </li>
-                  </ul>
-                </div>
-                <div class="information"></div>   
-              </li> 
-                  <li class="divider"><hr></li>
-              <%
-                }
-              %>
-              </ul>
-          <%
-            }
-          %>
+            if(results){
+            %>
+			<g:itemResultRender results="${results}"></g:itemResultRender>
+            <%
+              }
+            %>
           </div>
         </div>
       </div>
