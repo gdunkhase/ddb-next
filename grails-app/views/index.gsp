@@ -18,9 +18,7 @@
         <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
         <div class="tutorial tooltip">
           <div>
-            Enter the keyword in the search field. Click the magnifying glass
-            icon or press the Enter key. <a href="="http://ddb.de/content/help/search-simple">Help
-              about simple search</a>
+            <g:message code="ddbnext.Search_Hint" />
           </div>
         </div>
       </form>
