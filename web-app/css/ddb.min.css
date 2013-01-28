@@ -3982,15 +3982,19 @@ body.js div.searchResultsWidget div.actions,body.js div.searchResultsWidget div.
     margin-bottom:15px}
 .ie7 .searchResults .result .clusteredDivider hr {
     display:none}
+
 div.objectDisplayWidget {
-    font-size:0.938em}
+    font-size:0.938em
+}
+
 div.objectDisplayWidget div.objectControls {
     padding-left:10px;
     padding-right:8px;
     line-height:30px;
     height:30px;
     display:none;
-    background-color:#efebe8}
+    background-color:#efebe8
+}
 div.objectDisplayWidget div.objectControls .buttons {
     float:left}
 div.objectDisplayWidget div.objectControls .buttons>a,div.objectDisplayWidget div.objectControls .buttons>span {

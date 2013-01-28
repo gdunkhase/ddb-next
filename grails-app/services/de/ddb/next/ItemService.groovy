@@ -6,9 +6,9 @@ class ItemService {
 
     // schiller denkmal
     final def SERVER_URI = "http://dev-backend.deutsche-digitale-bibliothek.de:9998"
-    final def ITEM_ID = "W6H3LQUK2X3HQPBQ2ED7GPTPX6FCVE6A"
-    final def VIEW_PATH = "/access/" + ITEM_ID + "/components/view"
-    final def BINARIES_PATH = "/access/" + ITEM_ID + "/components/binaries"
+    //    final def ITEM_ID = "W6H3LQUK2X3HQPBQ2ED7GPTPX6FCVE6A"
+    //    final def VIEW_PATH = "/access/" + ITEM_ID + "/components/view"
+    //    final def BINARIES_PATH = "/access/" + ITEM_ID + "/components/binaries"
     final def BINARY_SERVER_URI = "http://www.binary-p2.deutsche-digitale-bibliothek.de"
 
     def binary = ['preview' : ['title':'', 'uri': ''],
@@ -20,15 +20,16 @@ class ItemService {
     final def PREVIEW= 'mvpr'
     final def FULL = 'full'
 
-    def findItemById() {
+    def findItemById(id) {
         def http = new HTTPBuilder(SERVER_URI)
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
         http.parser.'application/json' = http.parser.'application/xml'
 
+        final def viewPath = "/access/" + id + "/components/view"
         def institution, item, fields
-        http.get( path : VIEW_PATH) { resp, xml ->
+        http.get( path : viewPath ) { resp, xml ->
             institution= xml.institution
             item = xml.item
             fields = xml.item.fields.field.findAll()
@@ -67,10 +68,12 @@ class ItemService {
 
 
 
-    private def fetchBinaryList() {
+    private def fetchBinaryList(id) {
         def http = new HTTPBuilder(SERVER_URI)
         http.parser.'application/json' = http.parser.'application/xml'
-        http.get( path : BINARIES_PATH) { resp, xml ->
+
+        final def binariesPath= "/access/" + id + "/components/binaries"
+        http.get( path : binariesPath) { resp, xml ->
             //log(resp, xml)
             def binaries = xml
             assert binaries instanceof groovy.util.slurpersupport.GPathResult

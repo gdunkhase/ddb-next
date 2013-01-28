@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+.controls {
+  background-color:#efebe8
+}
+
+div.controls .buttons > a,div.objectDisplayWidget div.controls .buttons>span {
+  background:url("../images/icons/objectviewer_actions.png") no-repeat;
+  display:inline-block
+}
