@@ -65,49 +65,22 @@ header ul.navigation ul a,.header ul.navigation ul a {
 header ul.navigation a:hover,.header ul.navigation a:hover,header ul.navigation a:active,.header ul.navigation a:active,header ul.navigation a:focus,.header ul.navigation a:focus {
   color:#a5003b;
 }
-header ul.toolbar,div.header ul.toolbar,header ul.login,div.header ul.login {
-    float:right;
-    font-size:0.814em;
-    padding-top:10px;
-    margin-top:-70px}
-header ul.toolbar li,div.header ul.toolbar li,header ul.login li,div.header ul.login li {
-    padding:0 12px}
-header ul.toolbar li+li,div.header ul.toolbar li+li,header ul.login li+li,div.header ul.login li+li {
-    border-left:1px solid #d1cdcb}
-header ul.toolbar a,div.header ul.toolbar a,header ul.login a,div.header ul.login a {
-    background:transparent url("../images/icons/aux_nav_icons.png") no-repeat -20px 0}
-header ul.toolbar a.home,div.header ul.toolbar a.home,header ul.login a.home,div.header ul.login a.home {
-    background-position:0 -4px;
-    padding-left:17px}
-header ul.toolbar a.help,div.header ul.toolbar a.help,header ul.login a.help,div.header ul.login a.help {
-    background-position:0 -23px;
-    padding-left:13px;
-    cursor:help}
-header ul.toolbar a:hover,div.header ul.toolbar a:hover,header ul.login a:hover,div.header ul.login a:hover {
-    text-decoration:underline;
-    color:#a5003b}
-header ul.toolbar li.language,div.header ul.toolbar li.language,header ul.login li.language,div.header ul.login li.language {
-    border-left:none}
-header ul.toolbar li.language.loggedin,div.header ul.toolbar li.language.loggedin,header ul.login li.language.loggedin,div.header ul.login li.language.loggedin {
-    border-left:1px solid #d1cdcb}
-header ul.toolbar li.language a,div.header ul.toolbar li.language a,header ul.login li.language a,div.header ul.login li.language a {
-    float:left;
-    background-position:right -42px;
-    padding-right:15px}
-header ul.toolbar li.language a:focus,div.header ul.toolbar li.language a:focus,header ul.login li.language a:focus,div.header ul.login li.language a:focus {
-    text-decoration:underline;
-    color:#a5003b}
-header ul.login,div.header ul.login {
-    padding-left:30px;
-    display:none}
-header ul.login li+li,div.header ul.login li+li {
-    padding-right:0}
-header ul.login li.user,div.header ul.login li.user {
-    border:none;
-    padding-right:8px}
+header .toolbar,.header .toolbar {
+  float:right;
+  font-size:0.814em;
+  padding-top:10px;
+  margin-top:-70px;
+  position: relative;
+}
+header .toolbar:hover .selector,.header .toolbar:hover .selector{
+  display: block;
+}
+header .toolbar a,.header .toolbar a{
+  background: transparent url("../images/icons/aux_nav_icons.png") no-repeat -20px 0;
+}
 header nav,div.header nav,header div.nav,div.header div.nav {
     width:980px;
-    margin:0 auto
+    margin:0 auto;
 }
 .search-header{
   position: absolute;
@@ -187,8 +160,7 @@ header nav,div.header nav,header div.nav,div.header div.nav {
   display:block;
   line-height:24px;
 }
-.language-widget .selector {
-  font-size:0.814em;
+header .selector,.header .selector {
   display:none;
   background-color:#fff;
   padding:5px 12px 7px;
@@ -198,26 +170,20 @@ header nav,div.header nav,header div.nav,div.header div.nav {
   position:absolute;
   right:0;
   top:14px;
+  margin-top: 14px;
   box-shadow:1px 1px 2px rgba(0, 0, 0, 0.5);
   -moz-box-shadow:1px 1px 2px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow:1px 1px 2px rgba(0, 0, 0, 0.5);
 }
-.language-widget .selector li {
+header .selector li,.header .selector li {
   float:none;
   cursor:pointer;
   padding:0 15px 0 0;
   margin-bottom:5px;
   white-space:nowrap;
 }
-.language-widget .selector li:hover {
-  color:#a5003b;
-}
-.language-widget .selector .selected {
-  cursor:default;
-  background-color:#eee;
-}
-.language-widget .selector li:last-child {
-  margin-bottom:0;
+header .selector li:hover {
+  background-color: #eee;
 }
 header .language-widget,.header .language-widget {
   width:980px;
