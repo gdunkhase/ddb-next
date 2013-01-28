@@ -60,12 +60,7 @@
               <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
             </label>
             <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
-            <span class="contextual-help" title="Enter the keyword in the search field. Click the magnifying glass icon or press the Enter key. &lt;a href=&quot;=&quot;/content/help/search-simple&quot;&gt;Help about simple search&lt;/a&gt;"
-            data-content="Enter the keyword in the search field. Click the magnifying glass icon or press the Enter key. &lt;a href=&quot;=&quot;/content/help/search-simple&quot;&gt;Help about simple search&lt;/a&gt;">
-              <a href="#"> 
-                <r:img dir="images" file="tooltips.png" alt="Enter the keyword in the search field. Click the magnifying glass icon or press the Enter key. &lt;a href=&quot;=&quot;/content/help/search-simple&quot;&gt;Help about simple search&lt;/a&gt;" />
-              </a>
-            </span> 
+            <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint"/>" data-content="<g:message code="ddbnext.Search_Hint"/>"></span> 
             <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
             <div class="tutorial tooltip">
               <div>

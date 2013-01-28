@@ -112,7 +112,7 @@ header nav,div.header nav,header div.nav,div.header div.nav {
 .search-header{
   position: absolute;
   right: 0;
-  margin-right: 180px;
+  margin-right: 300px;
 }
 .search-header form{
   float: right;
@@ -130,13 +130,10 @@ header nav,div.header nav,header div.nav,div.header div.nav {
   margin: 0;
 }
 .search-header form .contextual-help {
-  height: 20px;
   overflow: hidden;
   position: absolute;
   right: 22px;
-  top: -8px;
-  width: 30px;
-  background: none;
+  top: -6px;
 }
 .search-header form .contextual-help a {
   display: block;
@@ -162,25 +159,17 @@ header nav,div.header nav,header div.nav,div.header div.nav {
   margin-bottom: 0;
 }
 .search-header form button{
-  position: relative;
-  right: 0;
-  padding: 0;
-  width: 24px;
-  height: 24px;
   box-shadow: none;
   overflow: hidden;
   background: none;
 }
-.start .search-widget form button::before, #form-search-header button::before {
+#form-search-header button::before {
  display: inline-block;
  content: url("../images/icons/search.png");
  margin: -150px 0px 0px 0px;
 }
-#form-search .link-adv-search, #form-search-header .link-adv-search{
-position: absolute;
-font-size: 0.814em;
-top: 19px;
-left: -15px;
+#form-search-header button:hover::before {
+ margin: -200px 0px 0px 0px;
 }
 .language-widget {
   z-index:1;
@@ -239,6 +228,11 @@ header .language-widget,.header .language-widget {
 header .language-widget form, .header .language-widget form {
   display:none;
 }
+#form-search-header .link-adv-search{
+  font-size: 0.814em;
+  top: 19px;
+  left: -15px;
+}
 /* header - end */
 
 /* index */
@@ -248,19 +242,55 @@ header .language-widget form, .header .language-widget form {
   text-align: center;
   height: 300px;
 }
+.search-widget img {
+  margin-left: 0;
+  margin-bottom: 20px;
+}
+.search-widget label span {
+  display: block;
+  overflow: hidden;
+  height: 0px;
+  width: 0px;
+  margin: 0;
+}
+.search-widget form button{
+  width: 40px;
+  height: 40px;
+  box-shadow: none;
+  overflow: hidden;
+  background: none;
+  margin-left: 4px;
+}
+.search-widget form button::before{ 
+  display: inline-block;
+  content: url("../images/icons/search.png");
+  margin: 0px 0px 0px 0px;
+}
+.search-widget form button:hover::before {
+  margin: -50px 0px 0px 0px;
+}
+.search-widget .contextual-help {
+  margin-left: 4px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/tooltips.png") no-repeat 0px 0px;
+}
+#form-search .contextual-help:hover,#form-search .contextual-help:active,#form-search .contextual-help:focus {
+  background-position:0px -30px;
+}
 #form-search {
   float: none;
   position: relative;
   padding-bottom: 15px;
   top: 0px;
-  width: 555px;
+  width: 570px;
   margin: 0 auto;
-  text-align: left;
 }
 #form-search input {
   font-size: 1.25em;
   width: 485px;
-  height: 40px;
+  height: 38px;
   line-height: 40px;
 }
 .teaser .span3 {
@@ -490,5 +520,11 @@ select {
 }
 .contextual-help:hover,.contextual-help:active,.contextual-help:focus {
   background-position:0px -90px;
+}
+.link-adv-search {
+  position: absolute;
+  font-size: 0.938em;
+  top: 50px;
+  left: 0px;
 }
 /* genaral rules - end */
