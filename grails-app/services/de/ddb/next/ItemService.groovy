@@ -1,6 +1,8 @@
 package de.ddb.next
 
 import groovyx.net.http.HTTPBuilder
+import static groovyx.net.http.ContentType.*
+import static groovyx.net.http.Method.*
 
 class ItemService {
 
@@ -29,13 +31,22 @@ class ItemService {
 
         final def viewPath = "/access/" + id + "/components/view"
         def institution, item, fields
-        http.get( path : viewPath ) { resp, xml ->
-            institution= xml.institution
-            item = xml.item
-            fields = xml.item.fields.field.findAll()
-            return ['uri': '','institution': institution, 'item': item, 'fields': fields]
-        }
+        http.request( GET) { req ->
+            uri.path = viewPath
 
+            response.success = { resp, xml ->
+                institution= xml.institution
+                item = xml.item
+                fields = xml.item.fields.field.findAll()
+                return ['uri': '','institution': institution, 'item': item, 'fields': fields]
+            }
+
+            response.'404' = { return '404' }
+
+            // handler for any failure status code:
+            response.failure = { resp -> println "Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}" }
+
+        }
     }
 
 
