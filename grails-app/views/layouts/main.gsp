@@ -8,8 +8,8 @@
 <!--<![endif]-->
 <head>
 <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="description" content="Deutsche Digitale Bibliothek" />
+<meta content="charset=utf-8">
+<meta name="description" content="Deutsche Digitale Bibliothek">
 <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
@@ -30,21 +30,9 @@
     <g:layoutBody />
   </div>
   <g:render template="/footer" />
-  
-  
-  <div class="widget tooltip" data-widget="TooltipWidget"
-    data-bind="style: { 
-                      'display' : isVisible() ? 'block' : 'none',
-                      'left': xpx,
-                      'top': ypx,
-                      'position': positionMode
-                      },
-                      attr: { 'class': 'widget tooltip ' +layout() }">
-    <div data-bind="html: content"></div>
-  </div>
+  <!-- TODO merge those scripts -->
   <script type="text/javascript" src="${resource(dir:'js', file:'json2.js')}"></script>
   <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.7.2.min.js')}"></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery-1.7.2.min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.scrollTo-min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.jQuery.js')}" /></script>
@@ -61,6 +49,7 @@
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-5.6.4-packed.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'HomePage.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
+  <!-- TODO: put following inline scripts to an external file -->
   <script type="text/javascript">
             Ddb.Data.Language = 'en-US';
             Ddb.Data.TwoLetterLanguage = 'en';
@@ -151,3 +140,4 @@
         </script>
 </body>
 </html>
+
