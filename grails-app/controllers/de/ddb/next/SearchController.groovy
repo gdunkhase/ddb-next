@@ -18,7 +18,7 @@ class SearchController {
 			query = [ query: params.q ]
 		}
 		def results = ItemResult.getAllItemsResult(query)
-		print "-----------" + grailsApplication.config
+		
 		System.out.println ("----->"+results.size())
 		
 		render(view: "results", model: [results: results])

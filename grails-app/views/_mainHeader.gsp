@@ -30,42 +30,21 @@
             <li class=""><a href="/content/tutorial"><g:message code="ddbnext.Tutorial"/></a></li>
           </ul></li>
       </ul>
-      <div>
-        <ul class="toolbar" role="navigation">
-          <li class="language">
-            <a href="/language"><g:message code="ddbnext.language_fct_eng"/></a>
-          </li>
-        </ul>
-        <div class="widget language-widget" data-widget="languageWidget">
-          <div class="flag"></div>
-          <form action="/language" method="post">
-            <label> 
-              <span><g:message code="ddbnext.ChangeLanguage"/></span> 
-              <select name="language">
-                <option value='de'><g:message code="ddbnext.language_fct_ger"/></option>
-                <option selected='selected' value='en'><g:message code="ddbnext.language_fct_eng"/></option>
-              </select>
-            </label> 
-            <input type="hidden" name="referrer" value="http://www.deutsche-digitale-bibliothek.de/" />
-            <button type="submit" title="Select">
-              <span><g:message code="ddbnext.Select_button"/></span>
-            </button>
-          </form>
-        </div> 
+      <div class="toolbar">     
+          <a href="#"><g:message code="ddbnext.language_fct_ger"/></a>
+          <ul class="selector">
+            <li class="de"><a href="#"><g:message code="ddbnext.language_fct_ger"/></a></li>
+            <li class="en"><a href="#"><g:message code="ddbnext.language_fct_eng"/></a></li>
+          </ul>         
       </div>
       <div class="search-header">
-        <form method="get" action="search" role="search" id="formSearchHeader">
+        <form method="get" action="search" role="search" id="form-search-header">
             <label style="float: left;"> 
               <span><g:message code="ddbnext.Search_text_field"/></span>
               <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
             </label>
             <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
-            <span class="contextual-help" title="Enter the keyword in the search field. Click the magnifying glass icon or press the Enter key. &lt;a href=&quot;=&quot;/content/help/search-simple&quot;&gt;Help about simple search&lt;/a&gt;"
-            data-content="Enter the keyword in the search field. Click the magnifying glass icon or press the Enter key. &lt;a href=&quot;=&quot;/content/help/search-simple&quot;&gt;Help about simple search&lt;/a&gt;">
-              <a href="#"> 
-                <r:img dir="images" file="tooltips.png" alt="Enter the keyword in the search field. Click the magnifying glass icon or press the Enter key. &lt;a href=&quot;=&quot;/content/help/search-simple&quot;&gt;Help about simple search&lt;/a&gt;" />
-              </a>
-            </span> 
+            <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint"/>" data-content="<g:message code="ddbnext.Search_Hint"/>"></span> 
             <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
             <div class="tutorial tooltip">
               <div>
