@@ -9,8 +9,6 @@ class ItemService {
     // schiller denkmal
     final def SERVER_URI = "http://dev-backend.deutsche-digitale-bibliothek.de:9998"
     //    final def ITEM_ID = "W6H3LQUK2X3HQPBQ2ED7GPTPX6FCVE6A"
-    //    final def VIEW_PATH = "/access/" + ITEM_ID + "/components/view"
-    //    final def BINARIES_PATH = "/access/" + ITEM_ID + "/components/binaries"
     final def BINARY_SERVER_URI = "http://www.binary-p2.deutsche-digitale-bibliothek.de"
 
     def binary = ['preview' : ['title':'', 'uri': ''],
@@ -51,11 +49,7 @@ class ItemService {
 
 
     def findBinariesById() {
-        def binaryList = fetchBinaryList()
-        // def binaryList = parseFromXml()
-        // log(binaryList)
-
-        Map prev = parse(binaryList)
+        Map prev = parse(fetchBinaryList())
         return prev
     }
 
