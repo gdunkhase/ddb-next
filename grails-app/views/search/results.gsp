@@ -13,6 +13,7 @@ def testVar
 </head>
 <body>
   <div class="row search-results-container">
+  
     <div class="span3 facets-container">
       <div class="facets-head">
         <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
@@ -45,6 +46,7 @@ def testVar
         </div>
       </div>
     </div>
+    
     <div class="span9 search-results-content">
     
       <div class="results-paginator-options bb">
@@ -127,6 +129,34 @@ def testVar
               }
             %>
           </div>
+        </div>
+      </div>
+      
+      <div class="row page-info-nav">
+        <div class="span3 page-info">
+          <span id="results-overall-index">1 - 20</span>
+          <span><g:message code="ddbnext.Of" /></span>
+          <span><b><span id="results-total"><% print results.size() %></span></b></span>
+          <span><g:message code="ddbnext.Results_lowercase" /></span>
+        </div>
+        <div class="span6 page-nav">
+          <ul class="inline">
+            <li class="first-page">
+              <a href="#"><g:message code="ddbnext.First_Label" /></a>  
+            </li>
+            <li class="prev-page br">
+              <a href="#"><g:message code="ddbnext.Previous_Label" /></a> 
+            </li>
+            <li class="pages-overall-index">
+              <span><% print pagesOverallIndex %></span>
+            </li>
+            <li class="next-page bl">
+              <a href="#"><g:message code="ddbnext.Next_Label" /></a> 
+            </li>
+            <li class="last-page">
+              <a href="#"><g:message code="ddbnext.Last_Label" /></a> 
+            </li>
+          </ul>
         </div>
       </div>
       

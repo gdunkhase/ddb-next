@@ -292,12 +292,16 @@ input[type="checkbox"],input[type="radio"] {
   position: absolute;
   right: 0;
   background: url("../images/icons/search_actions.png") no-repeat 0 0;
-  margin-top: -35px;
+  margin-top: -32px;
   cursor: pointer;
 }
 
 .search-results .results-list .summary .span2 .information:hover {
   background-position: 0px -20px;
+}
+
+.results-list .item .summary {
+padding-bottom: 5px;
 }
 
 .bb {

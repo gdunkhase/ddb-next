@@ -61,7 +61,7 @@ class ItemResult {
 		json_resp.results["docs"].get(0).each{
 			def itr_tmp = new ItemResult()
 			itr_tmp.id = it.id
-			itr_tmp.view = it.view[0]
+			itr_tmp.view = (it.view[0])?it.view[0]:""
 			itr_tmp.label = it.label
 			itr_tmp.latitude = it.latitude
 			itr_tmp.longitude = it.longitude
