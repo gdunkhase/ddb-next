@@ -4,11 +4,6 @@
   background-color:#efebe8
 }
 
-div.object-controls .buttons > a,div.object-display-widget div.object-controls .buttons>span {
-  background:url("../images/icons/objectviewer_actions.png") no-repeat;
-  display:inline-block
-}
-
 .name {
   font-weight: bold;
 }

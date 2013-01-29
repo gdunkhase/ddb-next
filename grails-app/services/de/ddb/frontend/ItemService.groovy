@@ -1,4 +1,4 @@
-package de.ddb.next
+package de.ddb.frontend
 
 import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.ContentType.*
@@ -9,8 +9,9 @@ class ItemService {
     def transactional = false
     // schiller denkmal
     final def SERVER_URI = "http://dev-backend.deutsche-digitale-bibliothek.de:9998"
-    //    final def ITEM_ID = "W6H3LQUK2X3HQPBQ2ED7GPTPX6FCVE6A"
+    //    final def ITEM_ID = "4ENCM6MNZE35G3CYCYSMH7BETSABFYK2"
     final def BINARY_SERVER_URI = "http://www.binary-p2.deutsche-digitale-bibliothek.de"
+    final def SOURCE_PLACEHOLDER = '{0}'
 
     def binary = ['preview' : ['title':'', 'uri': ''],
         'thumbnail' :['title':'', 'uri': ''],
@@ -28,8 +29,10 @@ class ItemService {
          type*/
         http.parser.'application/json' = http.parser.'application/xml'
 
-        final def viewPath = "/access/" + id + "/components/view"
-        def institution, item, fields
+        final def componentsPath = "/access/" + id + "/components/"
+        final def viewPath = componentsPath + "view"
+        
+        def institution, item, fields, viewerUri
         http.request( GET) { req ->
             uri.path = viewPath
 
@@ -37,7 +40,9 @@ class ItemService {
                 institution= xml.institution
                 item = xml.item
                 fields = xml.item.fields.field.findAll()
-                return ['uri': '','institution': institution, 'item': item, 'fields': fields]
+                viewerUri = buildViewerUri(item, componentsPath)
+                return ['uri': '', 'viewerUri': viewerUri, 'institution':
+                    institution, 'item': item, 'fields': fields]
             }
 
             response.'404' = { return '404' }
@@ -47,7 +52,16 @@ class ItemService {
 
         }
     }
-
+    
+    private def buildViewerUri(item, componentsPath) {
+        def viewerPrefix = item.viewers.viewer.uri.toString()
+        if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
+            def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
+            def sourceUri = BINARY_SERVER_URI + componentsPath + "source"
+            def encodedSourceUri= java.net.URLEncoder.encode(sourceUri, "UTF-8")
+            return withoutPlaceholder + encodedSourceUri
+        }
+    }
 
     def findBinariesById() {
         Map prev = parse(fetchBinaryList())

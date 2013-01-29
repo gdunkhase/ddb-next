@@ -13,7 +13,8 @@ class ItemController {
             redirect(controller: "error")
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
-            render(view: "item", model: [itemUri: itemUri, item: item.item, institution : item.institution,
+            println "viewer uri: ${item.viewerUri}"
+            render(view: "item", model: [itemUri: itemUri, viewerUri: item.viewerUri, item: item.item, institution : item.institution,
                         fields: item.fields])
         }
     }

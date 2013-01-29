@@ -1,4 +1,5 @@
 <meta name="layout" content="main" />
+<link type="text/css" href="${resource(dir: 'css', file: 'item.css')}">
 <!-- TODO: change .culturalItem to .cultural-item -->
 <div class="widget object-display-widget culture-item-page">
 
