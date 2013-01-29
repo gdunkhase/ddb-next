@@ -67,10 +67,17 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-    grails.config.locations = [ "file:/grails/app-config/${appName}.properties" ]
-    //grails.config.locations = [ "file:System.getProperty('catalina.base') ?: 'target') + '/ProxySettings.groovy'" ]
-        // TODO: grails.serverURL = "http://www.changeme.com"
+        grails.config.locations = [ "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties" ]
+        println "catalina home: " +"file:"+ System.getProperty('catalina.base')
+        def needProxy = grailsApplication.config.client.proxy.needed
+        if (needProxy){
+            System.properties.putAll([
+                "http.proxyHost": grailsApplication.config.client.http.proxyHost,
+                "http.proxyPort": grailsApplication.config.client.http.proxyPort
+            ])
+        }
     }
+
 }
 
 // log4j configuration

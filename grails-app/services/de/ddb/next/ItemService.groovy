@@ -6,6 +6,7 @@ import static groovyx.net.http.Method.*
 
 class ItemService {
 
+    def transactional = false
     // schiller denkmal
     final def SERVER_URI = "http://dev-backend.deutsche-digitale-bibliothek.de:9998"
     //    final def ITEM_ID = "W6H3LQUK2X3HQPBQ2ED7GPTPX6FCVE6A"

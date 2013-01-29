@@ -13,11 +13,8 @@
 <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
-<!-- 
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.min.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}" type="text/css">
- -->
- 
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}" type="text/css">
 
 <link rel="search" title="Deutsche Digitale Bibliothek"
