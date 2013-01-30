@@ -5,16 +5,22 @@ import groovyx.net.http.HTTPBuilder
 import net.sf.json.JSONArray
 
 class ItemResult {
-	String id
-	String view
-	String label
-	String latitude
-	String longitude
-	String preview
-	String category
-	String title
-	String subtitle
-	String thumbnail
+	def id
+	def view
+	def latitude
+	def longitude
+	def category
+	def media
+	def title
+	def subtitle
+	def thumbnail
+	def affiliate_fct
+	def keywords_fct
+	def type_fct
+	def sector_fct
+	def provider_fct
+	def last_update
+	
 	
 	/*
 	public ItemResult(net.sf.json.JSONObject res){
@@ -56,31 +62,28 @@ class ItemResult {
 	
 	static List getAllItemsResult(query){
 		def res = []
-		def json_resp = ApiConsumer.getTextAsJson("http://backend-p1.deutsche-digitale-bibliothek.de:9998",'/search', query)
-		//print json_resp
-		json_resp.results["docs"].get(0).each{
+		def json_resp = ApiConsumer.getTextAsJson("http://localhost:8080",'/ddb-next/apis/search', query)
+		//print "---->"+json_resp.results["docs"].get(0)
+		json_resp.results["docs"].each{
+			it ->
 			def itr_tmp = new ItemResult()
 			itr_tmp.id = it.id
+			itr_tmp.title = it.preview.title
 			itr_tmp.view = (it.view[0])?it.view[0]:""
-			itr_tmp.label = it.label
 			itr_tmp.latitude = it.latitude
 			itr_tmp.longitude = it.longitude
 			itr_tmp.category = it.category
-			itr_tmp.preview = it.preview
-			def titleMatch = it.preview.toString() =~ /(?m)<div class="title">(.*?)<\/div>$/
-			if (titleMatch)
-				itr_tmp.title= titleMatch[0][1]
-				
-			def subtitleMatch = it.preview.toString() =~ /(?m)<div class="subtitle">(.*?)<\/div>$/
-			if (subtitleMatch)
-				itr_tmp.subtitle= subtitleMatch[0][1]
-			
-			def thumbnailMatch = it.preview.toString() =~ /(?m)<img src="(.*?)>$/
-			if (thumbnailMatch)
-				itr_tmp.thumbnail= thumbnailMatch[0][1]
+			itr_tmp.subtitle = it.preview.subtitle
+			itr_tmp.thumbnail = it.preview.thumbnail
+			itr_tmp.media = it.preview.media
+			itr_tmp.affiliate_fct = it.properties.affiliate_fct
+			itr_tmp.keywords_fct = it.properties.keywords_fct
+			itr_tmp.type_fct = it.properties.type_fct
+			itr_tmp.sector_fct = it.properties.sector_fct
+			itr_tmp.provider_fct = it.properties.provider_fct
+			itr_tmp.last_update = it.properties.last_update
 			res.add(itr_tmp)
 		}
-		//println res
 		return res
 	}
 }
