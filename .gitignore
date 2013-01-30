@@ -6,3 +6,4 @@ target-eclipse
 .project
 .livereload
 Guardfile
+.groovy

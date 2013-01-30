@@ -25,8 +25,8 @@ div.teaser .caption {
     padding:5px;
     line-height:18px;
     margin:15px;
-    white-space:nowrap;  
-	overflow:hidden; 
+    white-space:nowrap;
+	overflow:hidden;
 	text-overflow:ellipsis;
 }
 /* index - end*/
@@ -74,5 +74,5 @@ footer div.legal ul li,div.footer div.legal ul li {
 footer div.legal ul li+li,div.footer div.legal ul li+li {
   border-left:1px solid #d1cdcb;
   padding-left:17px;
-} 
+}
 /* footer - end */

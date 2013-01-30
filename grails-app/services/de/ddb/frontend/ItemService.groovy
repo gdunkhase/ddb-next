@@ -3,11 +3,12 @@ package de.ddb.frontend
 import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
+import org.apache.commons.logging.LogFactory
 
 class ItemService {
+    private static final log = LogFactory.getLog(this)
 
     def transactional = false
-    // schiller denkmal
     final def SERVER_URI = "http://dev-backend.deutsche-digitale-bibliothek.de:9998"
     //    final def ITEM_ID = "4ENCM6MNZE35G3CYCYSMH7BETSABFYK2"
     final def BINARY_SERVER_URI = "http://www.binary-p2.deutsche-digitale-bibliothek.de"
@@ -31,7 +32,7 @@ class ItemService {
 
         final def componentsPath = "/access/" + id + "/components/"
         final def viewPath = componentsPath + "view"
-        
+
         def institution, item, fields, viewerUri
         http.request( GET) { req ->
             uri.path = viewPath
@@ -52,13 +53,13 @@ class ItemService {
 
         }
     }
-    
+
     private def buildViewerUri(item, componentsPath) {
         def viewerPrefix = item.viewers.viewer.uri.toString()
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
             def sourceUri = BINARY_SERVER_URI + componentsPath + "source"
-            def encodedSourceUri= java.net.URLEncoder.encode(sourceUri, "UTF-8")
+            def encodedSourceUri= URLEncoder.encode sourceUri, 'UTF-8'
             return withoutPlaceholder + encodedSourceUri
         }
     }
