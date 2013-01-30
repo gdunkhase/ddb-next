@@ -23,6 +23,15 @@
 <r:layoutResources />
 </head>
 <body class="start">
+  <noscript>
+    <div class="container">
+      <div class="row">
+        <div class="warning">
+          <span><g:message code="ddbnext.Warning_Non_Javascript"/></span>
+        </div>
+      </div>
+    </div>
+  </noscript>
   <g:render template="/mainHeader" />
   <div class="container" role="main">
     <g:layoutBody />

@@ -518,4 +518,11 @@ select {
   top: 50px;
   left: 0px;
 }
+.warning {
+  background-color: #a5003b;
+  color: #fff;
+  width: 100%;
+  padding: 5px 0 10px;
+  text-align: center;
+}
 /* genaral rules - end */
