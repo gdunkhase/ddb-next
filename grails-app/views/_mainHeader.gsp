@@ -1,69 +1,63 @@
 <!--[if lt IE 9]>
-    <div class="header" role="contentinfo">
+  <div class="header" role="contentinfo">
 <![endif]-->
 <header class="main">
-  <div class="container">
-    <div class="row">
-      <div class="span12">
-        <!--[if lt IE 9]>
-              <div class="nav widget" data-widget="NavigationWidget">
-          <![endif]-->
-        <h1 class="a11y">Site Header</h1>
-        <nav class="widget" data-widget="NavigationWidget">
-          <div role="banner">
-            <a href="/" class="navigationHeaderLogo"
-              title="Deutsche Digitale Bibliothek" tabindex="-1"> <r:img
-                dir="images" file="logo_header.png" class="siteLogo" />
-            </a>
-          </div>
-          <div class="span6">
-            <ul class="navigation" role="navigation">
-              <li class="active root"><a href="/ddb-next">Search</a>
-                <ul>
-                  <li class=""><a href="/advancedsearch">Advanced Search</a></li>
-                </ul></li>
-              <li class=""><a href="/content/about">About Us</a>
-                <ul>
-                  <li class=""><a href="/content/news/">News</a></li>
-                  <li class=""><a href="/about-us/institutions">Institutions</a></li>
-                  <li class=""><a href="/content/ddb">Join Us</a></li>
-                  <li class=""><a href="/content/competence-network">Competence
-                      Network</a></li>
-                </ul></li>
-              <li class=""><a href="/content/help">Help</a>
-                <ul>
-                  <li class=""><a href="/content/faq">FAQ</a></li>
-                  <li class=""><a href="/content/tutorial">Tutorial</a></li>
-                </ul></li>
-            </ul>
-          </div>
-          <div class="span6">
-            <ul class="toolbar" role="navigation">
-              <li class="language"><a href="/language">English</a></li>
-            </ul>
-            <div class="widget languageWidget" data-widget="LanguageWidget">
-              <div class="flag"></div>
-              <form action="/language" method="post">
-                <label> <span>Change Language</span> <select
-                  name="language">
-                    <option value='de'>Deutsch</option>
-                    <option selected='selected' value='en'>English</option>
-                </select>
-                </label> <input type="hidden" name="referrer" value="/" />
-                <button type="submit" title="Select">
-                  <span>Select</span>
-                </button>
-              </form>
-            </div>
-          </div>
-        </nav>
-        <!--[if lt IE 9]>
-                </div>
-            <![endif]-->
+  <!--[if lt IE 9]>
+    <div class="nav widget" data-widget="NavigationWidget">
+  <![endif]-->
+  <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Header"/></h1>
+    <nav class="widget" data-widget="NavigationWidget">
+      <div role="banner">
+        <a href="http://www.deutsche-digitale-bibliothek.de/" class="navigation-header-logo" title="Deutsche Digitale Bibliothek" tabindex="-1">
+          <r:img dir="images" file="logo_header.png" class="siteLogo" />
+        </a>
       </div>
+      <ul class="navigation" role="navigation">
+        <li class="active root"><a href="/"><g:message code="ddbnext.Search"/></a>
+          <ul>
+            <li class=""><a href="/advancedsearch"><g:message code="ddbnext.Advanced_search"/></a></li>
+          </ul></li>
+        <li class=""><a href="/content/about"><g:message code="ddbnext.AboutUs"/></a>
+          <ul>
+            <li class=""><a href="/content/news/"><g:message code="ddbnext.News"/></a></li>
+            <li class=""><a href="/about-us/institutions"><g:message code="ddbnext.Institutions"/></a></li>
+            <li class=""><a href="/content/ddb"><g:message code="ddbnext.Participate"/></a></li>
+            <li class=""><a href="/content/competence-network"><g:message code="ddbnext.CompetenceNetwork"/></a></li>
+          </ul></li>
+        <li class=""><a href="/content/help"><g:message code="ddbnext.Help"/></a>
+          <ul>
+            <li class=""><a href="/content/faq"><g:message code="ddbnext.Faq"/></a></li>
+            <li class=""><a href="/content/tutorial"><g:message code="ddbnext.Tutorial"/></a></li>
+          </ul></li>
+      </ul>
+      <div class="toolbar">     
+          <a href="#"><g:message code="ddbnext.language_fct_ger"/></a>
+          <ul class="selector">
+            <li class="de"><a href="#"><g:message code="ddbnext.language_fct_ger"/></a></li>
+            <li class="en"><a href="#"><g:message code="ddbnext.language_fct_eng"/></a></li>
+          </ul>         
+      </div>
+      <div class="search-header">
+        <form method="get" action="search" role="search" id="form-search-header">
+            <label style="float: left;"> 
+              <span><g:message code="ddbnext.Search_text_field"/></span>
+              <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
+            </label>
+            <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
+            <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint"/>" data-content="<g:message code="ddbnext.Search_Hint"/>"></span> 
+            <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
+            <div class="tutorial tooltip">
+              <div>
+                <g:message code="ddbnext.Search_Hint"/>
+              </div>
+            </div>
+        </form>
+      </div>
+  </nav>
+  <!--[if lt IE 9]>
     </div>
-  </div>
+  <![endif]-->
 </header>
 <!--[if lt IE 9]>
-        </div>
+  </div>
 <![endif]-->

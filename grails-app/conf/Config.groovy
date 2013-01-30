@@ -63,16 +63,18 @@ environments {
     development {
         grails.logging.jul.usebridge = true
         grails.config.locations = [ "file:${userHome}/.grails/${appName}.properties" ]
-
     }
     production {
         grails.logging.jul.usebridge = false
-        grails.config.locations = [ "file://"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties" ]
-        def needProxy = grailsApplication.config.client.proxy.needed
-        System.properties.putAll([
-            "http.proxyHost": "http://proxy.fiz-karlsruhe.de",
-            "http.proxyPort": "8888"
-        ])
+		//grails.config.locations = [ "file:/grails/app-config/${appName}.properties" ]
+		grails.config.locations = [ "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties" ]
+		def needProxy = grailsApplication.config.client.proxy.needed
+		if (needProxy){
+			System.properties.putAll([
+				"http.proxyHost": grailsApplication.config.client.http.proxyHost,
+				"http.proxyPort": grailsApplication.config.client.http.proxyPort
+			])
+		}
     }
 }
 

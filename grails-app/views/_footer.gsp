@@ -2,18 +2,18 @@
   <div class="footer" role="contentinfo">
 <![endif]-->
 <footer class="container">
-  <h1 class="a11y">Site Footer</h1>
+  <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Footer"/></h1>
   <div class="legal">
     <div class="row inner">
-      <small>Copyright &#169; 2012 Deutsche Digitale Bibliothek</small>
+      <small><g:message code="ddbnext.Copyright_Deutsche_Digitale_Bibliothek"/></small>
       <ul>
-        <li><a href="http://www.deutsche-digitale-bibliothek.de/content/terms">Terms of Use</a></li>
-        <li><a href="http://www.deutsche-digitale-bibliothek.de/content/privacy">Privacy Policy</a></li>
-        <li><a href="http://www.deutsche-digitale-bibliothek.de/content/publisher">Legal Notice</a></li>
-        <li><a href="http://www.deutsche-digitale-bibliothek.de/content/sitemap">Sitemap</a></li>
-        <li><a href="http://www.deutsche-digitale-bibliothek.de/content/contact">Contact</a></li>
+        <li><a href="/content/terms"><g:message code="ddbnext.Terms_of_Use"/></a></li>
+        <li><a href="/content/privacy"><g:message code="ddbnext.Privacy_Policy"/></a></li>
+        <li><a href="/content/publisher"><g:message code="ddbnext.Publisher"/></a></li>
+        <li><a href="/content/sitemap"><g:message code="ddbnext.Sitemap"/></a></li>
+        <li><a href="/content/contact"><g:message code="ddbnext.Contact"/></a></li>
       </ul>
-      <div class="build">3.11.1 / 1.0/r13474</div>
+      <div class="build">3.11.1 / <g:backendVersion/></div>
     </div>
   </div>
 </footer>
