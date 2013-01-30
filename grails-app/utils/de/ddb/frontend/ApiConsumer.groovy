@@ -1,4 +1,5 @@
-package de.ddb.next
+package de.ddb.frontend
+
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method

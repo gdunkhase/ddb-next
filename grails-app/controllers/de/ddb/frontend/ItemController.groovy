@@ -1,4 +1,4 @@
-package de.ddb.next
+package de.ddb.frontend
 
 
 class ItemController {

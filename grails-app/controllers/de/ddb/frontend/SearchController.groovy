@@ -1,4 +1,5 @@
-package de.ddb.next
+package de.ddb.frontend
+
 import java.util.List;
 
 import net.sf.json.JSONArray
