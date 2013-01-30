@@ -1,9 +1,7 @@
-@CHARSET "UTF-8";
-
-.object-controls {
-  background-color:#efebe8
+div.name {
+  font-weight: bold;
 }
 
-.name {
-  font-weight: bold;
+div.rights {
+  margin-top: 30px;
 }

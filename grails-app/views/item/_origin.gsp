@@ -1,3 +1,4 @@
+<div class="row"
 <div class="origin">
 <g:if test="${!item.origin?.toString().isEmpty()}">
   <span class="has-origin">
@@ -8,6 +9,7 @@
   </span>
 </g:if>  
 <g:else>
-  <span class="no-origin">Data provider's object view not available</span>
+  <span class="span8 no-origin">Data provider's object view not available</span>
 </g:else>
+</div>
 </div>
