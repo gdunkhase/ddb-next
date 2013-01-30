@@ -8,7 +8,7 @@
   <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Header"/></h1>
     <nav class="widget" data-widget="NavigationWidget">
       <div role="banner">
-        <a href="http://www.deutsche-digitale-bibliothek.de/" class="navigation-header-logo" title="Deutsche Digitale Bibliothek" tabindex="-1">
+        <a href="http://www.deutsche-digitale-bibliothek.de/" class="navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
           <r:img dir="images" file="logo_header.png" class="siteLogo" />
         </a>
       </div>
@@ -31,7 +31,9 @@
           </ul></li>
       </ul>
       <div class="toolbar">     
-          <a href="#"><g:message code="ddbnext.language_fct_ger"/></a>
+          <a>
+            <g:message code="ddbnext.language_fct_ger"/>
+          </a>
           <ul class="selector">
             <li class="de"><a href="#"><g:message code="ddbnext.language_fct_ger"/></a></li>
             <li class="en"><a href="#"><g:message code="ddbnext.language_fct_eng"/></a></li>

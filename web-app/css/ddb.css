@@ -83,8 +83,13 @@ header .toolbar,.header .toolbar {
 header .toolbar:hover .selector,.header .toolbar:hover .selector{
   display: block;
 }
+header .toolbar a,.header .toolbar a {
+  float: left;
+  background-position: right -42px;
+  padding-right: 20px;
+}
 header .toolbar a,.header .toolbar a{
-  background: transparent url("../images/icons/aux_nav_icons.png") no-repeat -20px 0;
+  background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 40px -40px;
 }
 header nav,div.header nav,header div.nav,div.header div.nav {
     width:980px;
@@ -190,7 +195,10 @@ header .selector li,.header .selector li {
   margin-bottom:5px;
   white-space:nowrap;
 }
-header .selector li:hover {
+header .toolbar .selector a, .header .toolbar .selector a {
+  background: none;
+}
+header .selector li a:hover {
   background-color: #eee;
 }
 header .language-widget,.header .language-widget {
@@ -273,7 +281,7 @@ header .language-widget form, .header .language-widget form {
   position:relative;
   margin-left:0px;
 }
-.teaser .span12{
+.teaser .span12 {
   margin-left: 60px;
 }
 .teaser .caption {
@@ -295,10 +303,14 @@ header .language-widget form, .header .language-widget form {
   overflow:hidden; 
   text-overflow:ellipsis;
 }
+.teaser .article img {
+   width:204px;
+   height:180px; 
+}
 /* index - end*/
 
 /* footer */
-footer.container, .footer .container{
+footer.container, .footer .container {
   padding:20px 0 70px 0;
   clear:both;
 }

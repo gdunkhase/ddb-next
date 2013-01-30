@@ -10,8 +10,11 @@ class UrlMappings {
 			controller="search"
 			action=results
 		}
-
-		"/"(view:"/index")
+		"/" {
+			controller="index"
+			action=index
+		}
+		//"/"(view:"/index")
 		"500"(view:'/error')
 	}
 }
