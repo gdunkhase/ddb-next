@@ -22,7 +22,6 @@ class ApisController {
 			query["minDocs"] = params.minDocs
 		if(params.sort)
 			query[sort] = params.sort
-		
 		def json_resp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(),'/search', query)
 		json_resp.results["docs"].get(0).each{
 			
