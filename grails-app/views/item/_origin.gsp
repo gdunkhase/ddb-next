@@ -1,5 +1,5 @@
 <div class="origin">
-<g:if test="${!item.origin.toString().isEmpty()}">
+<g:if test="${!item.origin?.toString().isEmpty()}">
   <span class="has-origin">
     <a href="${item.origin.a}" 
     title="Click the link to view the object data on the data provider's web site.">

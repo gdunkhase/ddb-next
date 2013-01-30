@@ -13,7 +13,7 @@
   </div>
   
   <!-- (DFG) viewer -->
-<g:if test="${!viewerUri.isEmpty()}">
+<g:if test="${!viewerUri?.isEmpty()}">
   <div class="viewers">
     <span class="viewer dfg"><a target="about:blank" href="${viewerUri}">DFG Viewer</a></span>
   </div>
