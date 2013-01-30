@@ -104,7 +104,7 @@
 									: "");
 				};
 			})(Number.prototype.toLocaleString, Ddb.Data.NumberFormat);
-		</script>
+  </script>
   <script>
 			var global;
 			var resources;
@@ -166,6 +166,6 @@
 				});
 
 			});
-		</script>
+  </script>
 </body>
 </html>

@@ -108,6 +108,9 @@ header nav,div.header nav,header div.nav,div.header div.nav {
   height: 100px;
   margin-left: -15px;
 }
+.search-header label{
+  float: left;
+}
 .search-header form label span{
   display: block;
   overflow: hidden;
@@ -148,6 +151,7 @@ header nav,div.header nav,header div.nav,div.header div.nav {
   box-shadow: none;
   overflow: hidden;
   background: none;
+  width: 25px;
 }
 #form-search-header button::before {
  display: inline-block;
@@ -242,6 +246,7 @@ header .language-widget form, .header .language-widget form {
   overflow: hidden;
   background: none;
   margin-left: 4px;
+  vertical-align: top;
 }
 .search-widget form button::before{ 
   display: inline-block;
@@ -253,6 +258,7 @@ header .language-widget form, .header .language-widget form {
 }
 .search-widget .contextual-help {
   margin-left: 4px;
+  margin-top: 5px;
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -290,7 +296,6 @@ header .language-widget form, .header .language-widget form {
   -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   filter:alpha(opacity=80);
   font-weight:bold;
-  /*font-size:0.875em;*/
   position:absolute;
   left:0;
   bottom:4px;

@@ -3,6 +3,8 @@ import groovy.util.XmlSlurper
 import java.net.URI.Parser
 import de.ddb.next.ApiConsumer;
 
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
+
 class IndexController {
 	
 	def url = "http://141.66.130.151:8003"
@@ -12,9 +14,9 @@ class IndexController {
 		def langDe = "de"
 		def langEn = "en"
 		def path
-		def msg = g.message(code: "ddbnext.language_fct_ger")
+		def locale = RCU.getLocale(request)
 		
-		if(msg == "Deutsch")
+		if(locale.toString()=="de_DE")
 		  path = "/static/"+langDe+"/homepage.xml"
 		else
 		  path = "/static/"+langEn+"/homepage.xml"
@@ -29,7 +31,7 @@ class IndexController {
 
 		def articles=retrieveArguments(response)
 		
-		render(view: "index", model: [articles: articles])
+		render(view: "index", model: [articles: articles, locale: locale])
 	}
 
 	private def retrieveArguments(def content){

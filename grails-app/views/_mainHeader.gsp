@@ -30,10 +30,17 @@
             <li class=""><a href="/content/tutorial"><g:message code="ddbnext.Tutorial"/></a></li>
           </ul></li>
       </ul>
-      <div class="toolbar">     
+      <div class="toolbar">    
+        <g:if test="${locale.toString()=="de_DE"}">
           <a>
             <g:message code="ddbnext.language_fct_ger"/>
           </a>
+        </g:if>  
+        <g:else>
+          <a>
+            <g:message code="ddbnext.language_fct_eng"/>
+          </a>
+        </g:else>       
           <ul class="selector">
             <li class="de"><a href="#"><g:message code="ddbnext.language_fct_ger"/></a></li>
             <li class="en"><a href="#"><g:message code="ddbnext.language_fct_eng"/></a></li>
@@ -41,7 +48,7 @@
       </div>
       <div class="search-header">
         <form method="get" action="search" role="search" id="form-search-header">
-            <label style="float: left;"> 
+            <label> 
               <span><g:message code="ddbnext.Search_text_field"/></span>
               <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
             </label>

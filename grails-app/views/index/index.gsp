@@ -23,29 +23,27 @@
 </div>
 <div class="row">
   <div class="teaser">
-  <%
-    if(articles) 
-  %>
-  <div class="span12">    
-    <%
-      articles.each(){ i->
-    %>
-    <div class="span3">
-      <a href="<%=i.uri%>" title="<%=i.title%>"> 
-        <img class="article" src="http://www.ddb.de/<%=i.src%>" alt="<%=i.title%>"/>
-      </a>
-      <div class="caption">
+    <g:if test="${articles}">        
+      <div class="span12">    
+      <%
+        articles.each(){ i->
+      %>
+      <div class="span3">
         <a href="<%=i.uri%>" title="<%=i.title%>"> 
-          <%
-            println "${i.title}"
-          %>
+          <img class="article" src="http://www.ddb.de/<%=i.src%>" alt="<%=i.title%>"/>
         </a>
+        <div class="caption">
+          <a href="<%=i.uri%>" title="<%=i.title%>"> 
+            <%
+              println "${i.title}"
+            %>
+          </a>
+        </div>
       </div>
-    </div>
-    <%
-      }
-    %>
-  </div>
-  
+      <%
+        }
+      %>
+      </div>
+    </g:if>
   </div>
 </div>
