@@ -308,9 +308,68 @@ header .language-widget form, .header .language-widget form {
   overflow:hidden; 
   text-overflow:ellipsis;
 }
+.teaser .article {
+  margin: 0 14px;
+  display: block;
+  float: left;
+  position: relative;
+}
 .teaser .article img {
    width:204px;
    height:180px; 
+}
+.carousel {
+  padding: 15px 0 15px 40px;
+  position: relative;
+}
+.carousel-container .previous-added {
+  margin-left: 10px;
+}
+.carousel-container {
+  position: relative;
+  width: 908px;
+  height: 186px;
+  overflow: hidden;
+  margin: 0 9px 0 26px;
+  float: left;
+  opacity: 1;
+}
+.carousel ul {
+  width: 1380px;
+  height: 50px;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+.carousel li {
+  position: relative;
+  float: left;
+  list-style: none;
+  margin-right: 13px;
+  overflow: hidden;
+  height: 195px;
+}
+.carousel a.previous, .carousel a.next {
+  width: 45px;
+  height: 50px;
+  display: block;
+  background: url('../images/icons/homepage_carousel_controls.png') no-repeat transparent;
+  position: relative;
+  top: -130px;
+}
+.carousel a.previous {
+  left: -25px;
+}
+.carousel a.previous:hover {
+  background-position: 0 -50px;
+}
+.carousel a.next {
+  background-position: 0 -150px;
+  left: 1030px;
+  top: -180px;
+}
+.carousel a.next:hover {
+  background-position: 0 -200px;
 }
 /* index - end*/
 
@@ -521,7 +580,6 @@ select {
 .warning {
   background-color: #a5003b;
   color: #fff;
-  width: 100%;
   padding: 5px 0 10px;
   text-align: center;
 }
