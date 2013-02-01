@@ -10,11 +10,6 @@
         <![endif]-->
         <nav class="widget span10 offset1" data-widget="NavigationWidget">
           <div class="row">
-            <div class="span10" role="banner">
-              
-            </div>
-          </div>
-          <div class="row">
             <div class="span5">
               <a href="http://www.deutsche-digitale-bibliothek.de/" class="navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
                 <r:img dir="images" file="logo_header.png" class="siteLogo" />
@@ -72,12 +67,6 @@
                 </form>
               </div>              
             </div>
-          </div>
-          <div class="row">
-            
-          </div>
-          <div class="row">
-            
           </div>
       </nav>
       <!--[if lt IE 9]>
