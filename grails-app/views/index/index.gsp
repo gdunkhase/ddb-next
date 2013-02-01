@@ -22,34 +22,34 @@
 <div class="row">
   <div class="span12 teaser">
     <noscript>
-      <g:if test="${articles}">                
-        <% articles.each(){ i-> %>
-        <div class="span3">
-          <a href="<%=i.uri%>" title="<%=i.title%>"> 
-            <img class="article" src="http://www.ddb.de/<%=i.src%>" alt="<%=i.title%>"/>
-          </a>
-          <div class="caption">
-            <a href="<%=i.uri%>" title="<%=i.title%>"> 
-              <% println "${i.title}" %>
+      <g:if test="${articles}">              
+        <g:each in="${articles}">
+          <div class="span3">
+            <a href="<%=it.uri%>" title="<%=it.title%>"> 
+              <img class="article" src="http://www.ddb.de/<%=it.src%>" alt="<%=it.title%>"/>
             </a>
+            <div class="caption">
+              <a href="<%=it.uri%>" title="<%=it.title%>"> 
+                <% println "${it.title}" %>
+              </a>
+            </div>
           </div>
-        </div>
-        <% } %>     
+        </g:each>     
     </g:if>
     </noscript>
     <div class="carousel">
       <div id="articles">
         <g:if test="${articles}">
-          <% articles.each(){ i-> %>
+          <g:each in="${articles}">
 			<div class="article">
-			  <a href="<%=i.uri%>" title="<%=i.title%>" target="_self">
-			    <img src="http://www.ddb.de/<%=i.src%>" alt="<%=i.title%>" width="217" height="186">
+			  <a href="<%=it.uri%>" title="<%=it.title%>" target="_self">
+			    <img src="http://www.ddb.de/<%=it.src%>" alt="<%=it.title%>">
 			  </a>
 			  <div class="caption">
-				<a href="/about-us/institutions" title="<%=i.title%>"><% println "${i.title}" %></a>
+				<a href="/about-us/institutions" title="<%=it.title%>"><% println "${it.title}" %></a>
 			  </div>
 			</div>
-          <% } %>
+          </g:each>
         </g:if>
       </div>
       <div class="clearfix"></div>
