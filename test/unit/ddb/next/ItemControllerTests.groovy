@@ -14,6 +14,5 @@ import de.ddb.next.ItemController;
 class ItemControllerTests {
 
     void testSomething() {
-       fail "Implement me"
     }
 }

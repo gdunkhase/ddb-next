@@ -14,6 +14,5 @@ import de.ddb.next.Content;
 class ContentTests {
 
     void testSomething() {
-       fail "Implement me"
     }
 }

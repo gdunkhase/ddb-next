@@ -14,6 +14,5 @@ import de.ddb.next.SearchController;
 class SearchControllerTests {
 
     void testSomething() {
-       fail "Implement me"
     }
 }

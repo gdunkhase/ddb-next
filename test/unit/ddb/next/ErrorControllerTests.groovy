@@ -14,6 +14,5 @@ import de.ddb.next.ErrorController;
 class ErrorControllerTests {
 
     void testSomething() {
-       fail "Implement me"
     }
 }

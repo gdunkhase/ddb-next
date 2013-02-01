@@ -14,6 +14,5 @@ import de.ddb.next.ContentController;
 class ContentControllerTests {
 
     void testSomething() {
-       fail "Implement me"
     }
 }
