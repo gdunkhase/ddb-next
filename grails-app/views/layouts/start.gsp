@@ -31,19 +31,8 @@
   </div>
   <g:render template="/footer" />
 
-  <div class="widget tooltip" data-widget="TooltipWidget"
-    data-bind="style: { 
-                      'display' : isVisible() ? 'block' : 'none',
-                      'left': xpx,
-                      'top': ypx,
-                      'position': positionMode
-                      },
-                      attr: { 'class': 'widget tooltip ' +layout() }">
-    <div data-bind="html: content"></div>
-  </div>
   <script type="text/javascript" src="${resource(dir:'js', file:'json2.js')}"></script>
   <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.scrollTo-min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.jQuery.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}" /></script>
@@ -51,40 +40,12 @@
   <script type="text/javascript" src="${resource(dir: 'js', file: 'dateformat.min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout-latest.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout.mapping-latest.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.mousewheel.min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.microdata.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'amplify.min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'start-page.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
-  <script type="text/javascript">
-    $(document).ready(function() { 
-      $("#articles").carouFredSel({
-      	width: "variable",
-      	height: "variable",
-      	items: {
-      		visible: 4,
-      		width: "variable",
-      		height: "variable",
-      		minimum: 4
-      	},
-      	scroll: {
-      		items: 1,
-      		duration: 500
-      	},
-      	auto: false,
-      	prev: {
-      		button: "#articles_prev",
-      		key: "left"
-      	},
-      	next: {
-      		button: "#articles_next",
-      		key: "right"
-      	}
-      });
-    });   
-  </script>
   <script>
       var global;
       var resources;

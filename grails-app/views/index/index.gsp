@@ -11,7 +11,7 @@
       <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
       <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint" />" data-content="<g:message code="ddbnext.Search_Hint" />"></span> 
       <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
-      <div class="tutorial tooltip">
+      <div class="tooltip">
         <div>
           <g:message code="ddbnext.Search_Hint" />
         </div>
@@ -53,8 +53,8 @@
         </g:if>
       </div>
       <div class="clearfix"></div>
-      <a href="" class="carousel-control previous nofollow" id="articles_prev" title="previous"></a>
-      <a href="" class="carousel-control next nofollow" id="articles_next" title="next"></a>
+      <a class="previous" id="articles_prev" href=""><span><g:message code="ddbnext.Homepage_Carousel_Previous"/></span></a>
+      <a class="next" id="articles_next" href=""><span><g:message code="ddbnext.Homepage_Carousel_Next"/></span></a>
     </div>
   </div>
 </div>
