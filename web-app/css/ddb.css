@@ -219,6 +219,9 @@ header .language-widget form, .header .language-widget form {
   top: 19px;
   left: -15px;
 }
+#form-search-header .tooltip {
+  display: none;
+}
 /* header - end */
 
 /* index */
