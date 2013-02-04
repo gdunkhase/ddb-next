@@ -1,4 +1,4 @@
-﻿/// <reference path="/Scripts/jquery.carouFredSel-5.6.4.js"/>
+﻿/// <reference path="/Scripts/jquery.carouFredSel-6.2.0-packed.js"/>
 /// <reference path="/Scripts/jquery.dotdotdot-1.5.1.js"/>
 
 $(function () {
@@ -35,4 +35,3 @@ $(function () {
         $(".article .caption").dotdotdot({});
     }
 });
-
