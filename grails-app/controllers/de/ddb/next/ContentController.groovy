@@ -3,8 +3,7 @@ package de.ddb.next
 import groovy.util.XmlSlurper
 import java.net.URI.Parser
 
-import de.ddb.frontend.ApiConsumer
-
+// TODO: do we still need this class?
 class ContentController {
 
     static defaultAction = "news"

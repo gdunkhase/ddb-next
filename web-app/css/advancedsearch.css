@@ -1,0 +1,118 @@
+.advanced-search .operator label {
+    float: left;
+    margin-right: 5px;
+    font-size: 1em;
+}
+
+.advanced-search .operator select {
+    width: 80px;
+}
+
+.advanced-search .heading h1,span {
+    float:left;
+}
+
+.advanced-search .heading span {
+    margin-top:25px;
+    margin-left:10px;
+}
+
+.advanced-search .group-operator {
+    margin-top: 8px;
+}
+
+.advanced-search select {
+    background: #DCDBDA;
+}
+
+.advanced-search .closing-hr {
+    background: #D0D0D0;
+    height:1px;
+    min-height:1px;
+    margin-bottom:15px;
+}
+
+.advanced-search .reset,.submit,.add-group-button {
+    float: right;
+    width: 100%;
+}
+
+.advanced-search .search-group {
+    background-color: #EFEBE8;
+    border-bottom: 1px solid #D1CDCB;
+    border-top: 1px solid #D1CDCB;
+    margin-bottom:15px;
+}
+
+.advanced-search .search-group .hr {
+    background:#fff;
+    color:#fff;
+    height:1px;
+    min-height:1px;
+    margin-bottom:15px;
+}
+
+.advanced-search .remove-button,.remove-group-button,.add-button,.add-group-button {
+    width:20px;
+    height:20px;
+    box-shadow:none;
+    background:none;
+    background:url("../images/icons/adv_search_row_actions.png") no-repeat;
+}
+
+.advanced-search .add-group-button {
+    width:205px;
+    font-size:1em;
+    font-weight:normal;
+    text-shadow:none;
+    color:#000000;
+    background-position:0px 2px;
+}
+
+.advanced-search .remove-button,.remove-group-button {
+    background-position:0px -60px;
+}
+
+.advanced-search .add-button,.add-group-button {
+    background-position:0px 0px;
+}
+
+.advanced-search .remove-button:hover, .remove-group-button:hover {
+    background-position:0px -80px;
+}
+
+.advanced-search .add-button:hover {
+    background-position:0px -20px;
+}
+
+.advanced-search .add-group-button:hover {
+    background-position:0px -18px;
+    color: #990000;
+}
+
+.advanced-search .remove-group-button {
+    float:right;
+}
+
+.advanced-search .value {
+    margin-top:1px;
+    height:20px;
+    padding-left:4px;
+}
+
+.advanced-search .button-group {
+    margin: 4px 0 0 0;
+}
+
+.advanced-search .row-button-group {
+    margin: 0 0 0 5px;
+}
+
+.advanced-search .search-field-row .value,.facet,.facet-values,.match {
+    width:100%;
+}
+
+.advanced-search .search-group {
+    border-left: 8px solid #EFEBE8;
+}
+

@@ -66,15 +66,15 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-		//grails.config.locations = [ "file:/grails/app-config/${appName}.properties" ]
-		grails.config.locations = [ "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties" ]
-		def needProxy = grailsApplication.config.client.proxy.needed
-		if (needProxy){
-			System.properties.putAll([
-				"http.proxyHost": grailsApplication.config.client.http.proxyHost,
-				"http.proxyPort": grailsApplication.config.client.http.proxyPort
-			])
-		}
+    //grails.config.locations = [ "file:/grails/app-config/${appName}.properties" ]
+    grails.config.locations = [ "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties" ]
+    def needProxy = grailsApplication.config.client.proxy.needed
+    if (needProxy){
+      System.properties.putAll([
+        "http.proxyHost": grailsApplication.config.client.http.proxyHost,
+        "http.proxyPort": grailsApplication.config.client.http.proxyPort
+      ])
+    }
     }
 }
 
@@ -85,7 +85,6 @@ log4j = {
       console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
       rollingFile name: "stacktrace", maxFileSize: 1024, file: (System.getProperty('catalina.base') ?: 'target') + '/logs/ddbnext-stacktrace.log'
     }
-
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP

@@ -1,6 +1,5 @@
-package ddb.frontend
+package de.ddb.next
 
-import de.ddb.frontend.Book
 
 class BookController {
 
