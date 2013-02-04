@@ -2,7 +2,7 @@
   <div class="span10">
     <div class="provider">Institution</div>
     <div>
-      <a class="institutionName"
+      <a class="institution-name"
       href="http://www.deutsche-digitale-bibliothek.de/about-us/institutions/item/<%=institution.id %>">
         <%= institution.name %>
       </a>

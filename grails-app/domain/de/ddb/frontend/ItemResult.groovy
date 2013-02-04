@@ -1,4 +1,4 @@
-package de.ddb.next
+package de.ddb.frontend
 
 import groovy.json.JsonSlurper
 import groovyx.net.http.HTTPBuilder
@@ -31,7 +31,7 @@ class ItemResult {
     this.category = resultData.category
     //    <cortex-item-preview>
     //  <div data-media="image" data-type="Kultur" class="item">
-    //    <div class="title"><match>Berlin</match>, Friedrichstraße</div>
+    //    <div class="title"><match>Berlin</match>, Friedrichstraï¿½e</div>
     //    <div class="subtitle">1880, Hessisches Staatsarchiv Darmstadt, HStAD\R 4 Bildersammlung</div>
     //    <div class="thumbnail">
     //      <img src="/binary/GMUGHNCS3TT326F3VWUWOJP55ILXKCBP/list/1.jpg">
