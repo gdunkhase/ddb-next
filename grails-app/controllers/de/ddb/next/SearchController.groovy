@@ -17,10 +17,9 @@ class SearchController {
 		if (params.q!=null){
 			query = [ query: params.q ]
 		}
-		def results = ItemResult.getAllItemsResult(query)
+		def results = ItemResult.getAllItemsResult(query, grailsApplication.config.ddb.wsItemResults.toString())
+		def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext.Of")+" xxxxx"
 		
-		System.out.println ("----->"+results.size())
-		
-		render(view: "results", model: [results: results])
+		render(view: "results", model: [results: results, pagesOverallIndex: pagesOverallIndex])
 	}
 }
