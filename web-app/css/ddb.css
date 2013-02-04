@@ -577,7 +577,7 @@ select {
 .link-adv-search {
   font-size: 0.938em;
   display: block;
-  float: left;
+  text-align: left;
 }
 .warning {
   background-color: #a5003b;
