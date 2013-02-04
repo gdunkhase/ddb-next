@@ -1,5 +1,3 @@
-@import 'item.css';
-
 @font-face{font-family:KarbidWeb;
 src:url("fonts/KarbidWeb.woff") format("woff")}
 @font-face{font-family:KarbidWeb;
@@ -235,7 +233,7 @@ header .language-widget form, .header .language-widget form {
   background: none;
   margin-left: 4px;
 }
-.search-widget form button::before{ 
+.search-widget form button::before{
   display: inline-block;
   content: url("../images/icons/search.png");
   margin: 0px 0px 0px 0px;
@@ -291,8 +289,8 @@ header .language-widget form, .header .language-widget form {
   padding:5px;
   line-height:18px;
   margin:15px;
-  white-space:nowrap;  
-  overflow:hidden; 
+  white-space:nowrap;
+  overflow:hidden;
   text-overflow:ellipsis;
 }
 /* index - end*/

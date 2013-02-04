@@ -9,14 +9,13 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 class ItemService {
     private static final log = LogFactory.getLog(this)
 
-    def transactional = false
-    def grailsApplication
-
-
     private static final SOURCE_PLACEHOLDER = '{0}'
     private static final def THUMBNAIL = 'mvth'
     private static final def PREVIEW= 'mvpr'
     private static final def FULL = 'full'
+
+    def transactional = false
+    def grailsApplication
 
     def binary = ['preview' : ['title':'', 'uri': ''],
         'thumbnail' :['title':'', 'uri': ''],
@@ -24,9 +23,7 @@ class ItemService {
     ]
 
     def findItemById(id) {
-        def SERVER_URI = grailsApplication.config.ddb.wsbackend.toString()
-        
-        def http = new HTTPBuilder(SERVER_URI)
+        def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/

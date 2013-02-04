@@ -13,7 +13,7 @@
         <li><a href="/content/sitemap"><g:message code="ddbnext.Sitemap"/></a></li>
         <li><a href="/content/contact"><g:message code="ddbnext.Contact"/></a></li>
       </ul>
-      <div class="build">3.11.1 / <g:backendVersion/></div>
+      <div class="build">3.11.1 /</div>
     </div>
   </div>
 </footer>
