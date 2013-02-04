@@ -23,29 +23,29 @@ public class Facets {
 	 * @return List of Facet-Values
 	 */
     public List getFacet(facetName) throws IOException {
-        def res = [];
-        int i = 0;
+        def res = []
+        int i = 0
         try {
-            def http = new HTTPBuilder(url);
+            def http = new HTTPBuilder(url)
             http.request( GET, JSON ) {
                 uri.path = '/search/facets/' + facetName
                
                 // response handler for a success response code:
                 response.success = { resp, json ->
                     json.facetValues.each{
-                        res[i] = it.value;
-                        i++;
+                        res[i] = it.value
+                        i++
                     }
                 }
                
                 // handler for any failure status code:
                 response.failure = { resp ->
-                  throw new IOException("Error getting facet-values: ${resp.status} : ${resp.statusLine.reasonPhrase}");
+                  throw new IOException("Error getting facet-values: ${resp.status} : ${resp.statusLine.reasonPhrase}")
                 }
             }
         }
         catch (ConnectException e) {
-            throw new IOException(e.getMessage(), e);
+            throw new IOException(e.getMessage(), e)
         }
         return res
 	}
@@ -65,7 +65,7 @@ public class Facets {
     public List getExtendedFacets() throws IOException {
         def res = [];
         try {
-            def http = new HTTPBuilder(url);
+            def http = new HTTPBuilder(url)
 
             http.request( GET, JSON ) {
                 uri.path = '/search/facets/'
@@ -89,7 +89,7 @@ public class Facets {
             }
         }
         catch (ConnectException e) {
-            throw new IOException(e.getMessage(), e);
+            throw new IOException(e.getMessage(), e)
         }
         return res
 	}

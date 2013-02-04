@@ -26,16 +26,16 @@ class AdvancedsearchController {
      * @throws IOException
      */
     def executeSearch() throws IOException {
-        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount);
-        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount);
-        int offset = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultOffset);
-        int rows = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultRows);
-        def url = grailsApplication.config.ddb.backend.url;
-        def facetSearchfields = new Facets(url:url).getExtendedFacets();
+        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
+        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
+        int offset = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultOffset)
+        int rows = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultRows)
+        def url = grailsApplication.config.ddb.backend.url
+        def facetSearchfields = new Facets(url:url).getExtendedFacets()
 
         AdvancedSearchFormToQueryConverter converter =
-                new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields);
-        String query = converter.convertFormParameters();
-        redirect(uri: "/search?query=" + query + "&offset=" + offset + "&rows=" + rows);
+                new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
+        String query = converter.convertFormParameters()
+        redirect(uri: "/search?query=" + query + "&offset=" + offset + "&rows=" + rows)
     }
 }

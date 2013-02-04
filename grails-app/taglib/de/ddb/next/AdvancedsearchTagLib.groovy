@@ -30,8 +30,8 @@ public class AdvancedsearchTagLib {
     def advancedsearch = { attrs, body ->
         searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
         searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
-        def url = grailsApplication.config.ddb.backend.url;
-        facetSearchfields = new Facets(url:url).getExtendedFacets();
+        def url = grailsApplication.config.ddb.backend.url
+        facetSearchfields = new Facets(url:url).getExtendedFacets()
         getFacetValues()
         for (int i = 0; i < searchGroupCount; i++) {
             out << body() << renderSearchGroup(i).toString()
@@ -45,7 +45,7 @@ public class AdvancedsearchTagLib {
      * @return StringBuffer group as html
      */
     private StringBuffer renderSearchGroup(groupId) {
-        def spacer = '                            ';
+        def spacer = '                            '
         def res = new StringBuffer()
 
         res << spacer << '<div class="row-fluid search-group">\n'
@@ -80,7 +80,7 @@ public class AdvancedsearchTagLib {
         res << spacer << '      <div class="span12 search-field-group">\n'
         for (int i = 0; i < searchFieldCount; i++) {
             res << spacer << '          <div class="row-fluid search-field-row">\n'
-            res << renderSearchField(groupId,i);
+            res << renderSearchField(groupId,i)
             res << spacer << '          </div>\n'
         }
         res << spacer << '      </div>\n'
