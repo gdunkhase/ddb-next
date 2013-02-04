@@ -15,7 +15,7 @@ $(function() {
 			}
 		}).trigger("pause");
 
-		$("#articles_prev").hover(function() {
+		$("#articles-prev").hover(function() {
 			carouselItems.trigger("configuration", [ "direction", "right" ]);
 			carouselItems.trigger("play");
 		}, function() {
@@ -24,7 +24,7 @@ $(function() {
 			return false;
 		});
 
-		$("#articles_next").hover(function() {
+		$("#articles-next").hover(function() {
 			carouselItems.trigger("configuration", [ "direction", "left" ]);
 			carouselItems.trigger("play");
 		}, function() {
@@ -40,6 +40,6 @@ $(function() {
 		$("div.tooltip").show();
 		setTimeout(function() {
 			$("div.tooltip").hide(200);
-		}, 3000);
+		}, 5000);
 	});
 });

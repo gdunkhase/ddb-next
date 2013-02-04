@@ -53,8 +53,8 @@
         </g:if>
       </div>
       <div class="clearfix"></div>
-      <a class="previous" id="articles_prev" href=""><span><g:message code="ddbnext.Homepage_Carousel_Previous"/></span></a>
-      <a class="next" id="articles_next" href=""><span><g:message code="ddbnext.Homepage_Carousel_Next"/></span></a>
+      <a class="previous" id="articles-prev" href=""><span><g:message code="ddbnext.Homepage_Carousel_Previous"/></span></a>
+      <a class="next" id="articles-next" href=""><span><g:message code="ddbnext.Homepage_Carousel_Next"/></span></a>
     </div>
   </div>
 </div>
