@@ -14,6 +14,5 @@ import ddb.frontend.TestController;
 class TestControllerTests {
 
     void testSomething() {
-       fail "Implement me"
     }
 }

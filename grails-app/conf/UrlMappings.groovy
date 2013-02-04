@@ -11,7 +11,16 @@ class UrlMappings {
 			action=results
 		}
 
-		"/"(view:"/index")
+		"/advancedsearch" {
+			controller="advancedsearch"
+			action=[GET: "fillValues", POST: "executeSearch"]
+		}
+
+		"/" {
+			controller="index"
+			action=index
+		}
+		//"/"(view:"/index")
 		"500"(view:'/error')
 	}
 }
