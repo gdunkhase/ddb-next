@@ -22,8 +22,8 @@ class ApisController {
 			query["minDocs"] = params.minDocs
 		if(params.sort)
 			query[sort] = params.sort
-		def json_resp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(),'/search', query)
-		json_resp.results["docs"].get(0).each{
+		def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(),'/search', query)
+		jsonResp.results["docs"].get(0).each{
 			
 			def tmpResult = [:]
 			
@@ -52,20 +52,20 @@ class ApisController {
 			
 			def path = grailsApplication.config.ddb.wsbackend.toString()+'/access/'+it.id+'/components/indexing-profile'
 			
-			def xml_subresp = ApiConsumer.getTextAsXml(grailsApplication.config.ddb.wsbackend.toString(),'/access/'+it.id+'/components/indexing-profile', [:])
-			def json_subresp = new JsonSlurper().parseText(xml_subresp.toString())
-			def properties = [affiliate_fct:json_subresp.properties.affiliate_fct, keywords_fct:json_subresp.properties.keywords_fct, type_fct:json_subresp.properties.type_fct, sector_fct:json_subresp.properties.sector_fct, provider_fct:json_subresp.properties.provider_fct, last_update:json_subresp.properties.last_update ]
+			def xmlSubresp = ApiConsumer.getTextAsXml(grailsApplication.config.ddb.wsbackend.toString(),'/access/'+it.id+'/components/indexing-profile', [:])
+			def jsonSubresp = new JsonSlurper().parseText(xmlSubresp.toString())
+			def properties = [affiliate_fct:jsonSubresp.properties.affiliate_fct, keywords_fct:jsonSubresp.properties.keywords_fct, type_fct:jsonSubresp.properties.type_fct, sector_fct:jsonSubresp.properties.sector_fct, provider_fct:jsonSubresp.properties.provider_fct, last_update:jsonSubresp.properties.last_update ]
 			
 			tmpResult["preview"] = [title:it.label, subtitle: subtitle, media: media, thumbnail: thumbnail]
 			tmpResult["properties"] = properties
 			
 			docs.add(tmpResult)
 		}
-		resultList["facets"] = json_resp.facets
-		resultList["highlightedTerms"] = json_resp.highlightedTerms
-		resultList["results"] = [name:json_resp.results.name,docs:docs,numberOfDocs:json_resp.results.numberOfDocs]
-		resultList["numberOfResults"] = json_resp.numberOfResults
-		resultList["randomSeed"] = json_resp.randomSeed
+		resultList["facets"] = jsonResp.facets
+		resultList["highlightedTerms"] = jsonResp.highlightedTerms
+		resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
+		resultList["numberOfResults"] = jsonResp.numberOfResults
+		resultList["randomSeed"] = jsonResp.randomSeed
 		render(view: "response", model: [res:JSONValue.toJSONString(resultList)])
 	}
 }

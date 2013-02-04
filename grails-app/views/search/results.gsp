@@ -1,7 +1,3 @@
-<%
-def pagesOverallIndex = message(code:"ddbnext.Page")+" 1 "+message(code:"ddbnext.Of")+" xxxxx"
-def testVar
-%>
 <html>
 <head>
 <title><%=title%></title>
@@ -78,7 +74,7 @@ def testVar
         <div class="span3 page-info">
           <span id="results-overall-index">1 - 20</span>
           <span><g:message code="ddbnext.Of" /></span>
-          <span><b><span id="results-total"><% print results.size() %></span></b></span>
+          <span><b><span id="results-total"><%= results.size() %></span></b></span>
           <span><g:message code="ddbnext.Results_lowercase" /></span>
         </div>
         <div class="span6 page-nav">
@@ -90,7 +86,7 @@ def testVar
               <a href="#"><g:message code="ddbnext.Previous_Label" /></a> 
             </li>
             <li class="pages-overall-index">
-              <span><% print pagesOverallIndex %></span>
+              <span><%= pagesOverallIndex %></span>
             </li>
             <li class="next-page bl">
               <a href="#"><g:message code="ddbnext.Next_Label" /></a> 
@@ -121,13 +117,9 @@ def testVar
       <div class="row">
         <div class="span9">
           <div class="search-results">
-            <%
-            if(results){
-            %>
-			<g:itemResultRender results="${results}"></g:itemResultRender>
-            <%
-              }
-            %>
+            <g:if test="${results}">
+			 <g:itemResultRender results="${results}"></g:itemResultRender>
+            </g:if>
           </div>
         </div>
       </div>
@@ -136,7 +128,7 @@ def testVar
         <div class="span3 page-info">
           <span id="results-overall-index">1 - 20</span>
           <span><g:message code="ddbnext.Of" /></span>
-          <span><b><span id="results-total"><% print results.size() %></span></b></span>
+          <span><b><span id="results-total"><%= results.size() %></span></b></span>
           <span><g:message code="ddbnext.Results_lowercase" /></span>
         </div>
         <div class="span6 page-nav">
@@ -148,7 +140,7 @@ def testVar
               <a href="#"><g:message code="ddbnext.Previous_Label" /></a> 
             </li>
             <li class="pages-overall-index">
-              <span><% print pagesOverallIndex %></span>
+              <span><%= pagesOverallIndex %></span>
             </li>
             <li class="next-page bl">
               <a href="#"><g:message code="ddbnext.Next_Label" /></a> 

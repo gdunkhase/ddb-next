@@ -17,7 +17,6 @@ class ApiConsumer {
 			http.request(method, ContentType.TEXT) {
 				uri.path = path
 				uri.query = query
-				headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
 				response.success = { resp, reader ->
 				println "response status: ${resp.statusLine}"
 				println 'Headers: -----------'
@@ -56,7 +55,6 @@ class ApiConsumer {
 			http.request(method, JSON) {
 				uri.path = path
 				uri.query = query
-				headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
 				response.success = { resp, json ->
 					println "response status: ${resp.statusLine}"
 					println 'Headers: -----------'
@@ -80,7 +78,6 @@ class ApiConsumer {
 				resp.headers.each { h ->
 					println " ${h.name} : ${h.value}"
 				}
-				println "###########404"
 				ret= 'Not found'
 			}	
 			}
@@ -102,7 +99,6 @@ class ApiConsumer {
 			http.request(method, XML) {
 				uri.path = path
 				uri.query = query
-				headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
 				headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
 				response.success = { resp, xml ->
 					println "response status: ${resp.statusLine}"
@@ -127,7 +123,6 @@ class ApiConsumer {
 				resp.headers.each { h ->
 					println " ${h.name} : ${h.value}"
 				}
-				println "###########404"
 				ret= 'Not found'
 			}
 			}
@@ -149,7 +144,6 @@ class ApiConsumer {
 			http.request(method, ContentType.ANY) {
 				uri.path = path
 				uri.query = query
-				headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
 				response.success = { resp, reader ->
 					println "response status: ${resp.statusLine}"
 					println 'Headers: -----------'
