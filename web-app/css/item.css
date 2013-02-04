@@ -28,11 +28,62 @@
 }
 
 .object-controls {
- background-color: #efebe8;' 
+ background-color: #efebe8;
 }
 
 .no-origin {
   margin-top: 30px;
   padding-left: 25px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -120px;
+}
+
+.page-nav {
+  line-height: 42px;
+}
+
+.page-nav {
+  text-align: right;
+}
+
+.page-nav ul {
+  margin-bottom: 0;
+}
+
+.page-nav ul li {
+  padding: 0;
+}
+
+.page-nav .first-page a,.page-nav .prev-page a,.page-nav .next-page a,.page-nav .last-page a
+  {
+  background: url("../images/icons/pagination.png") no-repeat;
+}
+
+.page-nav .first-page a {
+  padding-left: 14px;
+  background-position: left -21px;
+}
+
+.page-nav .prev-page {
+  margin-right: 5px;
+}
+
+.page-nav .prev-page a {
+  padding-left: 14px;
+  padding-right: 5px;
+  background-position: left -61px;
+}
+
+.page-nav .next-page a {
+  padding-right: 14px;
+  padding-left: 5px;
+  background-position: right -41px;
+}
+
+.page-nav .next-page {
+  margin-left: 5px;
+}
+
+.page-nav .last-page a {
+  padding-right: 14px;
+  background-position: right -1px;
 }

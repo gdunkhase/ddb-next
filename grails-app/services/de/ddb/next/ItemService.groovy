@@ -1,16 +1,18 @@
-package de.ddb.frontend
+package de.ddb.next
 
 import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 import org.apache.commons.logging.LogFactory
+import org.codehaus.groovy.grails.commons.GrailsApplication
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
 
     def transactional = false
-    private static final def SERVER_URI = "http://dev-backend.deutsche-digitale-bibliothek.de:9998"
-    private static final def BINARY_SERVER_URI = "http://www.binary-p2.deutsche-digitale-bibliothek.de"
+    def grailsApplication
+
+
     private static final SOURCE_PLACEHOLDER = '{0}'
     private static final def THUMBNAIL = 'mvth'
     private static final def PREVIEW= 'mvpr'
@@ -21,8 +23,9 @@ class ItemService {
         'full' :['title':'', 'uri': ''],
     ]
 
-
     def findItemById(id) {
+        def SERVER_URI = grailsApplication.config.ddb.wsbackend.toString()
+        
         def http = new HTTPBuilder(SERVER_URI)
 
         /* TODO remove this hack, once the server deliver the right content
@@ -56,6 +59,7 @@ class ItemService {
     }
 
     private def buildViewerUri(item, componentsPath) {
+        def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
         def viewerPrefix = item.viewers.viewer.uri.toString()
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER

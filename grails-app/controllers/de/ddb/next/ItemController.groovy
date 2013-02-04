@@ -1,4 +1,4 @@
-package de.ddb.frontend
+package de.ddb.next
 
 
 class ItemController {
@@ -14,8 +14,8 @@ class ItemController {
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
             log.debug "item viewer uri: ${item.viewerUri}"
-            render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri, 
-                item: item.item, institution : item.institution, fields: item.fields])
+            render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
+                        item: item.item, institution : item.institution, fields: item.fields])
         }
     }
 }

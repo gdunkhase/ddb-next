@@ -20,24 +20,24 @@
       <span class="viewer dfg"><a target="about:blank" href="${viewerUri}">DFG Viewer</a></span>
     </div>
 </g:if>
-    
+
     <!-- search results navigation -->
-    <nav class="search-results-nav">
-      <ul>
-        <li class="first-nav">
-          <a class="first" href="#"><span>First</span></a>
+    <nav class="page-nav search-results-nav">
+      <ul class="inline">
+        <li class="first-page">
+        <a href="#">First</a>  
         </li>
-        <li class="prev-nav">
-          <a class="prev" href="#"><span>Previous</span></a>
+        <li class="prev-page br">
+        <a href="#">Previous</a> 
         </li>
-        <li class="page-summary">
-          <span>Page 1 of 1</span>
+        <li class="pages-overall-index">
+        <span>Page 1 of xxxxx</span>
         </li>
-        <li class="next-nav">
-          <a class="next" href="#"><span>Next</span></a>
+        <li class="next-page bl">
+        <a href="#">Next</a> 
         </li>
-        <li class="last-nav">
-          <a class="last" href="#"><span>Last</span></a>
+        <li class="last-page">
+        <a href="#">Last</a> 
         </li>
       </ul>
     </nav>

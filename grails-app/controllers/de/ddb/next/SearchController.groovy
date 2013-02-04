@@ -1,6 +1,8 @@
-package de.ddb.frontend
+package de.ddb.next
 
 import java.util.List;
+
+import de.ddb.frontend.ItemResult;
 
 import net.sf.json.JSONArray
 import org.apache.commons.lang.builder.ReflectionToStringBuilder

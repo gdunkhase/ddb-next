@@ -1,4 +1,4 @@
-package de.ddb.frontend
+package de.ddb.next
 
 import groovy.util.XmlSlurper
 import java.net.URI.Parser
