@@ -10,12 +10,12 @@ class ItemController {
         def id = params.id
         def item = itemService.findItemById(id)
         if(item == '404') {
-            redirect(controller: "error")
+            redirect(controller: 'error')
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
-            println "viewer uri: ${item.viewerUri}"
-            render(view: "item", model: [itemUri: itemUri, viewerUri: item.viewerUri, item: item.item, institution : item.institution,
-                        fields: item.fields])
+            log.debug "item viewer uri: ${item.viewerUri}"
+            render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri, 
+                item: item.item, institution : item.institution, fields: item.fields])
         }
     }
 }
