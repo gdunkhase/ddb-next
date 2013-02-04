@@ -1,4 +1,4 @@
-package ddb.frontend
+package de.ddb.next
 
 class Book {
 
