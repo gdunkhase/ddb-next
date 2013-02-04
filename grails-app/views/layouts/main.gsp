@@ -15,14 +15,19 @@
     <g:layoutHead />
     <r:layoutResources />
   </head>
-<body>
-  <noscript>
-    <div class="container">
-      <div class="row">
-        <div class="span12 warning">
-          <span><g:message code="ddbnext.Warning_Non_Javascript"/></span>
+  <body>
+    <noscript>
+      <div class="container">
+        <div class="row">
+          <div class="span12 warning">
+            <span><g:message code="ddbnext.Warning_Non_Javascript"/></span>
+          </div>
         </div>
       </div>
+    </noscript>
+    <g:render template="/mainHeader" />
+    <div class="container" role="main">
+      <g:layoutBody/>
     </div>
   </noscript>
   <g:render template="/mainHeader" />
@@ -120,5 +125,5 @@
 
 			});
   </script>
-</body>
+  </body>
 </html>

@@ -16,7 +16,7 @@ class IndexController {
 		def path
 		def locale = RCU.getLocale(request)
 		
-		if(locale.toString()=="de_DE")
+		if(locale.toString().substring(0, 2)=="de")
 		  path = "/static/"+langDe+"/homepage.xml"
 		else
 		  path = "/static/"+langEn+"/homepage.xml"
