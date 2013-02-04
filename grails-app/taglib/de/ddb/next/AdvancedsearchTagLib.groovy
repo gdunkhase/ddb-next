@@ -1,5 +1,7 @@
 package de.ddb.next
 
+import de.ddb.frontend.Facets
+
 /**
  * Renders the body of advanced search form for display.
  *
@@ -7,11 +9,11 @@ package de.ddb.next
  *
  */
 public class AdvancedsearchTagLib {
-    def enumSearchType = "ENUM"
-    def textSearchType = "TEXT"
-    def languageTagPrefix = "ddbnext.facet_"
-    def facetNameSuffix = "_fct"
-    def labelSortType = "ALPHA_LABEL"
+    private static final String enumSearchType = "ENUM"
+    private static final String textSearchType = "TEXT"
+    private static final String languageTagPrefix = "ddbnext.facet_"
+    private static final String facetNameSuffix = "_fct"
+    private static final String labelSortType = "ALPHA_LABEL"
 
     def messageSource
 
@@ -26,8 +28,8 @@ public class AdvancedsearchTagLib {
      * render html.
      */
     def advancedsearch = { attrs, body ->
-        searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedsearch.searchgroupcount)
-        searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedsearch.searchfieldcount)
+        searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
+        searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
         def url = grailsApplication.config.ddb.backend.url;
         facetSearchfields = new Facets(url:url).getExtendedFacets();
         getFacetValues()

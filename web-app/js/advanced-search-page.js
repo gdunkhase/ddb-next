@@ -491,3 +491,7 @@ var page = {};
     };
 } 
 (jQuery));
+
+if($(".advanced-search")){
+    page.init($('.advanced-search').get(0));
+}

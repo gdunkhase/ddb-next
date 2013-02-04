@@ -75,14 +75,14 @@ public class AdvancedSearchFormToQueryConverter {
      * @return String Query
      */
     public String convertFormParameters() {
-        StringBuffer query = new StringBuffer();
+        StringBuilder query = new StringBuilder();
         String groupOperator = parameters.get(groupOperatorName);
         if (groupOperator == null || groupOperator.isEmpty()) {
             return query;
         }
         List<String> groupParts = new ArrayList<String>();
         for (int i = 0; i < searchGroupCount; i++) {
-            StringBuffer groupQuery = convertGroup(i);
+            StringBuilder groupQuery = convertGroup(i);
             if (groupQuery.length() > 0) {
                 groupParts.add(groupQuery);
             }
@@ -110,14 +110,14 @@ public class AdvancedSearchFormToQueryConverter {
      * @param groupId
      * @return (sub)query
      */
-    private StringBuffer convertGroup(groupId) {
-        StringBuffer groupQuery = new StringBuffer();
+    private StringBuilder convertGroup(groupId) {
+        StringBuilder groupQuery = new StringBuilder();
         String rowOperator = parameters.get(rowOperatorName + groupId);
         if (rowOperator == null || rowOperator.isEmpty()) {
             return groupQuery;
         }
         for (int i = 0; i < searchFieldCount; i++) {
-            StringBuffer rowQuery = convertRow(groupId, i);
+            StringBuilder rowQuery = convertRow(groupId, i);
             if (rowQuery.length() > 0) {
                 if (groupQuery.length() > 0) {
                     groupQuery.append(" ").append(rowOperator).append(" ");
@@ -136,8 +136,8 @@ public class AdvancedSearchFormToQueryConverter {
      * @param rowId
      * @return (sub)query
      */
-    private StringBuffer convertRow(groupId, rowId) {
-        StringBuffer rowQuery = new StringBuffer();
+    private StringBuilder convertRow(groupId, rowId) {
+        StringBuilder rowQuery = new StringBuilder();
         if (parameters.get(facetName + groupId + "-" + rowId) != null
         && !parameters.get(facetName + groupId + "-" + rowId).isEmpty()) {
             String searchValue = null;
@@ -173,8 +173,8 @@ public class AdvancedSearchFormToQueryConverter {
      * @param match ALL/ANY/EXACT
      * @return (sub)query
      */
-    private StringBuffer getRowQuery(String facet, String value, String match) {
-        StringBuffer rowQuery = new StringBuffer();
+    private StringBuilder getRowQuery(String facet, String value, String match) {
+        StringBuilder rowQuery = new StringBuilder();
         if (facet == null || facet.isEmpty() || value == null || value.isEmpty() || match == null || match.isEmpty()) {
             return rowQuery;
         }
@@ -195,7 +195,7 @@ public class AdvancedSearchFormToQueryConverter {
                                 rowQuery.append(" AND ");
                             }
                             else {
-                                return new StringBuffer();
+                                return new StringBuilder();
                             }
                         }
                         rowQuery.append(parts[i]);

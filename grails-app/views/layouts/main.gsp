@@ -79,6 +79,11 @@
     src="${resource(dir: 'js', file: 'HomePage.js')}" /></script>
   <script type="text/javascript"
     src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
+  <script type="text/javascript" 
+    src="${resource(dir:'js', file:'large-cookie.js')}"></script>
+  <script type="text/javascript" 
+    src="${resource(dir:'js', file:'advanced-search-page.js')}"></script>
+ 
   <script type="text/javascript">
 			Ddb.Data.Language = 'en-US';
 			Ddb.Data.TwoLetterLanguage = 'en';

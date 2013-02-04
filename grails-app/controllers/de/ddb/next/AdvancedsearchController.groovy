@@ -1,15 +1,10 @@
 package de.ddb.next
-import java.util.List;
 
-import net.sf.json.JSONArray
-import org.apache.commons.lang.builder.ReflectionToStringBuilder
-import grails.converters.JSON
-import groovy.json.JsonSlurper
-import groovyx.net.http.HTTPBuilder
+import de.ddb.frontend.Facets
 
 
 /**
- * COntroller for Advanced Search
+ * Controller for Advanced Search
  * 
  * @author mih
  *
@@ -31,10 +26,10 @@ class AdvancedsearchController {
      * @throws IOException
      */
     def executeSearch() throws IOException {
-        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedsearch.searchgroupcount);
-        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedsearch.searchfieldcount);
-        int offset = Integer.parseInt(grailsApplication.config.ddb.advancedsearch.defaultoffset);
-        int rows = Integer.parseInt(grailsApplication.config.ddb.advancedsearch.defaultrows);
+        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount);
+        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount);
+        int offset = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultOffset);
+        int rows = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultRows);
         def url = grailsApplication.config.ddb.backend.url;
         def facetSearchfields = new Facets(url:url).getExtendedFacets();
 

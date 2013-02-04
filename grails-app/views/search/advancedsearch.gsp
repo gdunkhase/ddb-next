@@ -1,5 +1,6 @@
 <meta name="layout" content="main" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'advancedsearch.css')}" type="text/css"> 
+
 <div class="advanced-search row-fluid">
     <div class="span12">
         <div class="heading row-fluid">
@@ -57,11 +58,5 @@
         </div>   
     </div>
 </div>
-<script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.7.2.min.js')}"></script>
-<script type="text/javascript" src="${resource(dir:'js', file:'jquery.cookies.2.2.0.min.js')}"></script>
-<script type="text/javascript" src="${resource(dir:'js', file:'large-cookie.js')}"></script>
-<script type="text/javascript" src="${resource(dir:'js', file:'advanced-search-page.js')}"></script>
-<script>
-    page.init($('.advanced-search').get(0));
-</script>
+
                 
