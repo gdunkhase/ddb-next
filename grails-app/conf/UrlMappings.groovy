@@ -10,6 +10,12 @@ class UrlMappings {
 			controller="search"
 			action=results
 		}
+
+		"/advancedsearch" {
+			controller="advancedsearch"
+			action=[GET: "fillValues", POST: "executeSearch"]
+		}
+
 		"/" {
 			controller="index"
 			action=index

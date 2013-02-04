@@ -56,6 +56,8 @@
   <script type="text/javascript" src="${resource(dir: 'js', file: 'amplify.min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'large-cookie.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'advanced-search-page.js')}" /></script>
   <script>
 			var global;
 			var resources;
