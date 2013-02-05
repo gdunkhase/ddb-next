@@ -11,7 +11,7 @@
         <nav class="widget span10 offset1" data-widget="NavigationWidget">
           <div class="row">
             <div class="span5">
-              <a href="http://www.deutsche-digitale-bibliothek.de/" class="navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
+              <a href="/" class="navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
                 <r:img dir="images" file="logo_header.png" class="siteLogo" />
               </a>
               <ul class="navigation inline" role="navigation">
@@ -50,7 +50,7 @@
                   <li class="en"><a href="#"><g:message code="ddbnext.language_fct_eng"/></a></li>
                 </ul>  
               </div>
-              <div class="search-header">
+              <div class="search-header hidden-phone">
                 <form method="get" action="search" role="search" id="form-search-header">
                     <label> 
                       <span><g:message code="ddbnext.Search_text_field"/></span>

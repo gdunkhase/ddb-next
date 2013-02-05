@@ -3,7 +3,7 @@
     <div class="provider">Institution</div>
     <div>
       <a class="institution-name"
-      href="http://www.deutsche-digitale-bibliothek.de/about-us/institutions/item/<%=institution.id %>">
+      href="/about-us/institutions/item/<%=institution.id %>">
         <%= institution.name %>
       </a>
     </div>
