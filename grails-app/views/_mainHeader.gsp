@@ -31,7 +31,7 @@
           </ul></li>
       </ul>
       <div class="toolbar">    
-        <g:if test="${locale.toString().substring(0, 2)=="de_DE"}">
+        <g:if test="${locale.toString().substring(0, 2)=="de"}">
           <a>
             <g:message code="ddbnext.language_fct_ger"/>
           </a>
