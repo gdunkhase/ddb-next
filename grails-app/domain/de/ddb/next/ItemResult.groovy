@@ -21,7 +21,7 @@ class ItemResult {
 
     static List getAllItemsResult(query,url){
         def res = []
-        def json_resp = ApiConsumer.getTextAsJson(url ,'/ddb-next/apis/search', query)
+        def json_resp = ApiConsumer.getTextAsJson(url ,'/apis/search', query)
         // print "---->"+json_resp.results["docs"].get(0)
         json_resp.results["docs"].each{ it ->
             def itr_tmp = new ItemResult()

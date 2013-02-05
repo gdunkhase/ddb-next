@@ -5,7 +5,7 @@ class ItemController {
 
     def itemService
 
-    // ddb-next/item/:id
+    // ddb-next/item/:id !!! be aware of the context path
     def findById() {
         def id = params.id
         def item = itemService.findItemById(id)
