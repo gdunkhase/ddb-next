@@ -9,12 +9,13 @@ class ItemController {
     def findById() {
         def id = params.id
         def item = itemService.findItemById(id)
+        def binaryList = itemService.findBinariesById(id)
         if(item == '404') {
             redirect(controller: 'error')
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
             render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                        item: item.item, institution : item.institution, fields: item.fields])
+                        item: item.item, institution : item.institution, fields: item.fields, binaryList: binaryList])
         }
     }
 }

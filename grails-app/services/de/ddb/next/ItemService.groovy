@@ -16,8 +16,8 @@ class ItemService {
 
     def transactional = false
     def grailsApplication
-
-    def binary = ['preview' : ['title':'', 'uri': ''],
+    def binaryList = new ArrayList()
+    def binaryMap = ['preview' : ['title':'', 'uri': ''],
         'thumbnail' :['title':'', 'uri': ''],
         'full' :['title':'', 'uri': ''],
     ]
@@ -66,33 +66,13 @@ class ItemService {
         }
     }
 
-    def findBinariesById() {
-        Map prev = parse(fetchBinaryList())
+    def findBinariesById(id) {
+        def prev = parse(fetchBinaryList(id))
         return prev
     }
 
-
-    private def parse(list) {
-        list.each { x ->
-            String path = x.'@path'
-            if(path.contains(PREVIEW)) {
-                binary.'preview'.'title' = x.'@name'
-                binary.'preview'.'uri' = BINARY_SERVER_URI + x.'@path'
-            } else if (path.contains(THUMBNAIL)) {
-                binary.'thumbnail'.'title' = x.'@name'
-                binary.'thumbnail'.'uri' = BINARY_SERVER_URI + x.'@path'
-            } else if (path.contains(FULL)) {
-                binary.'full'.'title' = x.'@name'
-                binary.'full'.'uri' = BINARY_SERVER_URI + x.'@path'
-            }
-        }
-        return binary
-    }
-
-
-
     private def fetchBinaryList(id) {
-        def http = new HTTPBuilder(SERVER_URI)
+        def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
         http.parser.'application/json' = http.parser.'application/xml'
 
         final def binariesPath= "/access/" + id + "/components/binaries"
@@ -102,6 +82,41 @@ class ItemService {
             assert binaries instanceof groovy.util.slurpersupport.GPathResult
             return binaries.binary.list()
         }
+    }
+
+    private def parse(list) {
+        def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
+        String position = list[0].'@position'
+		list.each { x ->
+            String path = x.'@path'
+		    if(x.'@position' != position){
+				binaryList.add(binaryMap)
+				position = x.'@position'
+				if(path.contains(PREVIEW)) {
+					binaryMap.'preview'.'title' = x.'@name'
+					binaryMap.'preview'.'uri' = BINARY_SERVER_URI + x.'@path'
+				} else if (path.contains(THUMBNAIL)) {
+					binaryMap.'thumbnail'.'title' = x.'@name'
+					binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + x.'@path'
+				} else if (path.contains(FULL)) {
+					binaryMap.'full'.'title' = x.'@name'
+					binaryMap.'full'.'uri' = BINARY_SERVER_URI + x.'@path'
+				}
+			} else {
+				if(path.contains(PREVIEW)) {
+					binaryMap.'preview'.'title' = x.'@name'
+					binaryMap.'preview'.'uri' = BINARY_SERVER_URI + x.'@path'
+				} else if (path.contains(THUMBNAIL)) {
+					binaryMap.'thumbnail'.'title' = x.'@name'
+					binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + x.'@path'
+				} else if (path.contains(FULL)) {
+					binaryMap.'full'.'title' = x.'@name'
+					binaryMap.'full'.'uri' = BINARY_SERVER_URI + x.'@path'
+				}
+			}
+        }
+		binaryList.add(binaryMap)
+        return binaryList
     }
 
     private def log(list) {

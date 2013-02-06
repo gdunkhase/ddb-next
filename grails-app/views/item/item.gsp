@@ -10,6 +10,8 @@
       <g:render template="rights" />
       <g:render template="origin" />
     </div>
-    <div class="span4"></div>
+    <div class="span4">
+      <g:render template="binaries" />
+    </div>
   </div>
 </div>
