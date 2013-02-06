@@ -23,6 +23,11 @@ class UrlMappings {
             action=findById
         }
 
+		"/about-us/institutions/item/$id" {
+			controller="institution"
+			action=findById
+		}
+
         "500"(view:'/error')
     }
 }
