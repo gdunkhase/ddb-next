@@ -6,12 +6,18 @@ import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 
+import org.apache.commons.logging.LogFactory
+
+
 class ApiConsumer {
+    private static final log = LogFactory.getLog(this)
 
     static def postText(String baseUrl, String path, query, method = Method.POST) {
         try {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
+            setProxy(http, baseUrl)
+            
             http.request(method, ContentType.TEXT) {
                 uri.path = path
                 uri.query = query
@@ -45,6 +51,8 @@ class ApiConsumer {
         try {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
+            setProxy(http, baseUrl)
+            
             http.request(method, JSON) {
                 uri.path = path
                 uri.query = query
@@ -83,6 +91,8 @@ class ApiConsumer {
         try {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
+            setProxy(http, baseUrl)
+            
             http.request(method, XML) {
                 uri.path = path
                 uri.query = query
@@ -121,6 +131,8 @@ class ApiConsumer {
         try {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
+            setProxy(http, baseUrl)
+           
             http.request(method, ContentType.ANY) {
                 uri.path = path
                 uri.query = query
@@ -146,5 +158,18 @@ class ApiConsumer {
             ex.printStackTrace()
             return null
         }
+    }
+
+    static def setProxy(http, String baseUrl) {
+        if(baseUrl.contains('localhost') || baseUrl.contains('fiz-karlsruhe.de')) {
+            log.debug " ${baseUrl} does not need http proxy"
+            return
+        }
+        
+        def PROXY_HOST = 'proxy.fiz-karlsruhe.de'
+        def PROXY_PORT = 8888
+        http.setProxy(PROXY_HOST,PROXY_PORT, 'http')
+        
+        log.debug " ${baseUrl} will uses HTTP Proxy"
     }
 }

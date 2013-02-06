@@ -24,6 +24,7 @@ class ItemService {
 
     def findItemById(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.wsbackend.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
