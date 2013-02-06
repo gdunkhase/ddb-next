@@ -25,8 +25,8 @@
                                         <option value="AND"><g:message code="ddbnext.AdvancedSearchGlobalOperator_AllGroups"/></option>
                                     </select>
                                 </div>
-                            </div>      
-<g:advancedsearch/>
+                            </div>
+<g:set var="group" value="${0}"/><g:while test="${group < searchGroupCount}"><g:render template="/search/advancedsearchgroup" /><%group++%></g:while>
                             <div class="row-fluid">
                                 <div class="span12 button-group">
                                     <button type="button" class="add-group-button" style="display: none" title="<g:message code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>"><g:message code="ddbnext.AdvancedSearch_AddGroupButton_Title"/></button>
