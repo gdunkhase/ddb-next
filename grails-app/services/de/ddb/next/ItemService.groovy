@@ -16,11 +16,7 @@ class ItemService {
 
     def transactional = false
     def grailsApplication
-    def binaryList = new ArrayList()
-    def binaryMap = ['preview' : ['title':'', 'uri': ''],
-        'thumbnail' :['title':'', 'uri': ''],
-        'full' :['title':'', 'uri': ''],
-    ]
+    def binaryList = []
 
     def findItemById(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
@@ -74,48 +70,49 @@ class ItemService {
     private def fetchBinaryList(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
         http.parser.'application/json' = http.parser.'application/xml'
-
         final def binariesPath= "/access/" + id + "/components/binaries"
         http.get( path : binariesPath) { resp, xml ->
-            //log(resp, xml)
             def binaries = xml
             assert binaries instanceof groovy.util.slurpersupport.GPathResult
             return binaries.binary.list()
         }
     }
 
-    private def parse(list) {
+    private def parse(binaries) {
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
-        String position = list[0].'@position'
-		list.each { x ->
-            String path = x.'@path'
-		    if(x.'@position' != position){
-				binaryList.add(binaryMap)
-				position = x.'@position'
-				if(path.contains(PREVIEW)) {
-					binaryMap.'preview'.'title' = x.'@name'
-					binaryMap.'preview'.'uri' = BINARY_SERVER_URI + x.'@path'
-				} else if (path.contains(THUMBNAIL)) {
-					binaryMap.'thumbnail'.'title' = x.'@name'
-					binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + x.'@path'
-				} else if (path.contains(FULL)) {
-					binaryMap.'full'.'title' = x.'@name'
-					binaryMap.'full'.'uri' = BINARY_SERVER_URI + x.'@path'
-				}
-			} else {
-				if(path.contains(PREVIEW)) {
-					binaryMap.'preview'.'title' = x.'@name'
-					binaryMap.'preview'.'uri' = BINARY_SERVER_URI + x.'@path'
-				} else if (path.contains(THUMBNAIL)) {
-					binaryMap.'thumbnail'.'title' = x.'@name'
-					binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + x.'@path'
-				} else if (path.contains(FULL)) {
-					binaryMap.'full'.'title' = x.'@name'
-					binaryMap.'full'.'uri' = BINARY_SERVER_URI + x.'@path'
-				}
-			}
+        def bidimensionalList = []
+        String position
+        String path
+        //creation of a bi-dimensional list containing the binaries separated for position
+        binaries.each { x ->
+            if(x.'@position'.toString() != position){
+                def subList = []
+                bidimensionalList[x.'@position'.toInteger()-1] = subList
+                position = x.'@position'.toString()
+            } 
+            bidimensionalList[x.'@position'.toInteger()-1].add(x)
         }
-		binaryList.add(binaryMap)
+        //creation of a list of binary maps from the bi-dimensional list
+        bidimensionalList.each { y ->
+            def binaryMap = ['preview' : ['title':'', 'uri': ''],
+                'thumbnail' :['title':'', 'uri': ''],
+                'full' :['title':'', 'uri': ''],
+            ]
+            y.each { z ->
+                path = z.'@path'
+                if(path.contains(PREVIEW)) {
+                    binaryMap.'preview'.'title' = z.'@name'
+                    binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
+                } else if (path.contains(THUMBNAIL)) {
+                    binaryMap.'thumbnail'.'title' = z.'@name'
+                    binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
+                } else if (path.contains(FULL)) {
+                    binaryMap.'full'.'title' = z.'@name'
+                    binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
+                }
+            }
+            binaryList.add(binaryMap)
+        }
         return binaryList
     }
 

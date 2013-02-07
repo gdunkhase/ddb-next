@@ -1,0 +1,170 @@
+.slide-viewer {
+  width:445px;
+  padding:10px;
+  background:#efebe8;
+}
+.slide-viewer ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+    white-space:nowrap;
+    letter-spacing:-4px;
+    height:131px;
+    margin-left:24px}
+.slide-viewer li {
+    letter-spacing:normal;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    padding:0;
+    width:140px;
+    height:131px;
+    background:#fff}
+.slide-viewer li a {
+    height:131px;
+    width:120px;
+    display:table-cell;
+    vertical-align:middle}
+.slide-viewer li a .thumbnail {
+    display:table-cell;
+    vertical-align:middle;
+    text-align:center;
+    width:120px;
+    height:90px}
+.slide-viewer li a .thumbnail.audio {
+    background:#fff url("/Content/themes/base/icons/search_result_media_audio.png") no-repeat center center;
+    background-size:90px auto}
+.slide-viewer li a .thumbnail.video {
+    background:#fff url("/Content/themes/base/icons/search_result_media_video.png") no-repeat center center;
+    background-size:90px auto}
+.slide-viewer li a .thumbnail.image {
+    background:#fff url("/Content/themes/base/icons/search_result_media_image.png") no-repeat center center;
+    background-size:90px auto}
+.slide-viewer li a .thumbnail img {
+    margin:0;
+    max-width:120px;
+    max-height:90px}
+.slide-viewer li a .label {
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    margin-left:15px;
+    width:100px;
+    font-size:13px}
+.slide-viewer li.last {
+    width:118px}
+.slide-viewer button {
+    position:absolute;
+    top:0;
+    width:24px;
+    height:131px;
+    text-indent:-999em;
+    display:block;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none}
+.slide-viewer button:focus {
+    border:1px dotted #a5003b;
+    margin:0px}
+.slide-viewer button.btnPrev,.slide-viewer button.btnNext {
+    background:white;
+    overflow:hidden}
+.slide-viewer button.btnPrev span,.slide-viewer button.btnNext span {
+    position:absolute;
+    top:50px;
+    left:3px;
+    height:24px;
+    width:20px;
+    background-image:url(/Content/themes/base/icons/objectviewer_carousel_controls.png)}
+.slide-viewer button.btnPrev {
+    float:left;
+    left:0}
+.slide-viewer button.btnPrev span {
+    background-position:0px -91px}
+.slide-viewer button.btnPrev[disabled] span {
+    background-position:0px -151px}
+.slide-viewer button.btnPrev:hover:not([disabled]) span {
+    background-position:0px -121px}
+.slide-viewer button.btnNext {
+    float:right;
+    right:0}
+.slide-viewer button.btnNext span {
+    background-position:0px -2px}
+.slide-viewer button.btnNext[disabled] span {
+    background-position:0px -62px}
+.slide-viewer button.btnNext:hover:not([disabled]) span {
+    background-position:0px -32px}
+.slide-viewer button:focus {
+    border:1px dotted #a5003b;
+    margin:0px}
+.slide-viewer .tabs {
+    position:relative;
+    height:175px}
+.slide-viewer .tab {
+    cursor:pointer;
+    float:left;
+    color:#3e3a37;
+    font-size:16px;
+    margin-top:16px}
+.slide-viewer .tab:hover {
+    text-decoration:underline;
+    color:#a5003b}
+.slide-viewer .tab.divider {
+    text-decoration:none;
+    cursor:default;
+    padding:0 5px}
+.slide-viewer .tab.divider:hover {
+    text-decoration:none}
+.slide-viewer .currentTab {
+    color:#a5003b;
+    font-weight:bold}
+.slide-viewer .scroller {
+    position:absolute;
+    left:0;
+    bottom:0;
+    display:block;
+    width:445px;
+    overflow:hidden;
+    background-color:white}
+.slide-viewer .scroller.current {
+    display:block}
+.slide-viewer .divider {
+    color:#a5003b;
+    font-weight:bold}
+.nojs .slide-viewer .divider {
+    display:none}
+.nojs .slide-viewer .tabs {
+    height:auto}
+.nojs .slide-viewer .tab {
+    float:none}
+.nojs .slide-viewer .scroller {
+    position:relative;
+    display:block;
+    overflow:auto}
+.ie7 li a .label {
+    margin-top:5px}
+.ie7 .thumbnail {
+    margin-top:10px}
+.ie8 .slide-viewer button.btnPrev span,.ie8 .slide-viewer button.btnNext span {
+    top:0}
+.fancybox-toolbar {
+    position:relative}
+.fancybox-toolbar .fancybox-toolbar-close {
+    position:absolute;
+    top:5px;
+    right:5px;
+    cursor:pointer !important}
+.fancybox-toolbar .fancybox-toolbar-title {
+    height:23px;
+    padding-right:23px}
+.binary-viewer-container {
+  background-color:#fff;
+  overflow:hidden;
+}
+.binary-viewer {
+
+}
+.binary-title {
+  padding-top:7px;
+}
