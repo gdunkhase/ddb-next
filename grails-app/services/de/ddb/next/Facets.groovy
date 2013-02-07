@@ -27,9 +27,11 @@ public class Facets {
         int i = 0
         try {
             def http = new HTTPBuilder(url)
+
+            ApiConsumer.setProxy(http, url)
             http.request( GET, JSON ) {
                 uri.path = '/search/facets/' + facetName
-               
+
                 // response handler for a success response code:
                 response.success = { resp, json ->
                     json.facetValues.each{
@@ -67,6 +69,7 @@ public class Facets {
         try {
             def http = new HTTPBuilder(url)
 
+            ApiConsumer.setProxy(http, url)
             http.request( GET, JSON ) {
                 uri.path = '/search/facets/'
                 uri.query = [type:'EXTENDED']
