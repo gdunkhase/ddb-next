@@ -41,7 +41,7 @@ class ItemService {
                 institution= xml.institution
                 item = xml.item
                 fields = xml.item.fields.field.findAll()
-                viewerUri = buildViewerUri(item, componentsPath)
+                viewerUri = item.viewers.viewer? buildViewerUri(item, componentsPath): null
                 return ['uri': '', 'viewerUri': viewerUri, 'institution':
                     institution, 'item': item, 'fields': fields]
             }
@@ -57,8 +57,10 @@ class ItemService {
     }
 
     private def buildViewerUri(item, componentsPath) {
+        assert item.viewers.viewer != null
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
         def viewerPrefix = item.viewers.viewer.uri.toString()
+
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
             def sourceUri = BINARY_SERVER_URI + componentsPath + 'source'
