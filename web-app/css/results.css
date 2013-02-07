@@ -74,12 +74,18 @@
   margin-left: 10px;
 }
 
+.page-info-nav{
+  display: block;
+  overflow: hidden;
+}
+
 .page-info,.page-nav {
   line-height: 42px;
+  display: inline-block;
 }
 
 .page-nav {
-  text-align: right;
+  float: right;
 }
 
 .page-nav ul {
@@ -207,7 +213,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results-content .search-results .item{
-  margin: 15px 0 15px 0;
+  padding: 15px 0 15px 0;
 }
 
 .search-results .results-list .title {
@@ -318,4 +324,8 @@ padding-bottom: 5px;
 
 .br {
   border-right: solid 1px #efebe8;
+}
+
+.off{
+  display:none !important;
 }

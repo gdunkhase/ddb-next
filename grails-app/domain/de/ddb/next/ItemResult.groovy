@@ -20,9 +20,9 @@ class ItemResult {
     def last_update
 
     static List getAllItemsResult(query,url){
-        def res = []
         def json_resp = ApiConsumer.getTextAsJson(url ,'/apis/search', query)
         // print "---->"+json_resp.results["docs"].get(0)
+		def docs = []
         json_resp.results["docs"].each{ it ->
             def itr_tmp = new ItemResult()
             itr_tmp.id = it.id
@@ -40,8 +40,10 @@ class ItemResult {
             itr_tmp.sector_fct = it.properties.sector_fct
             itr_tmp.provider_fct = it.properties.provider_fct
             itr_tmp.last_update = it.properties.last_update
-            res.add(itr_tmp)
+            docs.add(itr_tmp)
         }
-        return res
+		json_resp.results["docs"] = docs
+		println "----------->"+json_resp["numberOfResults"]
+        return null
     }
 }

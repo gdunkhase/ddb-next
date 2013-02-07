@@ -45,7 +45,7 @@
     
     <div class="span9 search-results-content">
     
-      <div class="results-paginator-options bb">
+      <div class="results-paginator-options bb off">
         <div class="page-filter">
           <label><g:message code="ddbnext.SearchResultsPagination_Display" /></label>
           <span>
@@ -70,14 +70,14 @@
         </div>
       </div>
       
-      <div class="row page-info-nav">
-        <div class="span3 page-info">
-          <span id="results-overall-index">1 - 20</span>
+      <div class="page-info-nav">
+        <div class="page-info">
+          <span id="results-overall-index"><%= resultsOverallIndex %></span>
           <span><g:message code="ddbnext.Of" /></span>
-          <span><b><span id="results-total"><%= results.size() %></span></b></span>
+          <span><b><span id="results-total"><%= results.numberOfResults %></span></b></span>
           <span><g:message code="ddbnext.Results_lowercase" /></span>
         </div>
-        <div class="span6 page-nav">
+        <div class="page-nav">
           <ul class="inline">
             <li class="first-page">
               <a href="#"><g:message code="ddbnext.First_Label" /></a>  
@@ -100,7 +100,7 @@
       
       <div class="row">
         <div class="span9">
-          <div class="results-paginator-view">
+          <div class="results-paginator-view off">
             <div class="group-actions">
               <input id="thumbnail-filter" type="checkbox">
               <label for="thumbnail-filter" title="<g:message code="ddbnext.Show_items_with_thumbnails" />"><g:message code="ddbnext.Show_items_with_thumbnails" /></label>
@@ -118,20 +118,20 @@
         <div class="span9">
           <div class="search-results">
             <g:if test="${results}">
-			 <g:itemResultRender results="${results}"></g:itemResultRender>
+			 <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
             </g:if>
           </div>
         </div>
       </div>
       
-      <div class="row page-info-nav">
-        <div class="span3 page-info">
+      <div class="page-info-nav">
+        <div class="page-info">
           <span id="results-overall-index">1 - 20</span>
           <span><g:message code="ddbnext.Of" /></span>
-          <span><b><span id="results-total"><%= results.size() %></span></b></span>
+          <span><b><span id="results-total"><%= results.numberOfResults %></span></b></span>
           <span><g:message code="ddbnext.Results_lowercase" /></span>
         </div>
-        <div class="span6 page-nav">
+        <div class="page-nav">
           <ul class="inline">
             <li class="first-page">
               <a href="#"><g:message code="ddbnext.First_Label" /></a>  

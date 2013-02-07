@@ -48,15 +48,19 @@ class ApiConsumer {
             http.request(method, JSON) {
                 uri.path = path
                 uri.query = query
+				println uri
                 response.success = { resp, json ->
                     // FIXME log don't print
+					/*
                     println "response status: ${resp.statusLine}"
                     println 'Headers: -----------'
                     resp.headers.each { h -> println " ${h.name} : ${h.value}" }
+                    */
                     ret = json
                 }
                 response.failure = { resp ->
                     println "response status: ${resp.statusLine}"
+					response.
                     println 'Headers: -----------'
 
                     resp.headers.each { h -> println " ${h.name} : ${h.value}" }
@@ -88,9 +92,11 @@ class ApiConsumer {
                 uri.query = query
                 headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
                 response.success = { resp, xml ->
+					/*
                     println "response status: ${resp.statusLine}"
                     println 'Headers: -----------'
                     resp.headers.each { h -> println " ${h.name} : ${h.value}" }
+                    */
                     ret = xml
                 }
                 response.failure = { resp ->
