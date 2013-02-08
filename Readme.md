@@ -36,6 +36,10 @@ This operation is the same as a direct execution from the command line on the
 
     grails run-app
 
+To run Selenium tests use the command
+
+    grails run-selenium
+
 #### External Configurations
 In case additional configurations are needed, then the following apply:
 In development mode the external configuration is located on: $USER_HOME/.grails/$appname.properties 
