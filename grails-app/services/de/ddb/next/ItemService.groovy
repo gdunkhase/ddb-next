@@ -13,10 +13,13 @@ class ItemService {
     private static final def THUMBNAIL = 'mvth'
     private static final def PREVIEW= 'mvpr'
     private static final def FULL = 'full'
+    private static final def ORIG= 'orig'
+    private static final def IMAGE= 'image/jpeg'
+    private static final def AUDIO = 'audio/mp3'
+    private static final def VIDEO = 'video/mp4'
 
     def transactional = false
     def grailsApplication
-    def binaryList = []
 
     def findItemById(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
@@ -80,9 +83,11 @@ class ItemService {
 
     private def parse(binaries) {
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
-        def bidimensionalList = []
+		def binaryList = []
+		def bidimensionalList = []
         String position
         String path
+		String type
         //creation of a bi-dimensional list containing the binaries separated for position
         binaries.each { x ->
             if(x.'@position'.toString() != position){
@@ -94,13 +99,23 @@ class ItemService {
         }
         //creation of a list of binary maps from the bi-dimensional list
         bidimensionalList.each { y ->
-            def binaryMap = ['preview' : ['title':'', 'uri': ''],
-                'thumbnail' :['title':'', 'uri': ''],
-                'full' :['title':'', 'uri': ''],
+            def binaryMap = ['origUri' : ['image':'','audio':'','video':''],
+                'preview' : ['title':'', 'uri': ''],
+                'thumbnail' : ['title':'', 'uri': ''],
+                'full' : ['title':'', 'uri': ''],
             ]
             y.each { z ->
                 path = z.'@path'
-                if(path.contains(PREVIEW)) {
+                type = z.'@mimetype'
+                if(path.contains(ORIG)){
+                    if(type.contains(IMAGE))
+                        binaryMap.'origUri'.'image' = BINARY_SERVER_URI + z.'@path'
+                    else if(type.contains(AUDIO))
+                        binaryMap.'origUri'.'audio' = BINARY_SERVER_URI + z.'@path'
+                    else if(type.contains(VIDEO))
+                        binaryMap.'origUri'.'video' = BINARY_SERVER_URI + z.'@path'
+                }
+                  else if(path.contains(PREVIEW)) {
                     binaryMap.'preview'.'title' = z.'@name'
                     binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
                 } else if (path.contains(THUMBNAIL)) {
@@ -114,6 +129,22 @@ class ItemService {
             binaryList.add(binaryMap)
         }
         return binaryList
+    }
+
+    def binariesCounter(binaries){
+        def images = 0
+        def audios = 0
+        def videos = 0
+        binaries.each { i ->
+            if(i.'origUri'.'audio' || i.'origUri'.'video'){
+               if(i.'origUri'.'audio')
+                   audios++
+               if(i.'origUri'.'video')
+                   videos++
+            } else if (i.'origUri'.'image')
+                  images++
+        }
+        return (['images':images,'audios':audios,'videos':videos])
     }
 
     private def log(list) {
