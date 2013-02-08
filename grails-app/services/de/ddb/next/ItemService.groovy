@@ -1,10 +1,10 @@
 package de.ddb.next
 
-import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
+import groovyx.net.http.HTTPBuilder
+
 import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.commons.GrailsApplication
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -23,8 +23,8 @@ class ItemService {
     ]
 
     def findItemById(id) {
-        def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.wsbackend.toString())
+        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
