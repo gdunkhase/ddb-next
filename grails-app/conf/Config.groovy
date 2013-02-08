@@ -66,16 +66,16 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-	    grails.config.locations = [ "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties" ]
-		/*
-	    def needProxy = grailsApplication.config.client.proxy.needed
-	    if (needProxy) {
-	      System.properties.putAll([
-	        "http.proxyHost": grailsApplication.config.client.http.proxyHost,
-	        "http.proxyPort": grailsApplication.config.client.http.proxyPort
-	      ])
-	    }
-	    */
+        grails.config.locations = [ "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties" ]
+        /*
+        def needProxy = grailsApplication.config.client.proxy.needed
+        if (needProxy) {
+          System.properties.putAll([
+            "http.proxyHost": grailsApplication.config.client.http.proxyHost,
+            "http.proxyPort": grailsApplication.config.client.http.proxyPort
+          ])
+        }
+        */
     }
 }
 
@@ -86,7 +86,9 @@ log4j = {
       console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
       rollingFile name: "stacktrace", maxFileSize: 1024, file: (System.getProperty('catalina.base') ?: 'target') + '/logs/ddbnext-stacktrace.log'
     }
-
+    
+    error stacktrace: "StackTrace"
+    
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
@@ -97,10 +99,11 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
-
-     warn  'org.apache.catalina'
-
-     debug 'grails.app'
-	 debug stacktrace : 'grails.app'
+           
+    warn  'org.apache.catalina'
+    
+    // Send log messages with DEBUG level to console for following:
+    debug stdout: 'grails.app.controllers'
+    debug stdout: 'grails.app.services'
 }
 grails.app.context = "/"

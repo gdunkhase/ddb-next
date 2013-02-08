@@ -17,7 +17,7 @@ class ApiConsumer {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-            
+
             http.request(method, ContentType.TEXT) {
                 uri.path = path
                 uri.query = query
@@ -52,7 +52,7 @@ class ApiConsumer {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-            
+
             http.request(method, JSON) {
                 uri.path = path
                 uri.query = query
@@ -92,7 +92,7 @@ class ApiConsumer {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-            
+
             http.request(method, XML) {
                 uri.path = path
                 uri.query = query
@@ -132,7 +132,7 @@ class ApiConsumer {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-           
+
             http.request(method, ContentType.ANY) {
                 uri.path = path
                 uri.query = query
@@ -161,15 +161,17 @@ class ApiConsumer {
     }
 
     static def setProxy(http, String baseUrl) {
+        // FIXME: remove the next line, if you are in the fiz ka network.
+        return
         if(baseUrl.contains('localhost') || baseUrl.contains('fiz-karlsruhe.de')) {
             log.debug " ${baseUrl} does not need http proxy"
             return
         }
-        
+
         def PROXY_HOST = 'proxy.fiz-karlsruhe.de'
         def PROXY_PORT = 8888
         http.setProxy(PROXY_HOST,PROXY_PORT, 'http')
-        
+
         log.debug " ${baseUrl} will uses HTTP Proxy"
     }
 }
