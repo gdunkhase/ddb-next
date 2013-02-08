@@ -41,9 +41,11 @@ class IndexController {
     def src = fetchSrc(content)
     def articles = new ArrayList()
     def article
-    for(def i=0; i<title.size() ; i++){
+    if (title != null) {
+      for(def i=0; i<title.size() ; i++) {
         article = [title:title[i][1], uri:uri[i][1], src:src[i][1]]
-      articles.add(article)
+        articles.add(article)
+      }
     }
     return articles
   }
