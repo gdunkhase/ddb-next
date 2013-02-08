@@ -12,4 +12,7 @@
     </div>
     <div class="span4"></div>
   </div>
+      <g:render template="hierarchy" />
+    </div>
+  </div>
 </div>
