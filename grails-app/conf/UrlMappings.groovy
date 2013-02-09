@@ -22,7 +22,7 @@ class UrlMappings {
         }
         "/about-us/institutions/item/$id" {
             controller="institution"
-            action=findByItemId
+            action=readByItemId
         }
         "500"(view:'/error')
     }

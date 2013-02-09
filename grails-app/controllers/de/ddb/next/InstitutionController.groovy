@@ -6,8 +6,7 @@ import java.text.Normalizer.Form;
 
 import org.apache.commons.logging.LogFactory
 
-import sun.misc.IOUtils;
-
+import groovy.json.JsonSlurper;
 import groovyx.net.http.ContentType;
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
@@ -15,8 +14,26 @@ import groovyx.net.http.Method
 class InstitutionController {
 
     private static final log = LogFactory.getLog(this)
-
-    def findByItemId() {
+    
+    def readByItemId() {
+        def id = params.id
+        def vApiInstitution = new ApiInstitution();
+        log.println("+++")
+        log.println("read insitution by item id: ${id}")
+        log.println("+++")
+        def dataViewXML = vApiInstitution.getInstitutionViewByItemId(id)
+        def dataProvInfoXML = vApiInstitution.getProviderInfoByItemId(id)
+        //def dataJSON = vApiInstitution.getChildrenOfInstitutionByItemId(id)
+        if (dataViewXML != null) {
+            render(view: "institution", model: [results: dataViewXML, provInfo: dataProvInfoXML])
+        } 
+        else {
+            redirect(controller: 'error')
+        }
+        
+    }
+    
+    def void findByItemId() {
         def id = params.id
         
         log.println("---")
@@ -44,8 +61,6 @@ class InstitutionController {
                    String dataString = reader.readLines().join()
                    println "Text: " + dataString
                    def dataXML = new XmlSlurper().parseText(dataString)
-                   
-                   println "XML.name = " + dataXML.'name'
                    
                    render(view: "institution", model: [results: dataXML])
                 }

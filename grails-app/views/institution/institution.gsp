@@ -1,18 +1,29 @@
+<%@page import="java.lang.String"%>
 <meta name="layout" content="main" />
 
 <!-- div class="container" role="main"-->
     <div class="objectDisplayWidget institutionItemPage">
-       <div class="institution">
-           <img alt="${results.'name'}" class="logo" src="${results.'logo'}">
-           <div class="summary">
-               <div class="sector">${results.'sector'}</div>
-               <h2>${results.'name'}</h2>"&nbsp;"
-               <a class="count" href="http://www.deutsche-digitale-bibliothek.de/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${results.'name'}" 
-                  title="Anzahl der verfügbaren Objekte dieser Institution. Klicken Sie auf den Link, um die Objekte anzuzeigen.">2.882.275 Objekte</a>
-               <div><a href="${results.'uri' }/">${results.'uri' }/</a></div>
+       <!-- div class="institution"-->
+       <div class="row" style="width: 100%">
+           <div class="span8">
+               <!-- div class="sector" style="text-align: left;">${results.'sector'}</div-->
+               <div class="sector" style="text-align: left;">${provInfo.'provider-domains'.'provider-domain'}</div>
+               <div class="row" style="width: 100%; text-align: left;">
+                 <div>
+                   <h2>${results.'name'}</h2>
+                   &nbsp;
+                   <a class="count" href="http://www.deutsche-digitale-bibliothek.de/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${results.'name'}" 
+                      title="Anzahl der verfügbaren Objekte dieser Institution. Klicken Sie auf den Link, um die Objekte anzuzeigen.">2.882.275 Objekte</a>
+                 </div>
+               </div>
+               <div style="text-align: left;">
+                 <a href="${results.'uri' }/">${String.valueOf(results.'uri').trim() }/</a>
+               </div>
+           </div>
+           <div class="span2">
+             <img style="text-align: right;" alt="${results.'name'}" class="logo" src="${results.'logo'}">
            </div>
        </div>
-       
        
        <div class="locations">
         <div id="mapLoader" style="display: none;" data-bind="visible: mapLoading">
