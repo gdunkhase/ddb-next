@@ -4,12 +4,10 @@ class UrlMappings {
         "/$controller/$action?/$id?"{ constraints {
                 // apply constraints here
             } }
-
         "/search/$q?" {
             controller="search"
             action=results
         }
-
         "/advancedsearch" {
             controller="advancedsearch"
             action=[GET: "fillValues", POST: "executeSearch"]
@@ -22,12 +20,10 @@ class UrlMappings {
             controller="item"
             action=findById
         }
-
-		"/about-us/institutions/item/$id" {
-			controller="institution"
-			action=findById
-		}
-
+        "/about-us/institutions/item/$id" {
+            controller="institution"
+            action=findByItemId
+        }
         "500"(view:'/error')
     }
 }
