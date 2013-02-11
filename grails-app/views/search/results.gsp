@@ -70,33 +70,7 @@
         </div>
       </div>
       
-      <div class="page-info-nav">
-        <div class="page-info">
-          <span id="results-overall-index"><%= resultsOverallIndex %></span>
-          <span><g:message code="ddbnext.Of" /></span>
-          <span><b><span id="results-total"><%= results.numberOfResults %></span></b></span>
-          <span><g:message code="ddbnext.Results_lowercase" /></span>
-        </div>
-        <div class="page-nav">
-          <ul class="inline">
-            <li class="first-page">
-              <a href="#"><g:message code="ddbnext.First_Label" /></a>  
-            </li>
-            <li class="prev-page br">
-              <a href="#"><g:message code="ddbnext.Previous_Label" /></a> 
-            </li>
-            <li class="pages-overall-index">
-              <span><%= pagesOverallIndex %></span>
-            </li>
-            <li class="next-page bl">
-              <a href="#"><g:message code="ddbnext.Next_Label" /></a> 
-            </li>
-            <li class="last-page">
-              <a href="#"><g:message code="ddbnext.Last_Label" /></a> 
-            </li>
-          </ul>
-        </div>
-      </div>
+      <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: results.numberOfResults, pagesOverallIndex: pagesOverallIndex, paginationURL: paginationURL]}"></g:pageInfoNavRender>
       
       <div class="row">
         <div class="span9">
@@ -124,33 +98,7 @@
         </div>
       </div>
       
-      <div class="page-info-nav">
-        <div class="page-info">
-          <span id="results-overall-index">1 - 20</span>
-          <span><g:message code="ddbnext.Of" /></span>
-          <span><b><span id="results-total"><%= results.numberOfResults %></span></b></span>
-          <span><g:message code="ddbnext.Results_lowercase" /></span>
-        </div>
-        <div class="page-nav">
-          <ul class="inline">
-            <li class="first-page">
-              <a href="#"><g:message code="ddbnext.First_Label" /></a>  
-            </li>
-            <li class="prev-page br">
-              <a href="#"><g:message code="ddbnext.Previous_Label" /></a> 
-            </li>
-            <li class="pages-overall-index">
-              <span><%= pagesOverallIndex %></span>
-            </li>
-            <li class="next-page bl">
-              <a href="#"><g:message code="ddbnext.Next_Label" /></a> 
-            </li>
-            <li class="last-page">
-              <a href="#"><g:message code="ddbnext.Last_Label" /></a> 
-            </li>
-          </ul>
-        </div>
-      </div>
+      <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: results.numberOfResults, pagesOverallIndex: pagesOverallIndex, paginationURL:paginationURL]}"></g:pageInfoNavRender>
       
     </div>
   </div>

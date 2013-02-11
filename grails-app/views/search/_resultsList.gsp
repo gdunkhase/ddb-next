@@ -7,7 +7,7 @@
               <h2 class="title">
                 <a class="persist" href="/item/${it.id}" title="${it.label}">${it.preview.title.replaceAll('match', 'strong')}</a>
               </h2>
-              <div class="subtitle">${it.subtitle}</div>
+              <div class="subtitle">${it.preview.subtitle}</div>
               <ul class="matches unstyled">
                 <li class="matching-item">
                   <span>
@@ -19,27 +19,29 @@
               </ul>
             </div>
             <div class="extra">
-              <ul class="types unstyled">
+              <ul class="types unstyled inline">
+              <g:each var="mediaType" in="${it.preview.media}">
                 <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_007" /></g:set>
-                <g:if test="${it.preview.media == 'audio'}">
+                <g:if test="${mediaType == 'audio'}">
                   <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_001" /></g:set>
                 </g:if>
-                <g:if test="${it.preview.media == 'image'}">
+                <g:if test="${mediaType == 'image'}">
                   <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_002" /></g:set>
                 </g:if>
-                <g:if test="${it.preview.media == 'text'}">
+                <g:if test="${mediaType == 'text'}">
                   <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_003" /></g:set>
                 </g:if>
-                <g:if test="${it.preview.media == 'fullText'}">
+                <g:if test="${mediaType == 'fullText'}">
                   <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_004" /></g:set>
                 </g:if>
-                <g:if test="${it.preview.media == 'video'}">
+                <g:if test="${mediaType == 'video'}">
                   <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_005" /></g:set>
                 </g:if>
-                <g:if test="${it.preview.media == 'other'}">
+                <g:if test="${mediaType == 'other'}">
                   <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_006" /></g:set>
                 </g:if>
-                <li class="${it.preview.media}" classname="${it.preview.media}" title="${mediaTitle}">${mediaTitle}</li>
+                <li class="${mediaType}" classname="${mediaType}" title="${mediaTitle}">${mediaTitle}</li>
+              </g:each>
               </ul>
             </div>
           </div>

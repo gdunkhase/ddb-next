@@ -284,6 +284,18 @@ input[type="checkbox"],input[type="radio"] {
   background-position: 0 -38px;
 }
 
+.search-results .results-list .summary .extra .types .audio {
+  background-position: 0 -95px;
+}
+
+.search-results .results-list .summary .extra .types .text {
+  background-position: 0 -57px;
+}
+
+.search-results .results-list .summary .extra .types .video {
+  background-position: 0 -19px;
+}
+
 .search-results .results-list .summary-main {
   min-height: 74px;
 }

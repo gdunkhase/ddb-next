@@ -96,7 +96,7 @@ class ApisController {
 	  def title
       def subtitle
       def thumbnail
-      def media
+      def media = []
 	  
 	  def titleMatch = it.preview.toString() =~ /(?m)<div class="title">(.*?)<\/div>$/
 	  if (titleMatch)
@@ -112,7 +112,9 @@ class ApisController {
 
       def mediaMatch = it.preview.toString() =~ /(?m)<div data-media="(.*?)"/
       if (mediaMatch)
-        media= mediaMatch[0][1]
+	  	mediaMatch[0][1].split (",").each{
+			  media.add(it)
+		  }	
 
       tmpResult["id"] = it.id
       tmpResult["view"] = it.view
