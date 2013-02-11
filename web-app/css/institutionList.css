@@ -1,0 +1,16 @@
+.institution {
+  list-style: none;
+}
+
+.child-institution {
+  list-style: none;
+}
+
+
+.icon-institution {
+  background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
+}
+
+.icon-child-institution {
+  background: url(../images/icons/list_arrows.png) no-repeat 0px -21px;
+}
