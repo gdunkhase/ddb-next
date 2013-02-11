@@ -1,3 +1,4 @@
+//TODO: do we need this file? we don't use Hibernate
 dataSource {
     pooled = true
     driverClassName = "org.h2.Driver"

@@ -1,9 +1,8 @@
 package de.ddb.next
 
 class ErrorController {
-	static defaultAction = "notfound"
-	
-	def notfound() { 
-		
-	}
+    static defaultAction = "notfound"
+
+    def notfound() {
+    }
 }

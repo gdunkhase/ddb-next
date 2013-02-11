@@ -1,13 +1,28 @@
 class UrlMappings {
 
-	static mappings = {
-		"/$controller/$action?/$id?"{
-			constraints {
-				// apply constraints here
-			}
-		}
+    static mappings = {
+        "/$controller/$action?/$id?"{ constraints {
+                // apply constraints here
+            } }
 
-		"/"(view:"/index")
-		"500"(view:'/error')
-	}
+        "/search/$q?" {
+            controller="search"
+            action=results
+        }
+
+        "/advancedsearch" {
+            controller="advancedsearch"
+            action=[GET: "fillValues", POST: "executeSearch"]
+        }
+        "/" {
+            controller="index"
+            action=index
+        }
+        "/item/$id" {
+            controller="item"
+            action=findById
+        }
+
+        "500"(view:'/error')
+    }
 }

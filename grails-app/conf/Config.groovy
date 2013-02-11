@@ -62,20 +62,30 @@ grails.hibernate.cache.queries = false
 environments {
     development {
         grails.logging.jul.usebridge = true
+        grails.config.locations = [ "file:${userHome}/.grails/${appName}.properties" ]
     }
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
+	    grails.config.locations = [ "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties" ]
+		/*
+	    def needProxy = grailsApplication.config.client.proxy.needed
+	    if (needProxy) {
+	      System.properties.putAll([
+	        "http.proxyHost": grailsApplication.config.client.http.proxyHost,
+	        "http.proxyPort": grailsApplication.config.client.http.proxyPort
+	      ])
+	    }
+	    */
     }
 }
 
 // log4j configuration
 log4j = {
     // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+      console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+      rollingFile name: "stacktrace", maxFileSize: 1024, file: (System.getProperty('catalina.base') ?: 'target') + '/logs/ddbnext-stacktrace.log'
+    }
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -84,9 +94,13 @@ log4j = {
            'org.codehaus.groovy.grails.web.mapping',        // URL mapping
            'org.codehaus.groovy.grails.commons',            // core / classloading
            'org.codehaus.groovy.grails.plugins',            // plugins
-           'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+
+     warn  'org.apache.catalina'
+
+     debug 'grails.app'
+	 debug stacktrace : 'grails.app'
 }
 grails.app.context = "/"
