@@ -42,8 +42,7 @@ class InstitutionService {
                 def jsonWithUri = addUri(it)
                 aMap[firstChar].add(jsonWithUri)
             }
-            aMap.keySet().sort()
-            retVal = aMap 
+             retVal = aMap
         }
 
         return retVal
@@ -52,8 +51,9 @@ class InstitutionService {
     private def buildIndex() {
         def az = 'A'..'Z'
         def aMap = [:].withDefault{[]}
+        
         az.each { aMap[it] = [] }
-        return aMap
+        return aMap //new TreeMap(aMap)
     }
     
     private def addUri(json) {
