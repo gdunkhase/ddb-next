@@ -18,14 +18,20 @@ class InstitutionService {
         def http = new HTTPBuilder(cortexHostPort)
         ApiConsumer.setProxy(http, cortexHostPort)
 
-        def retVal
+        def retVal 
 
         http.get(path: 'institutions') {
             resp, json ->
-            log.debug "JSON: ${json}"
 
-            def all = []
+            def aMap= buildIndex()
             json.each { it ->
+                def firstChar = it?.name[0]?.toUpperCase()
+                
+                if(aMap[firstChar].size() == 0) {
+                    it.isFirst = true
+                    it.firstChar = firstChar
+                }
+                
                 if(it.children?.size() > 0 ) {
                     it.children.each {
                         child -> 
@@ -34,14 +40,21 @@ class InstitutionService {
                 }
                 
                 def jsonWithUri = addUri(it)
-                all.add(jsonWithUri)
+                aMap[firstChar].add(jsonWithUri)
             }
-            retVal = all
+            aMap.keySet().sort()
+            retVal = aMap 
         }
 
         return retVal
     }
 
+    private def buildIndex() {
+        def az = 'A'..'Z'
+        def aMap = [:].withDefault{[]}
+        az.each { aMap[it] = [] }
+        return aMap
+    }
     
     private def addUri(json) {
         json.uri = buildUri(json.id)
@@ -54,7 +67,6 @@ class InstitutionService {
         b.setPath("/about-us/institutions/item/${id}")
 
         def uri = b.toURI().toString()
-        log.debug "uri: ${uri}"
         return uri
     }
 }

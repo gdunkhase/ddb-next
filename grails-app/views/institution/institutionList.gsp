@@ -8,7 +8,7 @@
   <g:each in="${ all }">
   <li class="institution">
     <g:render template="listItem" model="['item': it]"/>
-    <g:render template="children" model="['children': it.children]"/>
+    <g:render template="children" model="['children': it?.children]"/>
   </li>
   </g:each>
 </ol>

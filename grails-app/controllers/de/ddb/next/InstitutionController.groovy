@@ -8,8 +8,11 @@ class InstitutionController {
     def show() {
         log.debug 'show all institutions'
 
-        def all = institutionService.findAll()
-
-        render (view: 'institutionList', model: [all: all])
+        def all = []
+        def aMap = institutionService.findAll()
+        // TODO: make this more idiomatic groovy
+        aMap.each { all.addAll(it.value) }
+        
+        render (view: 'institutionList',  model: [index: aMap.keySet(), all: all])
     }
 }
