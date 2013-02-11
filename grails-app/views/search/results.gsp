@@ -6,6 +6,55 @@
 <meta name="robots" content="${robots}" />
 <meta name="layout" content="main" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
+<script>
+window.onload=function(){
+  $(".results-paginator-options").removeClass("off");
+  $(".results-paginator-view").removeClass("off");
+  $(".page-nav a").click(function(){
+	fetchResultsList(this.href);
+    return false;
+  });
+  function fetchResultsList(url){
+    $('.search-results').empty();
+    var imgLoader = document.createElement('img');
+    imgLoader.src = "${resource(dir: 'images/icons', file: 'loader_small.gif')}";
+    $('.search-results').prepend(imgLoader);
+    var request = $.ajax({
+      type: 'GET',
+      dataType: 'json',
+      async: false,
+      url: url+'&reqType=ajax',
+      complete: function(data){
+        var JSONresponse = jQuery.parseJSON(data.responseText);
+        console.log(jQuery.parseJSON(data.responseText));
+        $('.search-results').html(JSONresponse.results);
+        $('#results-overall-index').html(JSONresponse.resultsOverallIndex);
+        $('.pages-overall-index').html(JSONresponse.pagesOverallIndex);
+        console.log($('.next-page a'))
+        if(JSONresponse.paginationURL.nextPg){
+          $(".page-nav .next-page").removeClass("off");
+          $(".page-nav .last-page").removeClass("off");
+          $('.page-nav .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
+          $('.page-nav .last-page a').attr('href', JSONresponse.paginationURL.lastPg);
+        }else{
+          $(".page-nav .next-page").addClass("off");
+          $(".page-nav .last-page").addClass("off");
+        }
+        if(JSONresponse.paginationURL.firstPg){
+          $(".page-nav .prev-page").removeClass("off");
+          $(".page-nav .first-page").removeClass("off");
+          $('.page-nav .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
+          $('.page-nav .first-page a').attr('href', JSONresponse.paginationURL.firstPg);
+        }else{
+          $(".page-nav .prev-page").addClass("off");
+          $(".page-nav .first-page").addClass("off");
+        }
+        window.history.pushState({path:url},'',url);
+      }
+    });
+  }
+};
+</script>
 </head>
 <body>
   <div class="row search-results-container">
@@ -45,30 +94,7 @@
     
     <div class="span9 search-results-content">
     
-      <div class="results-paginator-options bb off">
-        <div class="page-filter">
-          <label><g:message code="ddbnext.SearchResultsPagination_Display" /></label>
-          <span>
-            <select class="select">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="20">40</option>
-              <option value="20">60</option>
-              <option value="20">100</option>
-            </select>
-          </span>
-        </div>
-        <div class="sort-results-switch">
-          <label><g:message code="ddbnext.SearchResultsPagination_Sort_By" /></label>
-          <span>
-            <select class="select">
-              <option value="RELEVANCE"><g:message code="ddbnext.Sort_RELEVANCE" /></option>
-              <option value="ALPHA_ASC"><g:message code="ddbnext.Sort_ALPHA_ASC" /></option>
-              <option value="ALPHA_DESC"><g:message code="ddbnext.Sort_ALPHA_DESC" /></option>
-            </select>
-          </span>
-        </div>
-      </div>
+      <g:resultsPaginatorOptionsRender paginatorData="${resultsPaginatorOptions}"></g:resultsPaginatorOptionsRender>
       
       <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: results.numberOfResults, pagesOverallIndex: pagesOverallIndex, paginationURL: paginationURL]}"></g:pageInfoNavRender>
       

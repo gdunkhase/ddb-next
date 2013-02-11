@@ -7,25 +7,27 @@
   </div>
   <div class="page-nav">
     <ul class="inline">
-      <g:if test="${navData.paginationURL.firstPg !=null}">
-        <li class="first-page">
-          <a href="${navData.paginationURL.firstPg}"><g:message code="ddbnext.First_Label" /></a>  
-        </li>
-        <li class="prev-page br">
-          <a href="${navData.paginationURL.prevPg}"><g:message code="ddbnext.Previous_Label" /></a> 
-        </li>
+      <g:if test="${navData.paginationURL.firstPg ==null}">
+        <g:set var="displayLeftPagination" value="off"></g:set>
       </g:if>
+      <g:if test="${navData.paginationURL.lastPg ==null}">
+        <g:set var="displayRightPagination" value="off"></g:set>
+      </g:if>
+      <li class="first-page ${displayLeftPagination}">
+        <a href="${navData.paginationURL.firstPg}"><g:message code="ddbnext.First_Label" /></a>  
+      </li>
+      <li class="prev-page br ${displayLeftPagination}">
+        <a href="${navData.paginationURL.prevPg}"><g:message code="ddbnext.Previous_Label" /></a> 
+      </li>
       <li class="pages-overall-index">
         <span>${navData.pagesOverallIndex}</span>
       </li>
-      <g:if test="${navData.paginationURL.lastPg !=null}">
-        <li class="next-page bl">
-          <a href="${navData.paginationURL.nextPg}"><g:message code="ddbnext.Next_Label" /></a> 
-        </li>
-        <li class="last-page">
-          <a href="${navData.paginationURL.lastPg}"><g:message code="ddbnext.Last_Label" /></a> 
-        </li>
-      </g:if>
+      <li class="next-page bl ${displayRightPagination}">
+        <a href="${navData.paginationURL.nextPg}"><g:message code="ddbnext.Next_Label" /></a> 
+      </li>
+      <li class="last-page ${displayRightPagination}">
+        <a href="${navData.paginationURL.lastPg}"><g:message code="ddbnext.Last_Label" /></a> 
+      </li>
     </ul>
   </div>
 </div>

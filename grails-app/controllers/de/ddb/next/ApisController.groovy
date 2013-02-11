@@ -2,6 +2,7 @@ package de.ddb.next
 
 import grails.converters.JSON
 import groovy.json.JsonSlurper
+import net.sf.json.JSONNull
 import org.json.simple.JSONValue
 
 class ApisController {
@@ -103,8 +104,7 @@ class ApisController {
 		title= titleMatch[0][1]
 
       def subtitleMatch = it.preview.toString() =~ /(?m)<div class="subtitle">(.*?)<\/div>$/
-      if (subtitleMatch)
-        subtitle= subtitleMatch[0][1]
+      subtitle= (subtitleMatch)?subtitleMatch[0][1]:""
 
       def thumbnailMatch = it.preview.toString() =~ /(?m)<img src="(.*?)" \/>$/
       if (thumbnailMatch)
@@ -117,17 +117,24 @@ class ApisController {
 		  }	
 
       tmpResult["id"] = it.id
-      tmpResult["view"] = it.view
-      tmpResult["label"] = it.label
-      tmpResult["latitude"] = it.latitude
-      tmpResult["longitude"] = it.longitude
-      tmpResult["category"] = it.category
+      tmpResult["view"] = (!it.view instanceof JSONNull)?it.view:""
+      tmpResult["label"] = (!it.label instanceof JSONNull)?it.label:""
+      tmpResult["latitude"] = (!it.latitude instanceof JSONNull)?it.latitude:""
+      tmpResult["longitude"] = (!it.longitude instanceof JSONNull)?it.longitude:""
+      tmpResult["category"] = (!it.category instanceof JSONNull)?it.category:""
 
       def path = grailsApplication.config.ddb.wsbackend.toString()+'/access/'+it.id+'/components/indexing-profile'
 
       def xmlSubresp = ApiConsumer.getTextAsXml(grailsApplication.config.ddb.wsbackend.toString(),'/access/'+it.id+'/components/indexing-profile', [:])
       def jsonSubresp = new JsonSlurper().parseText(xmlSubresp.toString())
-      def properties = [affiliate_fct:jsonSubresp.properties.affiliate_fct, keywords_fct:jsonSubresp.properties.keywords_fct, type_fct:jsonSubresp.properties.type_fct, sector_fct:jsonSubresp.properties.sector_fct, provider_fct:jsonSubresp.properties.provider_fct, last_update:jsonSubresp.properties.last_update ]
+	  
+	  def affiliateFct = (jsonSubresp.properties.affiliate_fct)? jsonSubresp.properties.affiliate_fct: ""
+	  def keywordsFct = (jsonSubresp.properties.keywords_fct)?jsonSubresp.properties.keywords_fct: ""
+	  def typeFct = (jsonSubresp.properties.type_fct)?jsonSubresp.properties.type_fct: ""
+	  def sectorFct = (jsonSubresp.properties.sector_fct)?jsonSubresp.properties.sector_fct: ""
+	  def providerFct = (jsonSubresp.properties.provider_fct)?jsonSubresp.properties.provider_fct: ""
+	  
+      def properties = [affiliate_fct:affiliateFct, keywords_fct:keywordsFct, type_fct:typeFct, sector_fct:sectorFct, provider_fct:providerFct, last_update: jsonSubresp.properties.last_update ]
 
       tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
       tmpResult["properties"] = properties
