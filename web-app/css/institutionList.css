@@ -14,3 +14,7 @@
 .icon-child-institution {
   background: url(../images/icons/list_arrows.png) no-repeat 0px -21px;
 }
+
+.filter {
+  display: none;
+}

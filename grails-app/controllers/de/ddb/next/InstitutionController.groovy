@@ -15,7 +15,6 @@ class InstitutionController {
         def all = []
         aMap.each { all.addAll(it.value) }
         aMap.each { k,v -> 
-            log.debug v.size()
             if(aMap[k]?.size() == 0) {
                 aMap[k] = true
             } else {
