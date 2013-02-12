@@ -33,6 +33,10 @@ class SearchController {
 		if(params.sort == null)
 			urlQuery["sort"] = "RELEVANCE"
 		else urlQuery["sort"] = params.sort
+		
+		if(params.viewType == null)
+			urlQuery["viewType"] = "list"
+		else urlQuery["viewType"] = params.viewType
 			
 		def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsItemResults.toString() ,'/apis/search', urlQuery)
 		
@@ -48,13 +52,14 @@ class SearchController {
 		def resultsPaginatorOptions = buildPaginatorOptions(urlQuery)
 		
 		if(params.reqType=="ajax"){
-			def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], confBinary: grailsApplication.config.ddb.binary]).replaceAll("\r\n", '')
+			def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary]).replaceAll("\r\n", '')
 			def jsonReturn = [results: resultsHTML, resultsPaginatorOptions: resultsPaginatorOptions,resultsOverallIndex:resultsOverallIndex, pagesOverallIndex: pagesOverallIndex,paginationURL: buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString().replaceAll("&reqType=ajax",""))]
 			render (contentType:"text/json"){jsonReturn}
 		}
 		else{
 	        render(view: "results", model: [
-				results: resultsItems, 
+				results: resultsItems,
+				viewType:  urlQuery["viewType"],
 				resultsPaginatorOptions: resultsPaginatorOptions,
 				resultsOverallIndex:resultsOverallIndex, 
 				pagesOverallIndex: pagesOverallIndex,

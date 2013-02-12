@@ -8,11 +8,68 @@
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
 <script>
 window.onload=function(){
-  $(".results-paginator-options").removeClass("off");
-  $(".results-paginator-view").removeClass("off");
-  $(".page-nav a").click(function(){
+  $('.results-paginator-options').removeClass('off');
+  $('.results-paginator-view').removeClass('off');
+  
+  $('.page-filter select').change(function(){
+    fetchResultsList(addParamToCurrentUrl('rows', this.value));
+	return false;
+  });
+  
+  $('.sort-results-switch select').change(function(){
+    fetchResultsList(addParamToCurrentUrl('sort', this.value));
+	return false;
+  });
+
+  function addParamToCurrentUrl(param, value, urlParameters){
+	var queryParameters = {}, queryString = (urlParameters==null)?location.search.substring(1):urlParameters,
+      re = /([^&=]+)=([^&]*)/g, m;
+    while (m = re.exec(queryString)) {
+        queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+    }
+    queryParameters[param]=value;
+    queryParameters['offset']=0;
+    var tmp = jQuery.param(queryParameters);
+    return window.location.origin+window.location.pathname+'?'+tmp;
+  }
+  
+  $('.page-nav a').click(function(){
 	fetchResultsList(this.href);
     return false;
+  });
+  $('#view-list').click(function(){
+	$('#view-list').addClass('selected');
+    $('#view-grid').removeClass('selected');
+	$('.search-results').fadeOut('fast', function(){
+      $('.results-list .summary').addClass('row');
+      $('.summary-main-wrapper').addClass('span7');
+      $('.thumbnail-wrapper').addClass('span2');
+      $('.results-list').removeClass("grid");
+      $('.search-results').fadeOut('fast');
+      $('.summary .thumbnail-wrapper').each(function(){
+        $(this).appendTo(this.parentNode);
+      });
+      $('.search-results').fadeIn('fast');
+  	});
+	var newUrl = addParamToCurrentUrl('viewType', 'list');
+	window.history.pushState({path:newUrl},'',newUrl);
+  });
+  $('#view-grid').click(function(){
+	$('#view-list').removeClass('selected');
+    $('#view-grid').addClass('selected');
+	$('.search-results').fadeOut('fast', function(){
+      $('.results-list .summary').removeClass('row');
+      $('.summary-main-wrapper').removeClass('span7');
+      $('.thumbnail-wrapper').removeClass('span2');
+      $('.results-list').addClass("grid");
+      $('.search-results').fadeOut('fast');
+      $('.summary .summary-main-wrapper').each(function(){
+        $(this).appendTo(this.parentNode);
+      });
+      $('.search-results').fadeIn('fast');
+  	});
+    var newUrl = addParamToCurrentUrl('viewType', 'grid');
+	window.history.pushState({path:newUrl},'',newUrl);
   });
   function fetchResultsList(url){
     $('.search-results').empty();
@@ -22,34 +79,37 @@ window.onload=function(){
     var request = $.ajax({
       type: 'GET',
       dataType: 'json',
-      async: false,
+      async: true,
       url: url+'&reqType=ajax',
       complete: function(data){
-        var JSONresponse = jQuery.parseJSON(data.responseText);
-        console.log(jQuery.parseJSON(data.responseText));
-        $('.search-results').html(JSONresponse.results);
-        $('#results-overall-index').html(JSONresponse.resultsOverallIndex);
-        $('.pages-overall-index').html(JSONresponse.pagesOverallIndex);
-        console.log($('.next-page a'))
-        if(JSONresponse.paginationURL.nextPg){
-          $(".page-nav .next-page").removeClass("off");
-          $(".page-nav .last-page").removeClass("off");
-          $('.page-nav .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
-          $('.page-nav .last-page a').attr('href', JSONresponse.paginationURL.lastPg);
-        }else{
-          $(".page-nav .next-page").addClass("off");
-          $(".page-nav .last-page").addClass("off");
-        }
-        if(JSONresponse.paginationURL.firstPg){
-          $(".page-nav .prev-page").removeClass("off");
-          $(".page-nav .first-page").removeClass("off");
-          $('.page-nav .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
-          $('.page-nav .first-page a').attr('href', JSONresponse.paginationURL.firstPg);
-        }else{
-          $(".page-nav .prev-page").addClass("off");
-          $(".page-nav .first-page").addClass("off");
-        }
-        window.history.pushState({path:url},'',url);
+    	$('.search-results').fadeOut('fast', function(){
+          var JSONresponse = jQuery.parseJSON(data.responseText);
+          console.log(jQuery.parseJSON(data.responseText));
+          $('.search-results').html(JSONresponse.results);
+          $('#results-overall-index').html(JSONresponse.resultsOverallIndex);
+          $('.pages-overall-index').html(JSONresponse.pagesOverallIndex);
+          console.log($('.next-page a'))
+          if(JSONresponse.paginationURL.nextPg){
+            $(".page-nav .next-page").removeClass("off");
+            $(".page-nav .last-page").removeClass("off");
+            $('.page-nav .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
+            $('.page-nav .last-page a').attr('href', JSONresponse.paginationURL.lastPg);
+          }else{
+            $(".page-nav .next-page").addClass("off");
+            $(".page-nav .last-page").addClass("off");
+          }
+          if(JSONresponse.paginationURL.firstPg){
+            $(".page-nav .prev-page").removeClass("off");
+            $(".page-nav .first-page").removeClass("off");
+            $('.page-nav .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
+            $('.page-nav .first-page a').attr('href', JSONresponse.paginationURL.firstPg);
+          }else{
+            $(".page-nav .prev-page").addClass("off");
+            $(".page-nav .first-page").addClass("off");
+          }
+          window.history.pushState({path:url},'',url);
+          $('.search-results').fadeIn('fast');
+    	});
       }
     });
   }
@@ -108,8 +168,8 @@ window.onload=function(){
               <label for="toggle-cluster" title="<g:message code="ddbnext.View_as_Cluster" />"><g:message code="ddbnext.View_as_Cluster" /></label>
             </div>
             <div class="view-type-switch">
-              <button id="view-list" type="button" class="selected" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
-              <button id="view-grid" type="button" class="" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
+              <button id="view-list" type="button" class="<g:if test='${viewType != 'grid'}'>selected</g:if>" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
+              <button id="view-grid" type="button" class="<g:if test='${viewType == 'grid'}'>selected</g:if>" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
             </div>
           </div>
         </div>
