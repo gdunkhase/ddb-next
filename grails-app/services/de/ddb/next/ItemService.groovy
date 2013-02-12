@@ -1,10 +1,10 @@
 package de.ddb.next
 
-import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
+import groovyx.net.http.HTTPBuilder
+
 import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.commons.GrailsApplication
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -24,7 +24,7 @@ class ItemService {
 
     def findItemById(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.wsbackend.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -33,17 +33,20 @@ class ItemService {
         final def componentsPath = "/access/" + id + "/components/"
         final def viewPath = componentsPath + "view"
 
-        def institution, item, fields, viewerUri
+        def institution, item, title, fields, viewerUri
         http.request( GET) { req ->
             uri.path = viewPath
 
             response.success = { resp, xml ->
                 institution= xml.institution
                 item = xml.item
+
+                title = shortenTitle(id, item)
+                println title
+
                 fields = xml.item.fields.field.findAll()
                 viewerUri = buildViewerUri(item, componentsPath)
-                return ['uri': '', 'viewerUri': viewerUri, 'institution':
-                    institution, 'item': item, 'fields': fields]
+                return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title, 'fields': fields]
             }
 
             response.'404' = { return '404' }
@@ -52,8 +55,46 @@ class ItemService {
             response.failure = { resp -> log.warn """
                 Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
                 """ }
-
         }
+    }
+
+    def MAX_LENGTH_FOR_ITEM_WITH_BINARY = 270
+    def MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY = 350
+
+    private shortenTitle(id, item) {
+        def title = item.title
+        def hasBinary = !fetchBinaryList(id).isEmpty()
+        println hasBinary
+
+        if(title.size() <= MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
+            return title
+        }
+
+        if(hasBinary && title.size() > MAX_LENGTH_FOR_ITEM_WITH_BINARY) {
+            appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_BINARY))
+        } else if(title.size() > MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
+            appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY))
+        }
+        return title
+    }
+
+    def apendDotDot(shortenedTitle){
+        def lastSpaceIndex = shortenedTitle.lastIndexOf(' ')
+        def shortenedTitleUntilLastSpace  = shortenedTitle.substring(0, lastSpaceIndex)
+        shortenedTitleUntilLastSpace + '...'
+    }
+
+    def buildTitle(title, hasBinary) {
+        if(title.size() <= MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
+            return title
+        }
+
+        if(hasBinary && title.size() > MAX_LENGTH_FOR_ITEM_WITH_BINARY) {
+            appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_BINARY))
+        } else if(title.size() > MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
+            appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY))
+        }
+        return title
     }
 
     private def buildViewerUri(item, componentsPath) {
@@ -68,7 +109,7 @@ class ItemService {
     }
 
     def findBinariesById() {
-        Map prev = parse(fetchBinaryList())
+        Map prev = parse(fetchBinaryList().binary.list())
         return prev
     }
 
@@ -93,15 +134,26 @@ class ItemService {
 
 
     private def fetchBinaryList(id) {
-        def http = new HTTPBuilder(SERVER_URI)
+        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
         http.parser.'application/json' = http.parser.'application/xml'
 
         final def binariesPath= "/access/" + id + "/components/binaries"
-        http.get( path : binariesPath) { resp, xml ->
-            //log(resp, xml)
-            def binaries = xml
-            assert binaries instanceof groovy.util.slurpersupport.GPathResult
-            return binaries.binary.list()
+
+        http.request( GET) { req ->
+            uri.path = binariesPath
+
+            response.success = { resp, xml ->
+                def binaries = xml
+                return binaries.binary.list()
+            }
+
+            response.'404' = { return '404' }
+
+            //TODO: handle other failure such as '500'
+            response.failure = { resp -> log.warn """
+                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
+                """ }
         }
     }
 

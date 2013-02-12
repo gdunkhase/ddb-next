@@ -14,7 +14,7 @@ class ItemController {
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
             render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                        item: item.item, institution : item.institution, fields: item.fields])
+                'title': item.title, item: item.item, institution : item.institution, fields: item.fields])
         }
     }
 }
