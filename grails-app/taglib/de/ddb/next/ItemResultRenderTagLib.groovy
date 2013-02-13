@@ -15,7 +15,7 @@ class ItemResultRenderTagLib {
     def res = '<ul class="results-list unstyled">'
     results.each{
       it->
-      def res_img_thumb = (it.thumbnail.contains("binary"))? grailsApplication.config.ddb.binary+it.thumbnail : it.thumbnail
+      def res_img_thumb = (it.thumbnail.contains("binary"))? grailsApplication.config.ddb.binary.url+it.thumbnail : it.thumbnail
       res += '<li class="item bb">'
         res += '<div class="summary row">'
           res += '<div class="span7">'
