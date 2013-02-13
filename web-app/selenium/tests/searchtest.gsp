@@ -13,4 +13,7 @@
 
   <%--click on the first search hit--%>
   <sel:row line="clickAndWait|//div[@class='search-results']//div[@class='summary-main']//a[1]" />
+
+  <%--verify that we got a search hit--%>
+  <sel:row line="verifyElementPresent|//div[@class='culture-item-page']" />
 </sel:test>
