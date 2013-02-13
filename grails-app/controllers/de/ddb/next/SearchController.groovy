@@ -24,7 +24,13 @@ class SearchController {
 		//-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
 		if(params.get("facetValues[]")){
 			println "facet param size: "+params.get("facetValues[]").size()
-			urlQuery = getFacets(urlQuery,"facet", 0)
+			urlQuery = SearchService.getFacets(params, urlQuery,"facet", 0)
+		}
+		
+		if(params.get("facets[]")){
+			urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+			if(!urlQuery["facet"].contains(params.get("facets[]")))
+				urlQuery["facet"].add(params.get("facets[]"))
 		}
 		
 		if(params.minDocs)
@@ -37,11 +43,15 @@ class SearchController {
 		if(params.viewType == null)
 			urlQuery["viewType"] = "list"
 		else urlQuery["viewType"] = params.viewType
+		
+		def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request) 
 			
 		def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsItemResults.toString() ,'/apis/search', urlQuery)
 		
 		//Calculating results details info (number of results in page, total results number)
-		def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +((urlQuery["offset"].toInteger()+urlQuery["rows"].toInteger()>resultsItems.numberOfResults)?resultsItems.numberOfResults:urlQuery["offset"].toInteger()+urlQuery["rows"].toInteger())
+		def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
+									((urlQuery["offset"].toInteger()+
+									urlQuery["rows"].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery["offset"].toInteger()+urlQuery["rows"].toInteger())
 		
 		//Calculating results pagination (previous page, next page, first page, and last page)
 		def pagesOverallIndex = message(code:"ddbnext.Page")+" "+
@@ -49,102 +59,28 @@ class SearchController {
 								message(code:"ddbnext.Of")+" "+
 								(Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
 								
-		def resultsPaginatorOptions = buildPaginatorOptions(urlQuery)
+		def resultsPaginatorOptions = SearchService.buildPaginatorOptions(urlQuery)
 		
 		if(params.reqType=="ajax"){
 			def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary]).replaceAll("\r\n", '')
-			def jsonReturn = [results: resultsHTML, resultsPaginatorOptions: resultsPaginatorOptions,resultsOverallIndex:resultsOverallIndex, pagesOverallIndex: pagesOverallIndex,paginationURL: buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString().replaceAll("&reqType=ajax",""))]
+			def jsonReturn = [results: resultsHTML,
+								resultsPaginatorOptions: resultsPaginatorOptions,
+								resultsOverallIndex:resultsOverallIndex, 
+								pagesOverallIndex: pagesOverallIndex,
+								paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString().replaceAll("&reqType=ajax",""))
+								]
 			render (contentType:"text/json"){jsonReturn}
 		}
 		else{
 	        render(view: "results", model: [
 				results: resultsItems,
 				viewType:  urlQuery["viewType"],
+				facets: [mainFacetsUrl: mainFacetsUrl],
 				resultsPaginatorOptions: resultsPaginatorOptions,
 				resultsOverallIndex:resultsOverallIndex, 
 				pagesOverallIndex: pagesOverallIndex,
-				paginationURL: buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString())
+				paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString())
 			])
 		}
     }
-	
-	def getFacets(urlQuery, key, currentDepth){
-		def res = urlQuery
-		res[key] = []
-		def facets = []
-		def depth = 0
-		params.get("facetValues[]").each {
-			def subVal = it.split ("=")
-			def facet = subVal[currentDepth]
-			depth = subVal.size()
-			println facet
-			if(!facets.contains(facet)){
-				println it
-				if(!currentDepth){
-					facets.add(facet)
-					res[key].add(facet)
-				}else{
-					if(key==subVal[currentDepth-1])
-						res[key].add(facet)
-				}
-			}
-		}
-		if(currentDepth+1<depth)
-			facets.each {
-				res = getFacets(res, it, currentDepth+1)
-			}
-		print "res size: "+res.size()+" res: "+res
-		return res
-	}
-	
-	def buildPagination(resultsNumber, queryParameters, getQuery){
-		def res = [firstPg:null,lastPg:null,prevPg:null,nextPg:null]
-		//if resultsNumber greater rows number no buttons else we can start to create the pagination
-		def currentRows = queryParameters.rows.toInteger()
-		def currentOffset = queryParameters.offset.toInteger()
-		if(!getQuery.contains("rows"))
-			getQuery += "&rows=20"
-		if(resultsNumber>currentRows){
-			//We are not at the first page
-			if(currentOffset>0){
-				def prevUrl
-				def firstUrl
-				def offsetPrev = currentOffset - currentRows
-				def offsetFirst = 0
-				if(getQuery.contains("offset")){
-					prevUrl = getQuery.replaceAll('offset='+currentOffset, 'offset='+offsetPrev)
-					firstUrl = getQuery.replaceAll('offset='+currentOffset, 'offset='+offsetFirst)
-				}else{
-					prevUrl = getQuery+'&offset='+offsetPrev
-					firstUrl = getQuery+'&offset='+offsetFirst
-				}
-				res["firstPg"]= firstUrl
-				res["prevPg"]= prevUrl
-			}
-			//We are not at the last page
-			if(currentOffset+currentRows<resultsNumber){
-				def offsetNext = currentOffset + currentRows
-				def offsetLast = ((Math.ceil(resultsNumber/currentRows)*currentRows)-currentRows).toInteger()
-				def nextUrl
-				def lastUrl
-				if(getQuery.contains("offset")){
-					nextUrl = getQuery.replaceAll('offset='+currentOffset, 'offset='+offsetNext)
-					lastUrl = getQuery.replaceAll('offset='+currentOffset, 'offset='+offsetLast)
-				}else{
-					nextUrl = getQuery+'&offset='+offsetNext
-					lastUrl = getQuery+'&offset='+offsetLast
-				}
-				res["lastPg"]= lastUrl
-				res["nextPg"]= nextUrl
-			}
-		}
-		return res
-	}
-	
-	def buildPaginatorOptions(queryMap){
-		def pageFilter = [10,20,40,60,100]
-		if(!pageFilter.contains(queryMap["rows"].toInteger()))
-			pageFilter.add(queryMap["rows"].toInteger())
-		return [pageFilter: pageFilter.sort(), pageFilterSelected: queryMap["rows"].toInteger(), sortResultsSwitch: queryMap["sort"]]
-	}
 }

@@ -12,23 +12,26 @@ window.onload=function(){
   $('.results-paginator-view').removeClass('off');
   
   $('.page-filter select').change(function(){
-    fetchResultsList(addParamToCurrentUrl('rows', this.value));
+    var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
+    fetchResultsList(addParamToCurrentUrl(paramsArray));
 	return false;
   });
   
   $('.sort-results-switch select').change(function(){
-    fetchResultsList(addParamToCurrentUrl('sort', this.value));
+	var paramsArray = new Array(new Array('sort', this.value), new Array('offset', 0));
+    fetchResultsList(addParamToCurrentUrl(paramsArray));
 	return false;
   });
 
-  function addParamToCurrentUrl(param, value, urlParameters){
+  function addParamToCurrentUrl(arrayParamVal, urlParameters){
 	var queryParameters = {}, queryString = (urlParameters==null)?location.search.substring(1):urlParameters,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
         queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
     }
-    queryParameters[param]=value;
-    queryParameters['offset']=0;
+    $.each(arrayParamVal, function(key, value){
+      queryParameters[value[0]] = value[1];
+    });
     var tmp = jQuery.param(queryParameters);
     return window.location.origin+window.location.pathname+'?'+tmp;
   }
@@ -51,7 +54,11 @@ window.onload=function(){
       });
       $('.search-results').fadeIn('fast');
   	});
-	var newUrl = addParamToCurrentUrl('viewType', 'list');
+	var paramsArray = new Array(new Array('viewType', 'list'));
+	var newUrl = addParamToCurrentUrl(paramsArray);
+	$('.page-nav a').each(function(){
+      this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
+	});
 	window.history.pushState({path:newUrl},'',newUrl);
   });
   $('#view-grid').click(function(){
@@ -68,7 +75,11 @@ window.onload=function(){
       });
       $('.search-results').fadeIn('fast');
   	});
-    var newUrl = addParamToCurrentUrl('viewType', 'grid');
+	var paramsArray = new Array(new Array('viewType', 'grid'));
+    var newUrl = addParamToCurrentUrl(paramsArray);
+    $('.page-nav a').each(function(){
+      this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
+  	});
 	window.history.pushState({path:newUrl},'',newUrl);
   });
   function fetchResultsList(url){
@@ -126,28 +137,28 @@ window.onload=function(){
       </div>
       <div class="facets-list bt bb">
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="#"><g:message code="ddbnext.facet_time" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl[0]}"><g:message code="ddbnext.facet_time" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="#"><g:message code="ddbnext.facet_place" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl[1]}"><g:message code="ddbnext.facet_place" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="#"><g:message code="ddbnext.facet_affiliate" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl[2]}"><g:message code="ddbnext.facet_affiliate" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="#"><g:message code="ddbnext.facet_keywords" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl[3]}"><g:message code="ddbnext.facet_keywords" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="#"><g:message code="ddbnext.facet_language" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl[4]}"><g:message code="ddbnext.facet_language" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="#"><g:message code="ddbnext.facet_type" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl[5]}"><g:message code="ddbnext.facet_type" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="#"><g:message code="ddbnext.facet_sector" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl[6]}"><g:message code="ddbnext.facet_sector" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="#"><g:message code="ddbnext.facet_provider" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl[7]}"><g:message code="ddbnext.facet_provider" /></a>
         </div>
       </div>
     </div>

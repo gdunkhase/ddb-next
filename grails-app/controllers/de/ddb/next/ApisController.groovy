@@ -13,26 +13,36 @@ class ApisController {
     def highlightedTerms = []
     def docs = []
     def query = [ query: params.query ]
+	
     if(params.offset)
       query["offset"]= params.offset
+	  
     if(params.rows)
       query["rows"] = params.rows
+	  
     if(params.facet){
-		query["facet"] = []
-		params.facet.each {
-			query["facet"].add(it)
-		}
+		if(params.facet instanceof java.util.List){
+			query["facet"] = []
+			params.facet.each {
+				query["facet"].add(it)
+			}
+		}else query["facet"]=params.facet
 	}
     if(params.minDocs)
       query["minDocs"] = params.minDocs
+	  
     if(params.sort)
       query["sort"] = params.sort
+	  
 	if(params.time_fct){
-		query["time_fct"] = []
-		params.time_fct.each {
-			query["time_fct"].add(it)
-		}
+		if(params.time_fct instanceof java.util.List){
+			query["time_fct"] = []
+			params.time_fct.each {
+				query["time_fct"].add(it)
+			}
+		}else query["time_fct"]=params.time_fct
 	}
+	
 	if(params.place_fct){
 		if(params.place_fct instanceof java.util.List){
 			query["place_fct"] = []
@@ -41,6 +51,7 @@ class ApisController {
 			}
 		}else query["place_fct"]=params.place_fct
 	}
+	
 	if(params.affiliate_fct){
 		if(params.affiliate_fct instanceof java.util.List){
 			query["affiliate_fct"] = []
@@ -49,6 +60,7 @@ class ApisController {
 			}
 		}else query["affiliate_fct"]=params.affiliate_fct
 	}
+	
 	if(params.keywords_fct){
 		if(params.keywords_fct instanceof java.util.List){
 			query["keywords_fct"] = []
@@ -57,6 +69,7 @@ class ApisController {
 			}
 		}else query["keywords_fct"]=params.keywords_fct
 	}
+	
 	if(params.language_fct){
 		if(params.language_fct instanceof java.util.List){
 			query["language_fct"] = []
@@ -65,6 +78,7 @@ class ApisController {
 			}
 		}else query["language_fct"]=params.language_fct
 	}
+	
 	if(params.type_fct){
 		if(params.type_fct instanceof java.util.List){
 			query["type_fct"] = []
@@ -73,6 +87,7 @@ class ApisController {
 			}
 		}else query["type_fct"]=params.type_fct
 	}
+	
 	if(params.sector_fct){
 		if(params.sector_fct instanceof java.util.List){
 			query["sector_fct"] = []
@@ -81,6 +96,7 @@ class ApisController {
 			}
 		}else query["sector_fct"]=params.sector_fct
 	}
+	
 	if(params.provider_fct){
 		if(params.provider_fct instanceof java.util.List){
 			query["provider_fct"] = []
@@ -89,6 +105,7 @@ class ApisController {
 			}
 		}else query["provider_fct"]=params.provider_fct
 	}
+	println request.forwardURI+'?'+request.getQueryString()
     def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(),'/search', query)
     jsonResp.results["docs"].get(0).each{
 
@@ -147,6 +164,6 @@ class ApisController {
     resultList["numberOfResults"] = jsonResp.numberOfResults
     resultList["randomSeed"] = jsonResp.randomSeed
 	println jsonResp.numberOfResults
-    render(view: "response", model: [res:JSONValue.toJSONString(resultList)])
+	render (contentType:"text/json"){resultList}
   }
 }
