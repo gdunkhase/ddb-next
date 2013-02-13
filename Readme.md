@@ -46,4 +46,17 @@ In development mode the external configuration is located on: $USER_HOME/.grails
 In Production Mode: /grails/app-config/$appname.properties
 
 ####Proxy configuration 
-In development environment, proxies are read from $USER_HOME/.grails/ProxySettings.groovy by default. 
+In development environment, proxies are read from $USER_HOME/.grails/ProxySettings.groovy by default.
+
+####Runtime configurations 
+In case there is a need to change the default configurations, through external configuration files it is possible to overridde the default configurations. 
+A list of some predefined varibales is set below:
+
+    ddb.binary="http://www.binary-p2.deutsche-digitale-bibliothek.de"
+    ddb.wsbackend="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+    ddb.wsItemResults="http://localhost:8080"
+    ddb.backend.url="http://dev-backend.deutsche-digitale-bibliothek.de:9998"
+    ddb.advancedSearch.searchGroupCount=3
+    ddb.advancedSearch.searchFieldCount=10
+    ddb.advancedSearch.defaultOffset=0
+    ddb.advancedSearch.defaultRows=20  
