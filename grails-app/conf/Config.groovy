@@ -59,6 +59,19 @@ grails.exceptionresolver.params.exclude = ['password']
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
 
+//DDB SPECIFIC Configuration variables
+//The variables can be overwritten by defining local configurations, see below environments
+
+ddb.wsbackend="http://dev-backend.deutsche-digitale-bibliothek.de:9998"
+ddb.wsItemResults="http://localhost:8080"
+ddb.binary.url="http://www.binary-p2.deutsche-digitale-bibliothek.de"
+ddb.apis.url="http://localhost:8080"
+ddb.backend.url="http://dev-backend.deutsche-digitale-bibliothek.de:9998"
+ddb.advancedSearch.searchGroupCount=3
+ddb.advancedSearch.searchFieldCount=10
+ddb.advancedSearch.defaultOffset=0
+ddb.advancedSearch.defaultRows=20
+
 environments {
     development {
         grails.logging.jul.usebridge = true
