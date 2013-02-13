@@ -10,11 +10,12 @@ class ItemController {
         def id = params.id
         def item = itemService.findItemById(id)
         def binaryList = itemService.findBinariesById(id)
+        def binariesCounter = itemService.binariesCounter(binaryList)
 
         flash.all = [binaryList.size]
-        flash.images = [itemService.binariesCounter(binaryList).images]
-        flash.audios = [itemService.binariesCounter(binaryList).audios]
-        flash.videos = [itemService.binariesCounter(binaryList).videos]
+        flash.images = [binariesCounter.images]
+        flash.audios = [binariesCounter.audios]
+        flash.videos = [binariesCounter.videos]
 
         if(item == '404') {
             redirect(controller: 'error')

@@ -32,18 +32,20 @@
     width:120px;
     height:90px}
 .slide-viewer li a .thumbnail.audio {
-    background:#fff url("/Content/themes/base/icons/search_result_media_audio.png") no-repeat center center;
+    background:#fff url("../images/icons/search_result_media_audio.png") no-repeat center center;
     background-size:90px auto}
 .slide-viewer li a .thumbnail.video {
-    background:#fff url("/Content/themes/base/icons/search_result_media_video.png") no-repeat center center;
+    background:#fff url("../images/icons/search_result_media_video.png") no-repeat center center;
     background-size:90px auto}
 .slide-viewer li a .thumbnail.image {
-    background:#fff url("/Content/themes/base/icons/search_result_media_image.png") no-repeat center center;
+    background:#fff url("../images/icons/search_result_media_image.png") no-repeat center center;
     background-size:90px auto}
 .slide-viewer li a .thumbnail img {
-    margin:0;
-    max-width:120px;
-    max-height:90px}
+  margin:0;
+  max-width:120px;
+  max-height:90px;
+  display: inline-block;
+}
 .slide-viewer li a .label {
     display:block;
     overflow:hidden;
@@ -71,15 +73,12 @@
     background:white;
     overflow:hidden}
 .slide-viewer .btn-prev span,.slide-viewer .btn-next span {
-    position:absolute;
-    top:50px;
-    left:3px;
-    height:24px;
-    width:20px;
-    background-image:url(../images/icons/objectviewer_carousel_controls.png)}
-.slide-viewer .btn-prev {
-    float:left;
-    left:0}
+  position:absolute;
+  left:3px;
+  height:24px;
+  width:20px;
+  background-image:url("../images/icons/objectviewer_carousel_controls.png");
+}
 .slide-viewer .btn-prev span {
     background-position:0px -91px}
 .slide-viewer .btn-prev[disabled] span {
@@ -132,7 +131,7 @@
     position:absolute;
     left:0;
     bottom:0;
-    display:block;
+    display:none;
     width:445px;
     overflow:hidden;
     background-color:white}
@@ -166,13 +165,11 @@
   background-color:#fff;
   overflow:hidden;
 }
-.binary-viewer {
-
-}
 .binary-title {
   padding-top:7px;
+  height:40px;
 }
-.binary-viewer img{
+#binary-viewer img{
   cursor: pointer;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
