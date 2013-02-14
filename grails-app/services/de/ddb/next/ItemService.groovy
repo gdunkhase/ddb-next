@@ -16,7 +16,8 @@ class ItemService {
     private static final def ORIG= 'orig'
     private static final def IMAGE= 'image/jpeg'
     private static final def AUDIO = 'audio/mp3'
-    private static final def VIDEO = 'video/mp4'
+    private static final def VIDEOMP4 = 'video/mp4'
+    private static final def VIDEOFLV = 'video/flv'
 
     def transactional = false
     def grailsApplication
@@ -83,11 +84,11 @@ class ItemService {
 
     private def parse(binaries) {
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
-		def binaryList = []
-		def bidimensionalList = []
+        def binaryList = []
+        def bidimensionalList = []
         String position
         String path
-		String type
+        String type
         //creation of a bi-dimensional list containing the binaries separated for position
         binaries.each { x ->
             if(x.'@position'.toString() != position){
@@ -99,31 +100,37 @@ class ItemService {
         }
         //creation of a list of binary maps from the bi-dimensional list
         bidimensionalList.each { y ->
-            def binaryMap = ['origUri' : ['image':'','audio':'','video':''],
-                'preview' : ['title':'', 'uri': ''],
-                'thumbnail' : ['title':'', 'uri': ''],
-                'full' : ['title':'', 'uri': ''],
+            def binaryMap = ['orig' : ['title':'', 'uri': ['image':'','audio':'','video':'']],
+                'preview' : ['title':'', 'uri':''],
+                'thumbnail' : ['title':'', 'uri':''],
+                'full' : ['title':'', 'uri':''],
             ]
             y.each { z ->
                 path = z.'@path'
                 type = z.'@mimetype'
                 if(path.contains(ORIG)){
-                    if(type.contains(IMAGE))
-                        binaryMap.'origUri'.'image' = BINARY_SERVER_URI + z.'@path'
-                    else if(type.contains(AUDIO))
-                        binaryMap.'origUri'.'audio' = BINARY_SERVER_URI + z.'@path'
-                    else if(type.contains(VIDEO))
-                        binaryMap.'origUri'.'video' = BINARY_SERVER_URI + z.'@path'
+                    if(type.contains(IMAGE)){
+                        binaryMap.'orig'.'uri'.'image' = BINARY_SERVER_URI + z.'@path'
+                        if(!binaryMap.'orig'.'title') binaryMap.'orig'.'title' = z.'@name'
+                    }
+                    else if(type.contains(AUDIO)){
+                        binaryMap.'orig'.'uri'.'audio' = BINARY_SERVER_URI + z.'@path'
+                        binaryMap.'orig'.'title' = z.'@name'
+                    }
+                    else if(type.contains(VIDEOMP4)||type.contains(VIDEOFLV)){
+                        binaryMap.'orig'.'uri'.'video' = BINARY_SERVER_URI + z.'@path'
+                        binaryMap.'orig'.'title' = z.'@name'
+                    }
                 }
                   else if(path.contains(PREVIEW)) {
-                    binaryMap.'preview'.'title' = z.'@name'
-                    binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
+                      binaryMap.'preview'.'title' = z.'@name'
+                      binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
                 } else if (path.contains(THUMBNAIL)) {
-                    binaryMap.'thumbnail'.'title' = z.'@name'
-                    binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
+                      binaryMap.'thumbnail'.'title' = z.'@name'
+                      binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
                 } else if (path.contains(FULL)) {
-                    binaryMap.'full'.'title' = z.'@name'
-                    binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
+                      binaryMap.'full'.'title' = z.'@name'
+                      binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
                 }
             }
             binaryList.add(binaryMap)
@@ -136,12 +143,12 @@ class ItemService {
         def audios = 0
         def videos = 0
         binaries.each { i ->
-            if(i.'origUri'.'audio' || i.'origUri'.'video'){
-               if(i.'origUri'.'audio')
+            if(i.'orig'.'uri'.'audio' || i.'orig'.'uri'.'video'){
+               if(i.'orig'.'uri'.'audio')
                    audios++
-               if(i.'origUri'.'video')
+               if(i.'orig'.'uri'.'video')
                    videos++
-            } else if (i.'origUri'.'image')
+            } else if (i.'orig'.'uri'.'image')
                   images++
         }
         return (['images':images,'audios':audios,'videos':videos])

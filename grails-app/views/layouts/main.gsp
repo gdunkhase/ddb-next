@@ -46,7 +46,7 @@
   <!--  TODO which script do we really use? -->
   <!--  TODO why do we declare jquery here? Don't we use Grails jQuery Plug-in? -->
   <script type="text/javascript" src="${resource(dir:'js', file:'json2.js')}"></script>  
-  <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
+  <!--<script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>-->
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.scrollTo-min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.jQuery.js')}" /></script>
