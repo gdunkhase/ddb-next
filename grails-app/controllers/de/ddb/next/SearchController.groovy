@@ -22,9 +22,13 @@ class SearchController {
 		
 		//<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
 		//-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
-		if(params.get("facetValues[]")){
-			println "facet param size: "+params.get("facetValues[]").size()
-			urlQuery = SearchService.getFacets(params, urlQuery,"facet", 0)
+		if(params["facetValues[]"]){
+				println "facet param size: "+params["facetValues[]"].size()+params["facetValues[]"].getClass().getName()
+				urlQuery = SearchService.getFacets(params, urlQuery,"facet", 0)
+		}
+		
+		urlQuery.each{
+			println "param query: "+it
 		}
 		
 		if(params.get("facets[]")){
@@ -44,7 +48,7 @@ class SearchController {
 			urlQuery["viewType"] = "list"
 		else urlQuery["viewType"] = params.viewType
 		
-		def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request) 
+		def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
 			
 		def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsItemResults.toString() ,'/apis/search', urlQuery)
 		
@@ -72,10 +76,15 @@ class SearchController {
 			render (contentType:"text/json"){jsonReturn}
 		}
 		else{
+			//We want to build the subfacets urls only if a main facet has been selected
+			def subFacetsUrl = [:]
+			if(urlQuery["facet"]){
+				subFacetsUrl = SearchService.buildSubFacetsUrl(resultsItems.facets, mainFacetsUrl, urlQuery)
+			}
 	        render(view: "results", model: [
 				results: resultsItems,
 				viewType:  urlQuery["viewType"],
-				facets: [mainFacetsUrl: mainFacetsUrl],
+				facets: [mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
 				resultsPaginatorOptions: resultsPaginatorOptions,
 				resultsOverallIndex:resultsOverallIndex, 
 				pagesOverallIndex: pagesOverallIndex,

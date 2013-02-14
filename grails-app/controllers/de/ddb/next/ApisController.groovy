@@ -35,7 +35,7 @@ class ApisController {
       query["sort"] = params.sort
 	  
 	if(params.time_fct){
-		if(params.time_fct instanceof java.util.List){
+		if(params.time_fct.size()>1){
 			query["time_fct"] = []
 			params.time_fct.each {
 				query["time_fct"].add(it)
@@ -44,7 +44,7 @@ class ApisController {
 	}
 	
 	if(params.place_fct){
-		if(params.place_fct instanceof java.util.List){
+		if(params.place_fct.size()>1){
 			query["place_fct"] = []
 			params.place_fct.each {
 				query["place_fct"].add(it)
@@ -53,7 +53,7 @@ class ApisController {
 	}
 	
 	if(params.affiliate_fct){
-		if(params.affiliate_fct instanceof java.util.List){
+		if(params.affiliate_fct.size()>1){
 			query["affiliate_fct"] = []
 			params.affiliate_fct.each {
 				query["affiliate_fct"].add(it)
@@ -62,7 +62,7 @@ class ApisController {
 	}
 	
 	if(params.keywords_fct){
-		if(params.keywords_fct instanceof java.util.List){
+		if(params.keywords_fct.size()>1){
 			query["keywords_fct"] = []
 			params.keywords_fct.each {
 				query["keywords_fct"].add(it)
@@ -71,7 +71,7 @@ class ApisController {
 	}
 	
 	if(params.language_fct){
-		if(params.language_fct instanceof java.util.List){
+		if(params.language_fct.size()>1){
 			query["language_fct"] = []
 			params.language_fct.each {
 				query["language_fct"].add(it)
@@ -80,7 +80,7 @@ class ApisController {
 	}
 	
 	if(params.type_fct){
-		if(params.type_fct instanceof java.util.List){
+		if(params.type_fct.size()>1){
 			query["type_fct"] = []
 			params.type_fct.each {
 				query["type_fct"].add(it)
@@ -89,7 +89,7 @@ class ApisController {
 	}
 	
 	if(params.sector_fct){
-		if(params.sector_fct instanceof java.util.List){
+		if(params.sector_fct.size()>1){
 			query["sector_fct"] = []
 			params.sector_fct.each {
 				query["sector_fct"].add(it)
@@ -98,7 +98,7 @@ class ApisController {
 	}
 	
 	if(params.provider_fct){
-		if(params.provider_fct instanceof java.util.List){
+		if(params.provider_fct.size()>1){
 			query["provider_fct"] = []
 			params.provider_fct.each {
 				query["provider_fct"].add(it)

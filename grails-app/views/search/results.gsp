@@ -136,29 +136,34 @@ window.onload=function(){
         <span class="contextual-help" title="" data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'>
       </div>
       <div class="facets-list bt bb">
-        <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl[0]}"><g:message code="ddbnext.facet_time" /></a>
+        <div class="facets-item ${(results.facets[3].facetValues.size() > 0)?'active':'' } bt bb bl br">
+          <a class="h3" href="${facets.mainFacetsUrl['time_fct']}"><g:message code="ddbnext.facet_time" /></a>
+          <g:if test="${results.facets[3].facetValues.size() > 0}">
+            <ul class="unstyled">
+              <g:facetListRender facetValues="${facets.subFacetsUrl['time_fct']}"></g:facetListRender>
+            </ul>
+          </g:if>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl[1]}"><g:message code="ddbnext.facet_place" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl['place_fct']}"><g:message code="ddbnext.facet_place" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl[2]}"><g:message code="ddbnext.facet_affiliate" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl['affiliate_fct']}"><g:message code="ddbnext.facet_affiliate" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl[3]}"><g:message code="ddbnext.facet_keywords" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl['keywords_fct']}"><g:message code="ddbnext.facet_keywords" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl[4]}"><g:message code="ddbnext.facet_language" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl['language_fct']}"><g:message code="ddbnext.facet_language" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl[5]}"><g:message code="ddbnext.facet_type" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl['type_fct']}"><g:message code="ddbnext.facet_type" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl[6]}"><g:message code="ddbnext.facet_sector" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl['sector_fct']}"><g:message code="ddbnext.facet_sector" /></a>
         </div>
         <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl[7]}"><g:message code="ddbnext.facet_provider" /></a>
+          <a class="h3" href="${facets.mainFacetsUrl['provider_fct']}"><g:message code="ddbnext.facet_provider" /></a>
         </div>
       </div>
     </div>
