@@ -1,14 +1,24 @@
 <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir:'js', file:'jquery.fancybox-1.3.4.pack.js')}"></script>
 <script type="text/javascript" src="${resource(dir:'jwplayer', file:'jwplayer.js')}"></script>
-<script type="text/javascript" src="${resource(dir:'jwplayer', file:'jwplayer.html5.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}"/></script>
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery.fancybox-1.3.4.css')}" type="text/css" media="screen">
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'viewer.css')}" />
 <script type="text/javascript">
 window.onload = function(){
+  $(document).ready(function() {
+    currentTab($("p.all"));
+    $(function() {
+      $("div.all").show();
+      $("p.divider").show();
+      $("div.tabs").addClass("fix");
+    });
+    createGallery($("#gallery-all"));
+    updatePreview($("div.all"));
+  });
   function currentTab(el) {
-    $("p.tab").removeClass("currentTab")
-    $(el).addClass("currentTab");
+    $("p.tab").removeClass("current-tab")
+    $(el).addClass("current-tab");
   };
   function updatePreview(gallerydiv) {
     var a = gallerydiv.find("ul").children('li').eq(0).children('a');
@@ -21,6 +31,8 @@ window.onload = function(){
     if(type=="image"){
       if($("#jwplayer-container"))
         $("#jwplayer-container").remove();
+      if($("#jwplayer-container_wrapper"))
+        $("#jwplayer-container_wrapper").remove();
       $("a.preview").show();
       $("a.preview").attr("href", previewHref);
       $("a.preview img").attr("src", previewUri);
@@ -41,12 +53,12 @@ window.onload = function(){
           width: 445,
           height: 320,
           image: poster,
-          skin: "/jwplayer/skin/ddbskin.xml",
+          //skin: "/jwplayer/skin/ddbskin.xml", 
           modes: [{
               type: "html5"
           }, {
               type: "flash",
-              src: "/jwplayer/jwplayer.flash.swf"
+              src: "../jwplayer/jwplayer.flash.swf"
           }, {
               type: "download"
           }],
@@ -72,17 +84,24 @@ window.onload = function(){
         visible: 3,
         minimum: 3
       },
+      scroll: {
+        fx: "fade",
+        easing: "linear"
+      },
       auto: false,
       prev: ".btn-prev",
       next: ".btn-next"
     });
   };
+  function formatTitle() {
+    return '<div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span>';
+  }
   $("p.all").click(function() {
     var x = $("div.all");
     currentTab(this);
     $("div.scroller").hide();
     x.show();
-    createGallery($("#galleryAll"));
+    createGallery($("#gallery-all"));
     updatePreview(x);
   });
   $("p.images").click(function() {
@@ -92,7 +111,7 @@ window.onload = function(){
     currentTab(this);
     $("div.scroller").hide();
     x.show();
-    createGallery($("#galleryImages"));
+    createGallery($("#gallery-images"));
     updatePreview(x);
   });
   $("p.videos").click(function() {
@@ -102,7 +121,7 @@ window.onload = function(){
     currentTab(this);
     $("div.scroller").hide();
     x.show();
-    createGallery($("#galleryVideos"));
+    createGallery($("#gallery-videos"));
     updatePreview(x);
   });
   $("p.audios").click(function() {
@@ -112,11 +131,15 @@ window.onload = function(){
     currentTab(this);
     $("div.scroller").hide();
     x.show();
-    createGallery($("#galleryAudios"));
+    createGallery($("#gallery-audios"));
     updatePreview(x);
   });
   $(function() {
-    $(".preview").fancybox();
+    $(".preview").fancybox({
+      'showCloseButton' : false,
+      'titlePosition'   : 'over',
+      'titleFormat' : formatTitle
+    });
     $(".preview").click(function(e) {
       e.preventDefault();
       return false;
@@ -133,6 +156,8 @@ window.onload = function(){
       if(type=="image"){
         if($("#jwplayer-container"))
           $("#jwplayer-container").remove();
+        if($("#jwplayer-container_wrapper"))
+          $("#jwplayer-container_wrapper").remove();
         $("a.preview").show();
         $("a.preview").attr("href", previewHref);
         $("a.preview img").attr("src", previewUri);
@@ -145,70 +170,79 @@ window.onload = function(){
       return false;
   });
 };
-$(document).ready(function() {
-  createGallery($("#galleryAll"));
-});
 </script>
 <div class="slide-viewer">
   <div class="binary-viewer-container">
     <div id="binary-viewer">
-      <g:set var="first" value="${binaryList[0]}"/>
-      <a class="preview" href="${first.full.uri}"><img src="${first.preview.uri}" alt="${first.preview.title}" /></a>
+      <a class="preview" href="#">
+         <img src="" alt="" />
+      </a>
     </div>
   </div>
-  <div class="binaryViewerError" style="display: none;">
-    <p class="errorHeader"><g:message code="ddbnext.We_could_not_play_the_file" /></p>
+  <div class="binary-viewer-error">
+    <p class="error-header"><g:message code="ddbnext.We_could_not_play_the_file" /></p>
     <p>
-      The file <span class="mediaFile"><a
+      The file <span class="media-file"><a
         href="http://www.binary-p2.deutsche-digitale-bibliothek.de/binary/ZFCRNJG2ZARUJRKOMAA36NROCGSGL6TB/mvpr/1.jpg">Szene
           mit Willy Millowitsch (links). Quelle: Deutsches Filminstitut</a></span> cannot
       be displayed.
-    </p>
-  </div>
-  <div class="binaryViewerFlashUpgrade" style="display: none;">
-    <p class="errorHeader">You need to upgrade your Adobe Flash Player to
-      watch this video.</p>
-    <p>
-      <a href="http://get.adobe.com/flashplayer/">Download the latest Adobe
-        Flash Player.</a>
     </p>
     <p>
       <g:message code="ddbnext.You_can_download_or_use_alternative" 
                  default="ddbnext.You_can_download_or_use_alternative"/>
                  --args missing--
-                 <span class="mediaFile"><a href="${first.preview.uri}">${first.preview.title}</a></span>
+                 <span class="media-file"><a href="">title</a></span>
+    </p>
+  </div>
+  <div class="binary-viewer-flash-upgrade">
+    <p class="error-header"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
+    <p>
+      <a href="http://get.adobe.com/flashplayer/"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" /></a>
     </p>
   </div>
   <div class="binary-title">
-    <span>${first.orig.title}</span>
+    <span></span>
   </div>
 
   <div class="tabs">
-    <p class="tab all currentTab">
+    <p class="tab all">
       <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
                  args="${flash.all}" 
                  default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
     </p>
-    <div class="scroller all current">
-      <ul id="galleryAll">
+    <div class="scroller all">
+      <ul id="gallery-all">
         <g:each in="${binaryList}">
           <li>
-            <a class="group" href="${it.preview.uri}" 
-              <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}"> 
-                data-content="${it.full.uri}"
+            <a class="group" 
+              <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+                href="${it.preview.uri}"
+                data-content="${it.orig.uri.image}"
                 data-type="image"
                 <g:set var="type" value="image"/>
               </g:if>
               <g:elseif test="${it.orig.uri.video != ''}">
+                <g:if test="${it.preview.uri == ''}">
+                  href="../images/bg/video_poster.png"
+                </g:if>
+                <g:else>
+                  href="${it.preview.uri}"
+                </g:else>
                 data-content="${it.orig.uri.video}"
                 data-type="video"
                 <g:set var="type" value="video"/>
               </g:elseif>
-              <g:else test="${it.orig.uri.audio != ''}">
+              <g:elseif test="${it.orig.uri.audio != ''}">
+                <g:if test="${it.preview.uri == ''}">
+                  href="../images/bg/audio_poster.png"
+                </g:if>
+                <g:else>
+                  href="${it.preview.uri}"
+                </g:else>
                 data-content="${it.orig.uri.audio}"
                 data-type="audio"
                 <g:set var="type" value="audio"/>
-              </g:else>
+              </g:elseif>
                 title="${it.orig.title}">
               <div class="thumbnail ${type}">
                 <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
@@ -227,16 +261,44 @@ $(document).ready(function() {
         <span class="opaque"></span>
       </button>
     </div>
-    <noscript></noscript>
+    <noscript>
+      <div class="scroller all">
+        <ul id="gallery-all">
+          <g:each in="${binaryList}">
+            <li>
+              <a class="group" 
+                <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+                  href="${it.orig.uri.image}"
+                  <g:set var="type" value="image"/>
+                </g:if>
+                <g:elseif test="${it.orig.uri.video != ''}">
+                  href="${it.orig.uri.video}"
+                  <g:set var="type" value="video"/>
+                </g:elseif>
+                <g:elseif test="${it.orig.uri.audio != ''}">
+                  href="${it.orig.uri.audio}"
+                  <g:set var="type" value="audio"/>
+                </g:elseif>
+                  title="${it.orig.title}">
+                <div class="thumbnail ${type}">
+                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                </div>
+                <span class="label">${it.orig.title}</span>
+              </a>
+            </li>
+          </g:each>
+        </ul>
+      </div>
+    </noscript>
 
     <p class="tab divider">|</p>
     <p class="tab images"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flash.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
     <div class="scroller images">
-      <ul id="galleryImages">
+      <ul id="gallery-images">
         <g:each in="${binaryList}">
           <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <li>
-              <a class="group" href="${it.preview.uri}" data-content="${it.full.uri}" data-type="image" title="${it.preview.title}">
+              <a class="group" href="${it.preview.uri}" data-content="${it.orig.uri.image}" data-type="image" title="${it.preview.title}">
                 <div class="thumbnail image">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
                 </div>
@@ -255,20 +317,40 @@ $(document).ready(function() {
         <span class="opaque"></span>
       </button>
     </div>
-    <noscript></noscript>
+    <noscript>
+      <div class="scroller images">
+        <ul id="gallery-images">
+          <g:each in="${binaryList}">
+            <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+              <li>
+                <a class="group" href="${it.orig.uri.image}" title="${it.preview.title}">
+                  <div class="thumbnail image">
+                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                  </div>
+                  <span class="label">${it.preview.title}</span>
+                </a>
+              </li>
+            </g:if>
+          </g:each>
+        </ul>
+      </div>
+    </noscript>
 
     <p class="tab divider">|</p>
     <p class="tab videos"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flash.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
     <div class="scroller videos">
-      <button class="btn-prev">
-        <g:message code="ddbnext.Previous_Label" />
-        <span class="opaque"></span>
-      </button>
-      <ul id="galleryVideos">
+      <ul id="gallery-videos">
         <g:each in="${binaryList}">
           <g:if test="${it.orig.uri.video != '' }">
             <li>
-              <a class="group" href="${it.preview.uri}" data-content="${it.orig.uri.video}" data-type="video" title="${it.orig.title}">
+              <a class="group"
+                 <g:if test="${it.preview.uri == ''}">
+                   href="../images/bg/video_poster.png"
+                 </g:if>
+                 <g:else>
+                   href="${it.preview.uri}"
+                 </g:else>  
+                 data-content="${it.orig.uri.video}" data-type="video" title="${it.orig.title}">
                 <div class="thumbnail video">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
                 </div>
@@ -278,30 +360,49 @@ $(document).ready(function() {
           </g:if>
         </g:each>
       </ul>
+      <button class="btn-prev">
+        <g:message code="ddbnext.Previous_Label" />
+        <span class="opaque"></span>
+      </button>
       <button class="btn-next">
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
     </div>
-    
     <noscript>
+      <div class="scroller videos">
+        <ul id="gallery-videos">
+          <g:each in="${binaryList}">
+            <g:if test="${it.orig.uri.video != '' }">
+              <li>
+                <a class="group" href="${it.orig.uri.video}" title="${it.orig.title}">
+                  <div class="thumbnail video">
+                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                  </div>
+                  <span class="label">${it.orig.title}</span>
+                </a>
+              </li>
+            </g:if>
+          </g:each>
+        </ul>
+      </div>
     </noscript>
-    
-    <script type="text/javascript">
-    </script>
 
     <p class="tab divider">|</p>
     <p class="tab audios"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flash.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
     <div class="scroller audios">
-      <button class="btn-prev">
-        <g:message code="ddbnext.Previous_Label" />
-        <span class="opaque"></span>
-      </button>
-      <ul id="galleryAudios">
+      <ul id="gallery-audios">
         <g:each in="${binaryList}">
           <g:if test="${it.orig.uri.audio != '' }">
             <li>
-              <a class="group" href="${it.preview.uri}" data-content="${it.orig.uri.audio}" data-type="audio" title="${it.orig.title}">
+              <a class="group"
+                 <g:if test="${it.preview.uri == ''}">
+                   href="../images/bg/audio_poster.png"
+                 </g:if>
+                 <g:else>
+                   href="${it.preview.uri}"
+                 </g:else>
+                 data-content="${it.orig.uri.audio}" data-type="audio" title="${it.orig.title}">
                 <div class="thumbnail video">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
                 </div>
@@ -311,16 +412,32 @@ $(document).ready(function() {
           </g:if>
         </g:each>
       </ul>
+      <button class="btn-prev">
+        <g:message code="ddbnext.Previous_Label" />
+        <span class="opaque"></span>
+      </button>
       <button class="btn-next">
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
     </div>
-    
     <noscript>
+      <div class="scroller audios">
+        <ul id="gallery-audios">
+          <g:each in="${binaryList}">
+            <g:if test="${it.orig.uri.audio != '' }">
+              <li>
+                <a class="group" href="${it.orig.uri.audio}" title="${it.orig.title}">
+                  <div class="thumbnail video">
+                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                  </div>
+                  <span class="label">${it.orig.title}</span>
+                </a>
+              </li>
+            </g:if>
+          </g:each>
+        </ul>
+      </div>
     </noscript>
-    
-    <script type="text/javascript">
-    </script>
   </div>
 </div>

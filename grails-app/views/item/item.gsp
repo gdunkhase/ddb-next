@@ -1,5 +1,4 @@
 <meta name="layout" content="main" />
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'viewer.css')}" />
 <!-- TODO: change .culturalItem to .cultural-item -->
 <div class="culture-item-page">
   <g:render template="controls" />

@@ -16,7 +16,8 @@ class ItemService {
     private static final def ORIG= 'orig'
     private static final def IMAGE= 'image/jpeg'
     private static final def AUDIO = 'audio/mp3'
-    private static final def VIDEO = 'video/mp4'
+    private static final def VIDEOMP4 = 'video/mp4'
+    private static final def VIDEOFLV = 'video/flv'
 
     def transactional = false
     def grailsApplication
@@ -116,20 +117,20 @@ class ItemService {
                         binaryMap.'orig'.'uri'.'audio' = BINARY_SERVER_URI + z.'@path'
                         binaryMap.'orig'.'title' = z.'@name'
                     }
-                    else if(type.contains(VIDEO)){
+                    else if(type.contains(VIDEOMP4)||type.contains(VIDEOFLV)){
                         binaryMap.'orig'.'uri'.'video' = BINARY_SERVER_URI + z.'@path'
                         binaryMap.'orig'.'title' = z.'@name'
                     }
                 }
                   else if(path.contains(PREVIEW)) {
-                    binaryMap.'preview'.'title' = z.'@name'
-                    binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
+                      binaryMap.'preview'.'title' = z.'@name'
+                      binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
                 } else if (path.contains(THUMBNAIL)) {
-                    binaryMap.'thumbnail'.'title' = z.'@name'
-                    binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
+                      binaryMap.'thumbnail'.'title' = z.'@name'
+                      binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
                 } else if (path.contains(FULL)) {
-                    binaryMap.'full'.'title' = z.'@name'
-                    binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
+                      binaryMap.'full'.'title' = z.'@name'
+                      binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
                 }
             }
             binaryList.add(binaryMap)
