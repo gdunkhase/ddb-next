@@ -1,3 +1,4 @@
+<<g:set var="facetsList" value="${['time_fct', 'place_fct', 'affiliate_fct', 'keywords_fct', 'language_fct', 'type_fct', 'sector_fct', 'provider_fct']}"></g:set>
 <html>
 <head>
 <title><%=title%></title>
@@ -61,6 +62,16 @@ window.onload=function(){
 	});
 	window.history.pushState({path:newUrl},'',newUrl);
   });
+  $('#thumbnail-filter').click(function(){
+    var valueCheck = $(this);
+    if(valueCheck.is(':checked'))
+      var paramsArray = new Array(new Array('isThumbnailFiltered', 'true'));
+    else
+      var paramsArray = new Array(new Array('isThumbnailFiltered', 'false'));
+    var newUrl = addParamToCurrentUrl(paramsArray);
+    fetchResultsList(newUrl);
+    window.history.pushState({path:newUrl},'',newUrl);
+  });
   $('#view-grid').click(function(){
 	$('#view-list').removeClass('selected');
     $('#view-grid').addClass('selected');
@@ -99,6 +110,7 @@ window.onload=function(){
           $('.search-results').html(JSONresponse.results);
           $('#results-overall-index').html(JSONresponse.resultsOverallIndex);
           $('.pages-overall-index').html(JSONresponse.pagesOverallIndex);
+          $('#results-total').html(JSONresponse.numberOfResults);
           console.log($('.next-page a'))
           if(JSONresponse.paginationURL.nextPg){
             $(".page-nav .next-page").removeClass("off");
@@ -136,36 +148,22 @@ window.onload=function(){
         <span class="contextual-help" title="" data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'>
       </div>
       <div class="facets-list bt bb">
-        <div class="facets-item ${(results.facets[3].facetValues.size() > 0)?'active':'' } bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl['time_fct']}"><g:message code="ddbnext.facet_time" /></a>
-          <g:if test="${results.facets[3].facetValues.size() > 0}">
-            <ul class="unstyled">
-              <g:facetListRender facetValues="${facets.subFacetsUrl['time_fct']}"></g:facetListRender>
-            </ul>
-          </g:if>
-        </div>
-        <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl['place_fct']}"><g:message code="ddbnext.facet_place" /></a>
-        </div>
-        <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl['affiliate_fct']}"><g:message code="ddbnext.facet_affiliate" /></a>
-        </div>
-        <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl['keywords_fct']}"><g:message code="ddbnext.facet_keywords" /></a>
-        </div>
-        <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl['language_fct']}"><g:message code="ddbnext.facet_language" /></a>
-        </div>
-        <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl['type_fct']}"><g:message code="ddbnext.facet_type" /></a>
-        </div>
-        <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl['sector_fct']}"><g:message code="ddbnext.facet_sector" /></a>
-        </div>
-        <div class="facets-item bt bb bl br">
-          <a class="h3" href="${facets.mainFacetsUrl['provider_fct']}"><g:message code="ddbnext.facet_provider" /></a>
-        </div>
+        <g:each in="${facetsList}" var="mit">
+          <g:each in="${(results.facets)}">
+            <g:if test="${mit == it.field}">
+              <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
+                <a class="h3" href="${facets.mainFacetsUrl[it.field]}"><g:message code="ddbnext.facet_${it.field}" /></a>
+                <g:if test="${it.facetValues.size() > 0}">
+                  <ul class="unstyled">
+                    <g:facetListRender facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></g:facetListRender>
+                  </ul>
+                </g:if>
+              </div>
+            </g:if>
+          </g:each>
+        </g:each>
       </div>
+      <a href="${clearFilters}" class="clear-filters button" ><g:message code="ddbnext.Clear_filters"/></a>
     </div>
     
     <div class="span9 search-results-content">
@@ -178,7 +176,7 @@ window.onload=function(){
         <div class="span9">
           <div class="results-paginator-view off">
             <div class="group-actions">
-              <input id="thumbnail-filter" type="checkbox">
+              <input id="thumbnail-filter" type="checkbox" <g:if test='${isThumbnailFiltered == 'true'}'>checked</g:if>>
               <label for="thumbnail-filter" title="<g:message code="ddbnext.Show_items_with_thumbnails" />"><g:message code="ddbnext.Show_items_with_thumbnails" /></label>
               <input id="toggle-cluster" type="checkbox">
               <label for="toggle-cluster" title="<g:message code="ddbnext.View_as_Cluster" />"><g:message code="ddbnext.View_as_Cluster" /></label>

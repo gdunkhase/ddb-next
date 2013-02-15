@@ -48,7 +48,7 @@
   background-position: 100% -48px;
 }
 
-.facets-list .facets-item:hover {
+.facets-list .facets-item >a:hover {
   background-color: #f6f5f3;
 }
 

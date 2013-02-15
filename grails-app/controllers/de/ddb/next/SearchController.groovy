@@ -27,10 +27,6 @@ class SearchController {
 				urlQuery = SearchService.getFacets(params, urlQuery,"facet", 0)
 		}
 		
-		urlQuery.each{
-			println "param query: "+it
-		}
-		
 		if(params.get("facets[]")){
 			urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
 			if(!urlQuery["facet"].contains(params.get("facets[]")))
@@ -47,6 +43,18 @@ class SearchController {
 		if(params.viewType == null)
 			urlQuery["viewType"] = "list"
 		else urlQuery["viewType"] = params.viewType
+		
+		if(params.isThumbnailFiltered){
+			urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+			if(!urlQuery["facet"].contains("grid_preview") && params.isThumbnailFiltered == "true"){
+				urlQuery["facet"].add("grid_preview")
+				urlQuery["grid_preview"] = "true"
+			}
+		}
+		
+		urlQuery.each{
+			println "param query: "+it
+		}
 		
 		def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
 			
@@ -71,7 +79,8 @@ class SearchController {
 								resultsPaginatorOptions: resultsPaginatorOptions,
 								resultsOverallIndex:resultsOverallIndex, 
 								pagesOverallIndex: pagesOverallIndex,
-								paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString().replaceAll("&reqType=ajax",""))
+								paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString().replaceAll("&reqType=ajax","")),
+								numberOfResults: resultsItems.numberOfResults
 								]
 			render (contentType:"text/json"){jsonReturn}
 		}
@@ -83,6 +92,8 @@ class SearchController {
 			}
 	        render(view: "results", model: [
 				results: resultsItems,
+				isThumbnailFiltered: params.isThumbnailFiltered,
+				clearFilters: SearchService.buildClearFilter(urlQuery, request.forwardURI),
 				viewType:  urlQuery["viewType"],
 				facets: [mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
 				resultsPaginatorOptions: resultsPaginatorOptions,

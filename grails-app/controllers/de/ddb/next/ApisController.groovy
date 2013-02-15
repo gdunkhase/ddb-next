@@ -21,7 +21,7 @@ class ApisController {
       query["rows"] = params.rows
 	  
     if(params.facet){
-		if(params.facet instanceof java.util.List){
+		if(params.facet.getClass().isArray()){
 			query["facet"] = []
 			params.facet.each {
 				query["facet"].add(it)
@@ -35,7 +35,7 @@ class ApisController {
       query["sort"] = params.sort
 	  
 	if(params.time_fct){
-		if(params.time_fct.size()>1){
+		if(params.time_fct.getClass().isArray()){
 			query["time_fct"] = []
 			params.time_fct.each {
 				query["time_fct"].add(it)
@@ -44,7 +44,7 @@ class ApisController {
 	}
 	
 	if(params.place_fct){
-		if(params.place_fct.size()>1){
+		if(params.place_fct.getClass().isArray()){
 			query["place_fct"] = []
 			params.place_fct.each {
 				query["place_fct"].add(it)
@@ -53,7 +53,7 @@ class ApisController {
 	}
 	
 	if(params.affiliate_fct){
-		if(params.affiliate_fct.size()>1){
+		if(params.affiliate_fct.getClass().isArray()){
 			query["affiliate_fct"] = []
 			params.affiliate_fct.each {
 				query["affiliate_fct"].add(it)
@@ -62,7 +62,7 @@ class ApisController {
 	}
 	
 	if(params.keywords_fct){
-		if(params.keywords_fct.size()>1){
+		if(params.keywords_fct.getClass().isArray()){
 			query["keywords_fct"] = []
 			params.keywords_fct.each {
 				query["keywords_fct"].add(it)
@@ -71,7 +71,7 @@ class ApisController {
 	}
 	
 	if(params.language_fct){
-		if(params.language_fct.size()>1){
+		if(params.language_fct.getClass().isArray()){
 			query["language_fct"] = []
 			params.language_fct.each {
 				query["language_fct"].add(it)
@@ -80,7 +80,7 @@ class ApisController {
 	}
 	
 	if(params.type_fct){
-		if(params.type_fct.size()>1){
+		if(params.type_fct.getClass().isArray()){
 			query["type_fct"] = []
 			params.type_fct.each {
 				query["type_fct"].add(it)
@@ -89,7 +89,7 @@ class ApisController {
 	}
 	
 	if(params.sector_fct){
-		if(params.sector_fct.size()>1){
+		if(params.sector_fct.getClass().isArray()){
 			query["sector_fct"] = []
 			params.sector_fct.each {
 				query["sector_fct"].add(it)
@@ -98,12 +98,16 @@ class ApisController {
 	}
 	
 	if(params.provider_fct){
-		if(params.provider_fct.size()>1){
+		if(params.provider_fct.getClass().isArray()){
 			query["provider_fct"] = []
 			params.provider_fct.each {
 				query["provider_fct"].add(it)
 			}
 		}else query["provider_fct"]=params.provider_fct
+	}
+	
+	if(params.grid_preview){
+		query["grid_preview"]=params.grid_preview
 	}
 	println request.forwardURI+'?'+request.getQueryString()
     def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(),'/search', query)
