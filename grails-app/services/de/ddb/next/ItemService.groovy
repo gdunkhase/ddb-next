@@ -14,6 +14,9 @@ class ItemService {
     private static final def PREVIEW= 'mvpr'
     private static final def FULL = 'full'
 
+    private static final def MAX_LENGTH_FOR_ITEM_WITH_BINARY = 270
+    private static final def MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY = 350
+
     def transactional = false
     def grailsApplication
 
@@ -23,7 +26,7 @@ class ItemService {
     ]
 
     def findItemById(id) {
-        def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
+        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
         ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
         /* TODO remove this hack, once the server deliver the right content
@@ -42,7 +45,6 @@ class ItemService {
                 item = xml.item
 
                 title = shortenTitle(id, item)
-                println title
 
                 fields = xml.item.fields.field.findAll()
                 viewerUri = buildViewerUri(item, componentsPath)
@@ -58,44 +60,32 @@ class ItemService {
         }
     }
 
-    def MAX_LENGTH_FOR_ITEM_WITH_BINARY = 270
-    def MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY = 350
 
     private shortenTitle(id, item) {
-        def title = item.title
+
+        def title = item.title.text()
+
         def hasBinary = !fetchBinaryList(id).isEmpty()
-        println hasBinary
 
         if(title.size() <= MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
             return title
         }
 
         if(hasBinary && title.size() > MAX_LENGTH_FOR_ITEM_WITH_BINARY) {
-            appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_BINARY))
+            return appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_BINARY))
         } else if(title.size() > MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
-            appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY))
+            return apendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY))
         }
+
         return title
     }
 
-    def apendDotDot(shortenedTitle){
+    def apendDotDot(String shortenedTitle){
         def lastSpaceIndex = shortenedTitle.lastIndexOf(' ')
         def shortenedTitleUntilLastSpace  = shortenedTitle.substring(0, lastSpaceIndex)
         shortenedTitleUntilLastSpace + '...'
     }
 
-    def buildTitle(title, hasBinary) {
-        if(title.size() <= MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
-            return title
-        }
-
-        if(hasBinary && title.size() > MAX_LENGTH_FOR_ITEM_WITH_BINARY) {
-            appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_BINARY))
-        } else if(title.size() > MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
-            appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY))
-        }
-        return title
-    }
 
     private def buildViewerUri(item, componentsPath) {
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()

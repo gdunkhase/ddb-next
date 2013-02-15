@@ -17,7 +17,7 @@ class ApiConsumer {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-            
+
             http.request(method, ContentType.TEXT) {
                 uri.path = path
                 uri.query = query
@@ -52,7 +52,7 @@ class ApiConsumer {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-            
+
             http.request(method, JSON) {
                 uri.path = path
                 uri.query = query
@@ -92,7 +92,7 @@ class ApiConsumer {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-            
+
             http.request(method, XML) {
                 uri.path = path
                 uri.query = query
@@ -132,7 +132,7 @@ class ApiConsumer {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-           
+
             http.request(method, ContentType.ANY) {
                 uri.path = path
                 uri.query = query
@@ -165,11 +165,11 @@ class ApiConsumer {
             log.debug " ${baseUrl} does not need http proxy"
             return
         }
-        
+
         def PROXY_HOST = 'proxy.fiz-karlsruhe.de'
         def PROXY_PORT = 8888
         http.setProxy(PROXY_HOST,PROXY_PORT, 'http')
-        
+
         log.debug " ${baseUrl} will uses HTTP Proxy"
     }
 }
