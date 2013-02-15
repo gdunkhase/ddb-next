@@ -165,7 +165,7 @@ class ApiConsumer {
             log.debug " ${baseUrl} does not need http proxy"
             return
         }
-        
+        return
         def PROXY_HOST = 'proxy.fiz-karlsruhe.de'
         def PROXY_PORT = 8888
         http.setProxy(PROXY_HOST,PROXY_PORT, 'http')

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 // TODO: do we need this class?
 class IndexController {
 
-  def url = "http://141.66.130.151:8003"
+  def url = "http://localhost:8003"
 
   def index() {
 

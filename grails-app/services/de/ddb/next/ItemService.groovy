@@ -32,16 +32,7 @@ class ItemService {
 
         final def componentsPath = "/access/" + id + "/components/"
         final def viewPath = componentsPath + "view"
-        final def parentPath = "/hierarchy/" + id + "/parent"
 
-        // hierarchy of linked objects
-        def hierarchy = []
-        def parents = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(), parentPath, null)
-        parents.each {
-            def children = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(), "/hierarchy/" + it.id + "/children", null)
-            hierarchy.add(["parent": it, "children": children])
-        }
-		
         def institution, item, fields, viewerUri
         http.request( GET) { req ->
             uri.path = viewPath
@@ -52,7 +43,7 @@ class ItemService {
                 fields = xml.item.fields.field.findAll()
                 viewerUri = buildViewerUri(item, componentsPath)
                 return ['uri': '', 'viewerUri': viewerUri, 'institution':
-                    institution, 'item': item, 'fields': fields, 'hierarchy': hierarchy]
+                    institution, 'item': item, 'fields': fields]
             }
 
             response.'404' = { return '404' }
