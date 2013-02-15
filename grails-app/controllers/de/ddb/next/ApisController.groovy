@@ -149,13 +149,15 @@ class ApisController {
       def xmlSubresp = ApiConsumer.getTextAsXml(grailsApplication.config.ddb.wsbackend.toString(),'/access/'+it.id+'/components/indexing-profile', [:])
       def jsonSubresp = new JsonSlurper().parseText(xmlSubresp.toString())
 	  
+	  def timeFct = (jsonSubresp.properties.time_fct)? jsonSubresp.properties.time_fct: ""
+	  def placeFct = (jsonSubresp.properties.place_fct)? jsonSubresp.properties.place_fct: ""
 	  def affiliateFct = (jsonSubresp.properties.affiliate_fct)? jsonSubresp.properties.affiliate_fct: ""
 	  def keywordsFct = (jsonSubresp.properties.keywords_fct)?jsonSubresp.properties.keywords_fct: ""
 	  def typeFct = (jsonSubresp.properties.type_fct)?jsonSubresp.properties.type_fct: ""
 	  def sectorFct = (jsonSubresp.properties.sector_fct)?jsonSubresp.properties.sector_fct: ""
 	  def providerFct = (jsonSubresp.properties.provider_fct)?jsonSubresp.properties.provider_fct: ""
 	  
-      def properties = [affiliate_fct:affiliateFct, keywords_fct:keywordsFct, type_fct:typeFct, sector_fct:sectorFct, provider_fct:providerFct, last_update: jsonSubresp.properties.last_update ]
+      def properties = [time_fct: timeFct, place_fct: placeFct, affiliate_fct:affiliateFct, keywords_fct:keywordsFct, type_fct:typeFct, sector_fct:sectorFct, provider_fct:providerFct, last_update: jsonSubresp.properties.last_update ]
 
       tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
       tmpResult["properties"] = properties
