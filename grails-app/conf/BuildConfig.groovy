@@ -50,4 +50,9 @@ grails.project.dependency.resolution = {
 
         compile ':cache:1.0.0'
     }
+
+    // don't put Selenium tests into war file
+    grails.war.resources = {stagingDir, args ->
+        delete(dir: "${stagingDir}/selenium") 
+    }
 }
