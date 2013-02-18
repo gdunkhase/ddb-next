@@ -7,7 +7,7 @@
   </div>
   <div class="information">
     <div class="hovercard-info-item">
-      <h4><g:trunkItemTitle title="${ item.preview.title }"></g:trunkItemTitle></h4>
+      <h4><g:truncateItemTitle title="${ item.preview.title }"></g:truncateItemTitle></h4>
       <ul class="unstyled">
         <g:each in="${item.properties}">
           <g:if test="${it.toString().replaceAll(it.key+'=','') !='' && it.key != 'last_update'}">

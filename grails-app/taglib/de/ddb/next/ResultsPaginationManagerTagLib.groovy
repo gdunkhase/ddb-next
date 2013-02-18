@@ -1,7 +1,6 @@
 package de.ddb.next
 
 class ResultsPaginationManagerTagLib {
-	
   /**
    * Renders the navigation bar for the results.
    *
@@ -19,6 +18,6 @@ class ResultsPaginationManagerTagLib {
    */
   
   def resultsPaginatorOptionsRender = { attrs, body ->
-	  out << render(template:"/search/paginator", model:[paginatorData: attrs.paginatorData])
-	 }
+      out << render(template:"/search/paginator", model:[paginatorData: attrs.paginatorData])
+  }
 }

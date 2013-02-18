@@ -11,7 +11,7 @@ class SearchResultsListRenderTagLib {
     out << render(template:"/search/resultsList", model:[results: attrs.results, confBinary: grailsApplication.config.ddb.binary])
    }
   
-  def trunkItemTitle = { attrs, body ->
-	out << SearchService.trimTitle(attrs.title)
+  def truncateItemTitle = { attrs, body ->
+      out << SearchService.trimTitle(attrs.title)
   }
 }

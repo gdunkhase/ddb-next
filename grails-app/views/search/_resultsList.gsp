@@ -6,10 +6,10 @@
           <g:render template="thumbnailWrapper" model="${[viewType: viewType, item: it, confBinary: confBinary]}" />
           <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it]}" />
         </g:if>
-        <g:if test="${viewType != 'grid'}">
+        <g:else>
           <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it]}" />
           <g:render template="thumbnailWrapper" model="${[viewType: viewType, item: it, confBinary: confBinary]}" />
-        </g:if>
+        </g:else>
         </div>
       </li>
   </g:each>
