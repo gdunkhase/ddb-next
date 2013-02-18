@@ -177,30 +177,23 @@ noscript .scroller {
 .fancybox-toolbar-close:hover {
   background: url("../images/icons/adv_search_row_actions.png") no-repeat left -80px;
 }
-.binary-viewer-error {
+.binary-viewer-error, .binary-viewer-flash-upgrade {
   display:none;
   position:relative;
   width:100%;
   height:320px;
   background:#fff;
 }
-.binary-viewer-error p {
-    padding:20px;
-    margin:0}
-.binary-viewer-error p a {
-    color:#a5003b;
-    text-decoration:underline}
-.binary-viewer-error .error-header {
-    font-size:16px;
-    font-weight:bold;
-    padding-bottom:0;
-    font-style:italic;
-    color:#3e3a37}
-.binary-viewer-error .media-file {
-  margin-right:3px;
+.binary-viewer-error p, .binary-viewer-flash-upgrade p {
+  padding:20px;
+  margin:0;
 }
-.binary-viewer-flash-upgrade {
-  display:none;
+.binary-viewer-error .error-header, .binary-viewer-flash-upgrade .error-header{
+  font-size:16px;
+  font-weight:bold;
+  padding-bottom:0;
+  font-style:italic;
+  color:#3e3a37;
 }
 .binary-viewer-container {
   background-color:#fff;
