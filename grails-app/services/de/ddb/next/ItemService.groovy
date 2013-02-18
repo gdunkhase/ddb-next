@@ -14,6 +14,9 @@ class ItemService {
     private static final def PREVIEW= 'mvpr'
     private static final def FULL = 'full'
 
+    private static final def MAX_LENGTH_FOR_ITEM_WITH_BINARY = 270
+    private static final def MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY = 350
+
     def transactional = false
     def grailsApplication
 
@@ -33,17 +36,19 @@ class ItemService {
         final def componentsPath = "/access/" + id + "/components/"
         final def viewPath = componentsPath + "view"
 
-        def institution, item, fields, viewerUri
+        def institution, item, title, fields, viewerUri
         http.request( GET) { req ->
             uri.path = viewPath
 
             response.success = { resp, xml ->
                 institution= xml.institution
                 item = xml.item
+
+                title = shortenTitle(id, item)
+
                 fields = xml.item.fields.field.findAll()
                 viewerUri = buildViewerUri(item, componentsPath)
-                return ['uri': '', 'viewerUri': viewerUri, 'institution':
-                    institution, 'item': item, 'fields': fields]
+                return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title, 'fields': fields]
             }
 
             response.'404' = { return '404' }
@@ -52,9 +57,35 @@ class ItemService {
             response.failure = { resp -> log.warn """
                 Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
                 """ }
-
         }
     }
+
+
+    private shortenTitle(id, item) {
+
+        def title = item.title.text()
+
+        def hasBinary = !fetchBinaryList(id).isEmpty()
+
+        if(title.size() <= MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
+            return title
+        }
+
+        if(hasBinary && title.size() > MAX_LENGTH_FOR_ITEM_WITH_BINARY) {
+            return appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_BINARY))
+        } else if(title.size() > MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
+            return apendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY))
+        }
+
+        return title
+    }
+
+    def apendDotDot(String shortenedTitle){
+        def lastSpaceIndex = shortenedTitle.lastIndexOf(' ')
+        def shortenedTitleUntilLastSpace  = shortenedTitle.substring(0, lastSpaceIndex)
+        shortenedTitleUntilLastSpace + '...'
+    }
+
 
     private def buildViewerUri(item, componentsPath) {
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
@@ -68,7 +99,7 @@ class ItemService {
     }
 
     def findBinariesById() {
-        Map prev = parse(fetchBinaryList())
+        Map prev = parse(fetchBinaryList().binary.list())
         return prev
     }
 
@@ -93,15 +124,26 @@ class ItemService {
 
 
     private def fetchBinaryList(id) {
-        def http = new HTTPBuilder(SERVER_URI)
+        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
         http.parser.'application/json' = http.parser.'application/xml'
 
         final def binariesPath= "/access/" + id + "/components/binaries"
-        http.get( path : binariesPath) { resp, xml ->
-            //log(resp, xml)
-            def binaries = xml
-            assert binaries instanceof groovy.util.slurpersupport.GPathResult
-            return binaries.binary.list()
+
+        http.request( GET) { req ->
+            uri.path = binariesPath
+
+            response.success = { resp, xml ->
+                def binaries = xml
+                return binaries.binary.list()
+            }
+
+            response.'404' = { return '404' }
+
+            //TODO: handle other failure such as '500'
+            response.failure = { resp -> log.warn """
+                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
+                """ }
         }
     }
 

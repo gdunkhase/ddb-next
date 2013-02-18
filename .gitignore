@@ -9,3 +9,5 @@ Guardfile
 .groovy
 *.orig
 .buildpath
+.idea
+ddb-next.iml
