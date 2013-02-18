@@ -2,12 +2,14 @@ class UrlMappings {
 
     static mappings = {
 
-        "/$controller/$action?/$id?"{ constraints { // apply constraints here
-            } }
+
+        //@formatter:off
+        "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
+        //@formatter:on
 
         "/search/$q?" {
             controller="search"
-            action=results
+            action="results"
         }
 
         "/advancedsearch" {
@@ -17,17 +19,22 @@ class UrlMappings {
 
         "/" {
             controller="index"
-            action=index
+            action="index"
         }
 
         "/item/$id" {
             controller="item"
-            action=findById
+            action="findById"
         }
 
         "/about-us/institutions" {
             controller="institution"
-            action=show
+            action="show"
+        }
+
+        "/apis/institutions" {
+            controller="institution"
+            action="getJson"
         }
 
         "500"(view:'/error')

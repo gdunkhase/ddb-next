@@ -2,7 +2,8 @@
 
 <h2>Institutions</h2>
 
-<div class="row">
+<!-- TODO: id and class contain the same value, i.e., institution-list -->
+<div id="institution-list" class="row">
   <div class="span9">
   <g:render template="pagination" />
     <ol class="institution-list">

@@ -18,3 +18,7 @@
 .filter {
   display: none;
 }
+
+.highlight {
+  font-weight: bold;
+}
