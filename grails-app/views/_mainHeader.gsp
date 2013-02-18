@@ -35,7 +35,7 @@
             </div>
             <div class="span5 toolbar">
               <div class="language-wrapper">
-                <g:if test="${locale.toString().substring(0, 2)=="de_DE"}">
+                <g:if test="${locale.toString().substring(0, 2)=="de"}">
                   <a>
                     <g:message code="ddbnext.language_fct_ger"/>
                   </a>
@@ -58,7 +58,7 @@
                     </label>
                     <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
                     <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint"/>" data-content="<g:message code="ddbnext.Search_Hint"/>"></span> 
-                    <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
+                    <a class="link-adv-search" href="/advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
                     <div class="tutorial tooltip">
                       <div>
                         <g:message code="ddbnext.Search_Hint"/>
