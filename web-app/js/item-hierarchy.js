@@ -66,7 +66,7 @@ function getParents(url, id, complete) {
     type : 'GET',
     dataType : 'json',
     async : true,
-    url : url.dir + "parent/" + id,
+    url : url.dir + "parents/" + id,
     complete : function(data) {
       complete(jQuery.parseJSON(data.responseText));
     }
@@ -87,8 +87,7 @@ window.onload = function() {
 
   var imgLoader = document.createElement('img');
 
-  imgLoader.src = "/images/icons/loader_small.gif";
+  imgLoader.src = "../images/icons/loader_small.gif";
   $('.item-hierarchy-result').prepend(imgLoader);
-
   createHierarchy(parseUrl(this.location.href));
 }
