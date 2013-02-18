@@ -11,22 +11,17 @@ class SearchService {
 		def facets = urlQuery
 		facets["facet"] = []
 		if(reqParameters.get("facetValues[]").getClass().isArray()){
-			println "!is array"
 			reqParameters.get("facetValues[]").each{
-				println it
 				facetValues.add(it)
 			}
 		}else{
-			println "!is not an array"
 			facetValues.add(reqParameters.get("facetValues[]").toString())
 		}
-		println "***** facet Values param size: "+facetValues.size()+" facetValues[]: "+reqParameters.get("facetValues[]")
 		facetValues.each {
 			def tmpVal = java.net.URLDecoder.decode(it.toString(), "UTF-8")
 			List tmpSubVal = tmpVal.split("=")
 			if(!facets["facet"].contains(tmpSubVal[0]))
 				facets["facet"].add(tmpSubVal[0].toString())
-			println "****"+facets["facet"]+"tmpVal: "+tmpVal+" tmpSubVal: "+tmpSubVal.get(1)+ " iterator: "+it
 			if(!facets[tmpSubVal[0]]){
 				facets[tmpSubVal[0]]=[tmpSubVal[1]]
 			}else
@@ -39,7 +34,6 @@ class SearchService {
 	static def facetValuesToString(facetValues){
 		def res = ""
 		def newFacetValues = []
-		println "************"+facetValues
 		if(facetValues != null){
 			if(facetValues.getClass().isArray()){
 				newFacetValues = facetValues
@@ -50,7 +44,7 @@ class SearchService {
 				res += "&facetValues%5B%5D="+it
 			}
 		}
-		println "facet values: "+res
+
 		return res
 	}
 	
@@ -62,7 +56,7 @@ class SearchService {
 			else
 				mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+urlQuery["query"]+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+it+facetValuesToString(reqParameters.get("facetValues[]")))
 		}
-		println(mainFacetsUrls)
+
 		return mainFacetsUrls
 	}
 	
@@ -155,5 +149,18 @@ class SearchService {
 			}
 		}
 		return res
+	}
+	
+	static def trimTitle(String title){
+		def matches
+		def matchesMatch = title =~ /(?m)<match>(.*?)<\/match>/
+		def cleanTitle = title.replaceAll("<match>", "").replaceAll("</match>", "")
+		def tmpTitle = (cleanTitle.length()>100)?cleanTitle.substring(0,96)+"...":cleanTitle
+		if(matchesMatch.size()>0){
+			matchesMatch.each{
+				tmpTitle = tmpTitle.replaceAll(it[1], "<strong>"+it[1]+"</strong>")
+			}
+		}
+		return tmpTitle
 	}
 }

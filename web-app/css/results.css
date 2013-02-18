@@ -224,10 +224,14 @@ input[type="checkbox"],input[type="radio"] {
   max-height: 2.2em;
 }
 
-.search-results .results-list .title a{
+.search-results .results-list .summary-main-wrapper .title{
+  max-height: 3.2em;
+}
+
+.search-results .results-list .summary-main-wrapper .title a{
   font-weight: normal;
   word-wrap: break-word;
-  font-size: 22px;
+  font-size: 17px;
 }
 
 .search-results .results-list .subtitle {

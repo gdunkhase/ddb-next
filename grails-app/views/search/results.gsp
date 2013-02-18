@@ -1,4 +1,4 @@
-<<g:set var="facetsList" value="${['time_fct', 'place_fct', 'affiliate_fct', 'keywords_fct', 'language_fct', 'type_fct', 'sector_fct', 'provider_fct']}"></g:set>
+<g:set var="facetsList" value="${['time_fct', 'place_fct', 'affiliate_fct', 'keywords_fct', 'language_fct', 'type_fct', 'sector_fct', 'provider_fct']}"></g:set>
 <html>
 <head>
 <title><%=title%></title>
@@ -33,8 +33,8 @@ window.onload=function(){
     $.each(arrayParamVal, function(key, value){
       queryParameters[value[0]] = value[1];
     });
-    var tmp = jQuery.param(queryParameters);
-    return window.location.origin+window.location.pathname+'?'+tmp;
+    var tmp = jQuery.param(queryParameters, true);
+    return window.location.origin+window.location.pathname+'?'+decodeURIComponent(tmp);
   }
   
   $('.page-nav a').click(function(){
@@ -42,6 +42,13 @@ window.onload=function(){
     return false;
   });
   $('#view-list').click(function(){
+    $('.summary-main .title a').each(function(index,value){
+        var newTitle = (value.title.length>100)?value.title.substring(0,96)+'...':value.title;
+        $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
+          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
+        });
+        value.innerHTML = newTitle;
+    });
 	$('#view-list').addClass('selected');
     $('#view-grid').removeClass('selected');
 	$('.search-results').fadeOut('fast', function(){
@@ -73,6 +80,14 @@ window.onload=function(){
     window.history.pushState({path:newUrl},'',newUrl);
   });
   $('#view-grid').click(function(){
+    $('.summary-main .title a').each(function(index,value){
+        var newTitle = (value.title.length>53)?value.title.substring(0,50)+'...':value.title;
+        $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
+          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
+        });
+        value.innerHTML = newTitle;
+    });
+    var newTitle = $('.summary-main .title a').title;
 	$('#view-list').removeClass('selected');
     $('#view-grid').addClass('selected');
 	$('.search-results').fadeOut('fast', function(){
@@ -94,6 +109,7 @@ window.onload=function(){
 	window.history.pushState({path:newUrl},'',newUrl);
   });
   function fetchResultsList(url){
+    console.log(url)
     $('.search-results').empty();
     var imgLoader = document.createElement('img');
     imgLoader.src = "${resource(dir: 'images/icons', file: 'loader_small.gif')}";

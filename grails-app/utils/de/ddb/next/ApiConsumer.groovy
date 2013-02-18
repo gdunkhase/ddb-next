@@ -5,8 +5,10 @@ import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+import org.apache.commons.logging.LogFactory
 
 class ApiConsumer {
+	private static final log = LogFactory.getLog(this)
 
     static def postText(String baseUrl, String path, query, method = Method.POST) {
         try {
@@ -15,6 +17,7 @@ class ApiConsumer {
             http.request(method, ContentType.TEXT) {
                 uri.path = path
                 uri.query = query
+				log.debug "Current request uri: "+uri
                 response.success = { resp, reader ->
                     println "response status: ${resp.statusLine}"
                     println 'Headers: -----------'
@@ -48,7 +51,7 @@ class ApiConsumer {
             http.request(method, JSON) {
                 uri.path = path
                 uri.query = query
-				println uri
+				log.debug "Current request uri: "+uri
                 response.success = { resp, json ->
                     // FIXME log don't print
 					/*
@@ -91,7 +94,8 @@ class ApiConsumer {
                 uri.path = path
                 uri.query = query
                 headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-                response.success = { resp, xml ->
+				log.debug "Current request uri: "+uri
+				response.success = { resp, xml ->
 					/*
                     println "response status: ${resp.statusLine}"
                     println 'Headers: -----------'
@@ -130,7 +134,8 @@ class ApiConsumer {
             http.request(method, ContentType.ANY) {
                 uri.path = path
                 uri.query = query
-                response.success = { resp, reader ->
+				log.debug "Current request uri: "+uri
+				response.success = { resp, reader ->
                     println "response status: ${resp.statusLine}"
                     println 'Headers: -----------'
                     resp.headers.each { h -> println " ${h.name} : ${h.value}" }
