@@ -23,7 +23,6 @@ class SearchController {
 		//<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
 		//-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
 		if(params["facetValues[]"]){
-				println "facet param size: "+params["facetValues[]"].size()+params["facetValues[]"].getClass().getName()
 				urlQuery = SearchService.getFacets(params, urlQuery,"facet", 0)
 		}
 		
@@ -50,10 +49,6 @@ class SearchController {
 				urlQuery["facet"].add("grid_preview")
 				urlQuery["grid_preview"] = "true"
 			}
-		}
-		
-		urlQuery.each{
-			println "param query: "+it
 		}
 		
 		def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)

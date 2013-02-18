@@ -109,7 +109,7 @@ class ApisController {
 	if(params.grid_preview){
 		query["grid_preview"]=params.grid_preview
 	}
-	println request.forwardURI+'?'+request.getQueryString()
+	
     def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(),'/search', query)
     jsonResp.results["docs"].get(0).each{
 
@@ -138,11 +138,12 @@ class ApisController {
 		  }	
 
       tmpResult["id"] = it.id
-      tmpResult["view"] = (!it.view instanceof JSONNull)?it.view:""
-      tmpResult["label"] = (!it.label instanceof JSONNull)?it.label:""
-      tmpResult["latitude"] = (!it.latitude instanceof JSONNull)?it.latitude:""
-      tmpResult["longitude"] = (!it.longitude instanceof JSONNull)?it.longitude:""
-      tmpResult["category"] = (!it.category instanceof JSONNull)?it.category:""
+
+      tmpResult["view"] = (it.view instanceof JSONNull)?"":it.view
+      tmpResult["label"] = (it.label instanceof JSONNull)?"":it.label
+      tmpResult["latitude"] = (it.latitude instanceof JSONNull)?"":it.latitude
+      tmpResult["longitude"] = (it.longitude instanceof JSONNull)?"":it.longitude
+      tmpResult["category"] = (it.category instanceof JSONNull)?"":it.category
 
       def path = grailsApplication.config.ddb.wsbackend.toString()+'/access/'+it.id+'/components/indexing-profile'
 
@@ -169,7 +170,7 @@ class ApisController {
     resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
     resultList["numberOfResults"] = jsonResp.numberOfResults
     resultList["randomSeed"] = jsonResp.randomSeed
-	println jsonResp.numberOfResults
+
 	render (contentType:"text/json"){resultList}
   }
 }

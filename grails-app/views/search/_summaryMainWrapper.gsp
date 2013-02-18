@@ -1,7 +1,9 @@
 <div class="summary-main-wrapper <g:if test="${viewType != 'grid'}">span7</g:if>">
   <div class="summary-main">
     <h2 class="title">
-      <a class="persist" href="/item/${item.id}" title="${item.label}">${item.preview.title.replaceAll('match', 'strong')}</a>
+      <a class="persist" href="/item/${item.id}" title="${item.label}">
+      <g:trunkItemTitle title="${ item.preview.title }"></g:trunkItemTitle>
+      </a>
     </h2>
     <div class="subtitle">${item.preview.subtitle}</div>
     <ul class="matches unstyled">
