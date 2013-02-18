@@ -23,7 +23,7 @@ class ItemController {
         }
     }
     
-    def parent() {
+    def parents() {
         render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(), "/hierarchy/" + params.id + "/parent", null))
     }
 }
