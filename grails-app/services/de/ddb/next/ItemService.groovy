@@ -88,8 +88,13 @@ class ItemService {
 
 
     private def buildViewerUri(item, componentsPath) {
+        if(item.viewers.viewer == null || item.viewers.viewer.isEmpty()) {
+            return ''
+        }
+            
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
         def viewerPrefix = item.viewers.viewer.uri.toString()
+
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
             def sourceUri = BINARY_SERVER_URI + componentsPath + 'source'
