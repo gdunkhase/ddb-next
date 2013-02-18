@@ -58,7 +58,7 @@
                     </label>
                     <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
                     <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint"/>" data-content="<g:message code="ddbnext.Search_Hint"/>"></span> 
-                    <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
+                    <a class="link-adv-search" href="/advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
                     <div class="tutorial tooltip">
                       <div>
                         <g:message code="ddbnext.Search_Hint"/>

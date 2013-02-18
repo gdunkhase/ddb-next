@@ -27,7 +27,7 @@ class AdvancedsearchController {
         int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
         int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
         String url = grailsApplication.config.ddb.backend.url
-        List facetSearchfields = new Facets(url:url).getExtendedFacets()
+        List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
 		render(view: "/search/advancedsearch", model: [searchGroupCount: searchGroupCount, 
@@ -52,7 +52,7 @@ class AdvancedsearchController {
         int offset = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultOffset)
         int rows = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultRows)
         def url = grailsApplication.config.ddb.backend.url
-        def facetSearchfields = new Facets(url:url).getExtendedFacets()
+        def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
 
         AdvancedSearchFormToQueryConverter converter =
                 new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
@@ -68,7 +68,7 @@ class AdvancedsearchController {
     private Map getFacetValues(facetSearchfields) {
 		def facetValuesMap = [:]
         def url = grailsApplication.config.ddb.backend.url
-        def facetsRequester = new Facets(url:url)
+        def facetsRequester = new FacetsService(url:url)
         for ( facetSearchfield in facetSearchfields ) {
             if (facetSearchfield.searchType.equals(enumSearchType)) {
                 def facetValues = facetsRequester.getFacet(facetSearchfield.name + facetNameSuffix)
