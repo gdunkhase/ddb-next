@@ -4,7 +4,7 @@
   src="${resource(dir: 'js', file: 'item-hierarchy.js')}" /></script>
 
 <div class="item-hierarchy off">
-  <div class="row fieldHeader">
+  <div class="row field-header">
     <g:message code="ddbnext.View_related_objects" />
     <span class="contextual-help"
       title="<g:message code="ddbnext.HierarchyHelp_Text"/>"
