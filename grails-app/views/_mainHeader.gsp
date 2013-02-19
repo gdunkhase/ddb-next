@@ -35,7 +35,7 @@
             </div>
             <div class="span5 toolbar">
               <div class="language-wrapper">
-                <g:if test="${locale.toString().substring(0, 2)=="de_DE"}">
+                <g:if test="${locale.toString().substring(0, 2)=="de"}">
                   <a>
                     <g:message code="ddbnext.language_fct_ger"/>
                   </a>
