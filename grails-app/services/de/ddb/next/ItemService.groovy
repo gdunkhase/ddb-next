@@ -23,10 +23,10 @@ class ItemService {
     def grailsApplication
 
     def findItemById(id) {
-        def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
+        def http = new HTTPBuilder(grailsApplication.config.ddb.wsbackend.toString())
         http.parser.'application/json' = http.parser.'application/xml'
 
         final def componentsPath = "/access/" + id + "/components/"
@@ -142,14 +142,17 @@ class ItemService {
         def images = 0
         def audios = 0
         def videos = 0
-        binaries.each { i ->
-            if(i.'orig'.'uri'.'audio' || i.'orig'.'uri'.'video'){
-               if(i.'orig'.'uri'.'audio')
+        binaries.each {
+            if(it.'orig'.'uri'.'audio' || it.'orig'.'uri'.'video'){
+               if(it.'orig'.'uri'.'audio'){
                    audios++
-               if(i.'orig'.'uri'.'video')
+               }
+               if(it.'orig'.'uri'.'video'){
                    videos++
-            } else if (i.'orig'.'uri'.'image')
+               }
+            } else if (it.'orig'.'uri'.'image'){
                   images++
+              }
         }
         return (['images':images,'audios':audios,'videos':videos])
     }

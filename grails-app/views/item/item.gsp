@@ -114,42 +114,42 @@ window.onload = function(){
     $("div.binary-viewer-flash-upgrade").hide();
   }
   $("p.all").click(function() {
-    var x = $("div.all");
+    var tab = $("div.all");
     currentTab(this);
     $("div.scroller").hide();
-    x.show();
+    tab.show();
     createGallery($("#gallery-all"));
-    updatePreview(x);
+    updatePreview(tab);
   });
   $("p.images").click(function() {
-    var x = $("div.images");
-    if(x.find("li").size()==0)
+    var tab = $("div.images");
+    if(tab.find("li").size()==0)
       return false;
     currentTab(this);
     $("div.scroller").hide();
-    x.show();
+    tab.show();
     createGallery($("#gallery-images"));
-    updatePreview(x);
+    updatePreview(tab);
   });
   $("p.videos").click(function() {
-    var x = $("div.videos");
-    if(x.find("li").size()==0)
+    var tab = $("div.videos");
+    if(tab.find("li").size()==0)
       return false;
     currentTab(this);
     $("div.scroller").hide();
-    x.show();
+    tab.show();
     createGallery($("#gallery-videos"));
-    updatePreview(x);
+    updatePreview(tab);
   });
   $("p.audios").click(function() {
-    var x = $("div.audios");
-    if(x.find("li").size()==0)
+    var tab = $("div.audios");
+    if(tab.find("li").size()==0)
       return false;
     currentTab(this);
     $("div.scroller").hide();
-    x.show();
+    tab.show();
     createGallery($("#gallery-audios"));
-    updatePreview(x);
+    updatePreview(tab);
   });
   $(function() {
     $(".preview").fancybox({
