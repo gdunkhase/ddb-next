@@ -1,9 +1,7 @@
 package de.ddb.next
 
-import grails.converters.JSON
 import groovy.json.JsonSlurper
 import net.sf.json.JSONNull
-import org.json.simple.JSONValue
 
 class ApisController {
 
@@ -109,7 +107,7 @@ class ApisController {
           query["grid_preview"]=params.grid_preview
       }
       
-    def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(),'/search', query)
+    def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search', query)
     jsonResp.results["docs"].get(0).each{
 
         def tmpResult = [:]
@@ -143,9 +141,9 @@ class ApisController {
         tmpResult["longitude"] = (it.longitude instanceof JSONNull)?"":it.longitude
         tmpResult["category"] = (it.category instanceof JSONNull)?"":it.category
 
-        def path = grailsApplication.config.ddb.wsbackend.toString()+'/access/'+it.id+'/components/indexing-profile'
+        def path = grailsApplication.config.ddb.backend.url.toString()+'/access/'+it.id+'/components/indexing-profile'
 
-        def xmlSubresp = ApiConsumer.getTextAsXml(grailsApplication.config.ddb.wsbackend.toString(),'/access/'+it.id+'/components/indexing-profile', [:])
+        def xmlSubresp = ApiConsumer.getTextAsXml(grailsApplication.config.ddb.backend.url.toString(),'/access/'+it.id+'/components/indexing-profile', [:])
         def jsonSubresp = new JsonSlurper().parseText(xmlSubresp.toString())
         
         def timeFct = (jsonSubresp.properties.time_fct)? jsonSubresp.properties.time_fct: ""

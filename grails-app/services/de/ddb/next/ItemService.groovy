@@ -74,7 +74,7 @@ class ItemService {
         }
 
         if(hasBinary && title.size() > MAX_LENGTH_FOR_ITEM_WITH_BINARY) {
-            return appendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_BINARY))
+            return apendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_BINARY))
         } else if(title.size() > MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY) {
             return apendDotDot(title.substring(0, MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY))
         }

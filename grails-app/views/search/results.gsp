@@ -34,7 +34,7 @@ window.onload=function(){
       queryParameters[value[0]] = value[1];
     });
     var tmp = jQuery.param(queryParameters, true);
-    return window.location.origin+window.location.pathname+'?'+decodeURIComponent(tmp);
+    return window.location.pathname+'?'+decodeURIComponent(tmp);
   }
   
   $('.page-nav a').click(function(){

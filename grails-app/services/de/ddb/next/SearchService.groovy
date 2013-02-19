@@ -1,6 +1,7 @@
 package de.ddb.next
 
 import javax.servlet.http.HttpServletRequest
+
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 
 class SearchService {
@@ -50,10 +51,13 @@ class SearchService {
     static def buildMainFacetsUrl(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, HttpServletRequest requestObject){
         def mainFacetsUrls = [:]
         facetsList.each {
-            if(urlQuery["facet"] && urlQuery["facet"].contains(it))
-            mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+urlQuery["query"]+"&offset=0&rows="+urlQuery["rows"]+facetValuesToString(reqParameters.get("facetValues[]")))
-            else
-            mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+urlQuery["query"]+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+it+facetValuesToString(reqParameters.get("facetValues[]")))
+            def searchQuery = (urlQuery["query"]) ? urlQuery["query"] : ""
+            if(urlQuery["facet"] && urlQuery["facet"].contains(it)){
+                mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+facetValuesToString(reqParameters.get("facetValues[]")))
+            }
+            else{
+                mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+it+facetValuesToString(reqParameters.get("facetValues[]")))
+            }
         }
         
         return mainFacetsUrls
