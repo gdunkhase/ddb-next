@@ -1,0 +1,98 @@
+.field-header {
+  clear: both;
+  font-size: 1.064em;
+  line-height: 32px;
+  height: 32px;
+  font-weight: normal;
+  color: #3e3a37;
+  padding-left: 10px;
+  margin: 20px 0 15px 0;
+  background: #efebe8;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px
+}
+
+.item-hierarchy-result div.leaf-indicator {
+  background: url("../images/bg/hierarchy_leaf.png") no-repeat;
+  float: left;
+  height: 19px;
+  margin: 2px 5px 2px 8px;
+  width: 16px;
+}
+
+.item-hierarchy-result span.item-hierarchy-label {
+  display: block;
+  font-weight: bolder;
+  margin-left: 30px;
+}
+
+.item-hierarchy-result span.sibling-count {
+  position: absolute;
+  text-align: center;
+  top: 81px;
+}
+
+.item-hierarchy-result ul {
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+}
+
+.item-hierarchy-result ul>li {
+  background:
+    url("../images/bg/advanced_search_solid_joint_last_item.png")
+    no-repeat 7px 0px;
+  min-height: 26px;
+  padding: 17px 0 0 56px;
+  position: relative;
+}
+
+.item-hierarchy-result ul>li>span.branch-type {
+  float: left;
+}
+
+.item-hierarchy-result ul>li>span.branch-type i {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
+.item-hierarchy-result ul>li.leaf {
+  background:
+    url("../images/bg/advanced_search_solid_joint_standard_top.png" )
+    no-repeat 7px 0px;
+}
+
+.item-hierarchy-result ul>li.leaf>span.branch-type>i {
+  background: url("../images/bg/advanced_search_empty_node.png") no-repeat;
+}
+
+.item-hierarchy-result ul>li.leaf.last {
+  background:
+    url("../images/bg/advanced_search_solid_joint_last_item.png")
+    no-repeat 7px 0px;
+}
+
+.item-hierarchy-result ul>li.node>span.branch-type i {
+  background: #a5003b
+    url("../images/bg/advanced_search_parent_node_default.png");
+}
+
+.item-hierarchy-result ul>li.node.more-hidden {
+  background: url("../images/bg/advanced_search_dotted_joint.png")
+    no-repeat 7px 0px;
+}
+
+.item-hierarchy-result ul>li.root {
+  background: none;
+  padding: 0;
+}
+
+.item-hierarchy-result ul>li.root>span.branch-type i {
+  background: #999 none;
+}
+
+.off {
+  display: none !important;
+}

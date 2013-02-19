@@ -2,8 +2,13 @@ package de.ddb.next
 
 
 class ItemController {
+    static defaultAction = "findById"
 
     def itemService
+    
+    def children() {
+        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(), "/hierarchy/" + params.id + "/children", null))
+    }
 
     def findById() {
         def id = params.id
@@ -23,5 +28,9 @@ class ItemController {
             render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
             'title': item.title, item: item.item, institution : item.institution, fields: item.fields, binaryList: binaryList])
         }
+    }
+    
+    def parents() {
+        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(), "/hierarchy/" + params.id + "/parent", null))
     }
 }

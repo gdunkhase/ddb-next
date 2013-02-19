@@ -209,5 +209,6 @@ window.onload = function(){
       </div>
     </div>
   </div>
+      <g:render template="hierarchy" />
 </body>
 </html>
