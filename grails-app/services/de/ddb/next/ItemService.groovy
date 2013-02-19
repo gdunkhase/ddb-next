@@ -39,24 +39,22 @@ class ItemService {
         def institution, item, title, fields, viewerUri
         http.request( GET) { req ->
             uri.path = viewPath
-
             response.success = { resp, xml ->
                 institution= xml.institution
                 item = xml.item
-
                 title = shortenTitle(id, item)
-
                 fields = xml.item.fields.field.findAll()
                 viewerUri = buildViewerUri(item, componentsPath)
                 return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title, 'fields': fields]
             }
-
             response.'404' = { return '404' }
-
             //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
+            response.failure = { resp ->
+                log.warn """
+             Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
+            """
+                return response
+            }
         }
     }
 
@@ -91,7 +89,7 @@ class ItemService {
         if(item.viewers.viewer == null || item.viewers.viewer.isEmpty()) {
             return ''
         }
-            
+
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
         def viewerPrefix = item.viewers.viewer.uri.toString()
 

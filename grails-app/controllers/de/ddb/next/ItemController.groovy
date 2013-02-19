@@ -5,11 +5,11 @@ class ItemController {
 
     def itemService
 
-    // ddb-next/item/:id !!! be aware of the context path
     def findById() {
         def id = params.id
         def item = itemService.findItemById(id)
-        if(item == '404') {
+
+        if(item == '404' || item?.failure) {
             redirect(controller: 'error')
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
