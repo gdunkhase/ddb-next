@@ -21,6 +21,13 @@
   background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -42px;
 }
 
+.institution {
+  margin-top: 1em;
+  padding-buttom: 10px;
+  border: 1px solid #e9e5e2;
+  border-width: 0 0 5px;
+}
+
 .institution-name {
   padding-left: 22px;
   background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;

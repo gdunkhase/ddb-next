@@ -488,7 +488,7 @@ input {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
-button, input[type="button"], input[type="submit"] {
+button, input[type="button"], input[type="submit"], .button {
   color: #3e3a37;
   font-size: 0.938em;
   font-weight: bold;
@@ -506,7 +506,7 @@ button, input[type="button"], input[type="submit"] {
   -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
-button {
+button, .button {
   border: none;
   font-family: Calibri,Arial,sans-serif;
   font-size: 0.938em;
@@ -517,6 +517,18 @@ button {
   color: #fff;
   cursor: pointer;
 }
+
+.button{
+  padding: 3px 8px;
+  color: #fff;
+}
+
+.button:hover{
+  background-position: top center;
+  text-decoration: underline;
+  color:#fff;
+}
+
 img {
 border: 0;
 margin: 15px;

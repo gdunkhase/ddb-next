@@ -197,7 +197,7 @@ window.onload = function(){
     <g:render template="institution" />
     <div class="row">
       <div class="span8">
-        <h2>${item.title}</h2>
+        <h2>${title}</h2>
         <g:render template="fields" />
         <g:render template="rights" />
         <g:render template="origin" />

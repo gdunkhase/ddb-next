@@ -5324,6 +5324,22 @@ input[type="submit"].btn.btn-mini {
   list-style: none;
 }
 
+<<<<<<< HEAD
+=======
+.badge {
+  display: inline-block;
+  padding: 2px 4px;
+  font-size: 11.844px;
+  font-weight: bold;
+  line-height: 14px;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: #999999;
+}
+
+>>>>>>> refs/heads/develop_backup
 .label {
   -webkit-border-radius: 3px;
      -moz-border-radius: 3px;
