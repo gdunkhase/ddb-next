@@ -117,13 +117,3 @@ function parseUrl(url) {
   result.file = url.substring(lastSlash + 1);
   return result;
 }
-
-window.onload = function() {
-  $(".item-hierarchy").removeClass("off");
-
-  var imgLoader = document.createElement("img");
-
-  imgLoader.src = "../images/icons/loader_small.gif";
-  $(".item-hierarchy-result").prepend(imgLoader);
-  createHierarchy(parseUrl(this.location.href));
-}

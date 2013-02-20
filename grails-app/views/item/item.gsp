@@ -7,8 +7,11 @@
 <meta name="layout" content="main" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery.fancybox-1.3.4.css')}" type="text/css" media="screen">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'viewer.css')}" />
-<script type="text/javascript">
-window.onload = function(){
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'item-hierarchy.css')}" />
+<script src="${resource(dir: 'js', file: 'item-hierarchy.js')}" /></script>
+<!-- TODO move script to the main js file -->
+<script>
+window.onload = function() {
   $(document).ready(function() {
     currentTab($("p.all"));
     $(function() {
@@ -187,6 +190,13 @@ window.onload = function(){
       $("div.binary-title span").text(title);
       return false;
   });
+  $(".item-hierarchy").removeClass("off");
+
+  var imgLoader = document.createElement("img");
+
+  imgLoader.src = "../images/icons/loader_small.gif";
+  $(".item-hierarchy-result").prepend(imgLoader);
+  createHierarchy(parseUrl(this.location.href));
 };
 </script>
 </head>
