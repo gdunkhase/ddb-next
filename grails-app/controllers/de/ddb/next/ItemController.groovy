@@ -7,7 +7,7 @@ class ItemController {
     def itemService
     
     def children() {
-        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(), "/hierarchy/" + params.id + "/children", null))
+        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", null))
     }
 
     def findById() {
@@ -31,6 +31,6 @@ class ItemController {
     }
     
     def parents() {
-        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsbackend.toString(), "/hierarchy/" + params.id + "/parent", null))
+        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
     }
 }

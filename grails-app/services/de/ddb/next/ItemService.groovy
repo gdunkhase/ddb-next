@@ -94,7 +94,7 @@ class ItemService {
             return ''
         }
             
-        def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
+        def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.url.toString()
         def viewerPrefix = item.viewers.viewer.uri.toString()
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
@@ -135,7 +135,7 @@ class ItemService {
     }
 
     private def parse(binaries) {
-        def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
+        def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.url.toString()
         def binaryList = []
         def bidimensionalList = []
         String position

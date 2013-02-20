@@ -62,11 +62,10 @@ grails.hibernate.cache.queries = false
 //DDB SPECIFIC Configuration variables
 //The variables can be overwritten by defining local configurations, see below environments
 
-ddb.wsbackend="http://dev-backend.deutsche-digitale-bibliothek.de:9998"
-ddb.wsItemResults="http://localhost:8080"
-ddb.binary.url="http://www.binary-p2.deutsche-digitale-bibliothek.de"
+ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de"
+ddb.static.url="http://www.static-p1.deutsche-digitale-bibliothek.de"
 ddb.apis.url="http://localhost:8080"
-ddb.backend.url="http://dev-backend.deutsche-digitale-bibliothek.de:9998"
+ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
 ddb.advancedSearch.searchGroupCount=3
 ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0

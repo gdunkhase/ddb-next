@@ -53,7 +53,7 @@ class SearchController {
         
         def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
         
-        def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.wsItemResults.toString() ,'/apis/search', urlQuery)
+        def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
         
         //Calculating results details info (number of results in page, total results number)
         def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
@@ -69,7 +69,7 @@ class SearchController {
         def resultsPaginatorOptions = SearchService.buildPaginatorOptions(urlQuery)
         
         if(params.reqType=="ajax"){
-            def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary]).replaceAll("\r\n", '')
+            def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url]).replaceAll("\r\n", '')
             def jsonReturn = [results: resultsHTML,
                               resultsPaginatorOptions: resultsPaginatorOptions,
                               resultsOverallIndex:resultsOverallIndex, 
