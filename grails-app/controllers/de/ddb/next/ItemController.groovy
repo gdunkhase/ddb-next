@@ -5,7 +5,7 @@ class ItemController {
     static defaultAction = "findById"
 
     def itemService
-    
+
     def children() {
         render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", null))
     }
@@ -21,15 +21,19 @@ class ItemController {
         flash.audios = [binariesCounter.audios]
         flash.videos = [binariesCounter.videos]
 
-        if(item == '404') {
+        // TODO: handle 404 and failure separately. HTTP Status Code 404, should
+        // to `not found` page _and_ Internal Error should go to `internal server
+        // error` page. We should send also the HTTP Status Code 404 or 500 to the
+        // Client.
+        if(item == '404' || item?.failure) {
             redirect(controller: 'error')
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
             render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-            'title': item.title, item: item.item, institution : item.institution, fields: item.fields, binaryList: binaryList])
+                'title': item.title, item: item.item, institution : item.institution, fields: item.fields, binaryList: binaryList])
         }
     }
-    
+
     def parents() {
         render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
     }

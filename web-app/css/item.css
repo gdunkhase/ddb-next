@@ -44,6 +44,12 @@
   background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -120px;
 }
 
+.has-origin {
+  margin-top: 30px;
+  padding-left: 25px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
+}
+
 .page-nav {
   line-height: 42px;
 }

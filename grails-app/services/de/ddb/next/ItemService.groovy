@@ -58,7 +58,9 @@ class ItemService {
             //TODO: handle other failure such as '500'
             response.failure = { resp -> log.warn """
                 Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
+                """
+                return response
+            }
         }
     }
 
@@ -93,7 +95,7 @@ class ItemService {
         if(item.viewers.viewer == null || item.viewers.viewer.isEmpty()) {
             return ''
         }
-            
+
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.url.toString()
         def viewerPrefix = item.viewers.viewer.uri.toString()
 
@@ -147,7 +149,7 @@ class ItemService {
                 def subList = []
                 bidimensionalList[x.'@position'.toInteger()-1] = subList
                 position = x.'@position'.toString()
-            } 
+            }
             bidimensionalList[x.'@position'.toInteger()-1].add(x)
         }
         //creation of a list of binary maps from the bi-dimensional list
@@ -174,15 +176,15 @@ class ItemService {
                         binaryMap.'orig'.'title' = z.'@name'
                     }
                 }
-                  else if(path.contains(PREVIEW)) {
-                      binaryMap.'preview'.'title' = z.'@name'
-                      binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
+                else if(path.contains(PREVIEW)) {
+                    binaryMap.'preview'.'title' = z.'@name'
+                    binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
                 } else if (path.contains(THUMBNAIL)) {
-                      binaryMap.'thumbnail'.'title' = z.'@name'
-                      binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
+                    binaryMap.'thumbnail'.'title' = z.'@name'
+                    binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
                 } else if (path.contains(FULL)) {
-                      binaryMap.'full'.'title' = z.'@name'
-                      binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
+                    binaryMap.'full'.'title' = z.'@name'
+                    binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
                 }
             }
             binaryList.add(binaryMap)
@@ -196,15 +198,15 @@ class ItemService {
         def videos = 0
         binaries.each {
             if(it.'orig'.'uri'.'audio' || it.'orig'.'uri'.'video'){
-               if(it.'orig'.'uri'.'audio'){
-                   audios++
-               }
-               if(it.'orig'.'uri'.'video'){
-                   videos++
-               }
+                if(it.'orig'.'uri'.'audio'){
+                    audios++
+                }
+                if(it.'orig'.'uri'.'video'){
+                    videos++
+                }
             } else if (it.'orig'.'uri'.'image'){
-                  images++
-              }
+                images++
+            }
         }
         return (['images':images,'audios':audios,'videos':videos])
     }
