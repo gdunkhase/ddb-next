@@ -1,4 +1,4 @@
-<div class="row"
+<div class="row">
 <div class="origin">
 <g:if test="${!item.origin?.toString().isEmpty()}">
   <span class="span8 has-origin">
