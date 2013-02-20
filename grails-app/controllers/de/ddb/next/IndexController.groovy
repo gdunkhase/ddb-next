@@ -8,8 +8,6 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 // TODO: do we need this class?
 class IndexController {
 
-  def url = "http://141.66.130.151:8003"
-
   def index() {
 
     def langDe = "de"
@@ -24,7 +22,7 @@ class IndexController {
 
       def query = [ client: "DDB-NEXT" ]
     // Submit a request via GET
-    def response = ApiConsumer.getText(url, path, query)
+    def response = ApiConsumer.getText(grailsApplication.config.ddb.static.url, path, query)
 
     if (response == "Not found"){
       redirect(controller: "error", action: "notfound")
