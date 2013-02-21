@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="binary-title">
     <span></span>
   </div>
