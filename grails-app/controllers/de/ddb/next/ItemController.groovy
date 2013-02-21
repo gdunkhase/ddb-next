@@ -5,7 +5,6 @@ class ItemController {
 
     def itemService
 
-    // ddb-next/item/:id !!! be aware of the context path
     def findById() {
         def id = params.id
         def item = itemService.findItemById(id)
@@ -13,8 +12,18 @@ class ItemController {
             redirect(controller: 'error')
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
-            render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                'title': item.title, item: item.item, institution : item.institution, fields: item.fields])
+            item.fields.each { 
+                log.debug it.'@id'
+                def bar = 'ddbnext.' + it.'@id'
+                def foo = message(code: bar)
+                log.debug 'translated: ' + foo
+
+            }
+
+//            def msg = messsage(code: '', args: []) //'ddbnext.' + it.'@id')
+            render(view: 'item', model: [itemUri: itemUri,viewerUri: item.viewerUri,
+                'title': item.title, item: item.item, institution : item.institution,
+                fields: item.fields])
         }
     }
 }

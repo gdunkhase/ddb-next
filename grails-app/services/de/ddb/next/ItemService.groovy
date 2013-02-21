@@ -91,7 +91,7 @@ class ItemService {
         if(item.viewers.viewer == null || item.viewers.viewer.isEmpty()) {
             return ''
         }
-            
+
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.toString()
         def viewerPrefix = item.viewers.viewer.uri.toString()
 
@@ -107,7 +107,6 @@ class ItemService {
         Map prev = parse(fetchBinaryList().binary.list())
         return prev
     }
-
 
     private def parse(list) {
         list.each { x ->

@@ -109,11 +109,16 @@ log4j = {
            'org.codehaus.groovy.grails.plugins',            // plugins
            'org.springframework',
            'org.hibernate',
-           'net.sf.ehcache.hibernate'
+           'net.sf.ehcache.hibernate',
+           'grails.plugin',
+           'grails.app.services.org.grails.plugin.resource',
+           'grails.app.taglib.org.grails.plugin.resource',
+           'grails.app.resourceMappers.org.grails.plugin.resource',
+           'grails.app.services.NavigationService'
 
      warn  'org.apache.catalina'
 
-     debug 'grails.app.services.ItemService'
-	 debug stacktrace : 'grails.app'
+     debug 'grails.app'
+     debug stacktrace : 'grails.app'
 }
 grails.app.context = "/"
