@@ -12,18 +12,22 @@ class ItemController {
             redirect(controller: 'error')
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
-            item.fields.each { 
-                log.debug it.'@id'
-                def bar = 'ddbnext.' + it.'@id'
-                def foo = message(code: bar)
-                log.debug 'translated: ' + foo
-
-            }
-
-//            def msg = messsage(code: '', args: []) //'ddbnext.' + it.'@id')
+            def fields = translate(item.fields)
             render(view: 'item', model: [itemUri: itemUri,viewerUri: item.viewerUri,
-                'title': item.title, item: item.item, institution : item.institution,
-                fields: item.fields])
+                        'title': item.title, item: item.item, institution : item.institution,
+                        fields: item.fields])
+        }
+    }
+
+    def translate(fields) {
+        fields.each {
+            def messageKey = 'ddbnext.' + it.'@id'
+            def translated = message(code: messageKey)
+            if(translated != messageKey) {
+                it.name = translated
+            } else {
+                log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
+            }
         }
     }
 }
