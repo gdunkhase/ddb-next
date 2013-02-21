@@ -159,7 +159,6 @@ class ApisController {
 
         tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
         tmpResult["properties"] = properties
-        //println(tmpResult["properties"])
         docs.add(tmpResult)
     }
     resultList["facets"] = jsonResp.facets
