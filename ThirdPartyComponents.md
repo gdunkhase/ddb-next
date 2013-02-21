@@ -9,11 +9,12 @@ Nevertheless it will have its own div, so its own template, which again is wrapp
 
 #Prerequisites
 Third-party Components are located in a subfolder below web-app/third-party, accessable via /static/third-party/...
-Use WrapperService with static methods to be able to get data from gsp-template.
-just pure clientside javascript/css
 
 #Own page for third-party-component
 ## Template and endpoint is needed. Add Endpoint to UrlMappings.groovy, link to template in third-party folder.
+Endpoint-Example:
+"/test"(view:'/third-party/test/views/some.gsp')
+
 
 #Third-party-component included in existing template
 ## Template is needed. State Link to third-party-template in template for page (<g:render template="/third-party/test/views/testpart" />).
