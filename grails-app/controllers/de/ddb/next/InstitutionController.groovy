@@ -23,9 +23,26 @@ class InstitutionController {
         log.println("+++")
         def dataViewXML = vApiInstitution.getInstitutionViewByItemId(id)
         def dataProvInfoXML = vApiInstitution.getProviderInfoByItemId(id)
-        //def dataJSON = vApiInstitution.getChildrenOfInstitutionByItemId(id)
+        def dataJSON = vApiInstitution.getChildrenOfInstitutionByItemId(id)
+        def jsonFacets = vApiInstitution.getFacetValues(dataViewXML.name.text())
+        
+        // response:{"field":"provider_fct","numberOfFacets":1,"facetValues":[{"value":"Landesarchiv Baden-Württemberg","count":9954}]}
+        int countObjectsForProv = 0;
+        if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
+            try {
+                countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
+            } 
+            catch (NumberFormatException ex) {
+                countObjectsForProv = -1;
+            }
+        }
+        
+        for (int i = 0; i < dataJSON.size(); i++) {
+            log.println("dataJSON[${i}]: " + dataJSON[i])
+        }
+        
         if (dataViewXML != null) {
-            render(view: "institution", model: [results: dataViewXML, provInfo: dataProvInfoXML])
+            render(view: "institution", model: [results: dataViewXML, provInfo: dataProvInfoXML, subOrg: dataJSON, countObjcs: countObjectsForProv])
         } 
         else {
             redirect(controller: 'error')
