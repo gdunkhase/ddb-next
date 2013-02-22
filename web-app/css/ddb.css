@@ -234,6 +234,7 @@ header .language-widget form, .header .language-widget form {
 .search-widget img {
   margin-left: 0;
   margin-bottom: 20px;
+  height: 178px;
 }
 .search-widget label span {
   display: block;
