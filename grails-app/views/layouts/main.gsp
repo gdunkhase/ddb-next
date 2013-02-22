@@ -65,6 +65,7 @@
   <script type="text/javascript" src="${resource(dir: 'js', file: 'advanced-search-page.js')}" /></script>
   <script type="text/javascript" src="${resource(dir:'js', file:'jquery.fancybox-1.3.4.pack.js')}"></script>
   <script type="text/javascript" src="${resource(dir:'jwplayer', file:'jwplayer.js')}"></script>
+  <script>jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="</script>
   <script>
 			var global;
 			var resources;
