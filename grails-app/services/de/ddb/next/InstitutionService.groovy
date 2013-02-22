@@ -40,6 +40,7 @@ class InstitutionService {
                         it.children.each { child ->
                             child.uri = buildUri(child.id)
                             child.sectorLabelKey = 'ddbnext.' + it.sector
+                            child.parentId = it.id
                         }
                     }
 

@@ -17,15 +17,18 @@ $(document).ready(function() {
     // TODO: if institution has descendants, show all descendants too but don't
     // highlight them.
     if (this.checked) {
-      // only load the data from the server once until page refreshes.
-      if (ddb.institutions === null) {
-        ddb.institutions = ddb.fetchData();
-      }
-
       // the logic
       var currentSelected = ddb.filterBySection(this);
       allSelected = $.merge(allSelected, currentSelected)
       rest = $(all).not(allSelected);
+
+      /*
+      var parents = currentSelected.each(function(index, val) {
+        console.log('val: ' , val);
+        var parentId = $(val).data('child-of');
+        console.log('parent is: ' + parentId);
+      });;
+      */
 
       // manipulate the view
       // highlight the current selection
@@ -43,8 +46,14 @@ $(document).ready(function() {
       // the view manipulation
       // un-highlight the selected
       currentSelected.find('a').removeClass('highlight');
-      $(allSelected).show();
-      rest.hide();
+
+      // when all filtered are removed, show all
+      if($(allSelected).empty()) {
+        $(all).show();
+      } else {
+        $(allSelected).show();
+        rest.hide();
+      }
     }
   });
 });
@@ -67,8 +76,11 @@ var ddb = {
   },
 
   fetchData: function() {
-    $.getJSON(ddb.Config.ddbBackendUrl, function(data) {
-      console.log('the institution: ', data);
-    });
+    if (ddb.institutions === null) {
+      $.getJSON(ddb.Config.ddbBackendUrl, function(data) {
+        console.log('the institution: ', data);
+        ddb.institutions = data;
+      });
+    }
   }
 }

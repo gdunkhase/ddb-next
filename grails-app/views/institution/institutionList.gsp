@@ -8,7 +8,7 @@
   <g:render template="pagination" />
     <ol class="institution-list">
       <g:each in="${ all }">
-      <li class="institution" data-sector="${ it?.sector }">
+      <li class="institution" data-sector="${ it?.sector }" data-institution-id="${ it?.id }">
         <i class="icon-institution"></i>
         <g:render template="listItem" model="['item': it]"/>
         <g:render template="children" model="['children': it?.children]"/>
