@@ -22,6 +22,11 @@ $(document).ready(function() {
       allSelected = $.merge(allSelected, currentSelected)
       rest = $(all).not(allSelected);
 
+      console.log('current selected: ' , currentSelected.length);
+      console.log('all selected: ' ,allSelected.length);
+      console.log('rest selected: ' , rest.length);
+      console.log('all: ' , all.length);
+
       /*
       var parents = currentSelected.each(function(index, val) {
         console.log('val: ' , val);
