@@ -5,7 +5,6 @@ import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
-import org.apache.commons.logging.LogFactory
 
 import org.apache.commons.logging.LogFactory
 
@@ -62,16 +61,16 @@ class ApiConsumer {
                 response.success = { resp, json ->
                     // FIXME log don't print
                     /*
-                    println "response status: ${resp.statusLine}"
-                    println 'Headers: -----------'
-                    resp.headers.each { h -> println " ${h.name} : ${h.value}" }
-                    */
+                     println "response status: ${resp.statusLine}"
+                     println 'Headers: -----------'
+                     resp.headers.each { h -> println " ${h.name} : ${h.value}" }
+                     */
                     ret = json
                 }
                 response.failure = { resp ->
                     println "response status: ${resp.statusLine}"
                     response.
-                    println 'Headers: -----------'
+                            println 'Headers: -----------'
 
                     resp.headers.each { h -> println " ${h.name} : ${h.value}" }
                     println "Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
@@ -106,10 +105,10 @@ class ApiConsumer {
                 log.debug "Current request uri: "+uri
                 response.success = { resp, xml ->
                     /*
-                    println "response status: ${resp.statusLine}"
-                    println 'Headers: -----------'
-                    resp.headers.each { h -> println " ${h.name} : ${h.value}" }
-                    */
+                     println "response status: ${resp.statusLine}"
+                     println 'Headers: -----------'
+                     resp.headers.each { h -> println " ${h.name} : ${h.value}" }
+                     */
                     ret = xml
                 }
                 response.failure = { resp ->
@@ -171,6 +170,7 @@ class ApiConsumer {
     }
 
     static def setProxy(http, String baseUrl) {
+        return
         if(baseUrl.contains('localhost') || baseUrl.contains('fiz-karlsruhe.de')) {
             log.debug " ${baseUrl} does not need http proxy"
             return
