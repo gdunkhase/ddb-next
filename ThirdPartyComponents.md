@@ -5,14 +5,49 @@
 
 A third-party-component might require its own javascript-files, css-files and server-actions to get the data for display.
 It might want to use the whole page for display (still embedded between header and footer of the DDB-Frontend Main-Page) or it is embedded within an existing page.
-Nevertheless it will have its own div, so its own template., whic again is wrapped eithe rdirectly into the main template or into an existing one.
+Nevertheless it will have its own div, so its own template, which again is wrapped either directly into the main template or into an existing one.
 
 #Prerequisites
-use grails for implementation (template, endpoints, classes)
+Third-party Components are located in a subfolder below web-app/third-party, accessable via /static/third-party/...
 
 #Own page for third-party-component
+## Template and endpoint is needed. Add Endpoint to UrlMappings.groovy, link to template in third-party folder.
+Endpoint-Example:
+"/test"(view:'/third-party/test/views/some.gsp')
 
-## Template and endpoint is needed.
+
+#Third-party-component included in existing template
+## Template is needed. State Link to third-party-template in template for page (<g:render template="/third-party/test/views/testpart" />).
+
+Third-Party Component can get data by requesting an URL via a ddb-next Wrapper Service.
+Wrapper Service has static methods that return data eg as Json
+
+Example:
+public class ServiceWrapper {
+    
+    public static def getData(uri) {
+        def config = org.codehaus.groovy.grails.commons.ConfigurationHolder.config
+        def backendUrl = config.ddb.backend.url
+        def json = ApiConsumer.getTextAsJson(backendUrl , uri, null)
+        return json
+    }
+}
+
+#Call Wrapper Service from within template:
+<g:set var="facets" value="${de.ddb.next.ServiceWrapper.getData('/search/facets/time_fct')}" />
+
+Iterate through Json:
+<g:each in="${facets.facetValues}" var="facetValue">
+<h1>${facetValue}</h1>
+</g:each>
+
+#Include css and javascript:
+locate js and css somewhere below /third-party/<yourcomponent>, eg in subdirectories css and js.
+import files in your template:
+<link rel="stylesheet" href="${resource(dir: 'third-party/<yourcomponent>/css', file: 'test.css')}" />
+<script src="${resource(dir: 'third-party/<yourcomponent>/js', file: 'test.js')}" /></script>
+
+
 
 
 
