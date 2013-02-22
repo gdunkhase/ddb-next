@@ -12,6 +12,7 @@ class InstitutionController {
         // TODO: make this more idiomatic groovy
         def all = []
         aMap.each { all.addAll(it.value) }
+        // no institutions
         aMap.each { k,v ->
             if(aMap[k]?.size() == 0) {
                 aMap[k] = true
@@ -21,7 +22,9 @@ class InstitutionController {
         }
         // TODO: move to service
         def index = []
-        aMap.each {  index.add(it) }
+        aMap.each {
+            index.add(it)
+        }
 
         render (view: 'institutionList',  model: [index: index, all: all])
     }

@@ -17,29 +17,53 @@ class InstitutionService {
 
         def retVal
 
-        http.get(path: 'institutions') { resp, json ->
-
+        http.get(path: 'institutions') { resp, institutionList->
             def aMap= buildIndex()
-            json.each { it ->
+
+
+            institutionList.each { it ->
                 def firstChar = it?.name[0]?.toUpperCase()
+                def foo='A'..'Z'
 
-                it.sectorLabelKey = 'ddbnext.' + it.sector
+                    it.sectorLabelKey = 'ddbnext.' + it.sector
 
-                if(aMap[firstChar].size() == 0) {
-                    it.isFirst = true
-                    it.firstChar = firstChar
-                }
 
-                if(it.children?.size() > 0 ) {
-                    it.children.each { child ->
-                        child.uri = buildUri(child.id)
-                        child.sectorLabelKey = 'ddbnext.' + it.sector
+                if (foo.contains(firstChar)) {
+                    if(aMap.get(firstChar)?.size() == 0) {
+                        it.isFirst = true
+                        it.firstChar = firstChar
                     }
+
                 }
 
-                def jsonWithUri = addUri(it)
-                aMap[firstChar].add(jsonWithUri)
+                    if(it.children?.size() > 0 ) {
+                        it.children.each { child ->
+                            child.uri = buildUri(child.id)
+                            child.sectorLabelKey = 'ddbnext.' + it.sector
+                        }
+                    }
+
+                    def institutionWithUri = addUri(it)
+                    switch(firstChar) {
+                        case 'Ä':
+                            aMap['A'].add(institutionWithUri)
+                            break
+                        case 'Ö':
+                            log.debug 'char: ' + firstChar
+                            aMap['O'].add(institutionWithUri)
+                            break
+                        case 'Ü':
+                            aMap['U'].add(institutionWithUri)
+                            break
+                        case 'ß':
+                            aMap['S'].add(institutionWithUri)
+                            break
+                        default:
+                            log.debug firstChar
+                            aMap[firstChar].add(institutionWithUri)
+                    }
             }
+
             retVal = aMap
         }
 
@@ -48,10 +72,15 @@ class InstitutionService {
 
     private def buildIndex() {
         def az = 'A'..'Z'
-        def aMap = [:].withDefault{[]}
+        def aMap = [:].withDefault{
+            []
+        }
 
-        az.each { aMap[it] = []}
-        return aMap //new TreeMap(aMap)
+        az.each {
+            aMap[it] = []
+        }
+
+        return aMap
     }
 
     private def addUri(json) {

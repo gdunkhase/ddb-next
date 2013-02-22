@@ -59,6 +59,18 @@ grails.exceptionresolver.params.exclude = ['password']
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
 
+//DDB SPECIFIC Configuration variables
+//The variables can be overwritten by defining local configurations, see below environments
+
+ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de"
+ddb.static.url="http://www.static-p1.deutsche-digitale-bibliothek.de"
+ddb.apis.url="http://localhost:8080"
+ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+ddb.advancedSearch.searchGroupCount=3
+ddb.advancedSearch.searchFieldCount=10
+ddb.advancedSearch.defaultOffset=0
+ddb.advancedSearch.defaultRows=20
+
 environments {
     development {
         grails.logging.jul.usebridge = true
@@ -86,9 +98,7 @@ log4j = {
       console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
       rollingFile name: "stacktrace", maxFileSize: 1024, file: (System.getProperty('catalina.base') ?: 'target') + '/logs/ddbnext-stacktrace.log'
     }
-    
-    error stacktrace: "StackTrace"
-    
+
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
@@ -98,12 +108,20 @@ log4j = {
            'org.codehaus.groovy.grails.plugins',            // plugins
            'org.springframework',
            'org.hibernate',
-           'net.sf.ehcache.hibernate'
-           
-    warn  'org.apache.catalina'
-    
-    // Send log messages with DEBUG level to console for following:
-    debug stdout: 'grails.app.controllers'
-    debug stdout: 'grails.app.services'
+           'net.sf.ehcache.hibernate',
+           'grails.plugin',
+           'grails.app.services.org.grails.plugin.resource',
+           'grails.app.taglib.org.grails.plugin.resource',
+           'grails.app.resourceMappers.org.grails.plugin.resource',
+           'grails.app.services.NavigationService'
+
+     warn  'org.apache.catalina'
+
+     debug 'grails.app'
+     debug stacktrace : 'grails.app'
+     warn  'org.apache.catalina'
+
+     debug 'grails.app.services.ItemService'
+     debug stacktrace : 'grails.app'
 }
 grails.app.context = "/"
