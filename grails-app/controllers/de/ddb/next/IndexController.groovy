@@ -16,10 +16,12 @@ class IndexController {
     def locale = RCU.getLocale(request)
     grailsApplication.config.locale = locale
 
-    if(locale.toString().substring(0, 2)=="de")
+    if(locale.toString().substring(0, 2)=="de") {
       path = "/static/"+langDe+"/homepage.xml"
-    else
+    }
+    else {
       path = "/static/"+langEn+"/homepage.xml"
+    }
 
       def query = [ client: "DDB-NEXT" ]
     // Submit a request via GET
