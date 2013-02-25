@@ -5,7 +5,7 @@ class ItemController {
     static defaultAction = "findById"
 
     def itemService
-    
+
     def children() {
         render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", null))
     }
@@ -13,6 +13,11 @@ class ItemController {
     def findById() {
         def id = params.id
         def item = itemService.findItemById(id)
+
+        if (item.pageLabel?.isEmpty()) {
+            item.pageLabel= itemService.getItemTitle(id)
+        }
+
         def binaryList = itemService.findBinariesById(id)
         def binariesCounter = itemService.binariesCounter(binaryList)
 
@@ -26,10 +31,11 @@ class ItemController {
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
             render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-            'title': item.title, item: item.item, institution : item.institution, fields: item.fields, binaryList: binaryList])
+            'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
+            binaryList: binaryList, pageLabel: item.pageLabel])
         }
     }
-    
+
     def parents() {
         render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
     }

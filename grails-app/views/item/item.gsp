@@ -1,6 +1,6 @@
 <html>
 <head>
-<title><%=title%></title>
+<title><%= pageLabel %> - Deutsche Digitale Bibliothek</title>
 <meta name="author" content="${author}" />
 <meta name="keywords" content="${keywords}" />
 <meta name="robots" content="${robots}" />

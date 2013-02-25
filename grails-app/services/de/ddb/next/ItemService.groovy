@@ -1,10 +1,11 @@
 package de.ddb.next
 
+import org.apache.commons.logging.LogFactory
+
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
-import groovyx.net.http.HTTPBuilder
 
-import org.apache.commons.logging.LogFactory
+import groovyx.net.http.HTTPBuilder
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -26,19 +27,17 @@ class ItemService {
     def grailsApplication
 
     def findItemById(id) {
-
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
         ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
-
         http.parser.'application/json' = http.parser.'application/xml'
 
         final def componentsPath = "/access/" + id + "/components/"
         final def viewPath = componentsPath + "view"
 
-        def institution, item, title, fields, viewerUri
+        def institution, item, title, fields, viewerUri, pageLabel
         http.request( GET) { req ->
             uri.path = viewPath
 
@@ -50,7 +49,9 @@ class ItemService {
 
                 fields = xml.item.fields.field.findAll()
                 viewerUri = buildViewerUri(item, componentsPath)
-                return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title, 'fields': fields]
+
+                return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
+                    'fields': fields, pageLabel: item.pageLabel]
             }
 
             response.'404' = { return '404' }
@@ -62,6 +63,32 @@ class ItemService {
         }
     }
 
+    private getItemTitle(id) {
+        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+
+        /* TODO remove this hack, once the server deliver the right content
+         type*/
+        http.parser.'application/json' = http.parser.'text/html'
+
+        final def componentsPath = "/access/" + id + "/components/"
+        final def titlePath = componentsPath + "title"
+
+        http.request( GET) { req ->
+            uri.path = titlePath
+
+            response.success = { resp, html ->
+                return html
+            }
+
+            response.'404' = { return '404' }
+
+            //TODO: handle other failure such as '500'
+            response.failure = { resp -> log.warn """
+                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
+                """ }
+        }
+    }
 
     private shortenTitle(id, item) {
 
@@ -93,7 +120,7 @@ class ItemService {
         if(item.viewers.viewer == null || item.viewers.viewer.isEmpty()) {
             return ''
         }
-            
+
         def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.url.toString()
         def viewerPrefix = item.viewers.viewer.uri.toString()
 
@@ -147,7 +174,7 @@ class ItemService {
                 def subList = []
                 bidimensionalList[x.'@position'.toInteger()-1] = subList
                 position = x.'@position'.toString()
-            } 
+            }
             bidimensionalList[x.'@position'.toInteger()-1].add(x)
         }
         //creation of a list of binary maps from the bi-dimensional list
