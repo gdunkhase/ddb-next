@@ -9,7 +9,7 @@ class InstitutionController {
         log.debug 'show all institutions'
         // TODO sort umlaut
         def aMap = institutionService.findAll()
-        // TODO: make this more idiomatic groovy
+        // TODO: make this more idiomatic Groovy
         def all = []
         aMap.each { all.addAll(it.value) }
         // no institutions

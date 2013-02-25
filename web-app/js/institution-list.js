@@ -3,9 +3,14 @@ $(document).ready(function() {
   // if the User Agent enable JS, show the `filter by sector` checkboxes.
   $('.filter').show();
 
+
   var all = $('.institution');
   var allSelected = [];
   var rest;
+
+  // find the current path
+  ddb.windowHash = window.location.hash;
+  ddb.filterByHash(ddb.windowHash.substring(1), allSelected, all);
 
   // "Filter" by section. It is *not* a reduction filter which combination of
   // filters form a AND relation. The implemented filter has following semantic
@@ -17,9 +22,6 @@ $(document).ready(function() {
     // TODO: if institution has descendants, show all descendants too but don't
     // highlight them.
     if (this.checked) {
-      // TODO: get org by sector
-      // TODO: get org's descdendants/parents
-
       // the logic
       var currentSelected = ddb.filterBySection(this);
       allSelected = $.merge(allSelected, currentSelected);
@@ -36,6 +38,7 @@ $(document).ready(function() {
       // the logic
       var removedSelection = ddb.filterBySection(this);
       allSelected = $(allSelected).not(removedSelection);
+
       rest = $(all).not(allSelected);
 
       // the view manipulation
@@ -47,6 +50,34 @@ $(document).ready(function() {
       // TODO: the performace is bad, when the user removes all filters.
       if ($(allSelected).length === 0) {
         $(all).show();
+      }
+    }
+  });
+
+  // TODO add listener for first letter index.
+  // TODO when `All` is selected, show all institutions.
+  // TODO when an index is selected.
+  // 1. show all institution starting with the selected index character.
+  // 2. hide the rest = {all} \ {selected}
+  $('div.pagination a').click(function(e) {
+    e.preventDefault();
+
+    var selectedHash = e.target.innerHTML;
+
+    // TODO: bad performance
+    if (selectedHash === 'All') {
+      $(all).show();
+    } else {
+      if (allSelected.length === 0) {
+        var filteredByFirstLetter = $(all).filter(function() {
+          var firstLetter = $(this).data('first-letter');
+          return firstLetter === selectedHash;
+        });
+
+        filteredByFirstLetter.show();
+        $(all).not(filteredByFirstLetter).hide();
+      } else {
+        ddb.filterByHash(selectedHash, allSelected);
       }
     }
   });
@@ -90,12 +121,7 @@ var ddb = {
         parentList.push(parent);
       }
     });
-    // return parentIdList;
     return parentList;
-  },
-
-  getRestWithoutParent: function(rest, parentList) {
-    // body...
   },
 
   fetchData: function() {
@@ -105,5 +131,24 @@ var ddb = {
         ddb.institutions = data;
       });
     }
+  },
+
+  filterByHash: function(selectedHash, allSelected, all) {
+    console.log('filtered by hash: ' + selectedHash);
+
+    var temp = allSelected;
+    if (allSelected.length === 0) {
+      console.log('nothing is selected.');
+      temp = all;
+    }
+
+    var filteredByFirstLetter = $(temp).filter(function() {
+      var firstLetter = $(this).data('first-letter');
+      return firstLetter === selectedHash;
+    });
+
+    filteredByFirstLetter.show();
+    $(temp).not(filteredByFirstLetter).hide();
   }
+
 };
