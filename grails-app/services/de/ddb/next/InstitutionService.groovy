@@ -20,7 +20,6 @@ class InstitutionService {
         http.get(path: 'institutions') { resp, institutionList->
             def aMap= buildIndex()
 
-
             institutionList.each { it ->
                 def firstChar = it?.name[0]?.toUpperCase()
                 def foo='A'..'Z'
