@@ -23,14 +23,11 @@ $(document).ready(function() {
       // the logic
       var currentSelected = ddb.filterBySection(this);
       allSelected = $.merge(allSelected, currentSelected);
-
       rest = $(all).not(allSelected);
-      console.log('rest withouth all selected: ' , rest.length);
 
       // manipulate the view
       // highlight the current selection
       $(currentSelected).find('> a').addClass('highlight');
-
       currentSelected.show();
       rest.hide();
     } else {
@@ -42,18 +39,12 @@ $(document).ready(function() {
       rest = $(all).not(allSelected);
 
       // the view manipulation
-      // un-highlight the selected
+      // un-highlight the selected.
       removedSelection.find('a').removeClass('highlight');
       removedSelection.hide();
 
-      console.log('removed selection: ' , removedSelection.length);
-      console.log('all selected: ' , allSelected.length);
-      console.log('rest selected: ' , rest.length);
-      console.log('all: ' , all.length);
-
-      rest.hide();
-
-      // when all filtered are removed, show all
+      // when all filtered are removed, show all.
+      // TODO: the performace is bad, when the user removes all filters.
       if ($(allSelected).length === 0) {
         $(all).show();
       }
