@@ -14,6 +14,7 @@ class IndexController {
     def langEn = "en"
     def path
     def locale = RCU.getLocale(request)
+    grailsApplication.config.locale = locale
 
     if(locale.toString().substring(0, 2)=="de")
       path = "/static/"+langDe+"/homepage.xml"
@@ -30,7 +31,7 @@ class IndexController {
 
     def articles=retrieveArguments(response)
 
-    render(view: "index", model: [articles: articles, locale: locale])
+    render(view: "index", model: [articles: articles])
   }
 
   private def retrieveArguments(def content){

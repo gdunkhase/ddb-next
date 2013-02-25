@@ -35,7 +35,7 @@
             </div>
             <div class="span5 toolbar">
               <div class="language-wrapper">
-                <g:if test="${locale.toString().substring(0, 2)=="de"}">
+                <g:if test="${grailsApplication.config.locale.toString().substring(0, 2)=="de"}">
                   <a>
                     <g:message code="ddbnext.language_fct_ger"/>
                   </a>
@@ -51,7 +51,7 @@
                 </ul>  
               </div>
               <div class="search-header hidden-phone">
-                <form method="get" action="search" role="search" id="form-search-header">
+                <form method="get" action="/search" role="search" id="form-search-header">
                     <label> 
                       <span><g:message code="ddbnext.Search_text_field"/></span>
                       <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
