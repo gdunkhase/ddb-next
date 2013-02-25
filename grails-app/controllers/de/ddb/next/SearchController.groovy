@@ -35,9 +35,8 @@ class SearchController {
         if(params.minDocs)
          urlQuery["minDocs"] = params.minDocs
          
-        if(params.sort == null)
-             urlQuery["sort"] = "RELEVANCE"
-        else urlQuery["sort"] = params.sort
+        if(params.sort != null)
+             urlQuery["sort"] = params.sort
         
         if(params.viewType == null)
             urlQuery["viewType"] = "list"
@@ -51,9 +50,12 @@ class SearchController {
             }
         }
         
-        def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
-        
         def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
+        println resultsItems["randomSeed"]
+        if(resultsItems["randomSeed"])
+            urlQuery["randomSeed"] = resultsItems["randomSeed"]
+        
+        def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
         
         //Calculating results details info (number of results in page, total results number)
         def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
@@ -69,13 +71,17 @@ class SearchController {
         def resultsPaginatorOptions = SearchService.buildPaginatorOptions(urlQuery)
         def numberOfResultsFormatted = String.format("%,d", resultsItems.numberOfResults.toInteger())
         
+        def queryString = request.getQueryString()
+        if(!queryString.contains("sort=random") && urlQuery["randomSeed"])
+            queryString = queryString+"&sort="+urlQuery["randomSeed"]
+        
         if(params.reqType=="ajax"){
             def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url]).replaceAll("\r\n", '')
             def jsonReturn = [results: resultsHTML,
                               resultsPaginatorOptions: resultsPaginatorOptions,
                               resultsOverallIndex:resultsOverallIndex, 
                               pagesOverallIndex: pagesOverallIndex,
-                              paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString().replaceAll("&reqType=ajax","")),
+                              paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                               numberOfResults: numberOfResultsFormatted
                               ]
             render (contentType:"text/json"){jsonReturn}
@@ -95,9 +101,50 @@ class SearchController {
                 resultsPaginatorOptions: resultsPaginatorOptions,
                 resultsOverallIndex:resultsOverallIndex, 
                 pagesOverallIndex: pagesOverallIndex,
-                paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString()),
+                paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                 numberOfResultsFormatted: numberOfResultsFormatted
             ])
         }
+    }
+    
+    def facets() {
+        def urlQuery = [:]
+        if (params.q!=null || params.query!=null){
+            // FIXME remove q
+            urlQuery = (params.q)?[ query: params.q ]:[query: params.query]
+        }
+        
+        if (params.rows == null)
+            urlQuery["rows"] = 11
+        else urlQuery["rows"] = params.rows
+        
+        if (params.offset == null)
+            urlQuery["offset"] = 0
+        else urlQuery["offset"] = params.offset
+        
+        //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
+        //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
+        if(params["facetValues[]"]){
+            urlQuery = SearchService.getFacets(params, urlQuery,"facet", 0)
+        }
+        
+        if(params.get("facets[]")){
+            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+            if(!urlQuery["facet"].contains(params.get("facets[]")))
+                urlQuery["facet"].add(params.get("facets[]"))
+        }
+        
+        if(params["name"]){
+            urlQuery = params.name
+        }
+        
+        def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
+        
+        def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
+        
+        def facetsList = SearchService.getSelectedFacetsList(resultsItems.facets, active)
+        
+        def jsonReturn = [facetsList: facetsList]
+        render (contentType:"text/json"){jsonReturn}
     }
 }

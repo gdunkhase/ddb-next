@@ -467,6 +467,41 @@ input[type="checkbox"],input[type="radio"] {
   line-height: 25px;
 }
 
+/*Facets flyout*/
+.flyoutLeftContainer {
+  width: 100%;
+  height: auto;
+  display: inline-block;
+  background: #fff;
+}
+.flyoutRightContainer {
+  min-height: 71px;
+  min-width: 200px;
+  background: #fff;
+  position: absolute;
+  z-index: 1;
+  float: left;
+  margin-left: 100%;
+  top: -1px;
+  border-top: solid 1px #cfcecc;
+  border-right: solid 1px #cfcecc;
+  border-bottom: solid 1px #cfcecc;
+  box-shadow: #999 -8px 18px 32px -11px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.flyoutRightHead {
+  font-weight: bold;
+  border-bottom: #ddd 1px solid;
+  width: 100%;
+}
+.inputSearchFctContainer {
+  padding: 0 10px;
+  line-height: 40px;
+}
+.inputSearchFctContainer .inputSearchFct{
+  width: 100%;
+}
 .bb {
   border-bottom: solid 1px #efebe8;
 }
@@ -481,6 +516,10 @@ input[type="checkbox"],input[type="radio"] {
 
 .br {
   border-right: solid 1px #efebe8;
+}
+
+a {
+   outline: 0;
 }
 
 .off{

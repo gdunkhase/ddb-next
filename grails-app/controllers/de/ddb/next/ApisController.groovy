@@ -147,7 +147,7 @@ class ApisController {
         def jsonSubresp = new JsonSlurper().parseText(xmlSubresp.toString())
         
         def timeFct = (jsonSubresp.properties.time_fct)? jsonSubresp.properties.time_fct: ""
-        println(timeFct)
+        //println(timeFct)
         def placeFct = (jsonSubresp.properties.place_fct)? jsonSubresp.properties.place_fct: ""
         def affiliateFct = (jsonSubresp.properties.affiliate_fct)? jsonSubresp.properties.affiliate_fct: ""
         def keywordsFct = (jsonSubresp.properties.keywords_fct)?jsonSubresp.properties.keywords_fct: ""

@@ -166,4 +166,13 @@ class SearchService {
         }
         return tmpTitle
     }
+    
+    static def getSelectedFacetsList(List facets, String fctName){
+        def res = [:]
+        facets.each{
+            if(it.field==fctName)
+                res=it
+        }
+        return res
+    }
 }

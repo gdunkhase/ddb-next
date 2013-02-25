@@ -9,6 +9,11 @@ class UrlMappings {
             controller="search"
             action=results
         }
+        
+        "/facets/$q?" {
+            controller="search"
+            action=facets
+        }
 
         "/advancedsearch" {
             controller="advancedsearch"

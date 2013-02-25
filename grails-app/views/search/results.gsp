@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
 <script>
 window.onload=function(){
+  initializeFacets();
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
   
@@ -152,6 +153,68 @@ window.onload=function(){
       }
     });
   }
+
+  //Facet Manager --
+  
+  FacetWidget = function(element){
+    this.init(element);
+  }
+  
+  $.extend(FacetWidget.prototype, {
+    
+    anchor_elm: null,
+    anchor_parent: null,
+    open: false,
+    currentPage: 0,
+    currentFctsSelected: new Array(),
+
+    //i18n variables
+    
+    field_MostRelevant: '<g:message code="ddbnext.Most_relevant"/>',
+    field_AddMoreFiltersButtonTooltip: '<g:message code="ddbnext.Add_More_Filters_ButtonTooltip"/>',
+    field_SearchResultsFacetValueNext: '<g:message code="ddbnext.SearchResultsFacetValue_Next"/>',
+    field_SearchResultsFacetValuePrevious: '<g:message code="ddbnext.SearchResultsFacetValue_Previous"/>',
+    field_Page: '<g:message code="ddbnext.Page"/>',
+    field_RemoveSelectedItem: '<g:message code="ddbnext.Remove_selected_item"/>',
+    field_RemoveButton: '<g:message code="ddbnext.Remove_Button"/>',
+    
+    init: function(element){
+        this.anchor_elm = element;
+        this.anchor_parent = this.anchor_elm.parent();
+        this.anchor_parent.addClass('active');
+        this.buildFlyout();
+    },
+    buildFlyout: function(){
+        var facetLeftContainer = (this.anchor_parent.find('.flyoutLeftContainer').length>0)?this.anchor_parent.find('.flyoutLeftContainer')[0]:$( document.createElement('div') );
+        var facetRightContainer = $(document.createElement('div'));
+        var rightHead = $( document.createElement('div') );
+        var inputSearchContainer = (this.anchor_parent.find('.inputSearchFctContainer').length>0)?this.anchor_parent.find('.inputSearchFctContainer')[0]:$( document.createElement('div') );
+        var inputSearch = $( document.createElement('input') );
+        facetLeftContainer.addClass('flyoutLeftContainer');
+        facetRightContainer.addClass('flyoutRightContainer');
+        rightHead.addClass('flyoutRightHead');
+        inputSearchContainer.addClass('inputSearchFctContainer');
+        inputSearch.attr('type','text');
+        inputSearch.addClass('inputSearchFct');
+        facetLeftContainer.appendTo(this.anchor_elm.parent());
+        facetRightContainer.appendTo(this.anchor_elm.parent());
+        rightHead.appendTo(facetRightContainer);
+        rightHead.html(this.field_MostRelevant);
+        inputSearch.appendTo(inputSearchContainer);
+        inputSearchContainer.appendTo(facetLeftContainer);
+    }
+    
+  });
+  
+  function initializeFacets(){
+    $('.facets-item a').each(function(){
+        $(this).click(function(event){
+            event.preventDefault();
+            var fctWidget = new FacetWidget($(this));
+        });
+    });
+  }
+  //-- End Facet Manager
 };
 </script>
 </head>
@@ -168,7 +231,7 @@ window.onload=function(){
           <g:each in="${(results.facets)}">
             <g:if test="${mit == it.field}">
               <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
-                <a class="h3" href="${facets.mainFacetsUrl[it.field]}"><g:message code="ddbnext.facet_${it.field}" /></a>
+                <a class="h3" href="${facets.mainFacetsUrl[it.field]}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
                 <g:if test="${it.facetValues.size() > 0}">
                   <ul class="unstyled">
                     <g:facetListRender facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></g:facetListRender>
