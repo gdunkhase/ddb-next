@@ -4,7 +4,7 @@
   <div class="span12 search-widget">
     <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Search_Widget"/></h1>
     <img src="${resource(dir: 'images', file: 'logo_big.png')}" class="bigLogo" alt="<g:message code="ddbnext.Logo_Description"/>" title="<g:message code="ddbnext.Logo_Title"/>" />
-    <form method="get" action="search" role="search" id="form-search">
+    <form method="get" action="/search" role="search" id="form-search">
       <label style="float: left;"> <span><g:message code="ddbnext.Search_text_field"/></span>
         <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
       </label>
