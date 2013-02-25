@@ -15,20 +15,23 @@
               <span class="fieldName"><g:message code="${'ddbnext.facet_'+it.key}" /></span>
               <span class="fieldContent">
               <g:each status="i" in="${item.properties[it.key]}" var="x">
+                <g:if test="${(i!=0)}">
+                  ,
+                </g:if>
                 <g:if test="${it.key == 'affiliate_fct' || it.key == 'keywords_fct' || it.key == 'place_fct' || it.key == 'provider_fct'}">
-                  ${(i==0)?x:','+x}
+                    ${x}
                 </g:if>
                 <g:if test="${it.key == 'type_fct' }">
-                  ${(i==0)?message(code:'ddbnext.type_fct_'+x):','+message(code:'ddbnext.type_fct_'+x)}
+                  <g:message code="ddbnext.type_fct_${x}"/>
                 </g:if>
                 <g:if test="${it.key == 'time_fct' }">
-                  ${(i==0)?message(code:'ddbnext.time_fct_'+x):','+message(code:'ddbnext.time_fct_'+x)}
+                  <g:message code="ddbnext.time_fct_${x}"/>
                 </g:if>
                 <g:if test="${it.key == 'language_fct' }">
-                  ${(i==0)?message(code:'ddbnext.language_fct_'+x):','+message(code:'ddbnext.language_fct_'+x)}
+                  <g:message code="ddbnext.language_fct_${x}"/>
                 </g:if>
                 <g:if test="${it.key == 'sector_fct' }">
-                  ${(i==0)?message(code:'ddbnext.sector_fct_'+x):','+message(code:'ddbnext.sector_fct_'+x)}
+                  <g:message code="ddbnext.sector_fct_${x}"/>
                 </g:if>
               </g:each>
               </span>
