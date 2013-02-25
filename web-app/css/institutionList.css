@@ -29,3 +29,8 @@
   border: solid 1px #efebe8;
   background-color: #efebe8;
 }
+
+div.sector-facet>label:hover {
+  text-decoration: underline;
+  color: #a5003b;
+}
