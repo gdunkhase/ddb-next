@@ -34,12 +34,3 @@ $(function() {
 		});
 	}
 });
-//search tooltip
-$(function() {
-	$("span.contextual-help").hover(function() {
-		$("div.tooltip").show();
-		setTimeout(function() {
-			$("div.tooltip").hide(200);
-		}, 5000);
-	});
-});
