@@ -33,6 +33,9 @@ window.onload = function() {
     var previewHref = $(a).attr("data-content");
     var type = $(a).attr("data-type");
     var title = $(a).find("span").text();
+    if (title.toString().length>270){
+        title = title.toString().trim().substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
+    }
     hideErrors();
     $("a.preview img").fadeOut();
     if(type=="image"){
@@ -60,7 +63,7 @@ window.onload = function() {
           width: 445,
           height: 320,
           image: poster,
-          //skin: "/jwplayer/skin/ddbskin.xml", 
+          skin: "/jwplayer/skins/five.xml", 
           modes: [{
               type: "html5"
           }, {
