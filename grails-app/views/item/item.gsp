@@ -6,6 +6,7 @@
 <meta name="robots" content="${robots}" />
 <meta name="layout" content="main" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery.fancybox-1.3.4.css')}" type="text/css" media="screen">
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'viewer.css')}" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'item-hierarchy.css')}" />
 <script src="${resource(dir: 'js', file: 'item-hierarchy.js')}" /></script>
@@ -201,24 +202,21 @@ window.onload = function() {
 </script>
 </head>
 <body>
-  <!-- TODO: change .culturalItem to .cultural-item -->
-  <div class="culture-item-page">
-    <g:render template="controls" />
-    <g:render template="institution" />
-    <div class="row">
-      <div class="span8">
-        <h2>${title}</h2>
-        <g:render template="fields" />
-        <g:render template="rights" />
-        <g:render template="origin" />
-      </div>
-      <div class="span4">
-        <g:if test="${binaryList.size != 0}">
-          <g:render template="binaries" />
-        </g:if>
-      </div>
+  <g:render template="controls" />
+  <g:render template="institution" />
+  <div class="row">
+    <div class="span8">
+      <h2>${title}</h2>
+      <g:render template="fields" />
+      <g:render template="rights" />
+      <g:render template="origin" />
+    </div>
+    <div class="span4">
+      <g:if test="${binaryList.size != 0}">
+        <g:render template="binaries" />
+      </g:if>
     </div>
   </div>
-      <g:render template="hierarchy" />
+  <g:render template="hierarchy" />
 </body>
 </html>

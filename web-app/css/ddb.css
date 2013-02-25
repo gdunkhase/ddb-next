@@ -285,6 +285,9 @@ header .language-widget form, .header .language-widget form {
   height: 36px;
   line-height: 40px;
 }
+#form-search .link-adv-search {
+  margin-top: 10px;
+}
 .teaser .span3 {
   display:block;
   float:left;
@@ -573,7 +576,6 @@ select {
   font-size: 0.938em;
   display: block;
   text-align: left;
-  margin-top: 10px;
 }
 .tooltip {
   font-size: 0.814em;
