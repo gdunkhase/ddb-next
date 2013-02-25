@@ -2,7 +2,7 @@
   <div class="page-info">
     <span id="results-overall-index">${navData.resultsOverallIndex}</span>
     <span><g:message code="ddbnext.Of" /></span>
-    <span><b><span id="results-total">${navData.numberOfResults}</span></b></span>
+    <span><b><span id="results-total">${String.format("%,d", navData.numberOfResults.toInteger())}</span></b></span>
     <span><g:message code="ddbnext.Results_lowercase" /></span>
   </div>
   <div class="page-nav">

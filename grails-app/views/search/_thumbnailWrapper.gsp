@@ -10,10 +10,31 @@
       <h4><g:truncateItemTitle title="${ item.preview.title }"></g:truncateItemTitle></h4>
       <ul class="unstyled">
         <g:each in="${item.properties}">
-          <g:if test="${it.toString().replaceAll(it.key+'=','') !='' && it.key != 'last_update'}">
+          <g:if test="${item.properties[it.key] && it.key != 'last_update'}">
             <li>
               <span class="fieldName"><g:message code="${'ddbnext.facet_'+it.key}" /></span>
-              <span class="fieldContent">${it.toString().replaceAll(it.key+'=','').replaceAll('"','')}</span>
+              <span class="fieldContent">
+              <g:each status="i" in="${item.properties[it.key]}" var="x">
+                <g:if test="${(i!=0)}">
+                  ,
+                </g:if>
+                <g:if test="${it.key == 'affiliate_fct' || it.key == 'keywords_fct' || it.key == 'place_fct' || it.key == 'provider_fct'}">
+                    ${x}
+                </g:if>
+                <g:if test="${it.key == 'type_fct' }">
+                  <g:message code="ddbnext.type_fct_${x}"/>
+                </g:if>
+                <g:if test="${it.key == 'time_fct' }">
+                  <g:message code="ddbnext.time_fct_${x}"/>
+                </g:if>
+                <g:if test="${it.key == 'language_fct' }">
+                  <g:message code="ddbnext.language_fct_${x}"/>
+                </g:if>
+                <g:if test="${it.key == 'sector_fct' }">
+                  <g:message code="ddbnext.sector_fct_${x}"/>
+                </g:if>
+              </g:each>
+              </span>
             </li>
           </g:if>
         </g:each>

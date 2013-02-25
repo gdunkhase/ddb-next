@@ -147,6 +147,7 @@ class ApisController {
         def jsonSubresp = new JsonSlurper().parseText(xmlSubresp.toString())
         
         def timeFct = (jsonSubresp.properties.time_fct)? jsonSubresp.properties.time_fct: ""
+        println(timeFct)
         def placeFct = (jsonSubresp.properties.place_fct)? jsonSubresp.properties.place_fct: ""
         def affiliateFct = (jsonSubresp.properties.affiliate_fct)? jsonSubresp.properties.affiliate_fct: ""
         def keywordsFct = (jsonSubresp.properties.keywords_fct)?jsonSubresp.properties.keywords_fct: ""
@@ -158,7 +159,6 @@ class ApisController {
 
         tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
         tmpResult["properties"] = properties
-
         docs.add(tmpResult)
     }
     resultList["facets"] = jsonResp.facets
@@ -166,7 +166,7 @@ class ApisController {
     resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
     resultList["numberOfResults"] = jsonResp.numberOfResults
     resultList["randomSeed"] = jsonResp.randomSeed
-
+    
     render (contentType:"text/json"){resultList}
   }
 }
