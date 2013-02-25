@@ -17,29 +17,51 @@ $(document).ready(function() {
     // TODO: if institution has descendants, show all descendants too but don't
     // highlight them.
     if (this.checked) {
+      // TODO: get org by sector
+      // TODO: get org's descdendants
+      // TODO: 
       // the logic
       var currentSelected = ddb.filterBySection(this);
-      allSelected = $.merge(allSelected, currentSelected)
-      rest = $(all).not(allSelected);
+      allSelected = $.merge(allSelected, currentSelected);
 
+      /*
       console.log('current selected: ' , currentSelected.length);
       console.log('all selected: ' ,allSelected.length);
       console.log('rest selected: ' , rest.length);
       console.log('all: ' , all.length);
-
-      /*
-      var parents = currentSelected.each(function(index, val) {
-        console.log('val: ' , val);
-        var parentId = $(val).data('child-of');
-        console.log('parent is: ' + parentId);
-      });;
       */
+
+      var parents = [];
+
+      // get all parent from current selected
+      currentSelected.each(function(index, val) {
+        var parentId = $(val).data('child-of');
+        if (parentId) {
+          var parent = $('*[data-institution-id="' + parentId + '"]');
+          $(parent).css('background-color', 'white');
+          parents.push(parent);
+        }
+      });
+
+      rest = $(all).not(currentSelected);
+      console.log('rest, ', rest.length);
+
+      $.merge(rest, parents);
+      console.log('rest, ', rest.length);
 
       // manipulate the view
       // highlight the current selection
-      currentSelected.find('a').addClass('highlight');
+      $(currentSelected).find('> a').addClass('highlight');
+
+      // TODO: rest select parent and its descendants too
+      $(rest).css('background-color', 'red');
       $(allSelected).show();
-      rest.hide();
+
+      $(parents).each(function(index, val) {
+        console.log(val);
+      });
+      $(parents).css('background-color', 'white');
+      $(allSelected).css('background-color', 'white');
     } else {
       // the user uncheck one of the filter ==> remove selection
 
@@ -53,7 +75,7 @@ $(document).ready(function() {
       currentSelected.find('a').removeClass('highlight');
 
       // when all filtered are removed, show all
-      if($(allSelected).empty()) {
+      if ($(allSelected).empty()) {
         $(all).show();
       } else {
         $(allSelected).show();
@@ -74,8 +96,14 @@ var ddb = {
 
   filterBySection: function(el) {
     var filterBy = $(el).data('sector');
-    var filtered = $('li').filter(function() {
+    console.log('selected sector: ' + filterBy);
+
+    var filtered = $('.institution').filter(function() {
       return $(this).data('sector') === filterBy;
+    });
+
+    filtered.each(function(index, val) {
+      console.log($(val).data('sector'));
     });
     return filtered;
   },
@@ -88,4 +116,4 @@ var ddb = {
       });
     }
   }
-}
+};

@@ -119,9 +119,5 @@ log4j = {
 
      debug 'grails.app'
      debug stacktrace : 'grails.app'
-     warn  'org.apache.catalina'
-
-     debug 'grails.app.services.ItemService'
-     debug stacktrace : 'grails.app'
 }
 grails.app.context = "/"
