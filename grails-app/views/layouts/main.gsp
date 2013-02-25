@@ -32,17 +32,6 @@
     <g:layoutBody/>
   </div>
   <g:render template="/footer" />
-  <!-- TODO: remove inline style from html  -->
-  <div class="widget tooltip" data-widget="TooltipWidget"
-    data-bind="style: { 
-                      'display' : isVisible() ? 'block' : 'none',
-                      'left': xpx,
-                      'top': ypx,
-                      'position': positionMode
-                      },
-                      attr: { 'class': 'widget tooltip ' +layout() }">
-  <div data-bind="html: content"></div>
-  </div>
   <!--  TODO which script do we really use? -->
   <!--  TODO why do we declare jquery here? Don't we use Grails jQuery Plug-in? -->
   <script type="text/javascript" src="${resource(dir:'js', file:'json2.js')}"></script>  
@@ -63,8 +52,9 @@
   <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'large-cookie.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'advanced-search-page.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir:'js', file:'jquery.fancybox-1.3.4.pack.js')}"></script>
-  <script type="text/javascript" src="${resource(dir:'jwplayer', file:'jwplayer.js')}"></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.fancybox-1.3.4.pack.js')}"></script>
+  <script type="text/javascript" src="${resource(dir: 'jwplayer', file: 'jwplayer.js')}"></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
   <script>
 			var global;
 			var resources;

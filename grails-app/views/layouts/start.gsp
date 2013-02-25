@@ -45,6 +45,7 @@
     <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}" /></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'start-page.js')}" /></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
     <script>
         var global;
         var resources;
