@@ -67,6 +67,7 @@ class SearchController {
                                 (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
                                 
         def resultsPaginatorOptions = SearchService.buildPaginatorOptions(urlQuery)
+        def numberOfResultsFormatted = String.format("%,d", resultsItems.numberOfResults.toInteger())
         
         if(params.reqType=="ajax"){
             def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url]).replaceAll("\r\n", '')
@@ -75,7 +76,7 @@ class SearchController {
                               resultsOverallIndex:resultsOverallIndex, 
                               pagesOverallIndex: pagesOverallIndex,
                               paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString().replaceAll("&reqType=ajax","")),
-                              numberOfResults: resultsItems.numberOfResults
+                              numberOfResults: numberOfResultsFormatted
                               ]
             render (contentType:"text/json"){jsonReturn}
         }
@@ -94,7 +95,8 @@ class SearchController {
                 resultsPaginatorOptions: resultsPaginatorOptions,
                 resultsOverallIndex:resultsOverallIndex, 
                 pagesOverallIndex: pagesOverallIndex,
-                paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString())
+                paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString()),
+                numberOfResultsFormatted: numberOfResultsFormatted
             ])
         }
     }

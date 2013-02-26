@@ -2,8 +2,14 @@
 <html>
   <head>
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="description" content="Deutsche Digitale Bibliothek" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="description" content="Deutsche Digitale Bibliothek"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+    <!-- TODO: uncomment the next two lines, once we find the icons -->
+    <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"/ -->
+    <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" type="text/css">
@@ -52,6 +58,7 @@
   <script type="text/javascript" src="${resource(dir: 'js', file: 'advanced-search-page.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.fancybox-1.3.4.pack.js')}"></script>
   <script type="text/javascript" src="${resource(dir: 'jwplayer', file: 'jwplayer.js')}"></script>
+  <script>jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="</script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
   <script>
 			var global;
