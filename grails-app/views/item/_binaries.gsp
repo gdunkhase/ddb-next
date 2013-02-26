@@ -30,7 +30,7 @@
   <div class="tabs">
     <p class="tab all">
       <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
-                 args="${flash.all}" 
+                 args="${flashInformation.all}" 
                  default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
     </p>
     <div class="scroller all">
@@ -121,7 +121,7 @@
     </noscript>
 
     <p class="tab divider">|</p>
-    <p class="tab images"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flash.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+    <p class="tab images"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
     <div class="scroller images">
       <ul id="gallery-images">
         <g:each in="${binaryList}">
@@ -172,7 +172,7 @@
     </noscript>
 
     <p class="tab divider">|</p>
-    <p class="tab videos"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flash.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+    <p class="tab videos"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
     <div class="scroller videos">
       <ul id="gallery-videos">
         <g:each in="${binaryList}">
@@ -224,7 +224,7 @@
     </noscript>
 
     <p class="tab divider">|</p>
-    <p class="tab audios"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flash.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+    <p class="tab audios"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
     <div class="scroller audios">
       <ul id="gallery-audios">
         <g:each in="${binaryList}">
