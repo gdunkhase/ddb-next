@@ -249,7 +249,6 @@ header .language-widget form, .header .language-widget form {
   box-shadow: none;
   overflow: hidden;
   background: none;
-  margin-left: 4px;
   vertical-align: top;
 }
 .search-widget form button::before{ 
@@ -276,17 +275,33 @@ header .language-widget form, .header .language-widget form {
   position: relative;
   padding-bottom: 15px;
   top: 0px;
-  width: 570px;
+  width: 580px;
   margin: 0 auto;
 }
 #form-search input {
   font-size: 1.25em;
   width: 485px;
-  height: 36px;
+  height: 37px;
   line-height: 40px;
+  margin-left: 2px;
+  float: left;
+  
 }
 #form-search .link-adv-search {
   margin-top: 10px;
+}
+#form-search .tooltip {
+  left: 0;
+  max-width: 536px;
+  margin: 12px 0px;
+  background-position: right -24px;
+  display: none;
+  color: #3e3a37;
+  font-size: 0.938em;
+  position: absolute;
+  top: 40px;
+  text-align: left;
+  margin-left: 2px;
 }
 .teaser .span3 {
   display:block;
@@ -327,18 +342,6 @@ noscript .caption {
 .teaser .article img {
    width:204px;
    height:180px; 
-}
-#form-search .tooltip {
-  left: 0;
-  max-width: 530px;
-  margin: 12px 0px;
-  background-position: right -24px;
-  display: none;
-  color: #3e3a37;
-  font-size: 0.938em;
-  position: absolute;
-  top: 40px;
-  text-align: left;
 }
 .carousel {
   padding: 0px 0 0px 1px;
@@ -471,11 +474,11 @@ form label {
   clear: left;
   color: #3e3a37;
   font-size: 0.938em;
-  margin: 0 0 5px 0;
 }
 form input {
   width: 280px;
-  margin: 0 0 5px 0;
+  margin: 0 0 1px 0;
+  height: 20px;
 }
 input {
   color: #3e3a37;
@@ -576,6 +579,7 @@ select {
   font-size: 0.938em;
   display: block;
   text-align: left;
+  margin-left: 2px;
 }
 .tooltip {
   font-size: 0.814em;

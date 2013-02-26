@@ -5,8 +5,8 @@
 <meta name="keywords" content="${keywords}" />
 <meta name="robots" content="${robots}" />
 <meta name="layout" content="main" />
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery.fancybox-1.3.4.css')}" type="text/css" media="screen">
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}" type="text/css">
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery.fancybox-1.3.4.css')}" type="text/css" media="screen" />
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}" type="text/css" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'viewer.css')}" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'item-hierarchy.css')}" />
 <script src="${resource(dir: 'js', file: 'item-hierarchy.js')}" /></script>

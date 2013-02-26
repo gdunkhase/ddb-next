@@ -5,9 +5,10 @@
     <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Search_Widget"/></h1>
     <img src="${resource(dir: 'images', file: 'logo_big.png')}" class="bigLogo" alt="<g:message code="ddbnext.Logo_Description"/>" title="<g:message code="ddbnext.Logo_Title"/>" />
     <form method="get" action="/search" role="search" id="form-search">
-      <label style="float: left;"> <span><g:message code="ddbnext.Search_text_field"/></span>
-        <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
+      <label> 
+        <span><g:message code="ddbnext.Search_text_field"/></span>
       </label>
+      <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
       <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
       <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint" 
                                                   args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
