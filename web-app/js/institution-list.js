@@ -3,7 +3,6 @@ $(document).ready(function() {
   // if the User Agent enable JS, show the `filter by sector` checkboxes.
   $('.filter').show();
 
-
   var all = $('.institution');
   var allSelected = [];
   var rest;
@@ -136,19 +135,34 @@ var ddb = {
   filterByHash: function(selectedHash, allSelected, all) {
     console.log('filtered by hash: ' + selectedHash);
 
-    var temp = allSelected;
-    if (allSelected.length === 0) {
-      console.log('nothing is selected.');
-      temp = all;
+    switch (selectedHash) {
+      case 'list':
+      case 'ALL':
+      case 'all':
+        break;
+      default: {
+        console.log('filter by first letter');
+        var temp = allSelected;
+        if (allSelected.length === 0) {
+          console.log('nothing is selected.');
+          temp = all;
+        }
+
+        var filteredByFirstLetter = $(temp).filter(function() {
+          var firstLetter = $(this).data('first-letter');
+          return firstLetter === selectedHash;
+        });
+
+        console.log('found: ' + filteredByFirstLetter.length);
+        if (filteredByFirstLetter.length === 0) {
+          $('.institution-list')
+          .html('No institutions match your search criteria.');
+        } else {
+          filteredByFirstLetter.show();
+          $(temp).not(filteredByFirstLetter).hide();
+        }
+      }
     }
-
-    var filteredByFirstLetter = $(temp).filter(function() {
-      var firstLetter = $(this).data('first-letter');
-      return firstLetter === selectedHash;
-    });
-
-    filteredByFirstLetter.show();
-    $(temp).not(filteredByFirstLetter).hide();
   }
 
 };

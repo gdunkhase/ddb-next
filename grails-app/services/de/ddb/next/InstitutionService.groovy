@@ -33,7 +33,6 @@ class InstitutionService {
                     }
                 }
 
-
                 if(it.children?.size() > 0 ) {
                     it.children.each { child ->
                         child.uri = buildUri(child.id)
@@ -49,7 +48,6 @@ class InstitutionService {
                         aMap['A'].add(institutionWithUri)
                         break
                     case 'Ö':
-                        log.debug 'char: ' + firstChar
                         aMap['O'].add(institutionWithUri)
                         break
                     case 'Ü':
@@ -59,7 +57,6 @@ class InstitutionService {
                         aMap['S'].add(institutionWithUri)
                         break
                     default:
-                        log.debug firstChar
                         aMap[firstChar].add(institutionWithUri)
                 }
             }
