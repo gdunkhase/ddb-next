@@ -1,11 +1,15 @@
+import org.apache.log4j.Logger;
+
+import groovy.util.logging.Log4j;
 import groovy.xml.StreamingMarkupBuilder
 
 eventWebXmlEnd = {String tmpfile ->
+    def log = Logger.getLogger(this.getClass());
+    log.info "Dynamically adjusting web.xml in /scripts/_Events.groovy"
+    log.info "Adding session listener (de.ddb.next.DDBSessionListener) to web.xml"
+    
     def root = new XmlSlurper().parse(webXmlFile)
-      
-    System.out.println("| Dynamically adjusting web.xml in /scripts/_Events.groovy")
-      
-    System.out.println("| - Adding session listener (de.ddb.next.DDBSessionListener) to web.xml")
+    
     root.appendNode {
         'listener' {
             'listener-class' (
