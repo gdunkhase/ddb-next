@@ -14,7 +14,7 @@
           <li><a href="/content/sitemap"><g:message code="ddbnext.Sitemap"/></a></li>
           <li><a href="/content/contact"><g:message code="ddbnext.Contact"/></a></li>
         </ul>
-        <div class="build">next 0.3 / <g:backendVersion/></div>
+        <div class="build">next <g:meta name="app.version"/> / <g:backendVersion/></div>
       </div>
     </div>
   </div>
