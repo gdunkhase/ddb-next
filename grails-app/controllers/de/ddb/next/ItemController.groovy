@@ -20,6 +20,10 @@ class ItemController {
         flash.audios = [binariesCounter.audios]
         flash.videos = [binariesCounter.videos]
 
+        if (item.pageLabel?.isEmpty()) {
+            item.pageLabel= itemService.getItemTitle(id)
+        }
+
         // TODO: handle 404 and failure separately. HTTP Status Code 404, should
         // to `not found` page _and_ Internal Error should go to `internal server
         // error` page. We should send also the HTTP Status Code 404 or 500 to the
@@ -29,8 +33,9 @@ class ItemController {
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
             def fields = translate(item.fields)
-            render(view: 'item', model: [itemUri: itemUri,viewerUri: item.viewerUri,
-                'title': item.title, item: item.item, institution : item.institution, fields: item.fields, binaryList: binaryList])
+            render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
+                'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
+                binaryList: binaryList, pageLabel: item.pageLabel])
         }
     }
 
