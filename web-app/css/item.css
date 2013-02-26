@@ -38,18 +38,20 @@
  background-color: #efebe8;
 }
 
-.no-origin {
+.no-origin, .has-origin {
   margin-top: 30px;
   padding-left: 25px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -120px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px;
+}
+
+.no-origin {
+  background-position-y: -120px; 
 }
 
 .has-origin {
-  margin-top: 30px;
-  padding-left: 25px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
+  background-position-y: -80px; 
 }
-
+  
 .page-nav {
   line-height: 42px;
 }
@@ -66,8 +68,7 @@
   padding: 0;
 }
 
-.page-nav .first-page a,.page-nav .prev-page a,.page-nav .next-page a,.page-nav .last-page a
-  {
+.page-nav .first-page a,.page-nav .prev-page a,.page-nav .next-page a,.page-nav .last-page a {
   background: url("../images/icons/pagination.png") no-repeat;
 }
 
