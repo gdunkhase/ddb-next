@@ -1,11 +1,10 @@
 package de.ddb.next
 
-
 class ItemController {
     static defaultAction = "findById"
 
     def itemService
-    
+
     def children() {
         render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", null))
     }
@@ -25,11 +24,24 @@ class ItemController {
             redirect(controller: 'error')
         } else {
             def itemUri = request.getHeader('Host') + request.forwardURI
-            render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-            'title': item.title, item: item.item, institution : item.institution, fields: item.fields, binaryList: binaryList])
+            def fields = translate(item.fields)
+            render(view: 'item', model: [itemUri: itemUri,viewerUri: item.viewerUri,
+                'title': item.title, item: item.item, institution : item.institution, fields: item.fields, binaryList: binaryList])
         }
     }
-    
+
+    def translate(fields) {
+        fields.each {
+            def messageKey = 'ddbnext.' + it.'@id'
+            def translated = message(code: messageKey)
+            if(translated != messageKey) {
+                it.name = translated
+            } else {
+                log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
+            }
+        }
+    }
+
     def parents() {
         render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
     }
