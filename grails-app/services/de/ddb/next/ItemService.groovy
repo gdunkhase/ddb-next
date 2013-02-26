@@ -51,7 +51,7 @@ class ItemService {
                 viewerUri = buildViewerUri(item, componentsPath)
 
                 return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
-                    'fields': fields, pageLabel: item.pageLabel]
+                    'fields': fields, pageLabel: xml.pagelabel]
             }
 
             response.'404' = { return '404' }
