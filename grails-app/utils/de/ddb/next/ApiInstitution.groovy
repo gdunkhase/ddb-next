@@ -141,6 +141,11 @@ class ApiInstitution {
             def query = ['query':"${provName}" ]
             //log.println('Query = ' + query)
             
+            //log.println("grailsApplication.config.ddb.backend.url.toString() = " + grailsApplication.config.ddb.backend.url.toString())
+            //log.println("uriPath = " + uriPath)
+            //log.println("query = " + query)
+            //jsonResult = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), uriPath, query)
+            
             try {
                 def http = new HTTPBuilder("http://dev-backend.deutsche-digitale-bibliothek.de:9998")
                 http.request(Method.GET, ContentType.TEXT) { req ->
