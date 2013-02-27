@@ -1,0 +1,80 @@
+.static_content {
+    margin: 0 0 0 0;
+    width: 728px;
+    float: left;
+    clear: left;
+}
+
+.static_marginal {
+    width: 224px;
+    margin: 0 0 0 28px;
+    float: right;
+    clear: right;
+}
+
+.static_content a, .static_marginal a {
+    text-decoration: underline;
+}
+
+.static_marginal img {
+    margin: 0;
+}
+
+h2 {
+    color:#3e3a37;
+    font-weight:normal;
+    margin-top: 5px;
+}
+
+.date {
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+}
+
+.static_content h2 a, .static_marginal h2 a, h2 a {
+    color:#a5003b;
+    font-weight:normal;
+    font-size: 1em;
+    text-decoration: none;
+}
+
+.static_content h2 a:hover, .static_marginal h2 a:hover, h2 a:hover {
+    text-decoration: underline;
+} 
+
+.static_content h2 a:active, .static_marginal h2 a:active, h2 a:active {
+    text-decoration: underline;
+} 
+
+.static_content h2 a:focus, .static_marginal h2 a:focus, h2 a:focus {
+    text-decoration: underline;
+} 
+
+ul.plum-arrow, ul.grey-arrow, ul.lightgrey-arrow {
+    padding-left: 17px;    
+}
+
+.inlineBox {
+    padding: 10px;
+    margin: 15px;
+    width: 300px;
+    border: 1px solid #EFEBE8;
+    font-style: italic;
+}
+
+.floatLeft {
+    float: left;
+}
+
+img.floatLeft, .inlineBox.floatLeft {
+    margin: 5px 15px 10px 0;
+}
+
+.floatRight {
+    float: right;
+}
+
+img.floatRight, .inlineBox.floatRight {
+    margin: 5px 0 10px 15px;
+}
