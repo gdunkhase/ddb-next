@@ -1,4 +1,8 @@
-////TODO: do we need this file? we don't use Hibernate
+////This configuration is only needed if a persistence layer is used. 
+////Since we don't use any, it is commented out. See DDBNEXT-76.
+//
+//
+//
 //dataSource {
 //    pooled = true
 //    driverClassName = "org.h2.Driver"
