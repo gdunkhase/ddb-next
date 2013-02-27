@@ -1,6 +1,12 @@
+<html>
+<head>
+<title><g:message code="error.notfound.title"/> - Deutsche Digitale Bibliothek</title>
+
 <meta name="layout" content="main" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'error.css')}" type="text/css" /> 
 
+</head>
+<body>
  
 <div class="row">
 	<div class="error">
@@ -12,3 +18,6 @@
 		</p>
 	</div>
 </div>
+
+</body>
+</html>
