@@ -1,8 +1,71 @@
 package de.ddb.next
 
-class ErrorController {
-    static defaultAction = "notfound"
+import grails.util.Environment;
+import grails.util.GrailsUtil;
 
-    def notfound() {
+import org.codehaus.groovy.grails.commons.GrailsApplication;
+
+/**
+ * Central controller for handling error situations (404, 500, etc).
+ */
+class ErrorController {
+
+    
+    /**
+     * Handler method for error 500 situations
+     * @return Either the 500_development view or the 500_production view, dependent on the environment
+     */
+    def serverError() {
+        
+        //Lot of logging to make bugfixing easier
+        
+        log.error "An uncaught exception occured in the frontend. The user will be redirected to the 500 page."
+        if(request.exception != null){
+            try{
+                log.error "Source of the error is: '"+request.exception.getMessage()+"'"
+                def stackElements = request.exception.getStackTrace();
+                for(stackElement in stackElements){
+                    log.error "Stack: "+stackElement.getClassName()+"."+stackElement.getMethodName()+" ["+stackElement.getLineNumber()+"]"
+                }
+                
+            }catch(Throwable ex){
+                log.error "Grails did not provide a valid error object"
+                ex.printStackTrace();
+            }
+        }else{
+            log.error "Grails did not provide an error object. No stacktrace available."
+        }
+
+        // Return response code 500
+        
+        response.status = 500
+        
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Production: show a nice error message
+            return render(view:'500_production')
+        } else {
+            // Not it production? show an ugly, developer-focused error message
+            return render(view:'500_development')
+        }
+    }
+    
+    /**
+     * Handler method for error 400 situations
+     * @return The notfound view
+     */
+    def notFound() {
+        
+        // Here we have the possibility to add further logging to identify if some 404 urls were called
+
+        // Return response code 400
+        
+        response.status = 404
+        
+        // Return the 404 view
+        
+        return render(view:'notfound')
     }
 }

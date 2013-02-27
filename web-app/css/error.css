@@ -1,0 +1,17 @@
+.error {
+	color: #3E3A37;
+	margin-left: 30px;
+	min-height: 515px;
+}
+
+.error h1 {
+	font-family: KarbidWeb,Calibri,Arial,sans-serif;
+	font-size: 1.75em;
+	font-weight: normal;
+	line-height: 1.5em;
+}
+
+.error p {
+    font-family: Calibri,Arial,sans-serif;
+}
+

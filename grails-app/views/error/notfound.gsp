@@ -1,6 +1,14 @@
 <meta name="layout" content="main" />
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'error.css')}" type="text/css" /> 
 
-<div id="page">
-  <h1><g:message code="error.notfound.title" /></h1>
-  <p><g:message code="error.notfound.body" /></p>
+ 
+<div class="row">
+	<div class="error">
+		<h1>
+			<g:message code="error.notfound.title"/>
+		</h1>
+		<p>
+			<g:message code="error.notfound.body"/>
+		</p>
+	</div>
 </div>
