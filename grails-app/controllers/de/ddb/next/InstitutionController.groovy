@@ -20,36 +20,34 @@ class InstitutionController {
         def vApiInstitution = new ApiInstitution();
         log.println("+++")
         log.println("read insitution by item id: ${id}")
+        //log.println("grailsApplication.config.ddb.wsItemResults.toString(): " + grailsApplication.config.ddb.backend.url.toString())
         log.println("+++")
-        def dataViewXML = vApiInstitution.getInstitutionViewByItemId(id)
-        def dataProvInfoXML = vApiInstitution.getProviderInfoByItemId(id)
-        def dataJSON = vApiInstitution.getChildrenOfInstitutionByItemId(id)
-        def jsonFacets = vApiInstitution.getFacetValues(dataViewXML.name.text())
-        
-        // response:{"field":"provider_fct","numberOfFacets":1,"facetValues":[{"value":"Landesarchiv Baden-Württemberg","count":9954}]}
-        int countObjectsForProv = 0;
-        if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
-            try {
-                countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
-            } 
-            catch (NumberFormatException ex) {
-                countObjectsForProv = -1;
-            }
-        }
-        
-        for (int i = 0; i < dataJSON.size(); i++) {
-            log.println("dataJSON[${i}]: " + dataJSON[i])
-        }
-        
+        def dataViewXML = vApiInstitution.getInstitutionViewByItemId(id, grailsApplication.config.ddb.backend.url.toString())
         if (dataViewXML != null) {
-            render(view: "institution", model: [results: dataViewXML, provInfo: dataProvInfoXML, subOrg: dataJSON, countObjcs: countObjectsForProv])
+            //def dataProvInfoXML = vApiInstitution.getProviderInfoByItemId(id, grailsApplication.config.ddb.backend.url.toString())
+            def jsonOrgHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(id, grailsApplication.config.ddb.backend.url.toString())
+            def jsonFacets = vApiInstitution.getFacetValues(dataViewXML.name.text(), grailsApplication.config.ddb.backend.url.toString())
+            
+            // response:{"field":"provider_fct","numberOfFacets":1,"facetValues":[{"value":"Landesarchiv Baden-Württemberg","count":9954}]}
+            int countObjectsForProv = 0;
+            if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
+                try {
+                    countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
+                } 
+                catch (NumberFormatException ex) {
+                    countObjectsForProv = -1;
+                }
+            }
+            
+            render(view: "institution", model: [itemId: id, results: dataViewXML, subOrg: jsonOrgHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
+            //render(view: "institution", model: [itemId: id, results: dataViewXML, provInfo: dataProvInfoXML, subOrg: jsonOrgHierarchy, countObjcs: countObjectsForProv])
         } 
         else {
             redirect(controller: 'error')
         }
         
     }
-    
+    /*
     def void findByItemId() {
         def id = params.id
         
@@ -68,7 +66,7 @@ class InstitutionController {
             http.request(Method.GET, ContentType.TEXT) { req ->
                 uri.path = providerInfo
                 headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
-                headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*         /*;q=0.8'
                 response.success = { resp, reader ->
                    assert resp.statusLine.statusCode == 200
                    log.println("Response status: ${resp.statusLine}")
@@ -102,4 +100,5 @@ class InstitutionController {
         //render view: 'institution' , model: [orgId: id, institution: org]
         //render view: 'institution' , model: [orgId: id]
     }
+    */
 }
