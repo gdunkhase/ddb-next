@@ -2,31 +2,57 @@ package de.ddb.next
 
 import groovy.util.XmlSlurper
 import java.net.URI.Parser
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 // TODO: do we still need this class?
 class ContentController {
+	static defaultAction = "news"
 
-    static defaultAction = "news"
-
-    def url = "http://141.66.130.151:8003"
-
-    def news() {
-        def lang = "de"
-        def path = "/static/"+lang+"/news/index.html"
-        if (params.id!=null){
-            path = "/static/"+lang+"/news/"+params.id+".html"
-        }
-        def query = [ client: "DDB-NEXT" ]
-        // Submit a request via GET
-        def response = ApiConsumer.getText(url, path, query)
+	def staticcontent(){
+		if ((params.dir==null) && (params.dir=="news")){
+			forward action: "news"
+		}else{
+			def firstLvl =getFirstLvl();
+		}
+		
+	}
+	def news() {
+		def url = getStaticUrl()
+		def lang = getShortLocale()
+		def path = "/static/"+lang+"/news/index.html"
+		if (params.id!=null){
+			path = "/static/"+lang+"/news/"+params.id+".html"
+		}
+		def query = [ client: "DDB-NEXT" ]
+		//Submit a request via GET
+		def response = ApiConsumer.getText(url, path, query)
 
         if (response == "Not found"){
-            redirect(controller: "error", action: "notfound")
+			redirect(controller: "error", action: "notfound")
         }
 
-        def map= retrieveArguments(response)
-        render(view: "news", model: map)
+		def map= retrieveArguments(response)
+		render(view: "news", model: map)
     }
+	
+	private String getFirstLvl(){
+		String firstLvl = cleanHtml(params.dir, 'none')
+		return firstLvl
+	}
+
+	private String getShortLocale() {
+		def locale = RCU.getLocale(request)
+		if(locale.toString().substring(0, 2)=="de") {
+			return "de"
+		}
+		return "en"		
+	}
+
+	def getStaticUrl(){
+		def url = grailsApplication.config.ddb.static.url
+		assert url instanceof String, "This is not a string"
+		return url;
+	}
 
     private def retrieveArguments(def content){
         def title = fetchTitle(content)
