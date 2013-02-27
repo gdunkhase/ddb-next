@@ -1,7 +1,7 @@
 .field-header {
   clear: both;
   font-size: 1.064em;
-  line-height: 32px;
+  line-height: 30px;
   height: 32px;
   font-weight: normal;
   color: #3e3a37;
@@ -93,6 +93,14 @@
   background: #999 none;
 }
 
-.off {
-  display: none !important;
+.field-header .contextual-help {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+  background: url("../images/icons/tooltips.png") no-repeat 0px -120px;
+}
+.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus {
+  background-position:0px -150px;
 }

@@ -18,7 +18,7 @@
                                     args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
                                     default="ddbnext.Search_Hint"/>"></span> 
       <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
-      <div class="tooltip"></div>
+      <div class="tooltip off"></div>
     </form>
   </div>
 </div>

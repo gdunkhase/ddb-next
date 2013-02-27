@@ -219,9 +219,6 @@ header .language-widget,.header .language-widget {
 header .language-widget form, .header .language-widget form {
   display:none;
 }
-#form-search-header .tooltip {
-  display: none;
-}
 /* header - end */
 
 /* index */
@@ -295,7 +292,6 @@ header .language-widget form, .header .language-widget form {
   max-width: 536px;
   margin: 12px 0px;
   background-position: right -24px;
-  display: none;
   color: #3e3a37;
   font-size: 0.938em;
   position: absolute;
@@ -580,6 +576,9 @@ select {
   display: block;
   text-align: left;
   margin-left: 2px;
+}
+.off {
+  display: none !important;
 }
 .tooltip {
   font-size: 0.814em;

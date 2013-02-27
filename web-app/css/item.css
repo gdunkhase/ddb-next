@@ -38,6 +38,9 @@
   line-height: 30px;
   background-color: #efebe8;
 }
+.origin {
+  margin-top: 20px;
+}
 .no-origin {
   margin-top: 30px;
   padding-left: 25px;

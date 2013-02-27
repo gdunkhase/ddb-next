@@ -5,9 +5,9 @@ $(function() {
 		var tooltip = $(this).siblings("div.tooltip");
 		$(this).removeAttr("title");
 		tooltip.html(hint).text();
-		tooltip.show();
+		tooltip.removeClass("off");
 		setTimeout(function() {
-			$("div.tooltip").hide(200);
+			$("div.tooltip").addClass("off");
 		}, 5000);
 	});
 });

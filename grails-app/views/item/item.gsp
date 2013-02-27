@@ -208,13 +208,13 @@ window.onload = function() {
   <g:render template="controls" />
   <g:render template="institution" />
   <div class="row">
-    <div class="span8">
+    <div class="span7">
       <h2>${title}</h2>
       <g:render template="fields" />
       <g:render template="rights" />
       <g:render template="origin" />
     </div>
-    <div class="span4">
+    <div class="span5">
       <g:if test="${binaryList.size != 0}">
         <g:render template="binaries" />
       </g:if>
