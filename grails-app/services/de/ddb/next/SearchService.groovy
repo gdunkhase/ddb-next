@@ -166,4 +166,110 @@ class SearchService {
         }
         return tmpTitle
     }
+
+    /**
+     * Generate Map that can be used to call Search on Search-Server
+     * 
+     * @param reqParameters
+     * @return Map with keys used for Search on Search-Server
+     */
+    static def convertQueryParametersToSearchParameters(GrailsParameterMap reqParameters) {
+        def urlQuery = [:]
+        if (reqParameters.q!=null || reqParameters.query!=null){
+            // FIXME remove q
+            urlQuery = (reqParameters.q)?[ query: reqParameters.q ]:[query: reqParameters.query]
+        }
+
+        if (reqParameters.rows == null) {
+            urlQuery["rows"] = 20.toInteger()
+        }
+        else {
+            urlQuery["rows"] = reqParameters.rows.toInteger()
+        }
+        reqParameters.rows = urlQuery["rows"]
+        
+        if (reqParameters.offset == null) {
+            urlQuery["offset"] = 0.toInteger()
+        }
+        else {
+            urlQuery["offset"] = reqParameters.offset.toInteger()
+        }
+        reqParameters.offset = urlQuery["offset"]
+        
+        //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
+        //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
+        if(reqParameters["facetValues[]"]){
+            urlQuery = SearchService.getFacets(reqParameters, urlQuery,"facet", 0)
+        }
+
+        if(reqParameters.get("facets[]")){
+            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+            if(!urlQuery["facet"].contains(reqParameters.get("facets[]")))
+                urlQuery["facet"].add(reqParameters.get("facets[]"))
+        }
+
+        if(reqParameters.minDocs)
+            urlQuery["minDocs"] = reqParameters.minDocs
+
+        if(reqParameters.sort == null) {
+            urlQuery["sort"] = "RELEVANCE"
+            reqParameters.sort = "RELEVANCE"
+        }
+        else {
+            urlQuery["sort"] = reqParameters.sort
+        }
+
+        if(reqParameters.viewType == null) {
+            urlQuery["viewType"] = "list"
+            reqParameters.viewType = "list"
+        }
+        else {
+            urlQuery["viewType"] = reqParameters.viewType
+        }
+
+        if(reqParameters.isThumbnailFiltered){
+            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+            if(!urlQuery["facet"].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+                urlQuery["facet"].add("grid_preview")
+                urlQuery["grid_preview"] = "true"
+            }
+        }
+
+        return urlQuery
+    }
+    
+    /**
+     * Generate Map that contains GET-parameters used for search-request by ddb-next.
+     * 
+     * @param reqParameters
+     * @return Map with keys used for search-request by ddb-next.
+     */
+    static def getSearchGetParameters(Map reqParameters) {
+        def searchParams = [:]
+        def requiredParams = ["query", "offset", "rows", "sort", "viewType", "facetValues[]"]
+        for (entry in reqParameters) {
+            if (requiredParams.contains(entry.key)) {
+                searchParams[entry.key] = entry.value
+            }
+        }
+        return searchParams
+    }
+
+    /**
+     * Generate Map that contains GET-parameters used for item-detail-request by ddb-next.
+     * 
+     * @param reqParameters
+     * @return Map with keys used for item-detail-request by ddb-next.
+     */
+    static def getItemDetailGetParameters(Map reqParameters) {
+        def itemDetailParams = [:]
+        def requiredParams = ["query", "offset", "rows", "sort", "viewType", "facetValues[]", "firstHit", "lastHit"]
+        for (entry in reqParameters) {
+            if (requiredParams.contains(entry.key)) {
+                itemDetailParams[entry.key] = entry.value
+            }
+        }
+        return itemDetailParams
+    }
+
 }

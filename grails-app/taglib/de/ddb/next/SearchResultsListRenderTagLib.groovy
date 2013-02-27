@@ -8,7 +8,7 @@ class SearchResultsListRenderTagLib {
      */
 
     def itemResultsRender = { attrs, body ->
-        out << render(template:"/search/resultsList", model:[results: attrs.results, confBinary: grailsApplication.config.ddb.binary.url])
+        out << render(template:"/search/resultsList", model:[results: attrs.results, urlParams: attrs.urlParams, confBinary: grailsApplication.config.ddb.binary.url])
     }
 
     def truncateItemTitle = { attrs, body ->
