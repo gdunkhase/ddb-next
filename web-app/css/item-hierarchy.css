@@ -10,7 +10,7 @@
   background: #efebe8;
   border-radius: 3px;
   -moz-border-radius: 3px;
-  -webkit-border-radius: 3px
+  -webkit-border-radius: 3px;
 }
 
 .item-hierarchy-result div.leaf-indicator {
@@ -103,4 +103,8 @@
 }
 .field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus {
   background-position:0px -150px;
+}
+.field-header .tooltip{
+  font-size: 0.938em;
+  color: #3e3a37;
 }

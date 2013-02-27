@@ -8,9 +8,9 @@
         <!--[if lt IE 9]>
           <div class="nav widget" data-widget="NavigationWidget">
         <![endif]-->
-        <nav class="widget span10 offset1" data-widget="NavigationWidget">
+        <nav class="widget span12" data-widget="NavigationWidget">
           <div class="row">
-            <div class="span5">
+            <div class="span7">
               <a href="/" class="navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
                 <r:img dir="images" file="logo_header.png" class="siteLogo" />
               </a>
@@ -57,12 +57,14 @@
                     </label>
                     <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
                     <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
-                    <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint" 
-                                                  args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                                                  default="ddbnext.Search_Hint"/>" 
-                                                  data-content="<g:message code="ddbnext.Search_Hint" 
-                                                  args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                                                  default="ddbnext.Search_Hint"/>"></span> 
+                    <span class="contextual-help hidden-phone hidden-tablet" 
+                          title="<g:message code="ddbnext.Search_Hint" 
+                                            args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                                            default="ddbnext.Search_Hint"/>" 
+                          data-content="<g:message code="ddbnext.Search_Hint" 
+                                                   args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                                                   default="ddbnext.Search_Hint"/>">
+                    </span> 
                     <a class="link-adv-search" href="/advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
                     <div class="tooltip off">
                     </div>

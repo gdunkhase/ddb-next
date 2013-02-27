@@ -92,11 +92,11 @@ header .toolbar .language-wrapper:hover .selector,.header .toolbar .language-wra
   text-align: left;
   width: auto;
 }
-header .toolbar >a,.header .toolbar >a {
+header .language-wrapper >a,.header .language-wrapper >a {
   background-position: right -42px;
   padding-right: 20px;
 }
-header .toolbar >a,.header .toolbar >a{
+header .language-wrapper >a,.header .language-wrapper >a{
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 40px -43px;
 }
 header nav,div.header nav,header div.nav,div.header div.nav {
@@ -158,6 +158,12 @@ header nav,div.header nav,header div.nav,div.header div.nav {
 }
 #form-search-header button:hover::before {
  margin: -200px 0px 0px 0px;
+}
+#form-search-header .tooltip{
+  width: 340px;
+  top: 100px;
+  right: 0px;
+  text-align: left;
 }
 .language-widget {
   z-index:1;
@@ -286,15 +292,13 @@ header .language-widget form, .header .language-widget form {
 }
 #form-search .link-adv-search {
   margin-top: 10px;
+  margin-left: 2px;
 }
 #form-search .tooltip {
-  left: 0;
   max-width: 536px;
   margin: 12px 0px;
-  background-position: right -24px;
   color: #3e3a37;
   font-size: 0.938em;
-  position: absolute;
   top: 40px;
   text-align: left;
   margin-left: 2px;
@@ -573,19 +577,18 @@ select {
 }
 .link-adv-search {
   font-size: 0.938em;
-  display: block;
+  display: inline-block;
+  float: left;
   text-align: left;
-  margin-left: 2px;
+  margin-left: 130px;
 }
 .off {
   display: none !important;
 }
 .tooltip {
-  font-size: 0.814em;
   color: #999;
   position: absolute;
   z-index: 4;
-  max-width: 240px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   padding: 3px 8px 3px;

@@ -10,13 +10,14 @@
       </label>
       <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
       <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
-      <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint" 
-                                                  args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                                                  default="ddbnext.Search_Hint"
-                                           />" 
-                                    data-content="<g:message code="ddbnext.Search_Hint" 
-                                    args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                                    default="ddbnext.Search_Hint"/>"></span> 
+      <span class="contextual-help hidden-phone hidden-tablet" 
+            title="<g:message code="ddbnext.Search_Hint" 
+                              args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                              default="ddbnext.Search_Hint"/>" 
+            data-content="<g:message code="ddbnext.Search_Hint" 
+                                     args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                                     default="ddbnext.Search_Hint"/>">
+      </span> 
       <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
       <div class="tooltip off"></div>
     </form>

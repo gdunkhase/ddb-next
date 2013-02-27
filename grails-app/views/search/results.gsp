@@ -161,7 +161,7 @@ window.onload=function(){
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <span class="contextual-help" title="" data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'>
+        <span class="contextual-help hidden-phone hidden-tablet" title="" data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'>
       </div>
       <div class="facets-list bt bb">
         <g:each in="${facetsList}" var="mit">

@@ -6,7 +6,10 @@
         <div class="heading row-fluid">
             <div class="span6">
                 <h1><g:message code="ddbnext.AdvancedSearch"/></h1>
-                <span class="contextual-help" title="<g:message code="ddbnext.AdvancedSearch_Hint"/>" data-content="<g:message code="ddbnext.AdvancedSearch_Hint"/>">?</span>
+                <span class="contextual-help hidden-phone hidden-tablet" title="<g:message code="ddbnext.AdvancedSearch_Hint"/>" 
+                                                                         data-content="<g:message code="ddbnext.AdvancedSearch_Hint"/>">
+                                                                         ?
+                </span>
             </div>
         </div>
         <div class="row-fluid">
