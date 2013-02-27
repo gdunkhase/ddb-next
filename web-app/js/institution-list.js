@@ -3,6 +3,165 @@ $(document).ready(function() {
   // if the User Agent enable JS, show the `filter by sector` checkboxes.
   $('.filter').show();
 
+  // pass callback function onHashChange, onFilterBySectorChange
+  ddb.fetchData(ddb.onHashChange, ddb.onFilterBySectorChange);
+});
+
+var ddb = {
+
+  Config: {
+    // TODO: move the url to an external configuration file.
+    ddbBackendUrl: 'http://localhost:8080/apis/institutions'
+  },
+
+  all: $('.institution'),
+
+  institutions: null,
+
+  onHashChange: function() {
+    var hash = window.location.hash.substring(1);
+    console.log('hash change to: ' + hash);
+
+    if (hash === 'All' || hash === 'ALL' || hash === 'list') {
+      ddb.firstLetterFilter = '';
+      console.log('show all');
+      if (ddb.filteredEl) {
+
+        // view manipulation
+        // reset to initial state
+        ddb.filteredEl.css('background-color', 'white');
+        ddb.restEl.css('background-color', 'white');
+      }
+    } else if (ddb.institutions[hash]) {
+      var idList = _.pluck(ddb.institutions[hash], 'id');
+      // find all institutions match idList
+      ddb.filteredEl = ddb.all.filter(function() {
+        return _.contains(idList, $(this).data('institution-id'));
+      });
+
+      // find all first level institutions which are not start with
+      // firstLetter
+      var restKeys = _.chain(ddb.institutions)
+        .keys()
+        .reject(function(key) { return key === hash; })
+        .value();
+
+      // get all values from restKeys
+      var restIdList = _.chain(ddb.institutions)
+        .filter(function(val, key) {
+          return _.contains(restKeys, key);
+        })
+        .flatten()
+        .pluck('id')
+        .value();
+
+      // collect all ids and return as array
+      ddb.restEl = ddb.all.filter(function() {
+        return _.contains(restIdList, $(this).data('institution-id'));
+      });
+
+      // view manipulation
+      ddb.filteredEl.css('background-color', 'red');
+      ddb.restEl.css('background-color', 'yellow');
+    } else {
+      $('.pagination a').removeClass('selected');
+      $('.pagination a[href="' + window.location.hash + '"]')
+        .addClass('selected');
+    }
+  },
+
+  onFilterBySectorChange: function() {
+    $('input:checkbox').click(function() {
+      console.log('filter selected');
+
+      var checked = $('.sector-facet input:checked');
+      var sector = $(this).data('sector');
+
+     // flatten the map of arrays => arrays of objects
+     // TODO: find better solution.
+     var list = [];
+     _.each(ddb.institutions, function(value, key) {
+       list.push(value);
+     });
+     list = _.flatten(list);
+
+     // by objects which match sector, return as array
+     var parents = [];
+     var filtered = _.reduce(list, function(memory, object) {
+       if (object.sector === sector) {
+         memory.push(object);
+       }
+
+       if (object.children && object.children.length > 0) {
+         _.reduce(object.children, function(otherMemory, child) {
+           if (child.sector === sector) {
+             otherMemory.push(child);
+             parents.push(object);
+           }
+           return otherMemory;
+         }, memory);
+       }
+
+       return memory;
+     }, []);
+     parents = _.uniq(parents);
+
+
+     /*
+     console.log('<pre>' + JSON.stringify(filtered, null, 4) + '</pre>');
+     console.log(filtered.length);
+     */
+
+     var visible = _.union(parents, filtered);
+
+     // TODO: disable/enable index
+     var hasNoMember = _.reduce(ddb.institutions, function(memo, array, key) {
+       if (_.intersection(array, visible).length === 0) {
+         memo.push(key);
+       }
+       return memo;
+     }, []);
+
+     console.log(hasNoMember);
+
+     // find all institutions match idList
+     var matched = ddb.all.filter(function() {
+       return _.contains(_.pluck(filtered, 'id'),
+                         $(this).data('institution-id'));
+     });
+     matched.css('color', 'red');
+
+     var visibleEl = ddb.all.filter(function() {
+       return _.contains(_.pluck(visible, 'id'),
+                         $(this).data('institution-id'));
+     });
+     visibleEl.css('background-color', 'green');
+
+     _.each(hasNoMember, function(letter) {
+      $('.pagination a[href="' + '#' + letter + '"]').parent()
+        .addClass('disabled');
+     });
+
+    });
+  },
+
+  fetchData: function(onHashChange, onFilterBySectorChange) {
+    if (ddb.institutions === null) {
+      $.getJSON(ddb.Config.ddbBackendUrl, function(data) {
+        console.log('the institution: ', data);
+        ddb.institutions = data;
+
+        // call the callbacks, once data is loaded.
+        onHashChange();
+        onFilterBySectorChange();
+        window.onhashchange = onHashChange;
+      });
+    }
+  }
+};
+
+
+/*
   var all = $('.institution');
   var allSelected = [];
   var rest;
@@ -80,89 +239,4 @@ $(document).ready(function() {
       }
     }
   });
-});
-
-var ddb = {
-
-  Config: {
-    // TODO: move the url to an external configuration file.
-    ddbBackendUrl: 'http://localhost:8080/apis/institutions'
-  },
-
-  institutions: null,
-
-  filterBySection: function(el) {
-    var filterBy = $(el).data('sector');
-    console.log('selected sector: ' + filterBy);
-
-    var filtered = $('.institution').filter(function() {
-      return $(this).data('sector') === filterBy;
-    });
-
-    filtered.each(function(index, val) {
-      console.log($(val).data('sector'));
-    });
-    return filtered;
-  },
-
-  getParents: function(currentSelected) {
-    // var parentIdList = [];
-    var parentList = [];
-
-    currentSelected.each(function(index, val) {
-      var parentId = $(val).data('child-of');
-
-      // when the selected institution has parent
-      if (parentId) {
-        var parent = $('.institution').filter(function() {
-          return $(this).data('institution-id') === parentId;
-        });
-        parentList.push(parent);
-      }
-    });
-    return parentList;
-  },
-
-  fetchData: function() {
-    if (ddb.institutions === null) {
-      $.getJSON(ddb.Config.ddbBackendUrl, function(data) {
-        console.log('the institution: ', data);
-        ddb.institutions = data;
-      });
-    }
-  },
-
-  filterByHash: function(selectedHash, allSelected, all) {
-    console.log('filtered by hash: ' + selectedHash);
-
-    switch (selectedHash) {
-      case 'list':
-      case 'ALL':
-      case 'all':
-        break;
-      default: {
-        console.log('filter by first letter');
-        var temp = allSelected;
-        if (allSelected.length === 0) {
-          console.log('nothing is selected.');
-          temp = all;
-        }
-
-        var filteredByFirstLetter = $(temp).filter(function() {
-          var firstLetter = $(this).data('first-letter');
-          return firstLetter === selectedHash;
-        });
-
-        console.log('found: ' + filteredByFirstLetter.length);
-        if (filteredByFirstLetter.length === 0) {
-          $('.institution-list')
-          .html('No institutions match your search criteria.');
-        } else {
-          filteredByFirstLetter.show();
-          $(temp).not(filteredByFirstLetter).hide();
-        }
-      }
-    }
-  }
-
-};
+*/
