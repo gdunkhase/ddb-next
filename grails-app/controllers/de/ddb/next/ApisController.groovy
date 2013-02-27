@@ -6,6 +6,8 @@ import net.sf.json.JSONNull
 class ApisController {
 
   def search(){
+      try {
+     
     def resultList = [:]
     def facets = []
     def highlightedTerms = []
@@ -168,5 +170,14 @@ class ApisController {
     resultList["randomSeed"] = jsonResp.randomSeed
     
     render (contentType:"text/json"){resultList}
+
+      } catch(MissingPropertyException mpe){
+          log.error("search(): There was a missing property. Check your Config.groovy!", mpe)
+          forward controller: "error", action: "serverError"
+      } catch(Exception e) {
+          log.error("search(): An unexpected error occured.", e)
+          forward controller: "error", action: "serverError"
+      }
+
   }
 }

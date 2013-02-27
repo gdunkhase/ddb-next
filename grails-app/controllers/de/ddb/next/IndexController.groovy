@@ -9,7 +9,7 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 class IndexController {
 
   def index() {
-
+      try{
     def langDe = "de"
     def langEn = "en"
     def path
@@ -34,6 +34,15 @@ class IndexController {
     def articles=retrieveArguments(response)
 
     render(view: "index", model: [articles: articles])
+    
+      } catch(MissingPropertyException mpe){
+          log.error("index(): There was a missing property. Check your Config.groovy!", mpe)
+          forward controller: "error", action: "serverError"
+      } catch(Exception e) {
+          log.error("index(): An unexpected error occured.", e)
+          forward controller: "error", action: "serverError"
+      }
+
   }
 
   private def retrieveArguments(def content){
