@@ -6,38 +6,42 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 // TODO: do we still need this class?
 class ContentController {
-	static defaultAction = "news"
+	static defaultAction = "staticcontent"
 
 	def staticcontent(){
-		if ((params.dir==null) && (params.dir=="news")){
-			forward action: "news"
-		}else{
-			def firstLvl =getFirstLvl();
+		def firstLvl="news";
+		if (params.dir!=null){
+			firstLvl=getFirstLvl();
 		}
-		
-	}
-	def news() {
+		def secondLvl = getSecLvl();
 		def url = getStaticUrl()
 		def lang = getShortLocale()
-		def path = "/static/"+lang+"/news/index.html"
-		if (params.id!=null){
-			path = "/static/"+lang+"/news/"+params.id+".html"
+		def path = "/static/"+lang+"/"+firstLvl+"/index.html"
+		if (params.secondLvl!=null){
+			path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl
 		}
 		def query = [ client: "DDB-NEXT" ]
 		//Submit a request via GET
 		def response = ApiConsumer.getText(url, path, query)
-
-        if (response == "Not found"){
+		if (response == "Not found"){
 			redirect(controller: "error", action: "notfound")
-        }
+		}
 
 		def map= retrieveArguments(response)
-		render(view: "news", model: map)
-    }
-	
+		render(view: "staticcontent", model: map)
+
+	}
+
 	private String getFirstLvl(){
 		String firstLvl = cleanHtml(params.dir, 'none')
 		return firstLvl
+	}
+	
+	private String getSecLvl(){		
+		if (params.id==null){
+			return null
+		}
+		return cleanHtml(params.id, 'none')
 	}
 
 	private String getShortLocale() {
