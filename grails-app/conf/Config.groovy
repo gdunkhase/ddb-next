@@ -71,6 +71,18 @@ ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
 
+ddb {
+    backend {
+        facets {
+            filter = [
+                [facetName:'language_fct', filter:'term:unknown' ],
+                [facetName:'language_fct', filter:'term:termunknown']     
+            ]
+        }
+    }
+}
+
+
 environments {
     development {
         grails.logging.jul.usebridge = true
