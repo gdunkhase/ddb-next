@@ -466,23 +466,3 @@ input[type="checkbox"],input[type="radio"] {
   float: left;
   line-height: 25px;
 }
-
-.bb {
-  border-bottom: solid 1px #efebe8;
-}
-
-.bt {
-  border-top: solid 1px #efebe8;
-}
-
-.bl {
-  border-left: solid 1px #efebe8;
-}
-
-.br {
-  border-right: solid 1px #efebe8;
-}
-
-.off{
-  display:none !important;
-}

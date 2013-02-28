@@ -4,51 +4,28 @@
     font-size: 1em;
 }
 
-.advanced-search .operator select {
-    width: 80px;
-}
-
-.advanced-search .heading h1,span {
+.advanced-search .heading h1 {
     float:left;
 }
 
 .advanced-search .heading span {
-    margin-top:25px;
-    margin-left:10px;
+  margin-top:12px;
+  margin-left:20px;
 }
 
 .advanced-search .group-operator {
     margin-top: 8px;
 }
 
-.advanced-search select {
-    background: #DCDBDA;
-}
-
-.advanced-search .closing-hr {
-    background: #D0D0D0;
-    height:1px;
-    min-height:1px;
-    margin-bottom:15px;
-}
-
-.advanced-search .reset,.submit,.add-group-button {
-    float: right;
-    width: 100%;
+.advanced-search .reset, .submit {
+  width: 100px;
+  margin: 0px 4px;
 }
 
 .advanced-search .search-group {
     background-color: #EFEBE8;
     border-bottom: 1px solid #D1CDCB;
     border-top: 1px solid #D1CDCB;
-    margin-bottom:15px;
-}
-
-.advanced-search .search-group .hr {
-    background:#fff;
-    color:#fff;
-    height:1px;
-    min-height:1px;
     margin-bottom:15px;
 }
 
@@ -104,6 +81,10 @@
     margin: 4px 0 0 0;
 }
 
+.advanced-search .button-group.fr {
+  text-align: right;
+}
+
 .advanced-search .row-button-group {
     margin: 0 0 0 5px;
 }
@@ -115,4 +96,12 @@
 .advanced-search .search-group {
     border-left: 8px solid #EFEBE8;
 }
-
+.advanced-search .bb {
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+.advanced-search .tooltip{
+  top: 228px;
+  color: #3e3a37;
+  font-size: 0.938em;
+}
