@@ -24,9 +24,11 @@
 }
 
 .item-hierarchy-result span.sibling-count {
+  left: 19px;
   position: absolute;
   text-align: center;
   top: 81px;
+  width: 93px;
 }
 
 .item-hierarchy-result ul {
