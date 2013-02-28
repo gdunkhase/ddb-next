@@ -33,14 +33,7 @@ class InstitutionService {
                     }
                 }
 
-                if(it.children?.size() > 0 ) {
-                    it.children.each { child ->
-                        child.uri = buildUri(child.id)
-                        child.sectorLabelKey = 'ddbnext.' + child.sector
-                        child.parentId = it.id
-                        child.firstChar = firstChar
-                    }
-                }
+                buildChildren(it);
 
                 def institutionWithUri = addUri(it)
                 switch(firstChar) {
@@ -65,6 +58,17 @@ class InstitutionService {
         }
 
         return retVal
+    }
+
+    private buildChildren(it) {
+        if(it.children?.size() > 0 ) {
+            it.children.each { child ->
+                child.uri = buildUri(child.id)
+                child.sectorLabelKey = 'ddbnext.' + child.sector
+                child.parentId = it.id
+                buildChildren(child);
+            }
+        }
     }
 
     private def buildIndex() {

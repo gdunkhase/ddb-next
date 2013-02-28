@@ -54,8 +54,11 @@ var ddb = {
       });
 
       // view manipulation
-      ddb.filteredEl.css('background-color', 'red');
-      ddb.restEl.css('background-color', 'yellow');
+      //ddb.filteredEl.css('background-color', 'red');
+      //ddb.restEl.css('background-color', 'yellow');
+
+      ddb.filteredEl.show();
+      ddb.restEl.hide();
     } else {
       // view manipulation
       $('.pagination a').removeClass('selected');
@@ -65,106 +68,118 @@ var ddb = {
   },
 
   onFilterBySectorChange: function() {
+    var institutionList = _.chain(ddb.institutionsBySector)
+      .values()
+      .flatten()
+      .value();
+
     $('input:checkbox').click(function() {
-      // flatten the object of arrays => to the arrays of objects
-      // TODO: do it only once, not by every function calls.
-      var institutionList = _.chain(ddb.institutionsBySector)
-        .values()
-        .flatten()
-        .value();
+      console.log('(un/)checked: ' + $(this).data('sector'));
 
-      // TODO: not used, remove this
+      // reset the view to empty.
+      ddb.all.hide();
+      ddb.all.removeClass('highlight');
+
       var allSelectedSectors = $('.sector-facet input:checked');
+      var sectors = [];
+      _.each(allSelectedSectors, function(el) {
+        sectors.push($(el).data('sector'));
+      });
 
-      var selectedSector = $(this).data('sector');
+      if(sectors.length === 0) {
+        ddb.all.show();
+      } else {
+        var filtered = ddb.filterBySector(institutionList, sectors);
+        var visible = _.union(filtered.parentList, filtered.filteredBySector);
+        var invisible = _.without(institutionList, visible);
+        var hasNoMember = ddb.findNoMember(visible);
 
-      var parentList = [];
-      var filteredBySector = _.reduce(institutionList, function(memory, institution) {
-        if (institution.sector === selectedSector) {
-          memory.push(institution);
-        }
+        // view manipulation
+        var allFilteredEl = ddb.findElements(filtered.filteredBySector);
+        allFilteredEl.addClass('highlight');
 
-        if (institution.children && institution.children.length > 0) {
-          _.reduce(institution.children, function(otherMemory, child) {
-            if (child.sector === selectedSector) {
-              otherMemory.push(child);
-              // collect the parent
-              // TODO: refactor this, it insert the same parent multiple
-              // times.
-              parentList.push(institution);
-            }
-          return otherMemory;
-          }, memory);
-        }
-        return memory;
-      }, []);
+        var visibleEl = ddb.findElements(visible);
+        visibleEl.show();
 
-      // TODO: it should not be nesecassry
-      parentList = _.uniq(parentList);
-
-      /*
-       console.log('<pre>' + JSON.stringify(filteredBySector, null, 4) + '</pre>');
-      */
-      var visible = _.union(parentList, filteredBySector);
-
-     // disable/enable index
-     var hasNoMember = _.reduce(ddb.institutionsBySector, function(memo, array, key) {
-       if (_.intersection(array, visible).length === 0) {
-         memo.push(key);
-       }
-       return memo;
-     }, []);
-
-      var invisible = _.without(institutionList, visible);
-      console.log('# first level institution: ' + institutionList.length);
-      console.log('# filtered by sector: ' + filteredBySector.length);
-      console.log('# visible: filtered + parents: ' + visible.length);
-      console.log('# rest: ' + institutionList.length);
-
-      // console.log('<pre>' + JSON.stringify(invisible, null, 4) + '</pre>');
-
-     // view manipulation
-     var filteredBySectorEl = ddb.findElements(filteredBySector);
-     filteredBySectorEl.toggleClass('highlight');
-
-     var visibleEl = ddb.findElements(visible);
-     visibleEl.css('background-color', 'green');
-
-     var invisibleEl = ddb.findElements(invisible);
-     invisibleEl.css('background-color', 'blue');
-
-    // update index view, i.e., A..Z
-    _.each(hasNoMember, function(letter) {
-      $('.pagination a[href="' + '#' + letter + '"]').parent()
-      .addClass('disabled');
+        $('.pagination li').removeClass('disabled');
+        // update index view, i.e., A..Z
+        _.each(hasNoMember, function(letter) {
+          $('.pagination a[href="' + '#' + letter + '"]').parent().addClass('disabled');
+          $('.pagination a[href="' + '#' + letter + '"]').click(function(e) {
+            e.preventDefault();
+          });
+        });
+      }
     });
-  });
-},
+  },
 
-findElements: function(list) {
-  return ddb.all.filter(function() {
-    return _.contains(_.pluck(list, 'id'),
-    $(this).data('institution-id'));
-  });
-},
+  // find first letter indext with no members after filtered.
+  findNoMember: function(visible) {
+    return _.reduce(ddb.institutionsBySector, function(memo, array, key) {
+      if (_.intersection(array, visible).length === 0) {
+       memo.push(key);
+    }
+     return memo;
+    }, []);
+  },
 
-getInstitutionsBySector: function(onHashChange, onFilterBySectorChange) {
-  if (ddb.institutionsBySector === null) {
-    $.getJSON(ddb.Config.ddbBackendUrl, function(data) {
-      ddb.institutionsBySector = data;
+  filterDescendants: function(institution, memory, selectedSector, parentList) {
+      if (institution.children && institution.children.length > 0) {
+        _.reduce(institution.children, function(otherMemory, child) {
+          if (_.contains(selectedSector, child.sector)) { //} === selectedSector) {
+            otherMemory.push(child);
+            parentList.push(institution);
+          }
+          ddb.filterDescendants(child, otherMemory, selectedSector, parentList);
+        return otherMemory;
+        }, memory);
+      }
+  },
 
-      // call the callbacks, once data is loaded.
-      onHashChange();
-      onFilterBySectorChange();
-      window.onhashchange = onHashChange;
+  // TODO: rename the function.
+  // it collects all institution which match sector in selectedSector. It also
+  // collect its parent if any.
+  filterBySector: function(institutionList, selectedSector) {
+    var parentList = [];
+
+    var filteredBySector = _.reduce(institutionList, function(memory, institution) {
+      if (_.contains(selectedSector, institution.sector)) {
+        memory.push(institution);
+      }
+      ddb.filterDescendants(institution, memory, selectedSector, parentList);
+      return memory;
+    }, []);
+
+    // TODO: it should not be nesecassry
+    parentList = _.uniq(parentList);
+    return {
+      'filteredBySector': filteredBySector,
+      'parentList': parentList
+    }
+  },
+
+  findElements: function(list) {
+    return ddb.all.filter(function() {
+      return _.contains(_.pluck(list, 'id'), $(this).data('institution-id'));
     });
+  },
+
+  getInstitutionsBySector: function(onHashChange, onFilterBySectorChange) {
+    if (ddb.institutionsBySector === null) {
+      $.getJSON(ddb.Config.ddbBackendUrl, function(data) {
+        ddb.institutionsBySector = data;
+
+        // call the callbacks, once data is loaded.
+        onHashChange();
+        onFilterBySectorChange();
+        window.onhashchange = onHashChange;
+      });
+    }
   }
-}
 };
 
 $(function() {
   // if the User Agent enables JS, show the `filter by sector` checkboxes.
   $('.filter').show();
-
   ddb.getInstitutionsBySector(ddb.onHashChange, ddb.onFilterBySectorChange);
 });
