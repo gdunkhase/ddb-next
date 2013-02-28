@@ -8,9 +8,6 @@ class SearchController {
     def results() {
         try {
 
-            def crash
-            log.info crash.now
-
             def urlQuery = SearchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = SearchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
