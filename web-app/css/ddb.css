@@ -424,6 +424,10 @@ footer .legal ul li+li,.footer .legal ul li+li {
 /* footer - end */
 /* genaral rules */
 h1, h2, h3, h4 {
+  font-family: KarbidWeb,Calibri,Arial,sans-serif;
+  font-size: 1.75em;
+  font-weight: normal;
+  color: rgb(62, 58, 55);
   line-height: 1.5em;
 }
 h2, h2 a {
