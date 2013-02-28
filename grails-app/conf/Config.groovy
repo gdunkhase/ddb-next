@@ -20,20 +20,33 @@ grails.mime.types = [
     css:           'text/css',
     csv:           'text/csv',
     form:          'application/x-www-form-urlencoded',
-    html:          ['text/html','application/xhtml+xml'],
+    html:          [
+        'text/html',
+        'application/xhtml+xml'
+    ],
     js:            'text/javascript',
-    json:          ['application/json', 'text/json'],
+    json:          [
+        'application/json',
+        'text/json'
+    ],
     multipartForm: 'multipart/form-data',
     rss:           'application/rss+xml',
     text:          'text/plain',
-    xml:           ['text/xml', 'application/xml']
+    xml:           [
+        'text/xml',
+        'application/xml']
 ]
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
 
 // What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
+grails.resources.adhoc.patterns = [
+    '/images/*',
+    '/css/*',
+    '/js/*',
+    '/plugins/*'
+]
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
@@ -63,9 +76,10 @@ grails.hibernate.cache.queries = false
 //The variables can be overwritten by defining local configurations, see below environments
 
 ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de"
-ddb.static.url="http://www.static-p1.deutsche-digitale-bibliothek.de"
+ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
 ddb.apis.url="http://localhost:8080"
 ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+ddb.logging.folder="target/logs"
 ddb.advancedSearch.searchGroupCount=3
 ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
@@ -74,50 +88,84 @@ ddb.advancedSearch.defaultRows=20
 environments {
     development {
         grails.logging.jul.usebridge = true
-        grails.config.locations = [ "file:${userHome}/.grails/${appName}.properties" ]
+        grails.config.locations = [
+            "file:${userHome}/.grails/${appName}.properties"
+        ]
+
+
     }
     production {
         grails.logging.jul.usebridge = false
-	    grails.config.locations = [ "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties" ]
-		/*
-	    def needProxy = grailsApplication.config.client.proxy.needed
-	    if (needProxy) {
-	      System.properties.putAll([
-	        "http.proxyHost": grailsApplication.config.client.http.proxyHost,
-	        "http.proxyPort": grailsApplication.config.client.http.proxyPort
-	      ])
-	    }
-	    */
+        grails.config.locations = [
+            "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties"
+        ]
+        /*
+         def needProxy = grailsApplication.config.client.proxy.needed
+         if (needProxy) {
+         System.properties.putAll([
+         "http.proxyHost": grailsApplication.config.client.http.proxyHost,
+         "http.proxyPort": grailsApplication.config.client.http.proxyPort
+         ])
+         }
+         */
     }
 }
 
 // log4j configuration
+
 log4j = {
-    // Example of changing the log pattern for the default console appender:
+
+    // The appenders define the output method of the loggings
     appenders {
-      console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-      rollingFile name: "stacktrace", maxFileSize: 1024, file: (System.getProperty('catalina.base') ?: 'target') + '/logs/ddbnext-stacktrace.log'
+        console name: "console", threshold: org.apache.log4j.Level.INFO, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-info", threshold: org.apache.log4j.Level.INFO, file: ddb.logging.folder+"/ddbnext-info.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-warn", threshold: org.apache.log4j.Level.WARN, file: ddb.logging.folder+"/ddbnext-warn.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-error", threshold: org.apache.log4j.Level.ERROR, file: ddb.logging.folder+"/ddbnext-error.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "stacktrace", threshold: org.apache.log4j.Level.ERROR, file: ddb.logging.folder+"/ddbnext-stacktrace.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
     }
 
-    error  'org.codehaus.groovy.grails.web.servlet',        // controllers
-           'org.codehaus.groovy.grails.web.pages',          // GSP
-           'org.codehaus.groovy.grails.web.sitemesh',       // layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-           'org.codehaus.groovy.grails.commons',            // core / classloading
-           'org.codehaus.groovy.grails.plugins',            // plugins
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate',
-           'grails.plugin',
-           'grails.app.services.org.grails.plugin.resource',
-           'grails.app.taglib.org.grails.plugin.resource',
-           'grails.app.resourceMappers.org.grails.plugin.resource',
-           'grails.app.services.NavigationService'
+    // The root logger defines the basic log level and to which appenders the logging is going
+    environments {
+        development {
+            root {  info "console", "ddbnext-info"  }
+        }
+        production {
+            root { info "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace" }
+        }
+    }
 
-     warn  'org.apache.catalina'
+    // This part can be used to filter out all loggings that are not interesting
+    environments {
+        development {
+            warn    "org.codehaus.groovy.grails.plugins",  // only warnings from plugins
+                    "org.grails.plugin",                   // only warnings from plugins
+                    "grails.plugin",                       // only warnings from plugins
+                    "org.codehaus.groovy.grails.commons"   // only warnings from common grails classes
+        }
+        production {
+        }
+    }
 
-     debug 'grails.app'
-     debug stacktrace : 'grails.app'
+
+    //    info    'org.codehaus.groovy.grails.web.servlet',        // controllers
+    //            'org.codehaus.groovy.grails.web.pages',          // GSP
+    //            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
+    //            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+    //            'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+    //            'org.codehaus.groovy.grails.commons',            // core / classloading
+    //            'org.codehaus.groovy.grails.plugins',            // plugins
+    //            'org.springframework',                           // spring
+    //            'grails.plugin',
+    //            'grails.app.services.org.grails.plugin.resource',
+    //            'grails.app.taglib.org.grails.plugin.resource',
+    //            'grails.app.resourceMappers.org.grails.plugin.resource',
+    //            'grails.app.services.NavigationService'
+    //
+    //     info  'org.apache.catalina'
+    //
+    //     info 'grails.app'
+
 }
+
+
 grails.app.context = "/"
