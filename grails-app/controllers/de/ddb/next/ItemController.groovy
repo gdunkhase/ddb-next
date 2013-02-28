@@ -1,5 +1,7 @@
 package de.ddb.next
 
+import de.ddb.next.exception.ItemNotFoundException;
+
 class ItemController {
     static defaultAction = "findById"
 
@@ -24,9 +26,7 @@ class ItemController {
             def item = itemService.findItemById(id)
 
             if("404".equals(item)){
-                log.info "findById(): Request for nonexisting item with id: '"+id+"'. Going 404..."
-                forward controller: "error", action: "notFound"
-                return
+                throw new ItemNotFoundException()
             }
 
             def binaryList = itemService.findBinariesById(id)
@@ -84,6 +84,9 @@ class ItemController {
                     hitNumber: params["hitNumber"], results: resultsItems, searchResultUri: searchResultUri])
             }
 
+        } catch(ItemNotFoundException infe){
+            log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
+            forward controller: "error", action: "notFound"
         } catch(MissingPropertyException mpe){
             log.error "findById(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
