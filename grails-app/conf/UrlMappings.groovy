@@ -10,7 +10,7 @@ class UrlMappings {
             action=results
         }
 		
-		"/content/$dir/?id?" {
+		"/content/$dir/$id?" {
 			controller="content"
 			action="staticcontent"
 		}

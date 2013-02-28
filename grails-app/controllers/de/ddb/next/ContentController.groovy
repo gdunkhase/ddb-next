@@ -4,7 +4,6 @@ import groovy.util.XmlSlurper
 import java.net.URI.Parser
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
-// TODO: do we still need this class?
 class ContentController {
 	static defaultAction = "staticcontent"
 
@@ -17,8 +16,8 @@ class ContentController {
 		def url = getStaticUrl()
 		def lang = getShortLocale()
 		def path = "/static/"+lang+"/"+firstLvl+"/index.html"
-		if (params.secondLvl!=null){
-			path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl
+		if (params.id!=null){
+			path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl+".html"
 		}
 		def query = [ client: "DDB-NEXT" ]
 		//Submit a request via GET
