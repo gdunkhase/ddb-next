@@ -24,6 +24,33 @@ class ItemController {
             item.pageLabel= itemService.getItemTitle(id)
         }
 
+        def urlQuery = SearchService.convertQueryParametersToSearchParameters(params)
+        def resultsItems
+        def hitNumber
+        def searchResultUri
+        //Check if Item-Detail was called from search-result
+        if (params["hitNumber"]) {
+            //Search and return 3 Hits: previous, current and last
+            params["hitNumber"] = params["hitNumber"].toInteger()
+            urlQuery["rows"] = 3
+            if (params["hitNumber"] > 1) {
+                urlQuery["offset"] = params["hitNumber"] - 2
+            }
+            else {
+                urlQuery["offset"] = 0
+            }
+            resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
+
+            //generate link back to search-result. Calculate Offset.
+            def searchGetParameters = SearchService.getSearchGetParameters(params)
+            def offset = ((Integer)((params["hitNumber"]-1)/params["rows"]))*params["rows"]
+            searchGetParameters["offset"] = offset
+            searchResultUri = "/search?"
+            MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib();
+            searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters);
+            
+        }
+
         // TODO: handle 404 and failure separately. HTTP Status Code 404, should
         // to `not found` page _and_ Internal Error should go to `internal server
         // error` page. We should send also the HTTP Status Code 404 or 500 to the
@@ -31,11 +58,13 @@ class ItemController {
         if(item == '404' || item?.failure) {
             redirect(controller: 'error')
         } else {
-            def itemUri = request.getHeader('Host') + request.forwardURI
+            def itemUri = request.forwardURI
             def fields = translate(item.fields)
             render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
                 'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
-                binaryList: binaryList, pageLabel: item.pageLabel])
+                binaryList: binaryList, pageLabel: item.pageLabel, 
+                itemDetailGetParams: SearchService.getItemDetailGetParameters(params), 
+                hitNumber: params["hitNumber"], results: resultsItems, searchResultUri: searchResultUri])
         }
     }
 

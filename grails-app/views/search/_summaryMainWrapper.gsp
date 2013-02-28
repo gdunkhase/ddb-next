@@ -1,7 +1,7 @@
 <div class="summary-main-wrapper <g:if test="${viewType != 'grid'}">span7</g:if>">
   <div class="summary-main">
     <h2 class="title">
-      <a class="persist" href="/item/${item.id}" title="${item.label}">
+      <a class="persist" href="/item/${item.id}?<g:convertMapToGetParameters map='${itemDetailGetParams}'/>&hitNumber=${hitNumber}" title="${item.label}">
       <g:truncateItemTitle title="${ item.preview.title }"></g:truncateItemTitle>
       </a>
     </h2>

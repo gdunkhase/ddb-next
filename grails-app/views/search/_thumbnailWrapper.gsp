@@ -1,7 +1,7 @@
 <%@page import="java.awt.event.ItemEvent"%>
 <div class="thumbnail-wrapper <g:if test="${viewType != 'grid'}">span2</g:if>">
   <div class="thumbnail">
-    <a class="persist" href="/item/${item.id}">
+    <a class="persist" href="/item/${item.id}?<g:convertMapToGetParameters map='${itemDetailGetParams}'/>&hitNumber=${hitNumber}">
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="${item.preview.title.encodeAsHTML()}">
     </a>
   </div>

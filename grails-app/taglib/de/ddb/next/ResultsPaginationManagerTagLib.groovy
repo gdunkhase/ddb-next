@@ -12,6 +12,16 @@ class ResultsPaginationManagerTagLib {
    }
   
   /**
+   * Renders the navigation bar for the item detail view.
+   *
+   * @attr navData REQUIRED data for page navigation
+   */
+
+  def itemDetailInfoNavRender = { attrs, body ->
+    out << render(template:"/search/itemNavigation", model:[navData: attrs.navData])
+   }
+  
+  /**
    * Renders the paginator bar for the results.
    *
    * @attr paginatorData REQUIRED data for paginator
