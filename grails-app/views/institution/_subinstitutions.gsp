@@ -1,17 +1,14 @@
                 <%
-                  //ApiInstitution vApiInst = new ApiInstitution();
-                  def jsonOrgHierarchy = vApiInst.getChildrenOfInstitutionByItemId(itemId, grailsApplication.config.ddb.backend.url.toString())
-                  if ((jsonOrgHierarchy != null)&&(jsonOrgHierarchy.size() > 0)) {
+               def jsonOrgHierarchy = vApiInst.getChildrenOfInstitutionByItemId(itemId, grailsApplication.config.ddb.backend.url.toString())
                  %>
+                 <g:if test="${((jsonOrgHierarchy != null)&&(jsonOrgHierarchy.size() > 0))}">
                       <ul>
-                        <%
-                      for (int i = 0; i < jsonOrgHierarchy.size(); i++) {
-                         %>
+                         <g:each in="${jsonOrgHierarchy}" >
                           <li>
-                              <a href="/about-us/institutions/item/${jsonOrgHierarchy[i].id}">${jsonOrgHierarchy[i].label}</a>
-                              <% itemId = jsonOrgHierarchy[i].id; %>
-                              <g:render template="subinstitutions"  />
+                              <a href="/about-us/institutions/item/${it.id}">${it.label}</a>
+                              <g:set var="itemId" value="${it.id}" />
+                              <g:render template="subinstitutions" />
                           </li>
-                        <%}%> 
+                         </g:each>
                       </ul>
-                <% }%>
+                  </g:if>

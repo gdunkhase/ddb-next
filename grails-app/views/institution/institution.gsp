@@ -1,7 +1,7 @@
 <%@page import="de.ddb.next.ApiInstitution"%>
 <%@page import="java.lang.String"%>
 <meta name="layout" content="main" />
-
+<!-- link rel="stylesheet" href="${resource(dir: 'css', file: 'institution.css')}" type="text/css" /-->
 <style>
 <!--
 .institutionItemPage .locations #divOSM {
@@ -207,35 +207,42 @@ function getCycleTileURL(bounds) {
                <g:message code="ddbnext.${results.'sector'}"/>
              </div>
              <div>
-                 <h2>${results.'name'}
-                 <%if (countObjcs > 0) { %>
-                 <a class="count" style="color: black; font-size: small;" href="/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${results.'name'}" 
-                      title="Anzahl der verfügbaren Objekte dieser Institution. Klicken Sie auf den Link, um die Objekte anzuzeigen.">
-                      <%=countObjcs%> Objekte</a>
-                 <%}%>
+                 <h2>${results.name}
+                 <g:if test="${(countObjcs > 0)}">
+                     <a class="count" style="color: black; font-size: small;" href="/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${results.'name'}" 
+                        title="<g:message code="ddbnext.InstitutionItem_IngestedObjectCountTitleText" />">
+                        <%=countObjcs%>&nbsp;
+                        <g:if test="${(countObjcs = 1)}">
+                            <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
+                        </g:if>
+                        <g:if test="${(countObjcs > 1)}">
+                            <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
+                        </g:if>
+                     </a>
+                 </g:if>
                  </h2>
              </div>
              <div>
-               <a href="${results.'uri' }/">${String.valueOf(results.'uri').trim() }/</a>
+               <a href="${results.uri }/">${String.valueOf(results.uri).trim() }/</a>
              </div>
            </div>
            <div class="span2">
-             <img style="text-align: right;" alt="${results.'name'}" class="logo" src="${results.'logo'}">
+             <img style="text-align: right;" alt="${results.name}" class="logo" src="${results.logo}">
            </div>
        </div>
        
        <div class="locations">
        
-        <div id="divOSM" style="position: relative;">
-        </div>
-          <script type="text/javascript">
-            <!--
-            //drawmap(${results.locations.location.geocode.longitude},${results.locations.location.geocode.latitude});
-            //XXXmapLoading("${results.locations.location.geocode.longitude}","${results.locations.location.geocode.latitude}");
-            //-->
-          </script>
-        
-        <div class="locationContainer">
+            <div id="divOSM" style="position: relative;"></div>
+            <script type="text/javascript">
+              <!--
+              //drawmap(${results.locations.location.geocode.longitude},${results.locations.location.geocode.latitude});
+              //XXXmapLoading("${results.locations.location.geocode.longitude}","${results.locations.location.geocode.latitude}");
+              //-->
+            </script>
+            
+            <div class="locationContainer">
+            
                 <div class="location" style="margin-bottom: 30px;" data-lat="${results.locations.location.geocode.latitude }" data-lon="${results.locations.location.geocode.longitude }">
                     <p class="address">
                         <b>${results.'name'}</b><br>
@@ -245,21 +252,20 @@ function getCycleTileURL(bounds) {
                     </p>
                 </div>
                 
-                <%
-              if ((subOrg != null)&&(subOrg.size() > 0)) {
-                 %>
-                <div class="hierarchy">
-                  <span class="title">Standorte:</span>
-                  <ul>
-                    <li>
-                      <i class="active"></i>
-                      <b>${results.'name'}</b>
-                      <g:render template="subinstitutions"  />
-                    </li>
-                  </ul>
-                </div>
-                <% }%>
-        </div>
+                <g:if test="${((subOrg != null)&&(subOrg.size() > 0))}">
+                    <div class="hierarchy">
+                      <span class="title"><g:message code="ddbnext.InstitutionItem_OtherLocations" /></span>
+                      <ul>
+                        <li>
+                          <i class="active"></i>
+                          <b>${results.name}</b>
+                          <g:render template="subinstitutions" />
+                        </li>
+                      </ul>
+                    </div>
+                </g:if>
+                
+            </div>
       </div>
     </div>
     
