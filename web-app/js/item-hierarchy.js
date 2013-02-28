@@ -33,7 +33,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast) {
   if (isCurrent) {
     leafIndicator.addClass("current-node");
     a.addClass("current-node");
-        }
+  }
   branchType.append(i);
   currentNode.append(branchType);
   a.append(value.label);
@@ -74,13 +74,13 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
 
   var branchType = $("<span>", {
     class : "branch-type"
-          });
+  });
 
   currentNode.append(branchType);
 
   var i = $("<i>", {
     class : "collapsed"
-        });
+  });
 
   branchType.append(i);
 
@@ -103,34 +103,34 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
                 id = parents[index - 1].id;
               }
               return;
-      }
-    });
+            }
+          });
         }
         showChildren(url, currentNode.parent().parent(), parentId, id);
       } else {
         showChildren(url, currentNode, value.id, parentId);
       }
-  });
+    });
 
     var label = $("<span>", {
       class : "item-hierarchy-label" + (isCurrent ? " current-path" : "")
-  });
+    });
 
     label.append(value.label);
     currentNode.append(label);
   } else {
-  var leafIndicator = $("<div>", {
-    class : "leaf-indicator"
-  });
-  var a = $("<a>", {
-    href : value.id
-  });
+    var leafIndicator = $("<div>", {
+      class : "leaf-indicator"
+    });
+    var a = $("<a>", {
+      href : value.id
+    });
 
     if (isCurrent) {
       leafIndicator.addClass("current-node");
       a.addClass("current-node");
     }
-  a.append(value.label);
+    a.append(value.label);
     currentNode.append(leafIndicator);
     currentNode.append(a);
   }
@@ -157,7 +157,7 @@ function addSiblingCount(url, currentNode, parentId) {
           // TODO localization
           siblingCount.append("+" + 500 + "<br>und mehr");
         } else {
-        siblingCount.append("+" + (children.length - 1));
+          siblingCount.append("+" + (children.length - 1));
         }
         currentNode.children("li").addClass("more-hidden");
       }
@@ -202,7 +202,7 @@ function createHierarchy(url) {
         var li = $("<li>", {
           class : (parentId == null ? "root" : "node"),
           "data-bind" : JSON.stringify(parents)
-  });
+        });
 
         ul.append(li);
         currentNode.append(ul);
