@@ -10,8 +10,7 @@ $(document).ready(function() {
 var ddb = {
 
   Config: {
-    // TODO: move the url to an external configuration file.
-    ddbBackendUrl: 'http://localhost:8080/apis/institutions'
+    ddbBackendUrl: '/apis/institutions'
   },
 
   all: $('.institution'),
