@@ -7,6 +7,10 @@ class SearchController {
 
     def results() {
         try {
+
+            def crash
+            log.info crash.now
+
             def urlQuery = SearchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = SearchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
@@ -79,7 +83,7 @@ class SearchController {
             }
 
         } catch(MissingPropertyException mpe){
-            log.error "results(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "results(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "results(): An unexpected error occured.", e

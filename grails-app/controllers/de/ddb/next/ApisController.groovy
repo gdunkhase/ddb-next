@@ -169,7 +169,7 @@ class ApisController {
 
             render (contentType:"text/json"){resultList}
         } catch(MissingPropertyException mpe){
-            log.error "search(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "search(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "search(): An unexpected error occured.", e

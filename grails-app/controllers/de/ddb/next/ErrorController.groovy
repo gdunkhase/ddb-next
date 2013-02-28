@@ -28,7 +28,7 @@ class ErrorController {
                 log.error "Grails did not provide a valid error object", ex
             }
         }else{
-            log.error "Grails did not provide an error object. No stacktrace available."
+            log.error "Grails did not provide an error object. No stacktrace available. Most probably an earlier try-catch already consumed it. Check your log."
         }
 
         // Return response code 500
@@ -38,9 +38,11 @@ class ErrorController {
         if ( Environment.PRODUCTION == Environment.getCurrent() ) {
 
             // Production: show a nice error message
+            log.error "Return view '505_production'"
             return render(view:'500_production')
         } else {
             // Not it production? show an ugly, developer-focused error message
+            log.error "Return view '505_development'"
             return render(view:'500_development')
         }
     }
@@ -57,6 +59,7 @@ class ErrorController {
         response.status = 404
 
         // Return the 404 view
+        log.error "Return view 'notfound'"
         return render(view:'notfound')
     }
 }

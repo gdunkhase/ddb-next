@@ -32,7 +32,7 @@ class IndexController {
             render(view: "index", model: [articles: articles])
 
         } catch(MissingPropertyException mpe){
-            log.error "index(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "index(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "index(): An unexpected error occured.", e

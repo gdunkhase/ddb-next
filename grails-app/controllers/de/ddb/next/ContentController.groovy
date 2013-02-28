@@ -29,7 +29,7 @@ class ContentController {
 
 
         } catch(MissingPropertyException mpe){
-            log.error "news(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "news(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "news(): An unexpected error occured.", e

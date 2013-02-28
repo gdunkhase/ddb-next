@@ -10,7 +10,7 @@ class ItemController {
 
             render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", null))
         } catch(MissingPropertyException mpe){
-            log.error "children(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "children(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "children(): An unexpected error occured.", e
@@ -24,8 +24,9 @@ class ItemController {
             def item = itemService.findItemById(id)
 
             if("404".equals(item)){
-                log.info "findById(): Request for nonexisting item with id: "+id
+                log.info "findById(): Request for nonexisting item with id: '"+id+"'. Going 404..."
                 forward controller: "error", action: "notFound"
+                return
             }
 
             def binaryList = itemService.findBinariesById(id)
@@ -84,7 +85,7 @@ class ItemController {
             }
 
         } catch(MissingPropertyException mpe){
-            log.error "findById(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "findById(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "findById(): An unexpected error occured.", e
@@ -106,7 +107,7 @@ class ItemController {
             }
 
         } catch(MissingPropertyException mpe){
-            log.error "translate(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "translate(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "translate(): An unexpected error occured.", e
@@ -121,7 +122,7 @@ class ItemController {
             render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
 
         } catch(MissingPropertyException mpe){
-            log.error "parents(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "parents(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "parents(): An unexpected error occured.", e

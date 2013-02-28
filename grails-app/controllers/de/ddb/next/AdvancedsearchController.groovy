@@ -43,7 +43,7 @@ class AdvancedsearchController {
                 labelSortType : labelSortType,
                 enumSearchType : enumSearchType])
         } catch(MissingPropertyException mpe){
-            log.error "fillValues(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "fillValues(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "fillValues(): An unexpected error occured.", e
@@ -71,7 +71,7 @@ class AdvancedsearchController {
             String query = converter.convertFormParameters()
             redirect(uri: "/search?query=" + query + "&offset=" + offset + "&rows=" + rows)
         } catch(MissingPropertyException mpe){
-            log.error "executeSearch(): There was a missing property. Check your Config.groovy!", mpe
+            log.error "executeSearch(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "executeSearch(): An unexpected error occured.", e
