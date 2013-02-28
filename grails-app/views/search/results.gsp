@@ -112,8 +112,7 @@ window.onload=function(){
     console.log(url)
     $('.search-results').empty();
     var imgLoader = document.createElement('img');
-    imgLoader.src = "${resource(dir: 'images/icons', file: 'loader_small.gif')}
-    ";
+    imgLoader.src = "${resource(dir: 'images/icons', file: 'loader_small.gif')}";
             $('.search-results').prepend(imgLoader);
             var request = $
                     .ajax({

@@ -175,6 +175,9 @@ class SearchService {
      */
     static def convertQueryParametersToSearchParameters(GrailsParameterMap reqParameters) {
         def urlQuery = [:]
+        if (reqParameters.q != null && reqParameters.query == null) {
+            reqParameters.query = reqParameters.q
+        }
         if (reqParameters.q!=null || reqParameters.query!=null){
             // FIXME remove q
             urlQuery = (reqParameters.q)?[ query: reqParameters.q ]:[query: reqParameters.query]
@@ -246,7 +249,7 @@ class SearchService {
      */
     static def getSearchGetParameters(Map reqParameters) {
         def searchParams = [:]
-        def requiredParams = ["query", "offset", "rows", "sort", "viewType", "facetValues[]"]
+        def requiredParams = ["query", "offset", "rows", "sort", "viewType", "clustered", "isThumbnailFiltered", "facetValues[]"]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
                 searchParams[entry.key] = entry.value
@@ -263,7 +266,7 @@ class SearchService {
      */
     static def getItemDetailGetParameters(Map reqParameters) {
         def itemDetailParams = [:]
-        def requiredParams = ["query", "offset", "rows", "sort", "viewType", "facetValues[]", "firstHit", "lastHit"]
+        def requiredParams = ["query", "offset", "rows", "sort", "viewType", "clustered", "isThumbnailFiltered", "facetValues[]", "firstHit", "lastHit"]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
                 itemDetailParams[entry.key] = entry.value

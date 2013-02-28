@@ -1,7 +1,7 @@
 <ul class="results-list unstyled  <g:if test="${viewType == 'grid'}">grid</g:if>">
   <g:set var="pageHitCounter" value="${0}"/>
     <g:each in="${results}">
-    <g:set var="pageHitCounter" value="${pageHitCounter + 1}" /><br/>
+    <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <g:set var="hitNumber" value="${itemDetailGetParams.offset + pageHitCounter}"/>
     <li class="item bt">
       <div class="summary <g:if test="${viewType != 'grid'}">row</g:if>">
