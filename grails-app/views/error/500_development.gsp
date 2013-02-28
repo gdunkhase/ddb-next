@@ -9,10 +9,10 @@
 <body>
 
 <div class="row">
-	<div class="error">
-		<g:renderException exception="${exception}" />
-	</div>
+  <div class="error">
+    <g:renderException exception="${exception}" />
+  </div>
 </div>
 
-</body>
-</html>
+</body> 
+</html> 

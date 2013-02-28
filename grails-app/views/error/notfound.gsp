@@ -9,15 +9,15 @@
 <body>
  
 <div class="row">
-	<div class="error">
-		<h1>
-			<g:message code="error.notfound.title"/>
-		</h1>
-		<p>
-			<g:message code="error.notfound.body"/>
-		</p>
-	</div>
-</div>
+  <div class="error">
+    <h1>
+      <g:message code="error.notfound.title"/>
+    </h1>
+    <p>
+      <g:message code="error.notfound.body"/>
+    </p>
+  </div>
+</div> 
 
 </body>
 </html>
