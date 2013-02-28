@@ -192,7 +192,7 @@ class ApiConsumer {
             if (!proxyPort) {
                 proxyPort = "80"
             }
-            http.setProxy(proxyHost,Integer.parseInt(proxyPort), 'http')
+            http.setProxy(proxyHost, new Integer(proxyPort), 'http')
         }
     }
 }
