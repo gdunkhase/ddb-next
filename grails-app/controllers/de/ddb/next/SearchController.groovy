@@ -10,9 +10,9 @@ class SearchController {
             def urlQuery = SearchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = SearchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
-    
+
             def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
-    
+
             if (resultsItems != null && resultsItems["numberOfResults"] != null && (Integer)resultsItems["numberOfResults"] > 0) {
                 //check for lastHit and firstHit
                 //firstHit
@@ -22,7 +22,7 @@ class SearchController {
                 if (firstHit != null && firstHit["numberOfResults"] != null && (Integer)firstHit["numberOfResults"] > 0) {
                     params["firstHit"] = firstHit["results"]["docs"][0].id
                 }
-                
+
                 //lastHit
                 firstLastQuery["offset"] = resultsItems["numberOfResults"] - 1
                 def lastHit = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', firstLastQuery)
@@ -30,21 +30,21 @@ class SearchController {
                     params["lastHit"] = lastHit["results"]["docs"][0].id
                 }
             }
-    
+
             //Calculating results details info (number of results in page, total results number)
             def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
                     ((urlQuery["offset"].toInteger()+
                     urlQuery["rows"].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery["offset"].toInteger()+urlQuery["rows"].toInteger())
-    
+
             //Calculating results pagination (previous page, next page, first page, and last page)
             def pagesOverallIndex = message(code:"ddbnext.Page")+" "+
             ((urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()+" "+
             message(code:"ddbnext.Of")+" "+
             (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
-    
+
             def resultsPaginatorOptions = SearchService.buildPaginatorOptions(urlQuery)
             def numberOfResultsFormatted = String.format("%,d", resultsItems.numberOfResults.toInteger())
-            
+
             if(params.reqType=="ajax"){
                 def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
@@ -77,15 +77,15 @@ class SearchController {
                     itemDetailGetParams: SearchService.getItemDetailGetParameters(params)
                 ])
             }
-        
+
         } catch(MissingPropertyException mpe){
-            log.error("results(): There was a missing property. Check your Config.groovy!", mpe)
+            log.error "results(): There was a missing property. Check your Config.groovy!", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
-            log.error("results(): An unexpected error occured.", e)
+            log.error "results(): An unexpected error occured.", e
             forward controller: "error", action: "serverError"
         }
 
     }
-    
+
 }

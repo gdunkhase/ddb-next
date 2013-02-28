@@ -9,39 +9,37 @@ class ItemController {
         try {
 
             render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", null))
-        
         } catch(MissingPropertyException mpe){
-            log.error("children(): There was a missing property. Check your Config.groovy!", mpe)
+            log.error "children(): There was a missing property. Check your Config.groovy!", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
-            log.error("children(): An unexpected error occured.", e)
+            log.error "children(): An unexpected error occured.", e
             forward controller: "error", action: "serverError"
         }
-
     }
 
     def findById() {
         try {
             def id = params.id
             def item = itemService.findItemById(id)
-            
+
             if("404".equals(item)){
-                log.info("findById(): Request for nonexisting item with id: "+id)
+                log.info "findById(): Request for nonexisting item with id: "+id
                 forward controller: "error", action: "notFound"
             }
-            
+
             def binaryList = itemService.findBinariesById(id)
             def binariesCounter = itemService.binariesCounter(binaryList)
-    
+
             flash.all = [binaryList.size]
             flash.images = [binariesCounter.images]
             flash.audios = [binariesCounter.audios]
             flash.videos = [binariesCounter.videos]
-    
+
             if (item.pageLabel?.isEmpty()) {
                 item.pageLabel= itemService.getItemTitle(id)
             }
-    
+
             def urlQuery = SearchService.convertQueryParametersToSearchParameters(params)
             def resultsItems
             def hitNumber
@@ -58,7 +56,7 @@ class ItemController {
                     urlQuery["offset"] = 0
                 }
                 resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
-    
+
                 //generate link back to search-result. Calculate Offset.
                 def searchGetParameters = SearchService.getSearchGetParameters(params)
                 def offset = ((Integer)((params["hitNumber"]-1)/params["rows"]))*params["rows"]
@@ -66,9 +64,9 @@ class ItemController {
                 searchResultUri = "/search?"
                 MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib();
                 searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters);
-                
+
             }
-    
+
             // TODO: handle 404 and failure separately. HTTP Status Code 404, should
             // to `not found` page _and_ Internal Error should go to `internal server
             // error` page. We should send also the HTTP Status Code 404 or 500 to the
@@ -80,16 +78,16 @@ class ItemController {
                 def fields = translate(item.fields)
                 render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
                     'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
-                    binaryList: binaryList, pageLabel: item.pageLabel, 
-                    itemDetailGetParams: SearchService.getItemDetailGetParameters(params), 
+                    binaryList: binaryList, pageLabel: item.pageLabel,
+                    itemDetailGetParams: SearchService.getItemDetailGetParameters(params),
                     hitNumber: params["hitNumber"], results: resultsItems, searchResultUri: searchResultUri])
             }
-            
+
         } catch(MissingPropertyException mpe){
-            log.error("findById(): There was a missing property. Check your Config.groovy!", mpe)
+            log.error "findById(): There was a missing property. Check your Config.groovy!", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
-            log.error("findById(): An unexpected error occured.", e)
+            log.error "findById(): An unexpected error occured.", e
             forward controller: "error", action: "serverError"
         }
 
@@ -106,27 +104,27 @@ class ItemController {
                     log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
                 }
             }
-        
+
         } catch(MissingPropertyException mpe){
-            log.error("translate(): There was a missing property. Check your Config.groovy!", mpe)
+            log.error "translate(): There was a missing property. Check your Config.groovy!", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
-            log.error("translate(): An unexpected error occured.", e)
+            log.error "translate(): An unexpected error occured.", e
             forward controller: "error", action: "serverError"
         }
-        
+
     }
 
     def parents() {
         try {
-            
+
             render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
-        
+
         } catch(MissingPropertyException mpe){
-            log.error("parents(): There was a missing property. Check your Config.groovy!", mpe)
+            log.error "parents(): There was a missing property. Check your Config.groovy!", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
-            log.error("parents(): An unexpected error occured.", e)
+            log.error "parents(): An unexpected error occured.", e
             forward controller: "error", action: "serverError"
         }
 
