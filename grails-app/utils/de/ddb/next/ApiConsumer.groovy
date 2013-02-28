@@ -5,6 +5,7 @@ import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+import java.util.regex.Pattern
 import org.apache.commons.logging.LogFactory
 
 import org.apache.commons.logging.LogFactory
@@ -12,7 +13,8 @@ import org.apache.commons.logging.LogFactory
 
 class ApiConsumer {
     private static final log = LogFactory.getLog(this)
-
+    private static Pattern nonProxyHostsPattern
+    
     static def postText(String baseUrl, String path, query, method = Method.POST) {
         try {
             def ret = null
@@ -171,15 +173,26 @@ class ApiConsumer {
     }
 
     static def setProxy(http, String baseUrl) {
-        if(baseUrl.contains('localhost') || baseUrl.contains('fiz-karlsruhe.de')) {
-            log.debug " ${baseUrl} does not need http proxy"
-            return
+        def proxyHost = System.getProperty("http.proxyHost")
+        def proxyPort = System.getProperty("http.proxyPort")
+        def nonProxyHosts = System.getProperty("http.nonProxyHosts")
+        
+        if (proxyHost) {
+            if (nonProxyHosts) {
+                if (!nonProxyHostsPattern) {
+                    nonProxyHosts = nonProxyHosts.replaceAll("\\.", "\\\\.")
+                    nonProxyHosts = nonProxyHosts.replaceAll("\\*", "")
+                    nonProxyHosts = nonProxyHosts.replaceAll("\\?", "\\\\?")
+                    nonProxyHostsPattern = Pattern.compile(nonProxyHosts)
+                }
+                if (nonProxyHostsPattern.matcher(baseUrl).find()) {
+                    return
+                }
+            }
+            if (!proxyPort) {
+                proxyPort = "80"
+            }
+            http.setProxy(proxyHost, new Integer(proxyPort), 'http')
         }
-
-        def PROXY_HOST = 'proxy.fiz-karlsruhe.de'
-        def PROXY_PORT = 8888
-        http.setProxy(PROXY_HOST,PROXY_PORT, 'http')
-
-        log.debug " ${baseUrl} will uses HTTP Proxy"
     }
 }
