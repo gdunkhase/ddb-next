@@ -112,7 +112,6 @@ environments {
 }
 
 // log4j configuration
-
 log4j = {
 
     // The appenders define the output method of the loggings
@@ -137,33 +136,15 @@ log4j = {
     // This part can be used to filter out all loggings that are not interesting
     environments {
         development {
-            warn    "org.codehaus.groovy.grails.plugins",  // only warnings from plugins
-                    "org.grails.plugin",                   // only warnings from plugins
-                    "grails.plugin",                       // only warnings from plugins
-                    "org.codehaus.groovy.grails.commons"   // only warnings from common grails classes
+            warn    "org.codehaus.groovy.grails.plugins",  // only warnings or errors from plugins
+                    "org.grails.plugin",                   // only warnings or errors from plugins
+                    "grails.plugin",                       // only warnings or errors from plugins
+                    "org.codehaus.groovy.grails.commons"   // only warnings or errors from common grails classes
         }
         production {
+            //Don't filter messages in production
         }
     }
-
-
-    //    info    'org.codehaus.groovy.grails.web.servlet',        // controllers
-    //            'org.codehaus.groovy.grails.web.pages',          // GSP
-    //            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
-    //            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-    //            'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-    //            'org.codehaus.groovy.grails.commons',            // core / classloading
-    //            'org.codehaus.groovy.grails.plugins',            // plugins
-    //            'org.springframework',                           // spring
-    //            'grails.plugin',
-    //            'grails.app.services.org.grails.plugin.resource',
-    //            'grails.app.taglib.org.grails.plugin.resource',
-    //            'grails.app.resourceMappers.org.grails.plugin.resource',
-    //            'grails.app.services.NavigationService'
-    //
-    //     info  'org.apache.catalina'
-    //
-    //     info 'grails.app'
 
 }
 
