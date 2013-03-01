@@ -1,6 +1,4 @@
-                <%
-               def jsonOrgHierarchy = vApiInst.getChildrenOfInstitutionByItemId(itemId, grailsApplication.config.ddb.backend.url.toString())
-                 %>
+                 <g:set var="jsonOrgHierarchy" value="${vApiInst.getChildrenOfInstitutionByItemId(itemId, grailsApplication.config.ddb.backend.url.toString())}" />
                  <g:if test="${((jsonOrgHierarchy != null)&&(jsonOrgHierarchy.size() > 0))}">
                       <ul>
                          <g:each in="${jsonOrgHierarchy}" >
