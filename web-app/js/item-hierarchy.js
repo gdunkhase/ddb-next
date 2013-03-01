@@ -342,12 +342,13 @@ function showChildren(url, currentNode, currentId, parentId) {
       li.attr("data-bind", dataBind);
       ul.append(li);
       addWaitSymbol(li);
-      getChildren(url, value.id, function(children) {
-        if (children.length > 0) {
+      getParents(url, value.id, function(parents) {
+        if (parents[0].aggregationEntity) {
           addParentNode(url, li, currentId, value, isCurrent, isLast, false);
         } else {
           addLeafNode(li, value, isCurrent, isLast);
         }
+        return;
       });
     });
   });
