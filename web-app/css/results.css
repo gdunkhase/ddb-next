@@ -159,6 +159,14 @@
   margin-right: 15px;
 }
 
+.results-paginator-view .group-actions label.disabled {
+  color: #878380;
+}
+
+.results-paginator-view .group-actions input.disabled {
+  cursor: default;  
+}
+
 .view-type-switch #view-list {
   width: 24px;
   height: 24px;
