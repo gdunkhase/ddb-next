@@ -1,6 +1,6 @@
 <ul class="results-list unstyled  <g:if test="${viewType == 'grid'}">grid</g:if>">
   <g:set var="pageHitCounter" value="${0}"/>
-    <g:each in="${results}">
+  <g:each in="${results}">
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <g:set var="hitNumber" value="${itemDetailGetParams.offset + pageHitCounter}"/>
     <li class="item bt">
@@ -13,7 +13,7 @@
           <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber]}" />
           <g:render template="thumbnailWrapper" model="${[viewType: viewType, item: it, confBinary: confBinary, itemDetailGetParams: itemDetailGetParams, hitNumber: hitNumber]}" />
         </g:else>
-        </div>
-      </li>
+      </div>
+    </li>
   </g:each>
 </ul>
