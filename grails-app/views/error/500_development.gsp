@@ -10,7 +10,12 @@
 
 <div class="row">
   <div class="error">
-    <g:renderException exception="${exception}" />
+    <g:if test="${exception}">
+      <g:renderException exception="${exception}" />
+    </g:if>
+    <g:else>
+      <b>DEV-Message:</b> No stacktrace available. Most likely, it was already consumed and logged to your console.
+    </g:else>  
   </div>
 </div>
 
