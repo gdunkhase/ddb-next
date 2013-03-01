@@ -61,6 +61,12 @@
   width: 16px;
 }
 
+/* highlight the current node */
+.item-hierarchy-result ul>li>div.leaf-indicator.current-node {
+  background: transparent url("../images/bg/hierarchy_active_leaf.png")
+    no-repeat;
+}
+
 .item-hierarchy-result ul>li>span.branch-type {
   float: left;
 }
