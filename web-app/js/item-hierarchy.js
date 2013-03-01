@@ -154,8 +154,7 @@ function addSiblingCount(url, currentNode, parentId) {
     getChildren(url, parentId, function(children) {
       if (children.length > 1) {
         if (children.length > 500) {
-          // TODO localization
-          siblingCount.append("+" + 500 + "<br>und mehr");
+          siblingCount.append(messages.ddbnext.Hierarchy_SiblingCountRestricted_Format(500));
         } else {
           siblingCount.append("+" + (children.length - 1));
         }

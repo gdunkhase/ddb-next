@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery.fancybox-1.3.4.css')}" type="text/css" media="screen">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'viewer.css')}" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'item-hierarchy.css')}" />
+<jawr:script src="/i18n/messages.js"/>
 <script src="${resource(dir: 'js', file: 'item-hierarchy.js')}" /></script>
 <!-- TODO move script to the main js file -->
 <script>
