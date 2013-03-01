@@ -5,7 +5,7 @@
     <div class="span12">
         <div class="row heading bb">
             <div class="span6">
-                <h1><g:message code="ddbnext.AdvancedSearch"/></h1>
+                <div class="fl"><h1><g:message code="ddbnext.AdvancedSearch"/></h1></div>
                 <span class="contextual-help fl hidden-phone hidden-tablet" 
                       title="<g:message code="ddbnext.AdvancedSearch_Hint"/>" 
                       data-content="<g:message code="ddbnext.AdvancedSearch_Hint"/>">
@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="span3 button-group fr">
+                                <div class="span6 button-group fr">
                                   <button class="reset" type="reset"><span><g:message code="ddbnext.Reset"/></span></button>
                                   <button class="submit" type="submit"><span><g:message code="ddbnext.Search"/></span></button>
                                 </div>

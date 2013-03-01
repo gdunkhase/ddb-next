@@ -1,5 +1,5 @@
 <div class="span11">
-  <div class="row-fluid">
+  <div class="row">
     <div class="span3">
       <select class="facet facet-js" id="facet-js-${group}-${row}" name="facet-${group}-${row}" style="display: none" disabled="disabled">
         <g:each in="${facetSearchfields}">
@@ -26,7 +26,7 @@
       </select>
     </div>
 
-    <div class="span6">
+    <div class="span5">
       <g:each var="facetSearchfield" in="${facetSearchfields}">
         <g:if test="${facetSearchfield.searchType?.equals(enumSearchType)}">
           <select class="facet-values"
