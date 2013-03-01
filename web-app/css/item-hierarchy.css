@@ -52,6 +52,15 @@
   font-weight: bolder;
 }
 
+/* draw a text page symbol in front of the label */
+.item-hierarchy-result ul>li>div.leaf-indicator {
+  background: url("../images/bg/hierarchy_leaf.png") no-repeat;
+  float: left;
+  height: 19px;
+  margin: 2px 5px 2px 8px;
+  width: 16px;
+}
+
 .item-hierarchy-result ul>li>span.branch-type {
   float: left;
 }
@@ -67,15 +76,6 @@
   background:
     url("../images/bg/advanced_search_solid_joint_standard_top.png" )
     no-repeat 7px 0px;
-}
-
-/* draw a text page symbol in front of the label */
-.item-hierarchy-result ul>li.leaf>div.leaf-indicator {
-  background: url("../images/bg/hierarchy_leaf.png") no-repeat;
-  float: left;
-  height: 19px;
-  margin: 2px 5px 2px 8px;
-  width: 16px;
 }
 
 /* highlight the current node */
