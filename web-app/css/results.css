@@ -471,12 +471,12 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 /*Facets flyout*/
-.flyoutLeftContainer {
+.flyout-left-container {
   width: 100%;
   height: auto;
   background: #fff;
 }
-.flyoutRightContainer {
+.flyout-right-container {
   min-height: 71px;
   min-width: 200px;
   background: #fff;
@@ -492,46 +492,46 @@ input[type="checkbox"],input[type="radio"] {
   padding-left: 10px;
   padding-right: 10px;
 }
-.flyoutRightHead {
+.flyout-right-head {
   font-weight: bold;
   border-bottom: #ddd 1px solid;
   width: 100%;
 }
-.inputSearchFctContainer {
+.input-search-fct-container {
   margin: 0 10px;
   line-height: 40px;
 }
-.inputSearchFctContainer .inputSearchFct{
+.input-search-fct-container .input-search-fct{
   width: 100%;
 }
-.flyoutLeftContainer >div {
+.flyout-left-container >div {
   border-top: #ddd 1px solid;
 }
-.flyoutRightBody {
+.flyout-right-body {
   margin: 10px 0 10px 0;
 }
-.flyoutRightBody.bodyExtender .leftCol, .flyoutRightBody.bodyExtender .rightCol{
+.flyout-right-body.body-extender .left-col, .flyout-right-body.body-extender .right-col{
   width: 50%;
   display: inline-block;
   vertical-align: top;
 }
-.flyoutRightBody .leftCol >div, .flyoutRightBody .rightCol >div {
+.flyout-right-body .left-col >div, .flyout-right-body .right-col >div {
   background: #efebe8;
   padding: 5px 5px 5px 5px;
   margin-bottom:2px;
   line-height: 15px;
 }
-.flyoutRightBody.bodyExtender .leftCol >div{
+.flyout-right-body.body-extender .left-col >div{
   margin-right: 5px;
 }
-.flyoutRightBody.bodyExtender .rightCol >div {
+.flyout-right-body.body-extender .right-col >div {
   margin-left: 5px;
 }
-.flyoutRightBody .leftCol >div span, .flyoutRightBody .rightCol >div span {
+.flyout-right-body .left-col >div span, .flyout-right-body .right-col >div span {
   float: right;
   margin-left: 5px;
 }
-.bodyExtender{
+.body-extender{
   width:500px;
 }
 /*Flyout end*/

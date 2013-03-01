@@ -256,19 +256,19 @@ window.onload=function(){
         var inputSearchContainer;
         var inputSearch;
         
-        if(this.parentMainElement.find('.flyoutLeftContainer').length>0){
-          this.facetLeftContainer = this.parentMainElement.find('.flyoutLeftContainer');
-          inputSearchContainer = this.parentMainElement.find('.inputSearchFctContainer');
-          this.inputSearch = this.parentMainElement.find('.inputSearchFct');
+        if(this.parentMainElement.find('.flyout-left-container').length>0){
+          this.facetLeftContainer = this.parentMainElement.find('.flyout-left-container');
+          inputSearchContainer = this.parentMainElement.find('.input-search-fct-container');
+          this.inputSearch = this.parentMainElement.find('.input-search-fct');
         }else{
           this.facetLeftContainer = $(document.createElement('div'));
           inputSearchContainer = $(document.createElement('div'));
           inputSearch = $(document.createElement('input'));
 
-          this.facetLeftContainer.addClass('flyoutLeftContainer');
-          inputSearchContainer.addClass('inputSearchFctContainer');
+          this.facetLeftContainer.addClass('flyout-left-container');
+          inputSearchContainer.addClass('input-search-fct-container');
           inputSearch.attr('type','text');
-          inputSearch.addClass('inputSearchFct');
+          inputSearch.addClass('input-search-fct');
           
           this.facetLeftContainer.appendTo(this.mainElement.parent());
           inputSearch.appendTo(inputSearchContainer);
@@ -279,10 +279,10 @@ window.onload=function(){
         var rightHead = $( document.createElement('div') );
         this.rightBody = $( document.createElement('div') );
         
-        this.facetRightContainer.addClass('flyoutRightContainer');
+        this.facetRightContainer.addClass('flyout-right-container');
         this.facetRightContainer.hide();
-        rightHead.addClass('flyoutRightHead');
-        this.rightBody.addClass('flyoutRightBody');
+        rightHead.addClass('flyout-right-head');
+        this.rightBody.addClass('flyout-right-body');
         
         this.facetRightContainer.appendTo(this.mainElement.parent());
         rightHead.appendTo(this.facetRightContainer);
@@ -292,8 +292,8 @@ window.onload=function(){
 
         this.parentMainElement.fadeIn('fast');
         this.facetRightContainer.fadeIn('fast');
-        this.parentMainElement.find('.inputSearchFctContainer').fadeIn('fast');
-        //this.parentMainElement.find('.inputSearchFctContainer').show('100');
+        this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
+        //this.parentMainElement.find('.input-search-fct-container').show('100');
     },
     renderFacetValues: function(facetValues){
         var currObjInstance = this;
@@ -302,15 +302,15 @@ window.onload=function(){
 
         this.rightBody.empty();
         
-        leftCol.addClass('leftCol');
-        rightCol.addClass('rightCol');
+        leftCol.addClass('left-col');
+        rightCol.addClass('right-col');
 
         leftCol.appendTo(this.rightBody);
         rightCol.appendTo(this.rightBody);
         
         if(facetValues.type == this.fctManager.currentFacetField){
           if(facetValues.values.length > 5){
-            this.rightBody.addClass('bodyExtender');
+            this.rightBody.addClass('body-extender');
           }
           $.each(facetValues.values, function(index){
             var facetValueContainer = $(document.createElement('div'));
@@ -351,8 +351,8 @@ window.onload=function(){
     close: function(){
         var oldMainElement = this.mainElement;
         var oldParentMainElement = this.parentMainElement;
-        oldParentMainElement.find('.inputSearchFctContainer').hide('100', function(){
-          if(oldParentMainElement.find('.flyoutLeftContainer ul li').length > 0){
+        oldParentMainElement.find('.input-search-fct-container').hide('100', function(){
+          if(oldParentMainElement.find('.flyout-left-container ul li').length > 0){
             oldParentMainElement.find('.addMoreFilters').show('100');
           }else{
             oldParentMainElement.fadeOut('fast',function(){
@@ -361,8 +361,8 @@ window.onload=function(){
             });
           }
         });
-        oldParentMainElement.find('.flyoutRightContainer').hide('100', function(){
-          oldParentMainElement.find('.flyoutRightContainer').remove();
+        oldParentMainElement.find('.flyout-right-container').hide('100', function(){
+          oldParentMainElement.find('.flyout-right-container').remove();
         });
     }
   });
