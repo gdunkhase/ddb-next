@@ -4,6 +4,7 @@ package de.ddb.next
 class SearchController {
 
     static defaultAction = "results"
+    
 
     def results() {
         def urlQuery = [:]
@@ -51,7 +52,7 @@ class SearchController {
         }
         
         def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
-        println resultsItems["randomSeed"]
+
         if(resultsItems["randomSeed"])
             urlQuery["randomSeed"] = resultsItems["randomSeed"]
         
@@ -105,46 +106,5 @@ class SearchController {
                 numberOfResultsFormatted: numberOfResultsFormatted
             ])
         }
-    }
-    
-    def facets() {
-        def urlQuery = [:]
-        if (params.q!=null || params.query!=null){
-            // FIXME remove q
-            urlQuery = (params.q)?[ query: params.q ]:[query: params.query]
-        }
-        
-        if (params.rows == null)
-            urlQuery["rows"] = 11
-        else urlQuery["rows"] = params.rows
-        
-        if (params.offset == null)
-            urlQuery["offset"] = 0
-        else urlQuery["offset"] = params.offset
-        
-        //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
-        //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
-        if(params["facetValues[]"]){
-            urlQuery = SearchService.getFacets(params, urlQuery,"facet", 0)
-        }
-        
-        if(params.get("facets[]")){
-            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
-            if(!urlQuery["facet"].contains(params.get("facets[]")))
-                urlQuery["facet"].add(params.get("facets[]"))
-        }
-        
-        if(params["name"]){
-            urlQuery = params.name
-        }
-        
-        def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
-        
-        def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
-        
-        def facetsList = SearchService.getSelectedFacetsList(resultsItems.facets, active)
-        
-        def jsonReturn = [facetsList: facetsList]
-        render (contentType:"text/json"){jsonReturn}
     }
 }

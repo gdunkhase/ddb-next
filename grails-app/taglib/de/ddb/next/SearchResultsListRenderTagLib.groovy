@@ -12,6 +12,6 @@ class SearchResultsListRenderTagLib {
     }
 
     def truncateItemTitle = { attrs, body ->
-        out << SearchService.trimTitle(attrs.title.toString())
+        out << SearchService.trimTitle(attrs.title.toString(), attrs.length)
     }
 }

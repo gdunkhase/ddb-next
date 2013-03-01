@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
 <script>
 window.onload=function(){
-  initializeFacets();
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
   
@@ -110,7 +109,6 @@ window.onload=function(){
 	window.history.pushState({path:newUrl},'',newUrl);
   });
   function fetchResultsList(url){
-    console.log(url)
     $('.search-results').empty();
     var imgLoader = document.createElement('img');
     imgLoader.src = "${resource(dir: 'images/icons', file: 'loader_small.gif')}";
@@ -123,12 +121,10 @@ window.onload=function(){
       complete: function(data){
     	$('.search-results').fadeOut('fast', function(){
           var JSONresponse = jQuery.parseJSON(data.responseText);
-          console.log(jQuery.parseJSON(data.responseText));
           $('.search-results').html(JSONresponse.results);
-          $('#results-overall-index').html(JSONresponse.resultsOverallIndex);
+          $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
           $('.pages-overall-index').html(JSONresponse.pagesOverallIndex);
           $('#results-total').html(JSONresponse.numberOfResults);
-          console.log($('.next-page a'))
           if(JSONresponse.paginationURL.nextPg){
             $(".page-nav .next-page").removeClass("off");
             $(".page-nav .last-page").removeClass("off");
@@ -155,18 +151,79 @@ window.onload=function(){
   }
 
   //Facet Manager --
-  
-  FacetWidget = function(element){
-    this.init(element);
+  FacetsManager = function(){
+    this.init();
+  }
+
+  $.extend(FacetsManager.prototype, {
+
+    facetsEndPoint: '/facets',
+    currentOffset: 0,
+    currentRows: 11,
+    currentFacetField: null,
+    currentFacetValuesSelected: new Array(),
+
+    init: function(){
+    },
+
+    fetchFacetValues: function(flyoutWidget){
+        var oldParams = this.getUrlVars();
+        var currObjInstance = this;
+        var fctValues = "";
+        var resp = new Array();
+        if(oldParams['facetValues%5B%5D']){
+          $.each(oldParams['facetValues%5B%5D'], function(key, value){
+            fctValues = (value.indexOf(currObjInstance.currentFacetField)>=0)?fctValues:fctValues+'&facetValues%5B%5D='+value;
+          });
+        }
+        flyoutWidget.renderFacetLoader();
+        var request = $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            async: true,
+            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+fctValues+'&offset='+this.currentOffset+'&rows='+this.currentRows,
+            complete: function(data){
+                flyoutWidget.renderFacetValues(jQuery.parseJSON(data.responseText));
+            }
+        });
+    },
+    
+    getUrlVars: function(){
+      var vars = {}, hash;
+      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+      for(var i = 0; i < hashes.length; i++)
+      {
+        hash = hashes[i].split('=');
+        if(!Object.prototype.hasOwnProperty.call(vars, hash[0])){
+          vars[hash[0]] = new Array();
+        }
+        vars[hash[0]].push(hash[1]);
+      }
+      return vars;
+    },
+    getUrlVar: function(name){
+        return $.getUrlVars()[name];
+    }
+    
+  });
+
+  //Flyout Widget --
+  FlyoutFacetsWidget = function(){
+    this.init();
   }
   
-  $.extend(FacetWidget.prototype, {
+  $.extend(FlyoutFacetsWidget.prototype, {
     
-    anchor_elm: null,
-    anchor_parent: null,
-    open: false,
+    mainElement: null,
+    parentMainElement: null,
+    opened: false,
     currentPage: 0,
-    currentFctsSelected: new Array(),
+    fctManager: new FacetsManager(),
+
+    facetLeftContainer: null,
+    facetRightContainer:null,
+    rightBody: null,
+    
 
     //i18n variables
     
@@ -178,42 +235,149 @@ window.onload=function(){
     field_RemoveSelectedItem: '<g:message code="ddbnext.Remove_selected_item"/>',
     field_RemoveButton: '<g:message code="ddbnext.Remove_Button"/>',
     
-    init: function(element){
-        this.anchor_elm = element;
-        this.anchor_parent = this.anchor_elm.parent();
-        this.anchor_parent.addClass('active');
-        this.buildFlyout();
+    init: function(){
+        this.cleanNonJsStructures();
     },
-    buildFlyout: function(){
-        var facetLeftContainer = (this.anchor_parent.find('.flyoutLeftContainer').length>0)?this.anchor_parent.find('.flyoutLeftContainer')[0]:$( document.createElement('div') );
-        var facetRightContainer = $(document.createElement('div'));
+    build: function(element){
+        if(element.attr('data-fctname') != this.fctManager.currentFacetField || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened)){
+          if(this.opened) this.close();
+          this.mainElement = element;
+          this.parentMainElement = this.mainElement.parent();
+          this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
+          this.parentMainElement.hide();
+          this.parentMainElement.addClass('active');
+          this.buildStructure();
+          this.fctManager.fetchFacetValues(this);
+          this.opened = true;
+        }
+    },
+    buildStructure: function(){
+        
+        var inputSearchContainer;
+        var inputSearch;
+        
+        if(this.parentMainElement.find('.flyoutLeftContainer').length>0){
+          this.facetLeftContainer = this.parentMainElement.find('.flyoutLeftContainer');
+          inputSearchContainer = this.parentMainElement.find('.inputSearchFctContainer');
+          this.inputSearch = this.parentMainElement.find('.inputSearchFct');
+        }else{
+          this.facetLeftContainer = $(document.createElement('div'));
+          inputSearchContainer = $(document.createElement('div'));
+          inputSearch = $(document.createElement('input'));
+
+          this.facetLeftContainer.addClass('flyoutLeftContainer');
+          inputSearchContainer.addClass('inputSearchFctContainer');
+          inputSearch.attr('type','text');
+          inputSearch.addClass('inputSearchFct');
+          
+          this.facetLeftContainer.appendTo(this.mainElement.parent());
+          inputSearch.appendTo(inputSearchContainer);
+          inputSearchContainer.appendTo(this.facetLeftContainer);
+        }
+        
+        this.facetRightContainer = $(document.createElement('div'));
         var rightHead = $( document.createElement('div') );
-        var inputSearchContainer = (this.anchor_parent.find('.inputSearchFctContainer').length>0)?this.anchor_parent.find('.inputSearchFctContainer')[0]:$( document.createElement('div') );
-        var inputSearch = $( document.createElement('input') );
-        facetLeftContainer.addClass('flyoutLeftContainer');
-        facetRightContainer.addClass('flyoutRightContainer');
+        this.rightBody = $( document.createElement('div') );
+        
+        this.facetRightContainer.addClass('flyoutRightContainer');
+        this.facetRightContainer.hide();
         rightHead.addClass('flyoutRightHead');
-        inputSearchContainer.addClass('inputSearchFctContainer');
-        inputSearch.attr('type','text');
-        inputSearch.addClass('inputSearchFct');
-        facetLeftContainer.appendTo(this.anchor_elm.parent());
-        facetRightContainer.appendTo(this.anchor_elm.parent());
-        rightHead.appendTo(facetRightContainer);
+        this.rightBody.addClass('flyoutRightBody');
+        
+        this.facetRightContainer.appendTo(this.mainElement.parent());
+        rightHead.appendTo(this.facetRightContainer);
+        this.rightBody.appendTo(this.facetRightContainer);
+        
         rightHead.html(this.field_MostRelevant);
-        inputSearch.appendTo(inputSearchContainer);
-        inputSearchContainer.appendTo(facetLeftContainer);
+
+        this.parentMainElement.fadeIn('fast');
+        this.facetRightContainer.fadeIn('fast');
+        this.parentMainElement.find('.inputSearchFctContainer').fadeIn('fast');
+        //this.parentMainElement.find('.inputSearchFctContainer').show('100');
+    },
+    renderFacetValues: function(facetValues){
+        var currObjInstance = this;
+        var leftCol = $(document.createElement('div'));
+        var rightCol = $(document.createElement('div'));
+
+        this.rightBody.empty();
+        
+        leftCol.addClass('leftCol');
+        rightCol.addClass('rightCol');
+
+        leftCol.appendTo(this.rightBody);
+        rightCol.appendTo(this.rightBody);
+        
+        if(facetValues.type == this.fctManager.currentFacetField){
+          if(facetValues.values.length > 5){
+            this.rightBody.addClass('bodyExtender');
+          }
+          $.each(facetValues.values, function(index){
+            var facetValueContainer = $(document.createElement('div'));
+            var spanCount = $(document.createElement('span'));
+
+            facetValueContainer.attr('data-fctvalue', this.value);
+            spanCount.html('('+this.count+')');
+
+            if(index<5){
+              facetValueContainer.appendTo(leftCol);
+            }
+            else if(index<10){
+              facetValueContainer.appendTo(rightCol);
+            }
+            spanCount.appendTo(facetValueContainer);
+            $(document.createTextNode(this.localizedValue)).appendTo(facetValueContainer);
+          });
+        }
+    },
+    renderFacetLoader: function(){
+      this.rightBody.empty();
+      var imgLoader = document.createElement('img');
+      imgLoader.src = "${resource(dir: 'images/icons', file: 'loader_small.gif')}";
+      this.rightBody.prepend(imgLoader);
+    },
+    manageOutsideClicks: function(thisInstance){
+      $(document).mouseup(function (e){
+        var container = $(".facets-list");
+        if (container.has(e.target).length === 0 && thisInstance.opened == true){
+          thisInstance.close();
+          thisInstance.opened = false;
+        }
+      });
+    },
+    cleanNonJsStructures: function(){
+        $('.facets-item >ul').remove();
+    },
+    close: function(){
+        var oldMainElement = this.mainElement;
+        var oldParentMainElement = this.parentMainElement;
+        oldParentMainElement.find('.inputSearchFctContainer').hide('100', function(){
+          if(oldParentMainElement.find('.flyoutLeftContainer ul li').length > 0){
+            oldParentMainElement.find('.addMoreFilters').show('100');
+          }else{
+            oldParentMainElement.fadeOut('fast',function(){
+              oldParentMainElement.removeClass('active');
+              oldParentMainElement.fadeIn('fast');
+            });
+          }
+        });
+        oldParentMainElement.find('.flyoutRightContainer').hide('100', function(){
+          oldParentMainElement.find('.flyoutRightContainer').remove();
+        });
     }
-    
   });
   
   function initializeFacets(){
+    var fctWidget = new FlyoutFacetsWidget();
     $('.facets-item a').each(function(){
         $(this).click(function(event){
             event.preventDefault();
-            var fctWidget = new FacetWidget($(this));
+            fctWidget.build($(this));
         });
     });
+    fctWidget.manageOutsideClicks(fctWidget);
   }
+  initializeFacets();
   //-- End Facet Manager
 };
 </script>
@@ -271,7 +435,7 @@ window.onload=function(){
         <div class="span9">
           <div class="search-results">
             <g:if test="${results}">
-			 <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
+              <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
             </g:if>
           </div>
         </div>

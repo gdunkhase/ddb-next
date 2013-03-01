@@ -2,7 +2,7 @@
   <div class="summary-main">
     <h2 class="title">
       <a class="persist" href="/item/${item.id}" title="${item.label}">
-      <g:truncateItemTitle title="${ item.preview.title }"></g:truncateItemTitle>
+      <g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle>
       </a>
     </h2>
     <div class="subtitle">${item.preview.subtitle}</div>

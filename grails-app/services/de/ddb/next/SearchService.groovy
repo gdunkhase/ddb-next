@@ -1,11 +1,28 @@
 package de.ddb.next
 
+import java.security.MessageDigest;
+
 import javax.servlet.http.HttpServletRequest
 
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 
+import org.springframework.context.MessageSource
+import org.springframework.context.i18n.LocaleContextHolder
+
+/**
+ * Set of services used in the SearchController for views/search
+ * 
+ * @author ema
+ *
+ */
 class SearchService {
+    
+    //Autowire the grails application bean
+    def grailsApplication
+    
     private static final facetsList = ["time_fct", "place_fct", "affiliate_fct", "keywords_fct", "language_fct", "type_fct", "sector_fct", "provider_fct"]
+    
+    def transactional=false
     
     static def getFacets(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, String key, int currentDepth){
         List facetValues = []
@@ -16,7 +33,7 @@ class SearchService {
                 facetValues.add(it)
             }
         }else{
-        facetValues.add(reqParameters.get("facetValues[]").toString())
+            facetValues.add(reqParameters.get("facetValues[]").toString())
         }
         facetValues.each {
             def tmpVal = java.net.URLDecoder.decode(it.toString(), "UTF-8")
@@ -154,11 +171,19 @@ class SearchService {
         return res
     }
     
-    static def trimTitle(String title){
+    /**
+     * 
+     * Gives you back the HTML title with "strong" attributes trimmed to desired length
+     * 
+     * @param title
+     * @param length
+     * @return String title
+     */
+    static def trimTitle(String title, int length){
         def matches
         def matchesMatch = title =~ /(?m)<match>(.*?)<\/match>/
         def cleanTitle = title.replaceAll("<match>", "").replaceAll("</match>", "")
-        def tmpTitle = (cleanTitle.length()>100)?cleanTitle.substring(0,96)+"...":cleanTitle
+        def tmpTitle = (cleanTitle.length()>length)?cleanTitle.substring(0,length-3)+"...":cleanTitle
         if(matchesMatch.size()>0){
             matchesMatch.each{
                 tmpTitle = tmpTitle.replaceAll(it[1], "<strong>"+it[1]+"</strong>")
@@ -167,11 +192,56 @@ class SearchService {
         return tmpTitle
     }
     
-    static def getSelectedFacetsList(List facets, String fctName){
-        def res = [:]
+    /**
+     * 
+     * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results} 
+     * 
+     * @param facets
+     * @param fctName
+     * @param numberOfElements
+     * @return List of Map
+     */
+    def getSelectedFacetValues(List facets, String fctName, int numberOfElements){
+        def res = [type: fctName, values: []]
         facets.each{
-            if(it.field==fctName)
-                res=it
+            if(it.field==fctName){
+                int max = (it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
+                for(int i=0;i<max;i++){
+                    res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: it.facetValues[i].count])
+                }
+            }
+        }
+        return res
+    }
+    
+    /**
+     * 
+     * Gives you back the passed facet value internationalized
+     * 
+     * @param facetName
+     * @param facetValue
+     * @return String i18n facet value
+     */
+    def getI18nFacetValue(facetName, facetValue){
+        
+        def appCtx = grailsApplication.getMainContext()
+        
+        def res = ""
+        
+        if(facetName == 'affiliate_fct' || facetName == 'keywords_fct' || facetName == 'place_fct' || facetName == 'provider_fct'){
+            res = facetValue
+        }
+        else if(facetName == 'type_fct'){
+            res = appCtx.getMessage('ddbnext.type_fct_'+facetValue, null, LocaleContextHolder.getLocale() )
+        }
+        else if(facetName == 'time_fct'){
+            res = appCtx.getMessage('ddbnext.time_fct_'+facetValue, null, LocaleContextHolder.getLocale())
+        }
+        else if(facetName == 'language_fct'){
+            res = appCtx.getMessage('ddbnext.language_fct_'+facetValue, null, LocaleContextHolder.getLocale())
+        }
+        else if(facetName == 'sector_fct'){
+            res = appCtx.getMessage('ddbnext.sector_fct_'+facetValue, null, LocaleContextHolder.getLocale())
         }
         return res
     }

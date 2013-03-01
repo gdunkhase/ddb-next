@@ -11,8 +11,8 @@ class UrlMappings {
         }
         
         "/facets/$q?" {
-            controller="search"
-            action=facets
+            controller="facets"
+            action=facetsList
         }
 
         "/advancedsearch" {
