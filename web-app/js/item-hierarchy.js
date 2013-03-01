@@ -234,7 +234,7 @@ function getChildren(url, id, complete) {
     type : "GET",
     dataType : "json",
     async : true,
-    url : url.dir + "children/" + id,
+    url : url.dir + "children/" + id + "?rows=501",
     complete : function(data) {
       complete(jQuery.parseJSON(data.responseText));
     }
