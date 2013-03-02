@@ -10,6 +10,7 @@ var ddb = {
     ddbBackendUrl: '/apis/institutions'
   },
 
+  // cache for all institution, including children and their descendants
   all: $('.institution'),
 
   institutionsBySector: null,
@@ -24,8 +25,8 @@ var ddb = {
       if (ddb.filteredEl) {
 
         // view manipulation, it resets the view to the initial state.
-        ddb.filteredEl.css('background-color', 'white');
-        ddb.restEl.css('background-color', 'white');
+        // TODO: this is slow
+        ddb.all.show();
       }
     } else if (ddb.institutionsBySector[hash]) {
       var idList = _.pluck(ddb.institutionsBySector[hash], 'id');
@@ -53,10 +54,6 @@ var ddb = {
         return _.contains(restIdList, $(this).data('institution-id'));
       });
 
-      // view manipulation
-      //ddb.filteredEl.css('background-color', 'red');
-      //ddb.restEl.css('background-color', 'yellow');
-
       ddb.filteredEl.show();
       ddb.restEl.hide();
     } else {
@@ -72,6 +69,8 @@ var ddb = {
       .values()
       .flatten()
       .value();
+
+    var hash = window.location.hash.substring(1);
 
     $('input:checkbox').click(function() {
       console.log('(un/)checked: ' + $(this).data('sector'));
@@ -89,17 +88,15 @@ var ddb = {
       if(sectors.length === 0) {
         ddb.all.show();
       } else {
-        var filtered = ddb.filterBySector(institutionList, sectors);
+        // TODO: handle hash equals list, [A|a]ll
+        var filtered = ddb.filterBySector(institutionList, sectors, hash);
+
         var visible = _.union(filtered.parentList, filtered.filteredBySector);
-        var invisible = _.without(institutionList, visible);
         var hasNoMember = ddb.findNoMember(visible);
 
         // view manipulation
-        var allFilteredEl = ddb.findElements(filtered.filteredBySector);
-        allFilteredEl.addClass('highlight');
-
-        var visibleEl = ddb.findElements(visible);
-        visibleEl.show();
+        ddb.findElements(filtered.filteredBySector).addClass('highlight');
+        ddb.findElements(visible).show();
 
         $('.pagination li').removeClass('disabled');
         // update index view, i.e., A..Z
@@ -123,12 +120,14 @@ var ddb = {
     }, []);
   },
 
-  filterDescendants: function(institution, memory, selectedSector, parentList) {
+  filterDescendants: function(institution, memory, selectedSector, parentList, hash) {
       if (institution.children && institution.children.length > 0) {
         _.reduce(institution.children, function(otherMemory, child) {
-          if (_.contains(selectedSector, child.sector)) { //} === selectedSector) {
+          if (_.contains(selectedSector, child.sector)) {
             otherMemory.push(child);
-            parentList.push(institution);
+            if(institution.firstChar === hash) {
+              parentList.push(institution);
+            }
           }
           ddb.filterDescendants(child, otherMemory, selectedSector, parentList);
         return otherMemory;
@@ -139,14 +138,14 @@ var ddb = {
   // TODO: rename the function.
   // it collects all institution which match sector in selectedSector. It also
   // collect its parent if any.
-  filterBySector: function(institutionList, selectedSector) {
+  filterBySector: function(institutionList, selectedSector, hash) {
     var parentList = [];
 
     var filteredBySector = _.reduce(institutionList, function(memory, institution) {
-      if (_.contains(selectedSector, institution.sector)) {
+      if (institution.firstChar === hash && _.contains(selectedSector, institution.sector)) {
         memory.push(institution);
       }
-      ddb.filterDescendants(institution, memory, selectedSector, parentList);
+      ddb.filterDescendants(institution, memory, selectedSector, parentList, hash);
       return memory;
     }, []);
 
@@ -166,8 +165,9 @@ var ddb = {
 
   getInstitutionsBySector: function(onHashChange, onFilterBySectorChange) {
     if (ddb.institutionsBySector === null) {
-      $.getJSON(ddb.Config.ddbBackendUrl, function(data) {
-        ddb.institutionsBySector = data;
+      $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
+
+        ddb.institutionsBySector = response.data;
 
         // call the callbacks, once data is loaded.
         onHashChange();

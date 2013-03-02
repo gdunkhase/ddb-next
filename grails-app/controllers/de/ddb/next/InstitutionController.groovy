@@ -6,27 +6,29 @@ class InstitutionController {
     def institutionService
 
     def show() {
-        log.debug 'show all institutions'
-        // TODO sort umlaut
-        def aMap = institutionService.findAll()
+        def allInstitution = institutionService.findAll()
+        def institutionByFirstLetter = allInstitution.data
+
         // TODO: make this more idiomatic Groovy
         def all = []
-        aMap.each { all.addAll(it.value) }
+        institutionByFirstLetter?.each { all.addAll(it.value) }
+
         // no institutions
-        aMap.each { k,v ->
-            if(aMap[k]?.size() == 0) {
-                aMap[k] = true
+        institutionByFirstLetter.each { k,v ->
+            if(institutionByFirstLetter[k]?.size() == 0) {
+                institutionByFirstLetter[k] = true
             } else {
-                aMap[k] = false
+                institutionByFirstLetter[k] = false
             }
         }
+
         // TODO: move to service
         def index = []
-        aMap.each {
+        institutionByFirstLetter.each {
             index.add(it)
         }
 
-        render (view: 'institutionList',  model: [index: index, all: all])
+        render (view: 'institutionList',  model: [index: index, all: all, total: allInstitution?.total])
     }
 
     def getJson() {
