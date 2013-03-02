@@ -34,3 +34,7 @@ div.sector-facet>label:hover {
   text-decoration: underline;
   color: #a5003b;
 }
+
+.selected {
+  color: #a5003b
+}

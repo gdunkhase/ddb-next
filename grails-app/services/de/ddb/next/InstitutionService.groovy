@@ -5,6 +5,8 @@ import groovyx.net.http.URIBuilder
 
 class InstitutionService {
 
+    private static final def INDEX='A'..'Z'
+
     def transactional = false
 
     def grailsApplication
@@ -15,69 +17,80 @@ class InstitutionService {
         def http = new HTTPBuilder(cortexHostPort)
         ApiConsumer.setProxy(http, cortexHostPort)
 
-        def retVal
+        def totalInstitution = 0
+        def allInstitutions = [data: [:], total: totalInstitution]
 
         http.get(path: 'institutions') { resp, institutionList->
-            def aMap= buildIndex()
+            def institutionByFirstLetter = buildIndex()
 
             institutionList.each { it ->
-                def firstChar = it?.name[0]?.toUpperCase()
-                it.firstChar = firstChar
-                def az='A'..'Z'
-
+                totalInstitution++
+                def firstLetter = it?.name[0]?.toUpperCase()
+                it.firstChar = firstLetter
                 it.sectorLabelKey = 'ddbnext.' + it.sector
 
-                if (az.contains(firstChar)) {
-                    if(aMap.get(firstChar)?.size() == 0) {
+                if (INDEX.contains(firstLetter)) {
+                    if(institutionByFirstLetter.get(firstLetter)?.size() == 0) {
                         it.isFirst = true
                     }
                 }
 
-                if(it.children?.size() > 0 ) {
-                    it.children.each { child ->
-                        child.uri = buildUri(child.id)
-                        child.sectorLabelKey = 'ddbnext.' + child.sector
-                        child.parentId = it.id
-                        child.firstChar = firstChar
-                    }
-                }
-
-                def institutionWithUri = addUri(it)
-                switch(firstChar) {
-                    case 'Ä':
-                        aMap['A'].add(institutionWithUri)
-                        break
-                    case 'Ö':
-                        aMap['O'].add(institutionWithUri)
-                        break
-                    case 'Ü':
-                        aMap['U'].add(institutionWithUri)
-                        break
-                    case 'ß':
-                        aMap['S'].add(institutionWithUri)
-                        break
-                    default:
-                        aMap[firstChar].add(institutionWithUri)
-                }
+                buildChildren(it, totalInstitution)
+                institutionByFirstLetter = putToIndex(institutionByFirstLetter, addUri(it), firstLetter)
             }
 
-            retVal = aMap
+            allInstitutions.data = institutionByFirstLetter
+            allInstitutions.total = totalInstitution
+
+            return allInstitutions
         }
 
-        return retVal
+        return allInstitutions
+    }
+
+    private putToIndex(institutionByFirstLetter, institutionWithUri, firstLetter) {
+        switch(firstLetter) {
+            case 'Ä':
+                institutionByFirstLetter['A'].add(institutionWithUri)
+                break
+            case 'Ö':
+                institutionByFirstLetter['O'].add(institutionWithUri)
+                break
+            case 'Ü':
+                institutionByFirstLetter['U'].add(institutionWithUri)
+                break
+            case 'ß':
+                institutionByFirstLetter['S'].add(institutionWithUri)
+                break
+            default:
+                institutionByFirstLetter[firstLetter].add(institutionWithUri)
+        }
+        return institutionByFirstLetter
+    }
+
+    private buildChildren(institution, counter) {
+        if(institution.children?.size() > 0 ) {
+            counter = counter + institution.children?.size()
+            institution.children.each { child ->
+                child.uri = buildUri(child.id)
+                child.sectorLabelKey = 'ddbnext.' + child.sector
+                child.parentId = institution.id
+                buildChildren(child, counter)
+            }
+        }
     }
 
     private def buildIndex() {
         def az = 'A'..'Z'
-        def aMap = [:].withDefault{
+        def institutionByFirstLetter = [:].withDefault{
             []
         }
 
         az.each {
-            aMap[it] = []
+            institutionByFirstLetter[it] = []
         }
 
-        return aMap
+        return institutionByFirstLetter
     }
 
     private def addUri(json) {
