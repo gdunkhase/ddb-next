@@ -180,6 +180,6 @@ var ddb = {
 
 $(function() {
   // if the User Agent enables JS, show the `filter by sector` checkboxes.
-  $('.filter').show();
+//  $('.filter').show();
   ddb.getInstitutionsBySector(ddb.onHashChange, ddb.onFilterBySectorChange);
 });
