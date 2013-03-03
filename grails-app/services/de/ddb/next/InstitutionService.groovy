@@ -1,8 +1,8 @@
 package de.ddb.next
 
 import groovyx.net.http.HTTPBuilder
-import groovyx.net.http.URIBuilder
 
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 class InstitutionService {
 
     private static final def INDEX='A'..'Z'
@@ -10,6 +10,8 @@ class InstitutionService {
     def transactional = false
 
     def grailsApplication
+
+    LinkGenerator grailsLinkGenerator
 
     def findAll() {
         def cortexHostPort = grailsApplication.config.ddb.backend.url
@@ -75,6 +77,7 @@ class InstitutionService {
                 child.uri = buildUri(child.id)
                 child.sectorLabelKey = 'ddbnext.' + child.sector
                 child.parentId = institution.id
+                child.firstChar = child?.name[0]?.toUpperCase()
                 buildChildren(child, counter)
             }
         }
@@ -99,11 +102,6 @@ class InstitutionService {
     }
 
     private String buildUri(id) {
-        // TODO: replace this with Grails's inner linking way
-        URIBuilder b = new URIBuilder('http://localhost:8080')
-        b.setPath("/about-us/institutions/item/${id}")
-
-        def uri = b.toURI().toString()
-        return uri
+        grailsLinkGenerator.link(url: [controller: 'institution', action: 'readByItemId', id: id ])
     }
 }

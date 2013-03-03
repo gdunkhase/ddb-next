@@ -32,6 +32,11 @@ class UrlMappings {
             action="show"
         }
 
+        "/about-us/institutions/item/$id" {
+            controller="institution"
+            action="readByItemId"
+        }
+
         "/apis/institutions" {
             controller="institution"
             action="getJson"
