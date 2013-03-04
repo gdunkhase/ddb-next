@@ -21,7 +21,7 @@ class InstitutionService {
         def totalInstitution = 0
         def allInstitutions = [data: [:], total: totalInstitution]
 
-        http.get(path: 'institutions') { resp, institutionList->
+        http.get(path: '/institutions') { resp, institutionList->
             def institutionByFirstLetter = buildIndex()
 
 
