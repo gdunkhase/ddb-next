@@ -9,6 +9,7 @@ class IndexController {
             def langDe = "de"
             def langEn = "en"
             def path
+            def staticUrl = grailsApplication.config.ddb.static.url
             def locale = RCU.getLocale(request)
             grailsApplication.config.locale = locale
 
@@ -21,7 +22,7 @@ class IndexController {
 
             def query = [ client: "DDB-NEXT" ]
             // Submit a request via GET
-            def response = ApiConsumer.getText(grailsApplication.config.ddb.static.url, path, query)
+            def response = ApiConsumer.getText(staticUrl, path, query)
 
             if (response == "Not found"){
                 redirect(controller: "error", action: "notfound")
@@ -29,7 +30,7 @@ class IndexController {
 
             def articles=retrieveArguments(response)
 
-            render(view: "index", model: [articles: articles])
+            render(view: "index", model: [articles: articles, staticUrl: staticUrl])
 
         } catch(MissingPropertyException mpe){
             log.error "index(): There was a missing property.", mpe

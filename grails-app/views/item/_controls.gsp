@@ -11,13 +11,10 @@
   <!-- buttons -->
   <div class="span6">
     <g:if test="${searchResultUri != null}">
-        <a class="back tools" href="${searchResultUri}" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
+        <a class="back-to-list" href="${searchResultUri}" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
             <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
         </a>
-    </g:if>
-    <a class="back-to-list" href="#" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />"> 
-      <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
-    </a> 
+    </g:if> 
     <a class="page-link" href="${itemUri}" 
        title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
       <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
