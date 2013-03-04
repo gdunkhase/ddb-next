@@ -24,7 +24,6 @@ class InstitutionService {
         http.get(path: 'institutions') { resp, institutionList->
             def institutionByFirstLetter = buildIndex()
 
-            log.debug "#first level: ${institutionList.size()}"
 
             institutionList.each { it ->
                 totalInstitution++
@@ -44,37 +43,71 @@ class InstitutionService {
             }
 
             allInstitutions.data = institutionByFirstLetter
-            allInstitutions.total = totalInstitution
+            allInstitutions.total = getTotal(institutionList)
 
-            log.debug "total institution: ${totalInstitution}"
+
             return allInstitutions
         }
 
         return allInstitutions
     }
+    private getTotal(rootList) {
+        def total = rootList.size()
+
+        for (root in list) {
+            if (root.children?.size() > 0) {
+                total = total + root.children.size();
+                total = total + countDescendants(root.children)
+            }
+        }
+
+        return total
+    }
+
+    def countDescendants(children) {
+        def totalDescendants = 0
+
+        for (institution in children) {
+
+            if(institution.children) {
+                log.debug 'child: ' + institution
+                log.debug institution.children.size()
+
+                totalDescendants = totalDescendants + institution.children.size()
+                totalDescendants = totalDescendants + countDescendants(institution.children)
+            }
+        }
+        return totalDescendants
+    }
 
     private putToIndex(institutionByFirstLetter, institutionWithUri, firstLetter) {
         switch(firstLetter) {
             case 'Ä':
-                institutionByFirstLetter['A'].add(institutionWithUri)
-                break
+            institutionByFirstLetter['A'].add(institutionWithUri)
+            break
             case 'Ö':
-                institutionByFirstLetter['O'].add(institutionWithUri)
-                break
+            institutionByFirstLetter['O'].add(institutionWithUri)
+            break
             case 'Ü':
-                institutionByFirstLetter['U'].add(institutionWithUri)
-                break
+            institutionByFirstLetter['U'].add(institutionWithUri)
+            break
             default:
-                institutionByFirstLetter[firstLetter].add(institutionWithUri)
+            institutionByFirstLetter[firstLetter].add(institutionWithUri)
         }
         return institutionByFirstLetter
     }
 
     private buildChildren(institution, counter) {
         if(institution.children?.size() > 0 ) {
-            counter = counter + institution.children?.size()
 
-            institution.children.each { child ->
+            /*
+             log.debug "counter before ${counter}"
+             counter = counter + institution.children?.size()
+             log.debug "counter after ${counter}"
+             */
+
+            institution.children.each {
+                child ->
                 child.uri = buildUri(child.id)
                 child.sectorLabelKey = 'ddbnext.' + child.sector
                 child.parentId = institution.id
