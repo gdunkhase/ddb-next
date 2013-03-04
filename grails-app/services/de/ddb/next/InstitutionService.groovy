@@ -14,7 +14,6 @@ class InstitutionService {
 
     def findAll() {
         def cortexHostPort = grailsApplication.config.ddb.backend.url
-        log.debug cortexHostPort
 
         def http = new HTTPBuilder(cortexHostPort)
         ApiConsumer.setProxy(http, cortexHostPort)
