@@ -15,21 +15,27 @@ import net.sf.json.JSONArray
 public class FacetsService {
     //Backend URL
     String url
-	
+    
+    
 	/**
 	 * Get values for a facet.
 	 * 
-	 * @param facetName
+	 * @param facetName The name of the facet
+	 * @param allFacetFilters List of all available facet filter mappings
 	 * @return List of Facet-Values
 	 */
-    public List getFacet(facetName) throws IOException {
+    public List getFacet(facetName, allFacetFilters) throws IOException {
+
+        def filtersForFacetName = getFiltersForFacetName(facetName, allFacetFilters)        
         def res = []
         int i = 0
         try {
             def json = ApiConsumer.getTextAsJson(url ,'/search/facets/' + facetName, null)
             json.facetValues.each{
-                res[i] = it.value
-                i++
+                if(filtersForFacetName.isEmpty() || !filtersForFacetName.contains(it.value)){
+                    res[i] = it.value
+                    i++
+                }
             }
         }
         catch (ConnectException e) {
@@ -68,5 +74,23 @@ public class FacetsService {
         return res
 	}
 
+    
+    /**
+     * Takes a list of configured facet filter mapping and returns only the filter values for the matching facet name.
+     * E.g.: facetName=facet1, allFacetsFilters=[{facetName:facet1, filter:filter1}, {facetName:facet2, filter:filter2}]
+     * The returned list would be [filter1]
+     * @param facetName The name of the facet 
+     * @param allFacetFilters List of mappings containing all available facet filter mappings
+     * @return A list of filters for the matching facet name
+     */
+    private List getFiltersForFacetName(facetName, allFacetFilters){
+        def filtersForFacetName = []
+        for(filter in allFacetFilters) {
+            if(filter.facetName != null && filter.facetName.equals(facetName)){
+                filtersForFacetName.add(filter.filter)
+            }
+        }
+        return filtersForFacetName;
+    }
 	
 }

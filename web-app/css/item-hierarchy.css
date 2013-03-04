@@ -13,24 +13,22 @@
   -webkit-border-radius: 3px
 }
 
-.item-hierarchy-result div.leaf-indicator {
-  background: url("../images/bg/hierarchy_leaf.png") no-repeat;
-  float: left;
-  height: 19px;
-  margin: 2px 5px 2px 8px;
-  width: 16px;
-}
-
 .item-hierarchy-result span.item-hierarchy-label {
   display: block;
-  font-weight: bolder;
   margin-left: 30px;
 }
 
+/* highlight the current path */
+.item-hierarchy-result span.item-hierarchy-label.current-path {
+  font-weight: bolder;
+}
+
 .item-hierarchy-result span.sibling-count {
+  left: 19px;
   position: absolute;
   text-align: center;
   top: 81px;
+  width: 93px;
 }
 
 .item-hierarchy-result ul {
@@ -48,6 +46,27 @@
   position: relative;
 }
 
+/* highlight the current node */
+.item-hierarchy-result ul>li>a.current-node {
+  color: black;
+  font-weight: bolder;
+}
+
+/* draw a text page symbol in front of the label */
+.item-hierarchy-result ul>li>div.leaf-indicator {
+  background: url("../images/bg/hierarchy_leaf.png") no-repeat;
+  float: left;
+  height: 19px;
+  margin: 2px 5px 2px 8px;
+  width: 16px;
+}
+
+/* highlight the current node */
+.item-hierarchy-result ul>li>div.leaf-indicator.current-node {
+  background: transparent url("../images/bg/hierarchy_active_leaf.png")
+    no-repeat;
+}
+
 .item-hierarchy-result ul>li>span.branch-type {
   float: left;
 }
@@ -56,6 +75,7 @@
   display: block;
   height: 20px;
   width: 20px;
+  display: block;
 }
 
 .item-hierarchy-result ul>li.leaf {
@@ -64,21 +84,39 @@
     no-repeat 7px 0px;
 }
 
+/* highlight the current node */
+.item-hierarchy-result ul>li.leaf>div.leaf-indicator.current-node {
+  background: transparent url("../images/bg/hierarchy_active_leaf.png")
+    no-repeat;
+}
+
+/* draw a circle in front of the leaf indicator */
 .item-hierarchy-result ul>li.leaf>span.branch-type>i {
   background: url("../images/bg/advanced_search_empty_node.png") no-repeat;
 }
 
+/* last leaf node in the tree */
 .item-hierarchy-result ul>li.leaf.last {
   background:
     url("../images/bg/advanced_search_solid_joint_last_item.png")
     no-repeat 7px 0px;
 }
 
-.item-hierarchy-result ul>li.node>span.branch-type i {
+/* draw a plus sign */
+.item-hierarchy-result ul>li.node>span.branch-type i.collapsed {
   background: #a5003b
     url("../images/bg/advanced_search_parent_node_default.png");
+  cursor: pointer;
 }
 
+/* draw a minus sign */
+.item-hierarchy-result ul>li.node>span.branch-type i.expanded {
+  background: #a5003b
+    url("../images/bg/advanced_search_parent_node_collapse.png");
+  cursor: pointer;
+}
+
+/* draw a dotted line */
 .item-hierarchy-result ul>li.node.more-hidden {
   background: url("../images/bg/advanced_search_dotted_joint.png")
     no-repeat 7px 0px;
@@ -91,6 +129,7 @@
 
 .item-hierarchy-result ul>li.root>span.branch-type i {
   background: #999 none;
+  cursor: pointer;
 }
 
 .off {

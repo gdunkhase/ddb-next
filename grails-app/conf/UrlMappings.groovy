@@ -10,13 +10,25 @@ class UrlMappings {
             action=results
         }
 
+        "/facets/$q?" {
+            controller="facets"
+            action=facetsList
+        }
+
+		"/content/$dir/$id?" {
+			controller="content"
+			action="staticcontent"
+		}
+		
+
         "/advancedsearch" {
             controller="advancedsearch"
             action=[GET: "fillValues", POST: "executeSearch"]
         }
+
         "/" {
-            controller="index"
-            action=index
+			controller="index"
+			action=index
         }
         "/item/$id" {
             controller="item"

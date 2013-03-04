@@ -1,6 +1,6 @@
 <div class="page-info-nav">
   <div class="page-info">
-    <span id="results-overall-index">${navData.resultsOverallIndex}</span>
+    <span class="results-overall-index">${navData.resultsOverallIndex}</span>
     <span><g:message code="ddbnext.Of" /></span>
     <span><b><span id="results-total">${numberOfResultsFormatted}</span></b></span>
     <span><g:message code="ddbnext.Results_lowercase" /></span>
