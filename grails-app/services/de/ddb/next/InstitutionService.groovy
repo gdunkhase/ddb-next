@@ -54,7 +54,7 @@ class InstitutionService {
     private getTotal(rootList) {
         def total = rootList.size()
 
-        for (root in list) {
+        for (root in rootList) {
             if (root.children?.size() > 0) {
                 total = total + root.children.size();
                 total = total + countDescendants(root.children)
