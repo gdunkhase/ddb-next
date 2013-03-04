@@ -1,6 +1,7 @@
 package de.ddb.next
 
 import groovyx.net.http.HTTPBuilder
+
 class InstitutionService {
 
     private static final def INDEX='A'..'Z'
@@ -51,6 +52,7 @@ class InstitutionService {
 
         return allInstitutions
     }
+
     private getTotal(rootList) {
         def total = rootList.size()
 
@@ -64,15 +66,11 @@ class InstitutionService {
         return total
     }
 
-    def countDescendants(children) {
+    private countDescendants(children) {
         def totalDescendants = 0
 
         for (institution in children) {
-
             if(institution.children) {
-                log.debug 'child: ' + institution
-                log.debug institution.children.size()
-
                 totalDescendants = totalDescendants + institution.children.size()
                 totalDescendants = totalDescendants + countDescendants(institution.children)
             }
@@ -83,31 +81,26 @@ class InstitutionService {
     private putToIndex(institutionByFirstLetter, institutionWithUri, firstLetter) {
         switch(firstLetter) {
             case 'Ä':
-            institutionByFirstLetter['A'].add(institutionWithUri)
-            break
+                institutionByFirstLetter['A'].add(institutionWithUri)
+                break
+
             case 'Ö':
-            institutionByFirstLetter['O'].add(institutionWithUri)
+                institutionByFirstLetter['O'].add(institutionWithUri)
             break
+
             case 'Ü':
-            institutionByFirstLetter['U'].add(institutionWithUri)
-            break
+                institutionByFirstLetter['U'].add(institutionWithUri)
+                break
+
             default:
-            institutionByFirstLetter[firstLetter].add(institutionWithUri)
+                institutionByFirstLetter[firstLetter].add(institutionWithUri)
         }
         return institutionByFirstLetter
     }
 
     private buildChildren(institution, counter) {
         if(institution.children?.size() > 0 ) {
-
-            /*
-             log.debug "counter before ${counter}"
-             counter = counter + institution.children?.size()
-             log.debug "counter after ${counter}"
-             */
-
-            institution.children.each {
-                child ->
+            institution.children.each { child ->
                 child.uri = buildUri(child.id)
                 child.sectorLabelKey = 'ddbnext.' + child.sector
                 child.parentId = institution.id

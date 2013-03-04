@@ -81,12 +81,7 @@ var ddb = {
   },
 
   applyFilter: function() {
-    //var institutionList = ddb.getInstitutionAsList();
-
-    var institutionList = _.chain(ddb.institutionsBySector)
-      .values()
-      .flatten()
-      .value();
+    var institutionList = ddb.getInstitutionAsList();
     var sectors = ddb.getSelectedSectors();
     var firstLetter = ddb.getFirstLetter();
     ddb.filter(institutionList, sectors, firstLetter);
