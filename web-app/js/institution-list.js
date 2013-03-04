@@ -55,7 +55,6 @@ var ddb = {
         onPageLoad();
         onFilterSelect();
         window.onhashchange = ddb.onHashChange;
-        // TODO: handle page init, get hash
       });
       // TODO: handle failure.
     }
@@ -63,62 +62,41 @@ var ddb = {
 
   onPageLoad: function() {
     var hash = window.location.hash.substring(1);
-    var institutionList = _.chain(ddb.institutionsBySector)
-      .values()
-      .flatten()
-      .value();
-
     if (hash === 'All' || hash === 'ALL' || hash === 'list') {
-      // TODO: On page load, this case is _never_ true.
-      ddb.firstLetterFilter = '';
+      return;
     } else {
-      var sectors = ddb.getSelectedSectors();
-      ddb.filter(institutionList, sectors, hash);
+      ddb.applyFilter();
     }
   },
 
   onFilterSelect: function() {
-    var institutionList = _.chain(ddb.institutionsBySector)
-      .values()
-      .flatten()
-      .value();
-    var firstLetter;
     $('input:checkbox').click(function() {
-      var hash = window.location.hash.substring(1);
-      if (hash === 'All' || hash === 'ALL' || hash === 'list') {
-        // TODO: this is slow.
-        firstLetter = '';
-        var sectors = ddb.getSelectedSectors();
-        ddb.filter(institutionList, sectors, firstLetter);
-      } else {
-        firstLetter = hash;
-        var sectors = ddb.getSelectedSectors();
-        ddb.filter(institutionList, sectors, firstLetter);
-      }
+      ddb.applyFilter();
     });
   },
 
   /* Function Callback for the URI's hash change event. */
   onHashChange: function() {
-    var hash = window.location.hash.substring(1);
+    ddb.applyFilter();
+  },
 
+  applyFilter: function() {
     var institutionList = _.chain(ddb.institutionsBySector)
       .values()
       .flatten()
       .value();
+    var firstLetter = ddb.getFirstLetter();
     var sectors = ddb.getSelectedSectors();
-    var firstLetter;
-
-    if (hash === 'All' || hash === 'ALL' || hash === 'list') {
-      // TODO: this is slow.
-      firstLetter = '';
-    } else {
-      // TODO: do we need to get only the first letter from the hash?
-      // The hash can be for example: `#Axsss`, `#avvv`
-      firstLetter = hash;
-    }
-
     ddb.filter(institutionList, sectors, firstLetter);
+  },
+
+  getFirstLetter: function() {
+    var hash = window.location.hash.substring(1);
+    if (hash === 'All' || hash === 'ALL' || hash === 'list') {
+      return '';
+    } else {
+      return hash;
+    }
   },
 
   getSelectedSectors: function() {
@@ -136,10 +114,6 @@ var ddb = {
     ddb.all.hide();
     ddb.all.removeClass('highlight');
 
-    /*
-    When first letter is a space, i.e. firstLetter = ' ' it means `All` or `list`
-    is selected. In other words, no filter by first letter should apply.
-    */
     var parentList = [];
 
     if (sectors.length > 0 && firstLetter === '') {
@@ -202,20 +176,17 @@ var ddb = {
       selected _and_ one of the first letter is selected.
       e.g. sector = [], index = 'C'
       */
-      // TODO: show all root institution starts with first letter == index, and their children.
       ddb.showByFirstLetter(firstLetter);
     } else {
       // the last case: sectors.length === 0 && firstLetter !== ' '.
       // when no sector is selected _and_ no first letter filter.
       // e.g. sector = [], index = All
 
-      // TODO: show all, no highlight <== initial state <=> reset()
-      // TODO: check if any still highlighted.
+      // FIXME: this is slow
       ddb.all.show();
     }
   },
 
-  // TODO: it should show their descendants.
   showByFirstLetter: function(firstLetter) {
     // get all institution start with the letter `firstLetter`
     var idList = _.pluck(ddb.institutionsBySector[firstLetter], 'id');
