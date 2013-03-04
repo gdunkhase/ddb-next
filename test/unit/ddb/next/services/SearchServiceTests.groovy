@@ -12,6 +12,7 @@ import de.ddb.next.SearchService;
 @TestFor(SearchService)
 class SearchServiceTests {
 
+
     void testGetFacets() {
         println "SearchServiceTests.testGetFacets(): todo"
         assert true
