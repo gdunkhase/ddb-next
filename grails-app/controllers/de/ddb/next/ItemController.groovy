@@ -46,10 +46,11 @@ class ItemController {
             def binaryList = itemService.findBinariesById(id)
             def binariesCounter = itemService.binariesCounter(binaryList)
 
-            flash.all = [binaryList.size]
-            flash.images = [binariesCounter.images]
-            flash.audios = [binariesCounter.audios]
-            flash.videos = [binariesCounter.videos]
+            def flashInformation = [:]
+            flashInformation.all = [binaryList.size]
+            flashInformation.images = [binariesCounter.images]
+            flashInformation.audios = [binariesCounter.audios]
+            flashInformation.videos = [binariesCounter.videos]
 
             if (item.pageLabel?.isEmpty()) {
                 item.pageLabel= itemService.getItemTitle(id)
@@ -95,7 +96,12 @@ class ItemController {
                     'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
                     binaryList: binaryList, pageLabel: item.pageLabel,
                     itemDetailGetParams: SearchService.getItemDetailGetParameters(params),
-                    hitNumber: params["hitNumber"], results: resultsItems, searchResultUri: searchResultUri])
+                    hitNumber: params["hitNumber"], results: resultsItems, searchResultUri: searchResultUri, 'flashInformation': flashInformation])
+
+                //render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
+                //    'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
+                //    binaryList: binaryList, pageLabel: item.pageLabel, 'flashInformation': flashInformation])
+
             }
 
         } catch(ItemNotFoundException infe){
