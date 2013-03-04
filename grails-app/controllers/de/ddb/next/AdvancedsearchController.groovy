@@ -87,10 +87,11 @@ class AdvancedsearchController {
     private Map getFacetValues(facetSearchfields) {
         def facetValuesMap = [:]
         def url = grailsApplication.config.ddb.backend.url
+        def allFacetFilters = grailsApplication.config.ddb.backend.facets.filter
         def facetsRequester = new FacetsService(url:url)
         for ( facetSearchfield in facetSearchfields ) {
             if (facetSearchfield.searchType.equals(enumSearchType)) {
-                def facetValues = facetsRequester.getFacet(facetSearchfield.name + facetNameSuffix)
+                def facetValues = facetsRequester.getFacet(facetSearchfield.name + facetNameSuffix, allFacetFilters)
                 def facetDisplayValuesMap = new TreeMap()
                 for (facetValue in facetValues) {
                     //translate because of sorting

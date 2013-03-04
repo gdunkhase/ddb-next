@@ -22,6 +22,20 @@ class ItemController {
 
     def findById() {
         try {
+            //
+            //        String url = grailsApplication.config.ddb.backend.url
+            //        List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+            //
+            //        for(facet in facetSearchfields){
+            //            log.info "########### " + facet.name + " / " + facet.searchType + " / " + facet.sortType
+            //
+            //            List facetsOfCertainType = new FacetsService(url:url).getFacet(facet.name);
+            //            for(facetOfType in facetsOfCertainType){
+            //                log.info "########################## " + facetOfType
+            //            }
+            //        }
+
+
             def id = params.id
             def item = itemService.findItemById(id)
 
