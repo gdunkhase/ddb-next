@@ -31,7 +31,7 @@ class ContentController {
 
 	}
 
-	private String getFirstLvl(){
+	private def getFirstLvl(){
 		String firstLvl = cleanHtml(params.dir, 'none')
 		return firstLvl
 	}
@@ -43,7 +43,7 @@ class ContentController {
 		return cleanHtml(params.id, 'none')
 	}
 
-	private String getShortLocale() {
+	private def getShortLocale() {
 		def locale = RCU.getLocale(request)
 		if(locale.toString().substring(0, 2)=="de") {
 			return "de"
@@ -51,7 +51,7 @@ class ContentController {
 		return "en"		
 	}
 
-	def getStaticUrl(){
+	private def getStaticUrl(){
 		def url = grailsApplication.config.ddb.static.url
 		assert url instanceof String, "This is not a string"
 		return url;
@@ -72,7 +72,7 @@ class ContentController {
         return bodyMatch[0][1]
     }
 
-    private fetchAuthor(content) {
+    private def fetchAuthor(content) {
         def authorMatch = content =~ /(?s)<meta name="author" content="(.*?)" \/>/
         if (authorMatch)
             return authorMatch[0][1]
@@ -84,13 +84,13 @@ class ContentController {
             return titleMatch[0][1]
     }
 
-    private fetchKeywords(content) {
+    private def fetchKeywords(content) {
         def keywordMatch = content =~ /(?s)<meta name="keywords" content="(.*?)" \/>/
         if (keywordMatch)
             return keywordMatch[0][1]
     }
 
-    private fetchRobots(content) {
+    private def fetchRobots(content) {
         def robotMatch = content =~ /(?s)<meta name="robots" content="(.*?)" \/>/
         if (robotMatch)
             return robotMatch[0][1]
