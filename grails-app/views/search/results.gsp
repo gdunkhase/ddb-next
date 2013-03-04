@@ -25,7 +25,7 @@ window.onload=function(){
   });
 
   function addParamToCurrentUrl(arrayParamVal, urlParameters){
-	var queryParameters = {}, queryString = (urlParameters==null)?location.search.substring(1):urlParameters,
+    var queryParameters = {}, queryString = (urlParameters==null)?location.search.substring(1):urlParameters,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
         queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
@@ -34,11 +34,11 @@ window.onload=function(){
       queryParameters[value[0]] = value[1];
     });
     var tmp = jQuery.param(queryParameters, true);
-    return window.location.pathname+'?'+decodeURIComponent(tmp);
+    return window.location.pathname+'?'+tmp;
   }
   
   $('.page-nav a').click(function(){
-	fetchResultsList(this.href);
+    fetchResultsList(this.href);
     return false;
   });
   $('#view-list').click(function(){

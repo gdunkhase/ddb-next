@@ -59,7 +59,6 @@ class ApiConsumer {
                 uri.path = path
                 uri.query = query
                 log.debug "Current request uri: "+uri
-                println "Current request uri: "+uri
                 response.success = { resp, json ->
                     // FIXME log don't print
                     /*

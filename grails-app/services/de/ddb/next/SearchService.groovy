@@ -196,9 +196,9 @@ class SearchService {
      * 
      * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results} 
      * 
-     * @param facets
-     * @param fctName
-     * @param numberOfElements
+     * @param facets list of facets fetched from the backend
+     * @param fctName name of the facet field required
+     * @param numberOfElements number of elements to return
      * @return List of Map
      */
     def getSelectedFacetValues(List facets, String fctName, int numberOfElements){
