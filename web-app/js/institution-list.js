@@ -199,20 +199,23 @@ var ddb = {
 
   onFilterSelect: function() {
     console.log('<pre>' + ' Initialize On Filter Select Listener' + '</pre>');
-    var hash = window.location.hash.substring(1);
 
     var institutionList = _.chain(ddb.institutionsBySector)
       .values()
       .flatten()
       .value();
+    var firstLetter;
     $('input:checkbox').click(function() {
+      var hash = window.location.hash.substring(1);
       if (hash === 'All' || hash === 'ALL' || hash === 'list') {
         // TODO: this is slow.
-        ddb.firstLetterFilter = '';
-      } else {
-        ddb.firstLetterFilter = hash;
+        firstLetter = '';
         var sectors = ddb.getSelectedSectors();
-        ddb.filter(institutionList, sectors, ddb.firstLetterFilter);
+        ddb.filter(institutionList, sectors, firstLetter);
+      } else {
+        firstLetter = hash;
+        var sectors = ddb.getSelectedSectors();
+        ddb.filter(institutionList, sectors, firstLetter);
       }
     });
   },
@@ -316,20 +319,11 @@ var ddb = {
       })
 
       var visible = _.union(parentList, filteredBySector);
-      var hasNoMember = ddb.findNoMember(filteredBySector);
 
       // view manipulation
       ddb.findElements(filteredBySector).addClass('highlight');
       ddb.findElements(visible).show();
 
-      $('.pagination li').removeClass('disabled');
-      // update index view, i.e., A..Z
-      _.each(hasNoMember, function(letter) {
-        $('.pagination a[href="' + '#' + letter + '"]').parent().addClass('disabled');
-        $('.pagination a[href="' + '#' + letter + '"]').click(function(e) {
-          e.preventDefault();
-        });
-      });
     } else if (sectors.length === 0 && firstLetter !== '') {
       /*
        When no sector
