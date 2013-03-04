@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}" type="text/css">
     <link rel="search" title="Deutsche Digitale Bibliothek" href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx" type="application/opensearchdescription+xml" />
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'institutionList.css')}">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}" type="text/css">
     <!--[if lt IE 9]>
       <script src="Scripts/html5shim.googlecode.html5.js"> </script>
     <![endif]-->
@@ -60,6 +62,7 @@
   <script type="text/javascript" src="${resource(dir: 'jwplayer', file: 'jwplayer.js')}"></script>
   <script>jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="</script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'institution-list.js')}"/></script>
   <script>
 			var global;
 			var resources;
@@ -74,7 +77,7 @@
 				});
 
 				var languageCookie = $.cookies.get('language');
-				if (languageCookie
+			if (languageCookie
 						&& languageCookie != Ddb.Data.TwoLetterLanguage) {
 					$.cookies.set('language', Ddb.Data.TwoLetterLanguage); // restore to valid cookie
 				}

@@ -1,0 +1,44 @@
+.institution {
+  list-style: none;
+}
+
+.child-institution {
+  list-style: none;
+}
+
+.icon-institution {
+  background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
+}
+
+.icon-child-institution {
+  background: url(../images/icons/list_arrows.png) no-repeat 0px -21px;
+}
+
+.filter {
+  display: none;
+}
+
+.highlight {
+  font-weight: bold;
+}
+
+.sector-facet {
+  margin: 2px 0;
+  line-height: 28px;
+  position: relative;
+  border: solid 1px #efebe8;
+  background-color: #efebe8;
+}
+
+div.sector-facet>label:hover {
+  text-decoration: underline;
+  color: #a5003b;
+}
+
+.selected {
+  color: #a5003b
+}
+
+#no-match-message {
+  display: none;
+}

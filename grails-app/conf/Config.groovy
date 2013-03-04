@@ -90,12 +90,11 @@ ddb {
         facets {
             filter = [
                 [facetName:'language_fct', filter:'term:unknown' ],
-                [facetName:'language_fct', filter:'term:termunknown']     
+                [facetName:'language_fct', filter:'term:termunknown']
             ]
         }
     }
 }
-
 
 environments {
     development {

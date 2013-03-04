@@ -1,13 +1,15 @@
 class UrlMappings {
 
     static mappings = {
-        "/$controller/$action?/$id?"{ constraints {
-                // apply constraints here
-            } }
+
+
+        //@formatter:off
+        "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
+        //@formatter:on
 
         "/search/$q?" {
             controller="search"
-            action=results
+            action="results"
         }
 
         "/facets/$q?" {
@@ -15,11 +17,11 @@ class UrlMappings {
             action=facetsList
         }
 
-		"/content/$dir/$id?" {
-			controller="content"
-			action="staticcontent"
-		}
-		
+        "/content/$dir/$id?" {
+            controller="content"
+            action="staticcontent"
+        }
+
 
         "/advancedsearch" {
             controller="advancedsearch"
@@ -27,17 +29,33 @@ class UrlMappings {
         }
 
         "/" {
-			controller="index"
-			action=index
+            controller="index"
+            action="index"
         }
+
         "/item/$id" {
             controller="item"
-            action=findById
+            action="findById"
+        }
+
+        "/about-us/institutions" {
+            controller="institution"
+            action="show"
+        }
+
+        "/about-us/institutions/item/$id" {
+            controller="institution"
+            action="readByItemId"
+        }
+
+        "/apis/institutions" {
+            controller="institution"
+            action="getJson"
         }
 
         "500"(controller: "error", action: "serverError")
 
         "404"(controller: "error", action: "notFound")
-        
+
     }
 }
