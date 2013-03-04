@@ -471,13 +471,11 @@ input[type="checkbox"],input[type="radio"] {
   word-wrap: normal;
   width: 340px;
 }
-
 .hovercard-info-item ul span {
   display: block;
   float: left;
   line-height: 25px;
 }
-
 /*Facets flyout*/
 .flyout-left-container {
   width: 100%;
@@ -543,27 +541,3 @@ input[type="checkbox"],input[type="radio"] {
   width:500px;
 }
 /*Flyout end*/
-
-.bb {
-  border-bottom: solid 1px #efebe8;
-}
-
-.bt {
-  border-top: solid 1px #efebe8;
-}
-
-.bl {
-  border-left: solid 1px #efebe8;
-}
-
-.br {
-  border-right: solid 1px #efebe8;
-}
-
-a {
-   outline: 0;
-}
-
-.off{
-  display:none !important;
-}

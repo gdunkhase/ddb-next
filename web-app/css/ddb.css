@@ -92,11 +92,11 @@ header .toolbar .language-wrapper:hover .selector,.header .toolbar .language-wra
   text-align: left;
   width: auto;
 }
-header .toolbar >a,.header .toolbar >a {
+header .language-wrapper >a,.header .language-wrapper >a {
   background-position: right -42px;
   padding-right: 20px;
 }
-header .toolbar >a,.header .toolbar >a{
+header .language-wrapper >a,.header .language-wrapper >a{
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 40px -43px;
 }
 header nav,div.header nav,header div.nav,div.header div.nav {
@@ -159,6 +159,11 @@ header nav,div.header nav,header div.nav,div.header div.nav {
 #form-search-header button:hover::before {
  margin: -200px 0px 0px 0px;
 }
+#form-search-header .tooltip{
+  width: 340px;
+  top: 100px;
+  right: 0px;
+}
 .language-widget {
   z-index:1;
 }
@@ -219,9 +224,6 @@ header .language-widget,.header .language-widget {
 header .language-widget form, .header .language-widget form {
   display:none;
 }
-#form-search-header .tooltip {
-  display: none;
-}
 /* header - end */
 
 /* index */
@@ -249,7 +251,6 @@ header .language-widget form, .header .language-widget form {
   box-shadow: none;
   overflow: hidden;
   background: none;
-  margin-left: 4px;
   vertical-align: top;
 }
 .search-widget form button::before{ 
@@ -260,7 +261,7 @@ header .language-widget form, .header .language-widget form {
 .search-widget form button:hover::before {
   margin: -50px 0px 0px 0px;
 }
-.search-widget .contextual-help {
+.search-widget .contextual-help, .advanced-search .contextual-help {
   margin-left: 4px;
   margin-top: 5px;
   display: inline-block;
@@ -268,7 +269,8 @@ header .language-widget form, .header .language-widget form {
   height: 30px;
   background: url("../images/icons/tooltips.png") no-repeat 0px 0px;
 }
-#form-search .contextual-help:hover,#form-search .contextual-help:active,#form-search .contextual-help:focus {
+#form-search .contextual-help:hover,#form-search .contextual-help:active,#form-search .contextual-help:focus,
+.advanced-search .contextual-help:hover,.advanced-search .contextual-help:active,.advanced-search .contextual-help:focus {
   background-position:0px -30px;
 }
 #form-search {
@@ -276,14 +278,29 @@ header .language-widget form, .header .language-widget form {
   position: relative;
   padding-bottom: 15px;
   top: 0px;
-  width: 570px;
+  width: 580px;
   margin: 0 auto;
 }
 #form-search input {
   font-size: 1.25em;
   width: 485px;
-  height: 36px;
+  height: 37px;
   line-height: 40px;
+  margin-left: 2px;
+  float: left;
+  
+}
+#form-search .link-adv-search {
+  margin-top: 10px;
+  margin-left: 2px;
+}
+#form-search .tooltip {
+  max-width: 536px;
+  margin: 12px 0px;
+  color: #3e3a37;
+  font-size: 0.938em;
+  top: 40px;
+  margin-left: 2px;
 }
 .teaser .span3 {
   display:block;
@@ -324,18 +341,6 @@ noscript .caption {
 .teaser .article img {
    width:204px;
    height:180px; 
-}
-#form-search .tooltip {
-  left: 0;
-  max-width: 530px;
-  margin: 12px 0px;
-  background-position: right -24px;
-  display: none;
-  color: #3e3a37;
-  font-size: 0.938em;
-  position: absolute;
-  top: 40px;
-  text-align: left;
 }
 .carousel {
   padding: 0px 0 0px 1px;
@@ -430,6 +435,12 @@ h1, h2, h3, h4 {
   color: rgb(62, 58, 55);
   line-height: 1.5em;
 }
+h1, h1 a {
+  font-family:KarbidWeb,Calibri,Arial,sans-serif;
+  font-size:1.75em;
+  font-weight:normal;
+  color:#3e3a37;
+}
 h2, h2 a {
   font-family: KarbidWeb,Calibri,Arial,sans-serif;
   font-weight: bold;
@@ -450,10 +461,18 @@ a:hover,a:active,a:focus {
   text-decoration:underline;
   color:#a5003b;
 }
+a {
+  outline: 0;
+}
 body {
   font-family: Calibri,Arial,sans-serif;
   color: #3e3a37;
 }
+/*
+.container {
+  min-height: 515px;
+}
+*/
 .start header,.start .header {
   margin-bottom:0px;
 }
@@ -472,11 +491,11 @@ form label {
   clear: left;
   color: #3e3a37;
   font-size: 0.938em;
-  margin: 0 0 5px 0;
 }
 form input {
   width: 280px;
-  margin: 0 0 5px 0;
+  margin: 0 0 1px 0;
+  height: 20px;
 }
 input {
   color: #3e3a37;
@@ -508,6 +527,13 @@ button, input[type="button"], input[type="submit"], .button {
   -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
+button:hover,input[type="button"]:hover,input[type="submit"]:hover {
+  background-position:top center;
+}
+button[disabled],input[type="button"][disabled],input[type="submit"][disabled] {
+  background:#999 url("../images/bg/primary_button_bg_disabled.png") repeat-x bottom center;
+  cursor:default;
+}
 button, .button {
   border: none;
   font-family: Calibri,Arial,sans-serif;
@@ -532,8 +558,14 @@ button, .button {
 }
 
 img {
-border: 0;
-margin: 15px;
+  border: 0;
+  margin: 15px;
+}
+select {
+  font-family:Calibri,Arial,sans-serif;
+  font-size:1em;
+  border:1px solid;
+  border-color:#858280 #dcdbda #dcdbda #858280;
 }
 .invisible-but-readable {
   position:absolute;
@@ -545,17 +577,8 @@ margin: 15px;
 .tooltip a {
   font-weight: bold;
 }
-.heading {
-  border-bottom:1px solid #d1cdcb;
-  padding-bottom:15px;
-}
 .heading > h1{
-	display: inline-block;
-}
-select {
-  font-family: Calibri,Arial,sans-serif;
-  font-size: 1em;
-  border: 1px solid #858280;
+  display: inline-block;
 }
 .contextual-help {
   display: block;
@@ -575,16 +598,15 @@ select {
 }
 .link-adv-search {
   font-size: 0.938em;
-  display: block;
+  display: inline-block;
+  float: left;
   text-align: left;
-  margin-top: 10px;
+  margin-left: 130px;
 }
 .tooltip {
-  font-size: 0.814em;
   color: #999;
   position: absolute;
   z-index: 4;
-  max-width: 240px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   padding: 3px 8px 3px;
@@ -593,11 +615,33 @@ select {
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  text-align: left;
 }
 .warning {
   background-color: #a5003b;
   color: #fff;
   padding: 5px 0 10px;
   text-align: center;
+}
+.fl {
+  float:left !important;
+}
+.fr {
+  float:right !important;
+}
+.bb {
+  border-bottom: solid 1px #efebe8;
+}
+.bt {
+  border-top: solid 1px #efebe8;
+}
+.bl {
+  border-left: solid 1px #efebe8;
+}
+.br {
+  border-right: solid 1px #efebe8;
+}
+.off {
+  display: none !important;
 }
 /* genaral rules - end */

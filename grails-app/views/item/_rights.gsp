@@ -1,6 +1,6 @@
 <div class="row">
-  <div id="foo" class="rights">
-    <div class="name span3">Rights:</div>
+  <div class="rights">
+    <div class="span2"><strong><g:message code="ddbnext.stat_007" />: </strong></div>
     <div class="value span5">${item.rights}</div>
   </div>
 </div>
