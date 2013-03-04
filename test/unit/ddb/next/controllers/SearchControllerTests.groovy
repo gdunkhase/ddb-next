@@ -1,4 +1,4 @@
-package ddb.next
+package ddb.next.controllers
 
 
 
@@ -13,6 +13,8 @@ import de.ddb.next.SearchController;
 @TestFor(SearchController)
 class SearchControllerTests {
 
-    void testSomething() {
+    void testResults() {
+        println "SearchControllerTests.testResults(): todo"
+        assert true
     }
 }

@@ -108,10 +108,10 @@ log4j = {
     // The appenders define the output method of the loggings
     appenders {
         console name: "console", threshold: org.apache.log4j.Level.INFO, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "ddbnext-info", threshold: org.apache.log4j.Level.INFO, file: ddb.logging.folder+"/ddbnext-info.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "ddbnext-warn", threshold: org.apache.log4j.Level.WARN, file: ddb.logging.folder+"/ddbnext-warn.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "ddbnext-error", threshold: org.apache.log4j.Level.ERROR, file: ddb.logging.folder+"/ddbnext-error.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "stacktrace", threshold: org.apache.log4j.Level.ERROR, file: ddb.logging.folder+"/ddbnext-stacktrace.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-info", threshold: org.apache.log4j.Level.INFO, file: config.ddb.logging.folder+"/ddbnext-info.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-warn", threshold: org.apache.log4j.Level.WARN, file: config.ddb.logging.folder+"/ddbnext-warn.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-error", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-error.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "stacktrace", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-stacktrace.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
     }
 
     // The root logger defines the basic log level and to which appenders the logging is going
