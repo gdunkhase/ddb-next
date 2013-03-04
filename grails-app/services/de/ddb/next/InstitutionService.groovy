@@ -1,8 +1,6 @@
 package de.ddb.next
 
 import groovyx.net.http.HTTPBuilder
-
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 class InstitutionService {
 
     private static final def INDEX='A'..'Z'
@@ -11,10 +9,11 @@ class InstitutionService {
 
     def grailsApplication
 
-    LinkGenerator grailsLinkGenerator
+    def grailsLinkGenerator
 
     def findAll() {
         def cortexHostPort = grailsApplication.config.ddb.backend.url
+        log.debug cortexHostPort
 
         def http = new HTTPBuilder(cortexHostPort)
         ApiConsumer.setProxy(http, cortexHostPort)
@@ -25,9 +24,12 @@ class InstitutionService {
         http.get(path: 'institutions') { resp, institutionList->
             def institutionByFirstLetter = buildIndex()
 
+            log.debug "#first level: ${institutionList.size()}"
+
             institutionList.each { it ->
                 totalInstitution++
                 def firstLetter = it?.name[0]?.toUpperCase()
+
                 it.firstChar = firstLetter
                 it.sectorLabelKey = 'ddbnext.' + it.sector
 
@@ -44,6 +46,7 @@ class InstitutionService {
             allInstitutions.data = institutionByFirstLetter
             allInstitutions.total = totalInstitution
 
+            log.debug "total institution: ${totalInstitution}"
             return allInstitutions
         }
 
@@ -61,9 +64,6 @@ class InstitutionService {
             case 'Ü':
                 institutionByFirstLetter['U'].add(institutionWithUri)
                 break
-            case 'ß':
-                institutionByFirstLetter['S'].add(institutionWithUri)
-                break
             default:
                 institutionByFirstLetter[firstLetter].add(institutionWithUri)
         }
@@ -73,6 +73,7 @@ class InstitutionService {
     private buildChildren(institution, counter) {
         if(institution.children?.size() > 0 ) {
             counter = counter + institution.children?.size()
+
             institution.children.each { child ->
                 child.uri = buildUri(child.id)
                 child.sectorLabelKey = 'ddbnext.' + child.sector

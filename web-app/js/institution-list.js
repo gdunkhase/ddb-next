@@ -15,7 +15,7 @@ var ddb = {
 
   institutionsBySector: null,
 
-  // find first letter indext with no members after filtered.
+  // find index[All| A | B |...| Z | 0-9] with no members after filtered by sectors.
   findNoMember: function(visible) {
     return _.reduce(ddb.institutionsBySector, function(memo, array, key) {
       if (_.intersection(array, visible).length === 0) {
@@ -81,13 +81,28 @@ var ddb = {
   },
 
   applyFilter: function() {
+    //var institutionList = ddb.getInstitutionAsList();
+
     var institutionList = _.chain(ddb.institutionsBySector)
       .values()
       .flatten()
       .value();
-    var firstLetter = ddb.getFirstLetter();
     var sectors = ddb.getSelectedSectors();
+    var firstLetter = ddb.getFirstLetter();
     ddb.filter(institutionList, sectors, firstLetter);
+  },
+
+  getInstitutionAsList: function() {
+    if (ddb.institutionList) {
+      return ddb.institutionList;
+    }
+
+    ddb.institutionList = _.chain(ddb.institutionsBySector)
+      .values()
+      .flatten()
+      .value();
+
+    return ddb.institutionList;
   },
 
   getFirstLetter: function() {
@@ -118,8 +133,8 @@ var ddb = {
 
     if (sectors.length > 0 && firstLetter === '') {
 
-    // when at least one sector selected _and_ no first letter filter.
-    // e.g. sector = ['Media'], index = All
+      // when at least one sector selected _and_ no first letter filter.
+      // e.g. sector = ['Media'], index = All
       var filteredBySector = _.reduce(institutionList, function(memory, institution) {
         if (_.contains(sectors, institution.sector)) {
           memory.push(institution);
@@ -134,9 +149,7 @@ var ddb = {
       var visible = _.union(parentList, filteredBySector);
       var hasNoMember = ddb.findNoMember(visible);
 
-      // view manipulation
-      ddb.findElements(filteredBySector).addClass('highlight');
-      ddb.findElements(visible).show();
+      ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
 
       $('.pagination li').removeClass('disabled');
       // update index view, i.e., A..Z
@@ -162,13 +175,9 @@ var ddb = {
 
       parentList = _.filter(parentList, function(parent) {
         return parent.firstChar === firstLetter;
-      })
+      });
 
-      var visible = _.union(parentList, filteredBySector);
-
-      // view manipulation
-      ddb.findElements(filteredBySector).addClass('highlight');
-      ddb.findElements(visible).show();
+      ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
 
     } else if (sectors.length === 0 && firstLetter !== '') {
       /*
@@ -181,9 +190,25 @@ var ddb = {
       // the last case: sectors.length === 0 && firstLetter !== ' '.
       // when no sector is selected _and_ no first letter filter.
       // e.g. sector = [], index = All
+      ddb.showAll();
+    }
+  },
 
-      // FIXME: this is slow
-      ddb.all.show();
+  showAll: function() {
+    $('#no-match-message').hide();
+    // FIXME: this is slow
+    ddb.all.show();
+  },
+
+  // visible institutions are filtered institutions and their descendants.
+  showResult: function(visibleInstitution, filteredBySector) {
+    // view manipulation
+    if (visibleInstitution.length) {
+      $('#no-match-message').hide();
+      ddb.findElements(filteredBySector).addClass('highlight');
+      ddb.findElements(visibleInstitution).show();
+    } else {
+      $('#no-match-message').show();
     }
   },
 
@@ -215,7 +240,7 @@ var ddb = {
       return _.contains(restIdList, $(this).data('institution-id'));
     });
 
-    ddb.all.show();
+    ddb.showAll();
     ddb.restEl.hide();
   }
 };

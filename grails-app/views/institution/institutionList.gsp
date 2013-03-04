@@ -6,6 +6,9 @@
 <div id="institution-list" class="row">
   <div class="span9">
   <g:render template="pagination" />
+    <div id="no-match-message">
+      <g:message code="ddbnext.InstitutionPage_NoMatches" />
+    </div>
     <ol class="institution-list">
       <g:each in="${ all }">
       <li class="institution" data-first-letter="${ it?.firstChar }" data-sector="${ it?.sector }" data-institution-id="${ it?.id }">
