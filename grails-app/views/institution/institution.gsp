@@ -45,7 +45,7 @@
              <img style="text-align: right;" alt="${results.name}" class="logo" src="${results.logo}">
            </div>
        </div>
-       
+            
        <div class="locations">
        
             <div id="divOSM"></div>

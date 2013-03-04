@@ -18,17 +18,11 @@ class InstitutionController {
     def readByItemId() {
         def id = params.id
         def vApiInstitution = new ApiInstitution();
-        log.println("+++")
         log.println("read insitution by item id: ${id}")
-        //log.println("grailsApplication.config.ddb.wsItemResults.toString(): " + grailsApplication.config.ddb.backend.url.toString())
-        log.println("+++")
         def dataViewXML = vApiInstitution.getInstitutionViewByItemId(id, grailsApplication.config.ddb.backend.url.toString())
         if (dataViewXML != null) {
-            //def dataProvInfoXML = vApiInstitution.getProviderInfoByItemId(id, grailsApplication.config.ddb.backend.url.toString())
             def jsonOrgHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(id, grailsApplication.config.ddb.backend.url.toString())
             def jsonFacets = vApiInstitution.getFacetValues(dataViewXML.name.text(), grailsApplication.config.ddb.backend.url.toString())
-            
-            // response:{"field":"provider_fct","numberOfFacets":1,"facetValues":[{"value":"Landesarchiv Baden-Württemberg","count":9954}]}
             int countObjectsForProv = 0;
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {
@@ -38,67 +32,11 @@ class InstitutionController {
                     countObjectsForProv = -1;
                 }
             }
-            
             render(view: "institution", model: [itemId: id, results: dataViewXML, subOrg: jsonOrgHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
-            //render(view: "institution", model: [itemId: id, results: dataViewXML, provInfo: dataProvInfoXML, subOrg: jsonOrgHierarchy, countObjcs: countObjectsForProv])
         } 
         else {
             redirect(controller: 'error')
         }
         
     }
-    /*
-    def void findByItemId() {
-        def id = params.id
-        
-        log.println("---")
-        log.println("find insitution by item id: ${id}")
-        log.println("---")
-        
-        // http://dev-backend.deutsche-digitale-bibliothek.de:9998/access/VSHJWG7QLS7Y3NS2HKE43E5Q5NJ7OCLS/components/providerinfo
-        
-        def componentsPath = "/access/" + id + "/components/"
-        def providerInfo = componentsPath + "view" //"providerinfo"
-        def test
-        log.println(providerInfo)
-        try {
-            def http = new HTTPBuilder("http://dev-backend.deutsche-digitale-bibliothek.de:9998")
-            http.request(Method.GET, ContentType.TEXT) { req ->
-                uri.path = providerInfo
-                headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
-                headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*         /*;q=0.8'
-                response.success = { resp, reader ->
-                   assert resp.statusLine.statusCode == 200
-                   log.println("Response status: ${resp.statusLine}")
-                   log.println("Content-Type: ${resp.headers.'Content-Type'}")
-                   
-                   //String dataString = '<?xml version="1.0" encoding="UTF-8"?><root>' + reader.readLines().join() + '</root>'
-                   String dataString = reader.readLines().join()
-                   println "Text: " + dataString
-                   def dataXML = new XmlSlurper().parseText(dataString)
-                   
-                   render(view: "institution", model: [results: dataXML])
-                }
-                response.'404' = {
-                    log.println('Organization item not found!')
-                    redirect(controller: 'error')
-                }
-                response.failure = { resp ->
-                    log.println("Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}")
-                    redirect(controller: 'error')
-                }
-            }
-        } catch (groovyx.net.http.HttpResponseException ex) {
-              ex.printStackTrace()
-        } catch (java.net.ConnectException ex) {
-              ex.printStackTrace()
-        }
-
-        println "to render ..."
-        //redirect(controller: 'error')
-        //render "find insitution with the id: ${id}"
-        //render view: 'institution' , model: [orgId: id, institution: org]
-        //render view: 'institution' , model: [orgId: id]
-    }
-    */
 }
