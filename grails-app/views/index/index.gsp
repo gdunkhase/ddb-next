@@ -6,7 +6,7 @@
     <img src="${resource(dir: 'images', file: 'logo_big.png')}" class="bigLogo" alt="<g:message code="ddbnext.Logo_Description"/>" title="<g:message code="ddbnext.Logo_Title"/>" />
     <form method="get" action="/search" role="search" id="form-search">
       <label style="float: left;"> <span><g:message code="ddbnext.Search_text_field"/></span>
-        <input type="search" class="query" name="q" value="" data-bind="value: searchTerm" />
+        <input type="search" class="query" name="query" value="" data-bind="value: searchTerm" />
       </label>
       <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
       <span class="contextual-help" title="<g:message code="ddbnext.Search_Hint" 

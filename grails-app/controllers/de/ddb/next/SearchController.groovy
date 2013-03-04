@@ -4,15 +4,20 @@ package de.ddb.next
 class SearchController {
 
     static defaultAction = "results"
+    
 
     def results() {
-        try {
 
+        try {
             def urlQuery = SearchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = SearchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
 
             def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
+            
+            if(resultsItems["randomSeed"]){
+                urlQuery["randomSeed"] = resultsItems["randomSeed"]
+            }
 
             if (resultsItems != null && resultsItems["numberOfResults"] != null && (Integer)resultsItems["numberOfResults"] > 0) {
                 //check for lastHit and firstHit
@@ -39,12 +44,17 @@ class SearchController {
 
             //Calculating results pagination (previous page, next page, first page, and last page)
             def pagesOverallIndex = message(code:"ddbnext.Page")+" "+
-            ((urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()+" "+
-            message(code:"ddbnext.Of")+" "+
-            (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
+                    ((urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()+" "+
+                    message(code:"ddbnext.Of")+" "+
+                    (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
 
             def resultsPaginatorOptions = SearchService.buildPaginatorOptions(urlQuery)
             def numberOfResultsFormatted = String.format("%,d", resultsItems.numberOfResults.toInteger())
+            
+            def queryString = request.getQueryString()
+            
+            if(!queryString.contains("sort=random") && urlQuery["randomSeed"])
+                queryString = queryString+"&sort="+urlQuery["randomSeed"]
 
             if(params.reqType=="ajax"){
                 def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url,
@@ -53,7 +63,7 @@ class SearchController {
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     pagesOverallIndex: pagesOverallIndex,
-                    paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString().replaceAll("&reqType=ajax","")),
+                    paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                     numberOfResults: numberOfResultsFormatted,
                     itemDetailGetParams: SearchService.getItemDetailGetParameters(params)
                 ]
@@ -74,7 +84,7 @@ class SearchController {
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     pagesOverallIndex: pagesOverallIndex,
-                    paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+request.getQueryString()),
+                    paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     itemDetailGetParams: SearchService.getItemDetailGetParameters(params)
                 ])
