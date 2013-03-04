@@ -6,7 +6,7 @@ import org.junit.*
 import de.ddb.next.FacetsService;
 
 /**
- * See the API for {@link grails.test.mixin.web.ServiceUnitTestMixin} for usage instructions
+ * See the API for usage instructions
  */
 @TestFor(FacetsService)
 class FacetsServiceTests {

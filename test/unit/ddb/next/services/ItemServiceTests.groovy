@@ -7,7 +7,7 @@ import de.ddb.next.ItemService;
 
 
 /**
- * See the API for {@link grails.test.mixin.web.ServiceUnitTestMixin} for usage instructions
+ * See the API for usage instructions
  */
 @TestFor(ItemService)
 class ItemServiceTests {
