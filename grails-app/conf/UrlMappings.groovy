@@ -1,8 +1,6 @@
 class UrlMappings {
 
     static mappings = {
-
-
         //@formatter:off
         "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
         //@formatter:on
@@ -21,7 +19,6 @@ class UrlMappings {
             controller="content"
             action="staticcontent"
         }
-
 
         "/advancedsearch" {
             controller="advancedsearch"
