@@ -43,10 +43,8 @@ class SearchController {
                     urlQuery["rows"].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery["offset"].toInteger()+urlQuery["rows"].toInteger())
 
             //Calculating results pagination (previous page, next page, first page, and last page)
-            def pagesOverallIndex = message(code:"ddbnext.Page")+" "+
-                    ((urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()+" "+
-                    message(code:"ddbnext.Of")+" "+
-                    (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
+            def page = ((urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()
+            def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
 
             def resultsPaginatorOptions = SearchService.buildPaginatorOptions(urlQuery)
             def numberOfResultsFormatted = String.format("%,d", resultsItems.numberOfResults.toInteger())
@@ -62,7 +60,8 @@ class SearchController {
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
-                    pagesOverallIndex: pagesOverallIndex,
+                    page: page,
+                    totalPages: totalPages,
                     paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                     numberOfResults: numberOfResultsFormatted,
                     itemDetailGetParams: SearchService.getItemDetailGetParameters(params)
@@ -83,7 +82,8 @@ class SearchController {
                     facets: [mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
-                    pagesOverallIndex: pagesOverallIndex,
+                    page: page,
+                    totalPages: totalPages,
                     paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     itemDetailGetParams: SearchService.getItemDetailGetParameters(params)

@@ -12,6 +12,8 @@
 window.onload=function(){
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
+  $('.page-input').removeClass('off');
+  $('.page-nonjs').addClass("off");
   
   $('.page-filter select').change(function(){
     var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
@@ -70,6 +72,24 @@ window.onload=function(){
 	});
 	window.history.pushState({path:newUrl},'',newUrl);
   });
+  $('.page-input').keyup(function(e){
+      if(e.keyCode == 13) {
+          if (/^[0-9]+$/.test(this.value)) {
+              if (parseInt(this.value) <= 0) {
+                  this.value = 1;
+              }
+              else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
+                  this.value = $('.result-pages-count').text();
+              }
+          }
+          else {
+              this.value = 1;
+          }
+          var paramsArray = new Array(new Array('offset', (this.value - 1) * $('.page-filter').find("select").val()));
+          var newUrl = addParamToCurrentUrl(paramsArray);
+          fetchResultsList(newUrl);
+      }
+  });
   $('#thumbnail-filter').click(function(){
     var valueCheck = $(this);
     if(valueCheck.is(':checked'))
@@ -124,7 +144,10 @@ window.onload=function(){
           var JSONresponse = jQuery.parseJSON(data.responseText);
           $('.search-results').html(JSONresponse.results);
           $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
-          $('.pages-overall-index').html(JSONresponse.pagesOverallIndex);
+          $('.page-input').attr("value", JSONresponse.page);
+          $('.page-nonjs').html(JSONresponse.page);
+          $('.total-pages').html(JSONresponse.totalPages);
+          $('.result-pages-count').html(JSONresponse.totalPages);
           $('#results-total').html(JSONresponse.numberOfResults);
           if(JSONresponse.paginationURL.nextPg){
             $(".page-nav .next-page").removeClass("off");
@@ -411,10 +434,11 @@ window.onload=function(){
     </div>
     
     <div class="span9 search-results-content">
+      <div class="off result-pages-count">${totalPages}</div>
     
       <g:resultsPaginatorOptionsRender paginatorData="${resultsPaginatorOptions}"></g:resultsPaginatorOptionsRender>
       
-      <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, pagesOverallIndex: pagesOverallIndex, paginationURL: paginationURL]}"></g:pageInfoNavRender>
+      <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"></g:pageInfoNavRender>
       
       <div class="row">
         <div class="span9">
@@ -442,7 +466,7 @@ window.onload=function(){
         </div>
       </div>
       
-      <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, pagesOverallIndex: pagesOverallIndex, paginationURL:paginationURL]}"></g:pageInfoNavRender>
+      <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}"></g:pageInfoNavRender>
       
     </div>
   </div>
