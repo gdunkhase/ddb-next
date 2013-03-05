@@ -2,7 +2,7 @@
   <div class="page-info">
     <span class="results-overall-index">${navData.resultsOverallIndex}</span>
     <span><g:message code="ddbnext.Of" /></span>
-    <span><b><span id="results-total">${numberOfResultsFormatted}</span></b></span>
+    <span><b><span class="results-total">${numberOfResultsFormatted}</span></b></span>
     <span><g:message code="ddbnext.Results_lowercase" /></span>
   </div>
   <div class="page-nav">

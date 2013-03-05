@@ -148,7 +148,7 @@ window.onload=function(){
           $('.page-nonjs').html(JSONresponse.page);
           $('.total-pages').html(JSONresponse.totalPages);
           $('.result-pages-count').html(JSONresponse.totalPages);
-          $('#results-total').html(JSONresponse.numberOfResults);
+          $('.results-total').html(JSONresponse.numberOfResults);
           if(JSONresponse.paginationURL.nextPg){
             $(".page-nav .next-page").removeClass("off");
             $(".page-nav .last-page").removeClass("off");
