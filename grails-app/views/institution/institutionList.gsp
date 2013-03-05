@@ -2,7 +2,6 @@
 
 <h2>Institutions</h2>
 
-<!-- TODO: id and class contain the same value, i.e., institution-list -->
 <div class="row">
   <div class="span9">
   <g:render template="pagination" />
@@ -11,7 +10,8 @@
     </div>
     <ol class="institution-list">
       <g:each in="${ all }">
-      <li class="institution-listitem" data-first-letter="${ it?.firstChar }" data-sector="${ it?.sector }" data-institution-id="${ it?.id }">
+      <li class="institution-listitem" data-sector="${ it?.sector }" 
+        data-institution-id="${ it?.id }">
         <i class="icon-institution"></i>
         <g:render template="listItem" model="['item': it]"/>
         <g:render template="children" model="['children': it?.children]"/>
