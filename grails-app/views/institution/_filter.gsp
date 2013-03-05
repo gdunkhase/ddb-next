@@ -39,6 +39,5 @@
   </div>
 </div>
 <aside>
-<!-- TODO: add number of total institution -->
 <g:message code="ddbnext.InstitutionsPage_SummaryText" args="${ [ total ] }" />
 </aside>
