@@ -11,7 +11,7 @@ var ddb = {
   },
 
   // cache for all institution, including children and their descendants
-  all: $('.institution'),
+  all: $('.institution-listitem'),
 
   institutionsBySector: null,
 
