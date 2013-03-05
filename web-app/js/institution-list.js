@@ -145,15 +145,6 @@ var ddb = {
       var hasNoMember = ddb.findNoMember(visible);
 
       ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
-
-      $('.pagination li').removeClass('disabled');
-      // update index view, i.e., A..Z
-      _.each(hasNoMember, function(letter) {
-        $('.pagination a[href="' + '#' + letter + '"]').parent().addClass('disabled');
-        $('.pagination a[href="' + '#' + letter + '"]').click(function(e) {
-          e.preventDefault();
-        });
-      });
     } else if (sectors.length > 0 && firstLetter !== '') {
       /*
       when at least one sector selected _and_ one of the first letter is
@@ -173,7 +164,6 @@ var ddb = {
       });
 
       ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
-
     } else if (sectors.length === 0 && firstLetter !== '') {
       /*
        When no sector
