@@ -1,6 +1,6 @@
 <meta name="layout" content="main" />
 
-<h2>Institutions</h2>
+<h1>Institutions</h1>
 
 <div class="row">
   <div class="span9">
