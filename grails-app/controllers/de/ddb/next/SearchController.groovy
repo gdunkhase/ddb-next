@@ -30,11 +30,12 @@ class SearchController {
                 }
 
                 //lastHit
-                firstLastQuery["offset"] = resultsItems["numberOfResults"] - 1
-                def lastHit = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', firstLastQuery)
-                if (lastHit != null && lastHit["numberOfResults"] != null && (Integer)lastHit["numberOfResults"] > 0) {
-                    params["lastHit"] = lastHit["results"]["docs"][0].id
-                }
+                
+//                firstLastQuery["offset"] = resultsItems["numberOfResults"] - 1
+//                def lastHit = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', firstLastQuery)
+//                if (lastHit != null && lastHit["numberOfResults"] != null && (Integer)lastHit["numberOfResults"] > 0) {
+//                    params["lastHit"] = lastHit["results"]["docs"][0].id
+//                }
             }
 
             //Calculating results details info (number of results in page, total results number)
