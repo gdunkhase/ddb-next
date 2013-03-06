@@ -15,10 +15,7 @@ import org.springframework.context.i18n.LocaleContextHolder
  * @author ema
  *
  */
-/**
- * @author ema
- *
- */
+
 class SearchService {
     
     //Autowire the grails application bean
