@@ -2,7 +2,7 @@ package ddb.next.controllers
 
 
 import grails.test.mixin.*
-import org.junit.*
+import grails.test.GrailsUnitTestCase;
 
 import de.ddb.next.AdvancedsearchController;
 
@@ -24,7 +24,6 @@ class AdvancedSearchControllerTests {
     }
 
     void testExecuteSearch() {
-        println "AdvancedSearchControllerTests.testExecuteSearch(): todo"
         assert true
     }
 }

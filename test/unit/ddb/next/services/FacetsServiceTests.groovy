@@ -14,12 +14,10 @@ class FacetsServiceTests {
 
 
     void testGetFacet() {
-        println "FacetsServiceTests.testGetFacet(): todo"
         assert true
     }
 
     void testGetExtendedFacets() {
-        println "FacetsServiceTests.testGetExtendedFacets(): todo"
         assert true
     }
 }

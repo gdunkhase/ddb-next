@@ -14,7 +14,6 @@ import de.ddb.next.SearchResultsListRenderTagLib;
 class ItemResultRenderTagLibTests {
 
     void testSomething() {
-        println "ItemResultRenderTagLibTests.testSomething(): todo"
         assert true
     }
 }

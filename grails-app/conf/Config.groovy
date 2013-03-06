@@ -90,7 +90,7 @@ ddb {
         facets {
             filter = [
                 [facetName:'language_fct', filter:'term:unknown' ],
-                [facetName:'language_fct', filter:'term:termunknown']     
+                [facetName:'language_fct', filter:'term:termunknown']
             ]
         }
     }
@@ -139,10 +139,11 @@ log4j = {
     // This part can be used to filter out all loggings that are not interesting
     environments {
         development {
-            warn    "org.codehaus.groovy.grails.plugins",  // only warnings or errors from plugins
-                    "org.grails.plugin",                   // only warnings or errors from plugins
-                    "grails.plugin",                       // only warnings or errors from plugins
-                    "org.codehaus.groovy.grails.commons"   // only warnings or errors from common grails classes
+            warn    "org.codehaus.groovy.grails",           // only warnings or errors from grails
+                    "grails",                               // only warnings or errors from grails
+                    "org.grails.plugin",                    // only warnings or errors from plugins
+                    "org.springframework",                  // only warnings or errors from spring
+                    "net.jawr"                              // only warnings or errors from jawr
         }
         production {
             //Don't filter messages in production
@@ -165,9 +166,7 @@ jawr {
             }
         }
     }
-    locale {
-        // Define resolver so ?lang= Grails functionality works with controllers.
-        resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver'
-    }
+    locale { // Define resolver so ?lang= Grails functionality works with controllers.
+        resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
 }
 grails.app.context = "/"

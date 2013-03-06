@@ -14,22 +14,18 @@ class ItemServiceTests {
 
 
     void testFindItemById() {
-        println "ItemServiceTests.testFindItemById(): todo"
         assert true
     }
 
     void testApendDotDot() {
-        println "ItemServiceTests.testApendDotDot(): todo"
         assert true
     }
 
     void testFindBinariesById() {
-        println "ItemServiceTests.testFindBinariesById(): todo"
         assert true
     }
 
     void testBinariesCounter() {
-        println "ItemServiceTests.testBinariesCounter(): todo"
         assert true
     }
 }

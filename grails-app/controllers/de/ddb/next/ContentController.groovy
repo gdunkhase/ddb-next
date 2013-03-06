@@ -4,58 +4,73 @@ import groovy.util.XmlSlurper
 import java.net.URI.Parser
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
+import de.ddb.next.exception.ItemNotFoundException;
+
 class ContentController {
-	static defaultAction = "staticcontent"
+    static defaultAction = "staticcontent"
 
-	def staticcontent(){
-		def firstLvl="news";
-		if (params.dir!=null){
-			firstLvl=getFirstLvl();
-		}
-		def secondLvl = getSecLvl();
-		def url = getStaticUrl()
-		def lang = getShortLocale()
-		def path = "/static/"+lang+"/"+firstLvl+"/index.html"
-		if (params.id!=null){
-			path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl+".html"
-		}
-		def query = [ client: "DDB-NEXT" ]
-		//Submit a request via GET
-		def response = ApiConsumer.getText(url, path, query)
-		if (response == "Not found"){
-			redirect(controller: "error", action: "notfound")
-		}
+    def staticcontent(){
+        try{
 
-		def map= retrieveArguments(response)
-		render(view: "staticcontent", model: map)
+            def firstLvl="news";
+            if (params.dir!=null){
+                firstLvl=getFirstLvl();
+            }
+            def secondLvl = getSecLvl();
+            def url = getStaticUrl()
+            def lang = getShortLocale()
+            def path = "/static/"+lang+"/"+firstLvl+"/index.html"
+            if (params.id!=null){
+                path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl+".html"
+            }
+            def query = [ client: "DDB-NEXT" ]
+            //Submit a request via GET
+            def response = ApiConsumer.getText(url, path, query)
+            if (response == "Not found"){
+                throw new ItemNotFoundException()
+            }
 
-	}
+            def map= retrieveArguments(response)
+            render(view: "staticcontent", model: map)
 
-	private def getFirstLvl(){
-		String firstLvl = cleanHtml(params.dir, 'none')
-		return firstLvl
-	}
-	
-	private String getSecLvl(){		
-		if (params.id==null){
-			return null
-		}
-		return cleanHtml(params.id, 'none')
-	}
+        } catch(ItemNotFoundException infe){
+            log.error "staticcontent(): Request for nonexisting item with id: '" + params?.dir + "'. Going 404..."
+            forward controller: "error", action: "notFound"
+        } catch(MissingPropertyException mpe){
+            log.error "staticcontent(): There was a missing property.", mpe
+            forward controller: "error", action: "serverError"
+        } catch(Exception e) {
+            log.error "staticcontent(): An unexpected error occured.", e
+            forward controller: "error", action: "serverError"
+        }
 
-	private def getShortLocale() {
-		def locale = RCU.getLocale(request)
-		if(locale.toString().substring(0, 2)=="de") {
-			return "de"
-		}
-		return "en"		
-	}
+    }
 
-	private def getStaticUrl(){
-		def url = grailsApplication.config.ddb.static.url
-		assert url instanceof String, "This is not a string"
-		return url;
-	}
+    private def getFirstLvl(){
+        String firstLvl = cleanHtml(params.dir, 'none')
+        return firstLvl
+    }
+
+    private String getSecLvl(){
+        if (params.id==null){
+            return null
+        }
+        return cleanHtml(params.id, 'none')
+    }
+
+    private def getShortLocale() {
+        def locale = RCU.getLocale(request)
+        if(locale.toString().substring(0, 2)=="de") {
+            return "de"
+        }
+        return "en"
+    }
+
+    private def getStaticUrl(){
+        def url = grailsApplication.config.ddb.static.url
+        assert url instanceof String, "This is not a string"
+        return url;
+    }
 
     private def retrieveArguments(def content){
         def title = fetchTitle(content)
