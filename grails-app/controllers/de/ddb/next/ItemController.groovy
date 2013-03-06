@@ -6,6 +6,7 @@ class ItemController {
     static defaultAction = "findById"
 
     def itemService
+    def searchService
 
     def children() {
         try {
@@ -56,7 +57,7 @@ class ItemController {
                 item.pageLabel= itemService.getItemTitle(id)
             }
 
-            def urlQuery = SearchService.convertQueryParametersToSearchParameters(params)
+            def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
             def resultsItems
             def hitNumber
             def searchResultUri
@@ -74,7 +75,7 @@ class ItemController {
                 resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
 
                 //generate link back to search-result. Calculate Offset.
-                def searchGetParameters = SearchService.getSearchGetParameters(params)
+                def searchGetParameters = searchService.getSearchGetParameters(params)
                 def offset = ((Integer)((params["hitNumber"]-1)/params["rows"]))*params["rows"]
                 searchGetParameters["offset"] = offset
                 searchResultUri = "/search?"
@@ -95,7 +96,7 @@ class ItemController {
                 render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
                     'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
                     binaryList: binaryList, pageLabel: item.pageLabel,
-                    itemDetailGetParams: SearchService.getItemDetailGetParameters(params),
+                    itemDetailGetParams: searchService.getItemDetailGetParameters(params),
                     hitNumber: params["hitNumber"], results: resultsItems, searchResultUri: searchResultUri, 'flashInformation': flashInformation])
 
                 //render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,

@@ -416,7 +416,7 @@ window.onload=function(){
       </div>
       <div class="facets-list bt bb">
         <g:each in="${facetsList}" var="mit">
-          <g:each in="${(results.facets)}">
+          <g:each in="${(facets.selectedFacets)}">
             <g:if test="${mit == it.field}">
               <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
                 <a class="h3" href="${facets.mainFacetsUrl[it.field]}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>

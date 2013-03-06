@@ -15,16 +15,17 @@ import org.springframework.context.i18n.LocaleContextHolder
  * @author ema
  *
  */
+
 class SearchService {
     
     //Autowire the grails application bean
     def grailsApplication
     
-    private static final facetsList = ["time_fct", "place_fct", "affiliate_fct", "keywords_fct", "language_fct", "type_fct", "sector_fct", "provider_fct"]
+    private static facetsList = ["time_fct", "place_fct", "affiliate_fct", "keywords_fct", "language_fct", "type_fct", "sector_fct", "provider_fct"]
     
     def transactional=false
     
-    static def getFacets(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, String key, int currentDepth){
+    def getFacets(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, String key, int currentDepth){
         List facetValues = []
         def facets = urlQuery
         facets["facet"] = []
@@ -48,7 +49,7 @@ class SearchService {
         return facets
     }
     
-    static def facetValuesToString(facetValues){
+    def facetValuesToString(facetValues){
         def res = ""
         def newFacetValues = []
         if(facetValues != null){
@@ -65,7 +66,7 @@ class SearchService {
         return res
     }
     
-    static def buildMainFacetsUrl(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, HttpServletRequest requestObject){
+    def buildMainFacetsUrl(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, HttpServletRequest requestObject){
         def mainFacetsUrls = [:]
         facetsList.each {
             def searchQuery = (urlQuery["query"]) ? urlQuery["query"] : ""
@@ -80,7 +81,7 @@ class SearchService {
         return mainFacetsUrls
     }
     
-    static def buildSubFacetsUrl(List facets, LinkedHashMap mainFacetsUrl, LinkedHashMap urlQuery){
+    def buildSubFacetsUrl(List facets, LinkedHashMap mainFacetsUrl, LinkedHashMap urlQuery){
         def res = [:]
         urlQuery["facet"].each{
             if(it!="grid_preview"){
@@ -109,7 +110,39 @@ class SearchService {
         return res
     }
     
-    static def buildPagination(int resultsNumber, LinkedHashMap queryParameters, String getQuery){
+    /**
+     * 
+     * Build the list of facets to be rendered in the non javascript version of search results
+     * 
+     * @param urlQuery
+     * @return list of all facets filtered
+     */
+    def buildSubFacets(LinkedHashMap urlQuery){
+        def emptyFacets = this.facetsList.clone()
+        def res = []
+        urlQuery["facet"].each{
+            if(it != "grid_preview"){
+                emptyFacets.remove(it)
+                def tmpUrlQuery = urlQuery.clone()
+                tmpUrlQuery["rows"]=1
+                tmpUrlQuery["offset"]=0
+                tmpUrlQuery.remove(it)
+                ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', tmpUrlQuery).facets.each{
+                    facet->
+                    if(facet.field==it){
+                        res.add(facet)
+                    }
+                }
+            }
+        }
+        //fill the remaining empty facets
+        emptyFacets.each{
+            res.add([field: it, numberOfFacets: 0, facetValues: []])
+        }
+        return res
+    }
+    
+    def buildPagination(int resultsNumber, LinkedHashMap queryParameters, String getQuery){
         def res = [firstPg:null,lastPg:null,prevPg:null,nextPg:null]
         //if resultsNumber greater rows number no buttons else we can start to create the pagination
         def currentRows = queryParameters.rows.toInteger()
@@ -153,14 +186,14 @@ class SearchService {
         return res
     }
     
-    static def buildPaginatorOptions(LinkedHashMap queryMap){
+    def buildPaginatorOptions(LinkedHashMap queryMap){
         def pageFilter = [10,20,40,60,100]
         if(!pageFilter.contains(queryMap["rows"].toInteger()))
             pageFilter.add(queryMap["rows"].toInteger())
         return [pageFilter: pageFilter.sort(), pageFilterSelected: queryMap["rows"].toInteger(), sortResultsSwitch: queryMap["sort"]]
     }
     
-    static def buildClearFilter(LinkedHashMap urlQuery, String baseURI){
+    def buildClearFilter(LinkedHashMap urlQuery, String baseURI){
         def res = baseURI+'?'
         urlQuery.each{
             key, value ->
@@ -179,7 +212,7 @@ class SearchService {
      * @param length
      * @return String title
      */
-    static def trimTitle(String title, int length){
+    def trimTitle(String title, int length){
         def matches
         def matchesMatch = title =~ /(?m)<match>(.*?)<\/match>/
         def cleanTitle = title.replaceAll("<match>", "").replaceAll("</match>", "")
@@ -198,7 +231,7 @@ class SearchService {
      * @param reqParameters
      * @return Map with keys used for Search on Search-Server
      */
-    static def convertQueryParametersToSearchParameters(GrailsParameterMap reqParameters) {
+    def convertQueryParametersToSearchParameters(GrailsParameterMap reqParameters) {
         def urlQuery = [:]
         if (reqParameters.query!=null){
             urlQuery["query"] = reqParameters.query
@@ -225,7 +258,7 @@ class SearchService {
         //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
         //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
         if(reqParameters["facetValues[]"]){
-            urlQuery = SearchService.getFacets(reqParameters, urlQuery,"facet", 0)
+            urlQuery = this.getFacets(reqParameters, urlQuery,"facet", 0)
         }
 
         if(reqParameters.get("facets[]")){
@@ -265,7 +298,7 @@ class SearchService {
      * @param reqParameters
      * @return Map with keys used for search-request by ddb-next.
      */
-    static def getSearchGetParameters(Map reqParameters) {
+    def getSearchGetParameters(Map reqParameters) {
         def searchParams = [:]
         def requiredParams = ["query", "offset", "rows", "sort", "viewType", "clustered", "isThumbnailFiltered", "facetValues[]"]
         for (entry in reqParameters) {
@@ -282,7 +315,7 @@ class SearchService {
      * @param reqParameters
      * @return Map with keys used for item-detail-request by ddb-next.
      */
-    static def getItemDetailGetParameters(Map reqParameters) {
+    def getItemDetailGetParameters(Map reqParameters) {
         def itemDetailParams = [:]
         def requiredParams = ["query", "offset", "rows", "sort", "viewType", "clustered", "isThumbnailFiltered", "facetValues[]", "firstHit", "lastHit"]
         for (entry in reqParameters) {
