@@ -5,13 +5,14 @@ class SearchController {
 
     static defaultAction = "results"
     
-
+    def searchService
+    
     def results() {
 
         try {
-            def urlQuery = SearchService.convertQueryParametersToSearchParameters(params)
-            def firstLastQuery = SearchService.convertQueryParametersToSearchParameters(params)
-            def mainFacetsUrl = SearchService.buildMainFacetsUrl(params, urlQuery, request)
+            def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+            def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
+            def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
 
             def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
             
@@ -47,7 +48,7 @@ class SearchController {
             def page = ((urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()
             def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
 
-            def resultsPaginatorOptions = SearchService.buildPaginatorOptions(urlQuery)
+            def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
             def numberOfResultsFormatted = String.format("%,d", resultsItems.numberOfResults.toInteger())
             
             def queryString = request.getQueryString()
@@ -57,37 +58,38 @@ class SearchController {
 
             if(params.reqType=="ajax"){
                 def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url,
-                    itemDetailGetParams: SearchService.getItemDetailGetParameters(params)]).replaceAll("\r\n", '')
+                    itemDetailGetParams: searchService.getItemDetailGetParameters(params)]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     page: page,
                     totalPages: totalPages,
-                    paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+                    paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                     numberOfResults: numberOfResultsFormatted,
-                    itemDetailGetParams: SearchService.getItemDetailGetParameters(params)
+                    itemDetailGetParams: searchService.getItemDetailGetParameters(params)
                 ]
                 render (contentType:"text/json"){jsonReturn}
             }
             else{
                 //We want to build the subfacets urls only if a main facet has been selected
                 def subFacetsUrl = [:]
+                def selectedFacets = searchService.buildSubFacets(urlQuery)
                 if(urlQuery["facet"]){
-                    subFacetsUrl = SearchService.buildSubFacetsUrl(resultsItems.facets, mainFacetsUrl, urlQuery)
+                    subFacetsUrl = searchService.buildSubFacetsUrl(selectedFacets, mainFacetsUrl, urlQuery)
                 }
                 render(view: "results", model: [
                     results: resultsItems,
                     isThumbnailFiltered: params.isThumbnailFiltered,
-                    clearFilters: SearchService.buildClearFilter(urlQuery, request.forwardURI),
+                    clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     viewType:  urlQuery["viewType"],
-                    facets: [mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
+                    facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     page: page,
                     totalPages: totalPages,
-                    paginationURL: SearchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
+                    paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
-                    itemDetailGetParams: SearchService.getItemDetailGetParameters(params)
+                    itemDetailGetParams: searchService.getItemDetailGetParameters(params)
                 ])
             }
 
