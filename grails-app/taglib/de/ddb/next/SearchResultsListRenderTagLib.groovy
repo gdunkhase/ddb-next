@@ -6,12 +6,12 @@ class SearchResultsListRenderTagLib {
      *
      * @attr results REQUIRED organizations list
      */
-
+    def searchService
     def itemResultsRender = { attrs, body ->
         out << render(template:"/search/resultsList", model:[results: attrs.results, urlParams: attrs.urlParams, confBinary: grailsApplication.config.ddb.binary.url])
     }
 
     def truncateItemTitle = { attrs, body ->
-        out << SearchService.trimTitle(attrs.title.toString(), attrs.length)
+        out << searchService.trimTitle(attrs.title.toString(), attrs.length)
     }
 }
