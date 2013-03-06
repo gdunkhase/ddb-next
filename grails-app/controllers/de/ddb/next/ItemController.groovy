@@ -1,6 +1,6 @@
 package de.ddb.next
 
-import de.ddb.next.exception.ItemNotFoundException;
+import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
     static defaultAction = "findById"
@@ -9,7 +9,6 @@ class ItemController {
 
     def children() {
         try {
-
             render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", null))
         } catch(MissingPropertyException mpe){
             log.error "children(): There was a missing property.", mpe
@@ -22,20 +21,6 @@ class ItemController {
 
     def findById() {
         try {
-            //
-            //        String url = grailsApplication.config.ddb.backend.url
-            //        List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
-            //
-            //        for(facet in facetSearchfields){
-            //            log.info "########### " + facet.name + " / " + facet.searchType + " / " + facet.sortType
-            //
-            //            List facetsOfCertainType = new FacetsService(url:url).getFacet(facet.name);
-            //            for(facetOfType in facetsOfCertainType){
-            //                log.info "########################## " + facetOfType
-            //            }
-            //        }
-
-
             def id = params.id
             def item = itemService.findItemById(id)
 
@@ -60,7 +45,12 @@ class ItemController {
             def resultsItems
             def hitNumber
             def searchResultUri
-            //Check if Item-Detail was called from search-result
+
+            // TODO: what does this method do?
+            // TODO: Can we refactor it?
+            // TODO: this method does a lot of things at once, maybe it is better to extract the logical functionality
+            // into a small private methods.
+            // Check if Item-Detail was called from search-result
             if (params["hitNumber"]) {
                 //Search and return 3 Hits: previous, current and last
                 params["hitNumber"] = params["hitNumber"].toInteger()
@@ -80,7 +70,6 @@ class ItemController {
                 searchResultUri = "/search?"
                 MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib();
                 searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters);
-
             }
 
             // TODO: handle 404 and failure separately. HTTP Status Code 404, should
@@ -93,17 +82,12 @@ class ItemController {
                 def itemUri = request.forwardURI
                 def fields = translate(item.fields)
                 render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                    'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
+                    'title': item.title, item: item.item, institution : item.institution, fields: fields,
                     binaryList: binaryList, pageLabel: item.pageLabel,
                     itemDetailGetParams: SearchService.getItemDetailGetParameters(params),
-                    hitNumber: params["hitNumber"], results: resultsItems, searchResultUri: searchResultUri, 'flashInformation': flashInformation])
-
-                //render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                //    'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
-                //    binaryList: binaryList, pageLabel: item.pageLabel, 'flashInformation': flashInformation])
-
+                    hitNumber: params["hitNumber"], results: resultsItems, searchResultUri: searchResultUri,
+                    'flashInformation': flashInformation])
             }
-
         } catch(ItemNotFoundException infe){
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
             forward controller: "error", action: "notFound"
@@ -118,6 +102,10 @@ class ItemController {
     }
 
     def translate(fields) {
+        /* TODO: why do we need to catch the Exceptions in this method, is it better to throw them?
+         * because the caller already catch the same Exceptions.
+         */
+
         try {
             fields.each {
                 def messageKey = 'ddbnext.' + it.'@id'
@@ -128,22 +116,19 @@ class ItemController {
                     log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
                 }
             }
-
         } catch(MissingPropertyException mpe){
+            // TODO: can we handle the Exception centrally?
             log.error "translate(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
         } catch(Exception e) {
             log.error "translate(): An unexpected error occured.", e
             forward controller: "error", action: "serverError"
         }
-
     }
 
     def parents() {
         try {
-
             render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
-
         } catch(MissingPropertyException mpe){
             log.error "parents(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"
