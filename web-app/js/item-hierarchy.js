@@ -36,7 +36,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast) {
   }
   branchType.append(i);
   currentNode.append(branchType);
-  a.append(truncateTitle(value.label));
+  a.append(truncateTitle(value.label, 350));
   currentNode.append(leafIndicator);
   currentNode.append(a);
 }
@@ -116,7 +116,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
       class : "item-hierarchy-label" + (isCurrent ? " current-path" : "")
     });
 
-    label.append(truncateTitle(value.label));
+    label.append(truncateTitle(value.label, 350));
     currentNode.append(label);
   } else {
     var leafIndicator = $("<div>", {
@@ -354,16 +354,17 @@ function showChildren(url, currentNode, currentId, parentId) {
 }
 
 /*
- * Truncate the given label to MAX_LENGTH characters.
+ * Truncate a label to a given number of characters.
  * 
  * @param {String} title the title to be truncated
+ * 
+ * @param {int} length maximum length until the title will be truncated
  */
-function truncateTitle(title) {
+function truncateTitle(title, length) {
   var result = title;
-  var MAX_LENGTH = 350;
 
-  if (title != null && title.length > MAX_LENGTH) {
-    var lastSpace = title.substring(0, MAX_LENGTH).lastIndexOf(" ");
+  if (title != null && title.length > length) {
+    var lastSpace = title.substring(0, length).lastIndexOf(" ");
 
     result = title.substring(0, lastSpace) + "...";
   }
