@@ -1,6 +1,8 @@
 package de.ddb.next
 
 import java.security.MessageDigest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest
 
@@ -16,22 +18,29 @@ import org.springframework.context.i18n.LocaleContextHolder
  *
  */
 class SearchService {
-    
+
     //Autowire the grails application bean
     def grailsApplication
-    
-    private static final facetsList = ["time_fct", "place_fct", "affiliate_fct", "keywords_fct", "language_fct", "type_fct", "sector_fct", "provider_fct"]
-    
+
+    private static final facetsList = [
+        "time_fct",
+        "place_fct",
+        "affiliate_fct",
+        "keywords_fct",
+        "language_fct",
+        "type_fct",
+        "sector_fct",
+        "provider_fct"
+    ]
+
     def transactional=false
-    
+
     static def getFacets(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, String key, int currentDepth){
         List facetValues = []
         def facets = urlQuery
         facets["facet"] = []
         if(reqParameters.get("facetValues[]").getClass().isArray()){
-            reqParameters.get("facetValues[]").each{
-                facetValues.add(it)
-            }
+            reqParameters.get("facetValues[]").each{ facetValues.add(it) }
         }else{
             facetValues.add(reqParameters.get("facetValues[]").toString())
         }
@@ -39,15 +48,15 @@ class SearchService {
             def tmpVal = java.net.URLDecoder.decode(it.toString(), "UTF-8")
             List tmpSubVal = tmpVal.split("=")
             if(!facets["facet"].contains(tmpSubVal[0]))
-            facets["facet"].add(tmpSubVal[0].toString())
+                facets["facet"].add(tmpSubVal[0].toString())
             if(!facets[tmpSubVal[0]]){
                 facets[tmpSubVal[0]]=[tmpSubVal[1]]
             }else
-        facets[tmpSubVal[0]].add(tmpSubVal[1])
+                facets[tmpSubVal[0]].add(tmpSubVal[1])
         }
         return facets
     }
-    
+
     static def facetValuesToString(facetValues){
         def res = ""
         def newFacetValues = []
@@ -55,16 +64,14 @@ class SearchService {
             if(facetValues.getClass().isArray()){
                 newFacetValues = facetValues
             }else{
-            newFacetValues.add(facetValues)
+                newFacetValues.add(facetValues)
             }
-            newFacetValues.each{
-                res += "&facetValues%5B%5D="+it
-            }
+            newFacetValues.each{ res += "&facetValues%5B%5D="+it }
         }
-        
+
         return res
     }
-    
+
     static def buildMainFacetsUrl(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, HttpServletRequest requestObject){
         def mainFacetsUrls = [:]
         facetsList.each {
@@ -76,20 +83,18 @@ class SearchService {
                 mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+it+facetValuesToString(reqParameters.get("facetValues[]")))
             }
         }
-        
+
         return mainFacetsUrls
     }
-    
+
     static def buildSubFacetsUrl(List facets, LinkedHashMap mainFacetsUrl, LinkedHashMap urlQuery){
         def res = [:]
         urlQuery["facet"].each{
             if(it!="grid_preview"){
-                facets.each {
-                    x->
+                facets.each { x->
                     if(x.field == it && x.numberOfFacets>0){
                         res[x.field] = []
-                        x.facetValues.each{
-                            y->
+                        x.facetValues.each{ y->
                             def tmpFacetValuesMap = ["fctValue": y.value,"url":"",cnt: y["count"],selected:""]
                             def tmpUrl = mainFacetsUrl[x.field]
                             if(mainFacetsUrl[x.field].contains(y["value"])){
@@ -97,8 +102,8 @@ class SearchService {
                                 tmpFacetValuesMap["url"] = tmpUrl
                                 tmpFacetValuesMap["selected"] = "selected"
                             }else{
-                            tmpUrl += "&facetValues%5B%5D="+x.field+"%3D"+y["value"]
-                            tmpFacetValuesMap["url"] = tmpUrl
+                                tmpUrl += "&facetValues%5B%5D="+x.field+"%3D"+y["value"]
+                                tmpFacetValuesMap["url"] = tmpUrl
                             }
                             res[x.field].add(tmpFacetValuesMap)
                         }
@@ -108,7 +113,7 @@ class SearchService {
         }
         return res
     }
-    
+
     static def buildPagination(int resultsNumber, LinkedHashMap queryParameters, String getQuery){
         def res = [firstPg:null,lastPg:null,prevPg:null,nextPg:null]
         //if resultsNumber greater rows number no buttons else we can start to create the pagination
@@ -152,25 +157,24 @@ class SearchService {
         }
         return res
     }
-    
+
     static def buildPaginatorOptions(LinkedHashMap queryMap){
-        def pageFilter = [10,20,40,60,100]
+        def pageFilter = [10, 20, 40, 60, 100]
         if(!pageFilter.contains(queryMap["rows"].toInteger()))
             pageFilter.add(queryMap["rows"].toInteger())
         return [pageFilter: pageFilter.sort(), pageFilterSelected: queryMap["rows"].toInteger(), sortResultsSwitch: queryMap["sort"]]
     }
-    
+
     static def buildClearFilter(LinkedHashMap urlQuery, String baseURI){
         def res = baseURI+'?'
-        urlQuery.each{
-            key, value ->
+        urlQuery.each{ key, value ->
             if(!key.toString().contains("facet") && !key.toString().contains("facetValues[]") && !key.toString().contains("fct")){
                 res+='&'+key+'='+value
             }
         }
         return res
     }
-    
+
     /**
      * 
      * Gives you back the HTML title with "strong" attributes trimmed to desired length
@@ -180,16 +184,19 @@ class SearchService {
      * @return String title
      */
     static def trimTitle(String title, int length){
-        def matches
-        def matchesMatch = title =~ /(?m)<match>(.*?)<\/match>/
+
         def cleanTitle = title.replaceAll("<match>", "").replaceAll("</match>", "")
-        def tmpTitle = (cleanTitle.length()>length)?cleanTitle.substring(0,length-3)+"...":cleanTitle
-        if(matchesMatch.size()>0){
-            matchesMatch.each{
-                tmpTitle = tmpTitle.replaceAll(it[1], "<strong>"+it[1]+"</strong>")
-            }
+        Pattern pattern = Pattern.compile("<match>(.*?)</match>");
+        Matcher matcher = pattern.matcher(title);
+        int i=0
+        while(matcher.find()){
+            String matchingGroup = matcher.group(i).replaceAll("<match>", "").replaceAll("</match>", "").replaceAll("\\)","").replaceAll("\\(","");
+            cleanTitle = cleanTitle.replaceAll(matchingGroup, "<strong>"+matchingGroup+"</strong>")
+            i++
         }
-        return tmpTitle
+
+        return cleanTitle
+
     }
 
     /**
@@ -213,7 +220,7 @@ class SearchService {
             urlQuery["rows"] = reqParameters.rows.toInteger()
         }
         reqParameters.rows = urlQuery["rows"]
-        
+
         if (reqParameters.offset == null) {
             urlQuery["offset"] = 0.toInteger()
         }
@@ -221,7 +228,7 @@ class SearchService {
             urlQuery["offset"] = reqParameters.offset.toInteger()
         }
         reqParameters.offset = urlQuery["offset"]
-        
+
         //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
         //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
         if(reqParameters["facetValues[]"]){
@@ -238,7 +245,7 @@ class SearchService {
             urlQuery["minDocs"] = reqParameters.minDocs
 
         if(reqParameters.sort != null){
-             urlQuery["sort"] = reqParameters.sort
+            urlQuery["sort"] = reqParameters.sort
         }
 
         if(reqParameters.viewType == null) {
@@ -258,7 +265,7 @@ class SearchService {
         }
         return urlQuery
     }
-    
+
     /**
      * Generate Map that contains GET-parameters used for search-request by ddb-next.
      * 
@@ -267,7 +274,16 @@ class SearchService {
      */
     static def getSearchGetParameters(Map reqParameters) {
         def searchParams = [:]
-        def requiredParams = ["query", "offset", "rows", "sort", "viewType", "clustered", "isThumbnailFiltered", "facetValues[]"]
+        def requiredParams = [
+            "query",
+            "offset",
+            "rows",
+            "sort",
+            "viewType",
+            "clustered",
+            "isThumbnailFiltered",
+            "facetValues[]"
+        ]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
                 searchParams[entry.key] = entry.value
@@ -284,7 +300,18 @@ class SearchService {
      */
     static def getItemDetailGetParameters(Map reqParameters) {
         def itemDetailParams = [:]
-        def requiredParams = ["query", "offset", "rows", "sort", "viewType", "clustered", "isThumbnailFiltered", "facetValues[]", "firstHit", "lastHit"]
+        def requiredParams = [
+            "query",
+            "offset",
+            "rows",
+            "sort",
+            "viewType",
+            "clustered",
+            "isThumbnailFiltered",
+            "facetValues[]",
+            "firstHit",
+            "lastHit"
+        ]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
                 itemDetailParams[entry.key] = entry.value
@@ -292,7 +319,7 @@ class SearchService {
         }
         return itemDetailParams
     }
-    
+
     /**
      * 
      * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results} 
@@ -314,7 +341,7 @@ class SearchService {
         }
         return res
     }
-    
+
     /**
      * 
      * Gives you back the passed facet value internationalized
@@ -324,11 +351,11 @@ class SearchService {
      * @return String i18n facet value
      */
     def getI18nFacetValue(facetName, facetValue){
-        
+
         def appCtx = grailsApplication.getMainContext()
-        
+
         def res = ""
-        
+
         if(facetName == 'affiliate_fct' || facetName == 'keywords_fct' || facetName == 'place_fct' || facetName == 'provider_fct'){
             res = facetValue
         }

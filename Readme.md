@@ -60,3 +60,9 @@ A list of some predefined varibales is set below:
     ddb.advancedSearch.searchFieldCount=10
     ddb.advancedSearch.defaultOffset=0
     ddb.advancedSearch.defaultRows=20  
+
+####Tomcat configuration
+The tomcat configuration in the server.xml must ensure, that the used Connector must contain a valid URIEncoding tag.
+
+	<Connector [...] URIEncoding="UTF-8" /> 
+ 
