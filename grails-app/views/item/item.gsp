@@ -195,7 +195,6 @@ window.onload = function() {
       $("div.binary-title span").text(title);
       return false;
   });
-  $(".item-hierarchy").removeClass("off");
 
   var imgLoader = document.createElement("img");
 

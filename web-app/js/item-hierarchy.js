@@ -185,6 +185,11 @@ function addWaitSymbol(currentNode) {
  */
 function createHierarchy(url) {
   getParents(url, url.file, function(parents) {
+    // check if there is a hierarchy
+    if (parents.length > 0) {
+      $(".item-hierarchy").removeClass("off");
+    }
+
     var list = $("<div>");
     var currentNode = list;
 
