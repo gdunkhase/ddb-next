@@ -44,6 +44,9 @@ class SearchController {
 //                    params["lastHit"] = lastHit["results"]["docs"][0].id
 //                }
             }
+            
+            //create cookie with search parameters
+            response.addCookie(searchService.createSearchCookie(params))
 
             //Calculating results details info (number of results in page, total results number)
             def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
@@ -64,7 +67,7 @@ class SearchController {
 
             if(params.reqType=="ajax"){
                 def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url,
-                    itemDetailGetParams: searchService.getItemDetailGetParameters(params)]).replaceAll("\r\n", '')
+                    offset: params["offset"]]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
@@ -72,7 +75,7 @@ class SearchController {
                     totalPages: totalPages,
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                     numberOfResults: numberOfResultsFormatted,
-                    itemDetailGetParams: searchService.getItemDetailGetParameters(params)
+                    offset: params["offset"]
                 ]
                 render (contentType:"text/json"){jsonReturn}
             }
@@ -95,7 +98,7 @@ class SearchController {
                     totalPages: totalPages,
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
-                    itemDetailGetParams: searchService.getItemDetailGetParameters(params)
+                    offset: params["offset"]
                 ])
             }
 

@@ -3,7 +3,7 @@
 <g:if test="${hitNumber != null}">
     <div class="row page-nav">
         <div class="span12">
-            <g:itemDetailInfoNavRender navData="${[itemDetailGetParams: itemDetailGetParams, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavRender>
+            <g:itemDetailInfoNavRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavRender>
         </div>
     </div>
 </g:if>
