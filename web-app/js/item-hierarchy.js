@@ -20,7 +20,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast) {
   }
 
   var branchType = $("<span>", {
-    class : "branch-type"
+    class : "branch-type fl"
   });
   var i = $("<i>");
   var leafIndicator = $("<div>", {
@@ -75,7 +75,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   }
 
   var branchType = $("<span>", {
-    class : "branch-type"
+    class : "branch-type fl"
   });
 
   currentNode.append(branchType);
