@@ -16,7 +16,6 @@ import de.ddb.next.ContentController;
 class ContentControllerTests {
 
     void testNews() {
-        println "ContentControllerTests.testNews(): todo"
         assert true
     }
 }

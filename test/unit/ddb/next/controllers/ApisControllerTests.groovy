@@ -14,7 +14,6 @@ import de.ddb.next.ApisController;
 class ApisControllerTests {
 
     void testSearch() {
-        println "ApisControllerTests.testSearch(): todo"
         assert true
     }
 }

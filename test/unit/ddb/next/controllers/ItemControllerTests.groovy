@@ -14,22 +14,18 @@ import de.ddb.next.ItemController;
 class ItemControllerTests {
 
     void testChildren() {
-        println "ItemControllerTests.testChildren(): todo"
         assert true;
     }
 
     void testFindById() {
-        println "ItemControllerTests.testFindById(): todo"
         assert true;
     }
 
     void testTranslate() {
-        println "ItemControllerTests.testTranslate(): todo"
         assert true;
     }
 
     void testParents() {
-        println "ItemControllerTests.testParents(): todo"
         assert true;
     }
 }

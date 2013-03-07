@@ -14,7 +14,6 @@ import de.ddb.next.SearchController;
 class SearchControllerTests {
 
     void testResults() {
-        println "SearchControllerTests.testResults(): todo"
         assert true
     }
 }

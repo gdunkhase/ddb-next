@@ -16,7 +16,6 @@ import de.ddb.next.IndexController;
 class IndexControllerTests {
 
     void testIndex() {
-        println "IndexControllerTests.testIndex(): todo"
         assert true
     }
 }
