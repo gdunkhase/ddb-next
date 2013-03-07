@@ -15,6 +15,8 @@ var ddb = {
 
   institutionsBySector: null,
 
+  $index: null,
+
   // find index[All| A | B |...| Z | 0-9] with no members after filtered by sectors.
   findNoMember: function(visible) {
     return _.reduce(ddb.institutionsBySector, function(memo, array, key) {
@@ -130,21 +132,12 @@ var ddb = {
 
       // when at least one sector selected _and_ no first letter filter.
       // e.g. sector = ['Media'], index = All
-      var filteredBySector = _.reduce(institutionList, function(memory, institution) {
-        if (_.contains(sectors, institution.sector)) {
-          memory.push(institution);
-        }
-        ddb.filterDescendants(institution, memory, sectors, parentList);
-        return memory;
-      }, []);
+      var filteredBySector = ddb.filterBySectors(institutionList, sectors, parentList);
+      var visible = _.union(_.uniq(parentList), filteredBySector);
 
-      // TODO: it should not be necessary
-      parentList = _.uniq(parentList);
-
-      var visible = _.union(parentList, filteredBySector);
       var hasNoMember = ddb.findNoMember(visible);
-
       ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
+      ddb.updateIndex(hasNoMember);
     } else if (sectors.length > 0 && firstLetter !== '') {
       /*
       when at least one sector selected _and_ one of the first letter is
@@ -155,7 +148,7 @@ var ddb = {
         if (institution.firstChar === firstLetter && _.contains(sectors, institution.sector)) {
           memory.push(institution);
         }
-        ddb.filterDescendants(institution, memory, sectors, parentList, firstLetter);
+        ddb.filterDescendants(institution, memory, sectors, parentList);
         return memory;
       }, []);
 
@@ -163,7 +156,16 @@ var ddb = {
         return parent.firstChar === firstLetter;
       });
 
+      var visible = _.union(parentList, filteredBySector);
       ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
+
+      // find all root institutions filtered by sectors.
+      // get the first letter, e.g., only As and Ls
+      // show only A and L in Index.
+      // TODO: disable `0-9`
+      var filtered = ddb.filterBySectors(institutionList, sectors, parentList);
+      var hasNoMember = ddb.findNoMember(_.union(_.uniq(parentList), filtered));
+      ddb.updateIndex(hasNoMember);
     } else if (sectors.length === 0 && firstLetter !== '') {
       /*
        When no sector
@@ -171,18 +173,53 @@ var ddb = {
       e.g. sector = [], index = 'C'
       */
       ddb.showByFirstLetter(firstLetter);
+      ddb.updateIndex();
     } else {
-      // the last case: sectors.length === 0 && firstLetter !== ' '.
+      // the last case: sectors.length === 0 && firstLetter === ''.
       // when no sector is selected _and_ no first letter filter.
       // e.g. sector = [], index = All
       ddb.showAll();
+      ddb.updateIndex();
     }
+  },
+
+  filterBySectors: function(institutionList, sectors, parentList) {
+    return _.reduce(institutionList, function(memory, institution) {
+      if (_.contains(sectors, institution.sector)) {
+        memory.push(institution);
+      }
+      ddb.filterDescendants(institution, memory, sectors, parentList);
+      return memory;
+    }, []);
   },
 
   showAll: function() {
     $('#no-match-message').hide();
     // FIXME: this is slow
     ddb.all.show();
+  },
+
+
+  updateIndex: function(hasNoMember) {
+    if (hasNoMember) {
+      console.log('has no member', hasNoMember);
+      // enable all index. It means visually that the index all not grey.
+      // TODO: do we need it? Is it not better to take the ddb.$index?
+      $('#first-letter-index li').removeClass('disabled');
+
+      // update index view, i.e., A..Z
+      _.each(hasNoMember, function(letter) {
+        var $aHref = $('#first-letter-index a[href="' + '#' + letter + '"]');
+        $aHref.parent().addClass('disabled');
+        $aHref.click(function(e) {
+          e.preventDefault();
+        });
+      });
+    } else {
+      var $currentIndex = $('#first-letter-index');
+      $currentIndex.empty();
+      $currentIndex.html(ddb.$index.html());
+    }
   },
 
   // visible institutions are filtered institutions and their descendants.
@@ -233,7 +270,9 @@ var ddb = {
 $(function() {
   // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
   $('.filter').show();
-  ddb.$index = $('#first-letter-index');
-  ddb.$institutionList = $('#institution-list');
+
+  ddb.$index = $('#first-letter-index').clone(true);
+  ddb.$institutionList = $('#institution-list').clone();
+  
   ddb.getInstitutionsBySector(ddb.onFilterSelect, ddb.onPageLoad);
 });

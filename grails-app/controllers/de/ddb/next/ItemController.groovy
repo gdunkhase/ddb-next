@@ -1,6 +1,6 @@
 package de.ddb.next
 
-import de.ddb.next.exception.ItemNotFoundException;
+import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
     static defaultAction = "findById"
@@ -23,20 +23,6 @@ class ItemController {
 
     def findById() {
         try {
-            //
-            //        String url = grailsApplication.config.ddb.backend.url
-            //        List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
-            //
-            //        for(facet in facetSearchfields){
-            //            log.info "########### " + facet.name + " / " + facet.searchType + " / " + facet.sortType
-            //
-            //            List facetsOfCertainType = new FacetsService(url:url).getFacet(facet.name);
-            //            for(facetOfType in facetsOfCertainType){
-            //                log.info "########################## " + facetOfType
-            //            }
-            //        }
-
-
             def id = params.id
             def item = itemService.findItemById(id)
 
