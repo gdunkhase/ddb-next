@@ -8,7 +8,7 @@
       <label> 
         <span><g:message code="ddbnext.Search_text_field"/></span>
       </label>
-      <input type="search" class="query" name="query" value="" data-bind="value: searchTerm" />
+      <input type="search" class="query" name="query" value="" data-bind="value: searchTerm">
       <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
       <span class="contextual-help hidden-phone hidden-tablet" 
             title="<g:message code="ddbnext.Search_Hint" 
@@ -29,28 +29,28 @@
       <g:if test="${articles}">
         <g:each in="${articles}">
           <div class="span3">
-            <a href="<%=it.uri%>" title="<%=it.title%>"> 
-              <img class="article" src="${staticUrl}<%=it.src%>" alt="<%=it.title%>"/>
+            <a href="${it.uri}" title="${it.title}">
+              <img class="article" src="${staticUrl}${it.src}" alt="${it.title}"/>
             </a>
             <div class="caption">
-              <a href="<%=it.uri%>" title="<%=it.title%>"> 
-                <% println "${it.title}" %>
+              <a href="${it.uri}" title="${it.title}">
+                ${it.title}
               </a>
             </div>
           </div>
         </g:each>
-    </g:if>
+      </g:if>
     </noscript>
     <div class="carousel">
       <div id="articles">
         <g:if test="${articles}">
           <g:each in="${articles}">
       <div class="article">
-        <a href="<%=it.uri%>" title="<%=it.title%>" target="_self">
-          <img src="${staticUrl}<%=it.src%>" alt="<%=it.title%>">
+        <a href="${it.uri}" title="${it.title}" target="_self">
+          <img src="${staticUrl}${it.src}" alt="${it.title}">
         </a>
         <div class="caption">
-          <a href="/about-us/institutions" title="<%=it.title%>"><% println "${it.title}" %></a>
+          <a href="/about-us/institutions" title="${it.title}"><% println "${it.title}" %></a>
         </div>
       </div>
           </g:each>
