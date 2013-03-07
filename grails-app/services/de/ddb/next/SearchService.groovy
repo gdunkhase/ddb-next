@@ -339,9 +339,9 @@ class SearchService {
         def res = [type: fctName, values: []]
         facets.each{
             if(it.field==fctName){
-                int max = (it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
+                int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
                 for(int i=0;i<max;i++){
-                    res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: it.facetValues[i].count])
+                    res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format("%,d", it.facetValues[i].count.toInteger())])
                 }
             }
         }
