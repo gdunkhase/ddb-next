@@ -8,7 +8,7 @@
     <div id="no-match-message">
       <g:message code="ddbnext.InstitutionPage_NoMatches" />
     </div>
-    <ol class="institution-list">
+    <ol id="institution-list">
       <g:each in="${ all }">
       <li class="institution-listitem" data-sector="${ it?.sector }" 
         data-institution-id="${ it?.id }">

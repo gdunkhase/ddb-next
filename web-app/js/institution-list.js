@@ -233,5 +233,7 @@ var ddb = {
 $(function() {
   // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
   $('.filter').show();
+  ddb.$index = $('#first-letter-index');
+  ddb.$institutionList = $('#institution-list');
   ddb.getInstitutionsBySector(ddb.onFilterSelect, ddb.onPageLoad);
 });
