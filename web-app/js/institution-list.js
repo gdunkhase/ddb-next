@@ -43,7 +43,7 @@ var ddb = {
   },
 
   findElements: function(list) {
-    return ddb.all.filter(function() {
+    return $('.institution-listitem').filter(function() {
       return _.contains(_.pluck(list, 'id'), $(this).data('institution-id'));
     });
   },
@@ -90,9 +90,9 @@ var ddb = {
   },
 
   getInstitutionAsList: function() {
-    if (ddb.institutionList) {
-      return ddb.institutionList;
-    }
+    // if (ddb.institutionList) {
+    //   return ddb.institutionList;
+    // }
 
     ddb.institutionList = _.chain(ddb.institutionsBySector)
       .values()
@@ -123,8 +123,9 @@ var ddb = {
 
   filter: function(institutionList, sectors, firstLetter) {
     // reset the view to empty.
-    ddb.all.css('display', 'none');
-    ddb.all.removeClass('highlight');
+    var $allInstitution = $('.institution-listitem');
+    $allInstitution.css('display', 'none');
+    $allInstitution.removeClass('highlight');
 
     var parentList = [];
 
@@ -178,7 +179,10 @@ var ddb = {
       // the last case: sectors.length === 0 && firstLetter === ''.
       // when no sector is selected _and_ no first letter filter.
       // e.g. sector = [], index = All
-      ddb.showAll();
+      //ddb.showAll();
+      $('#institution-list')
+        .empty()
+        .html(ddb.$institutionList.html());
       ddb.updateIndex();
     }
   },
@@ -195,8 +199,7 @@ var ddb = {
 
   showAll: function() {
     $('#no-match-message').css('diplay', 'none');
-    // FIXME: this is slow
-    ddb.all.css('display','')
+    $('.institution-listitem').css('display','')
   },
 
 
@@ -242,7 +245,7 @@ var ddb = {
     var idList = _.pluck(ddb.institutionsBySector[firstLetter], 'id');
 
         // find all institutions match idList
-    ddb.filteredEl = ddb.all.filter(function() {
+    ddb.filteredEl = $('.institution-listitem').filter(function() {
       return _.contains(idList, $(this).data('institution-id'));
     });
 
@@ -261,7 +264,7 @@ var ddb = {
       .value();
 
     // collect the HTML elements that match id in the restIdList
-    ddb.restEl = ddb.all.filter(function() {
+    ddb.restEl = $('.institution-listitem').filter(function() {
       return _.contains(restIdList, $(this).data('institution-id'));
     });
 
