@@ -14,7 +14,7 @@
     </div>
 
     <div class="row bt">
-      <div class="span12">
+      <div class="span12 search-field-group">
         <g:set var="row" value="${0}"/>
         <g:while test="${row < searchFieldCount}">
           <div class="row search-field-row">

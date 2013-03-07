@@ -217,16 +217,10 @@ class SearchService {
      */
     def trimTitle(String title, int length){
 
-        def cleanTitle = title.replaceAll("<match>", "").replaceAll("</match>", "")
-        Pattern pattern = Pattern.compile("<match>(.*?)</match>");
-        Matcher matcher = pattern.matcher(title);
-        int i=0
-        while(matcher.find()){
-            String matchingGroup = matcher.group(i).replaceAll("<match>", "").replaceAll("</match>", "").replaceAll("\\)","").replaceAll("\\(","");
-            cleanTitle = cleanTitle.replaceAll(matchingGroup, "<strong>"+matchingGroup+"</strong>")
-            i++
+        def cleanTitle = ""
+        if(title){
+            cleanTitle = title.replaceAll("<match>", "<strong>").replaceAll("</match>", "</strong>")
         }
-
         return cleanTitle
 
     }

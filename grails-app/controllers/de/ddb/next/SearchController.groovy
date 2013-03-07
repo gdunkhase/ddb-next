@@ -18,6 +18,9 @@ class SearchController {
             
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
+                if (!params.sort) {
+                    params.sort = urlQuery["randomSeed"]
+                }
             }
 
             if (resultsItems != null && resultsItems["numberOfResults"] != null && (Integer)resultsItems["numberOfResults"] > 0) {
@@ -31,7 +34,10 @@ class SearchController {
                 }
 
                 //lastHit
-                
+                //Workaround, find id of last hit when calling last hit.
+                //Set id to "lasthit" to signal ItemController to find id of lasthit.
+                params["lastHit"] = "lasthit"
+
 //                firstLastQuery["offset"] = resultsItems["numberOfResults"] - 1
 //                def lastHit = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', firstLastQuery)
 //                if (lastHit != null && lastHit["numberOfResults"] != null && (Integer)lastHit["numberOfResults"] > 0) {
