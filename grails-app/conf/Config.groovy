@@ -149,6 +149,7 @@ log4j = {
                     "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
 
             error   "grails.util.GrailsUtil"                    // hide deprecated warnings on startup
+
         }
         production {
             //Don't filter messages in production
