@@ -119,10 +119,10 @@ log4j = {
     // The appenders define the output method of the loggings
     appenders {
         console name: "console", threshold: org.apache.log4j.Level.INFO, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "ddbnext-info", threshold: org.apache.log4j.Level.INFO, file: ddb.logging.folder+"/ddbnext-info.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "ddbnext-warn", threshold: org.apache.log4j.Level.WARN, file: ddb.logging.folder+"/ddbnext-warn.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "ddbnext-error", threshold: org.apache.log4j.Level.ERROR, file: ddb.logging.folder+"/ddbnext-error.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "stacktrace", threshold: org.apache.log4j.Level.ERROR, file: ddb.logging.folder+"/ddbnext-stacktrace.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-info", threshold: org.apache.log4j.Level.INFO, file: config.ddb.logging.folder+"/ddbnext-info.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-warn", threshold: org.apache.log4j.Level.WARN, file: config.ddb.logging.folder+"/ddbnext-warn.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-error", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-error.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "stacktrace", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-stacktrace.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
     }
 
     // The root logger defines the basic log level and to which appenders the logging is going
@@ -138,10 +138,17 @@ log4j = {
     // This part can be used to filter out all loggings that are not interesting
     environments {
         development {
-            warn    "org.codehaus.groovy.grails.plugins",  // only warnings or errors from plugins
-                    "org.grails.plugin",                   // only warnings or errors from plugins
-                    "grails.plugin",                       // only warnings or errors from plugins
-                    "org.codehaus.groovy.grails.commons"   // only warnings or errors from common grails classes
+            warn    "org.codehaus.groovy.grails",               // only warnings or errors from grails
+                    "grails",                                   // only warnings or errors from grails
+                    "org.grails.plugin",                        // only warnings or errors from plugins
+                    "org.springframework",                      // only warnings or errors from spring
+                    "net.jawr",                                 // only warnings or errors from jawr
+                    "org.apache.catalina.core",                 // only warnings or errors from catalina core
+                    "org.apache.coyote.http11.Http11Protocol",  // only warnings or errors from Http11Protocol
+                    "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
+
+            error   "grails.util.GrailsUtil"                    // hide deprecated warnings on startup
+
         }
         production {
             //Don't filter messages in production
@@ -164,9 +171,7 @@ jawr {
             }
         }
     }
-    locale {
-        // Define resolver so ?lang= Grails functionality works with controllers.
-        resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver'
-    }
+    locale { // Define resolver so ?lang= Grails functionality works with controllers.
+        resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
 }
 grails.app.context = "/"
