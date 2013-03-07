@@ -123,7 +123,7 @@ var ddb = {
 
   filter: function(institutionList, sectors, firstLetter) {
     // reset the view to empty.
-    ddb.all.hide();
+    ddb.all.css('display', 'none');
     ddb.all.removeClass('highlight');
 
     var parentList = [];
@@ -194,9 +194,9 @@ var ddb = {
   },
 
   showAll: function() {
-    $('#no-match-message').hide();
+    $('#no-match-message').css('diplay', 'none');
     // FIXME: this is slow
-    ddb.all.show();
+    ddb.all.css('display','')
   },
 
 
@@ -224,13 +224,16 @@ var ddb = {
 
   // visible institutions are filtered institutions and their descendants.
   showResult: function(visibleInstitution, filteredBySector) {
+    // TODO: clear the message when sectors=[] and firstLetter !== ''
+    var $msg = $('#no-match-message');
+
     // view manipulation
     if (visibleInstitution.length) {
-      $('#no-match-message').hide();
+      $msg.css('display', 'none');
       ddb.findElements(filteredBySector).addClass('highlight');
-      ddb.findElements(visibleInstitution).show();
+      ddb.findElements(visibleInstitution).css('display',''); 
     } else {
-      $('#no-match-message').show();
+      $msg.css('display', 'block'); 
     }
   },
 
@@ -263,7 +266,7 @@ var ddb = {
     });
 
     ddb.showAll();
-    ddb.restEl.hide();
+    ddb.restEl.css('display', 'none');
   }
 };
 
