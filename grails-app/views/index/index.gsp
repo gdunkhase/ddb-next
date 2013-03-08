@@ -50,7 +50,7 @@
           <img src="${staticUrl}${it.src}" alt="${it.title}">
         </a>
         <div class="caption">
-          <a href="/about-us/institutions" title="${it.title}"><% println "${it.title}" %></a>
+          <a href="/about-us/institutions" title="${it.title}">"${it.title}"</a>
         </div>
       </div>
           </g:each>
