@@ -1,7 +1,7 @@
 <g:set var="facetsList" value="${['time_fct', 'place_fct', 'affiliate_fct', 'keywords_fct', 'language_fct', 'type_fct', 'sector_fct', 'provider_fct']}"></g:set>
 <html>
 <head>
-<title><%=title%></title>
+<title>${title}</title>
 <meta name="author" content="${author}" />
 <meta name="keywords" content="${keywords}" />
 <meta name="robots" content="${robots}" />
