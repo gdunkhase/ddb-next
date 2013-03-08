@@ -4,9 +4,9 @@ package de.ddb.next
 class SearchController {
 
     static defaultAction = "results"
-    
+
     def searchService
-    
+
     def results() {
 
         try {
@@ -15,7 +15,7 @@ class SearchController {
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
 
             def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
-            
+
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
                 if (!params.sort) {
@@ -38,11 +38,11 @@ class SearchController {
                 //Set id to "lasthit" to signal ItemController to find id of lasthit.
                 params["lastHit"] = "lasthit"
 
-//                firstLastQuery["offset"] = resultsItems["numberOfResults"] - 1
-//                def lastHit = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', firstLastQuery)
-//                if (lastHit != null && lastHit["numberOfResults"] != null && (Integer)lastHit["numberOfResults"] > 0) {
-//                    params["lastHit"] = lastHit["results"]["docs"][0].id
-//                }
+                //                firstLastQuery["offset"] = resultsItems["numberOfResults"] - 1
+                //                def lastHit = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', firstLastQuery)
+                //                if (lastHit != null && lastHit["numberOfResults"] != null && (Integer)lastHit["numberOfResults"] > 0) {
+                //                    params["lastHit"] = lastHit["results"]["docs"][0].id
+                //                }
             }
 
             //Calculating results details info (number of results in page, total results number)
@@ -56,10 +56,10 @@ class SearchController {
 
             def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
             def numberOfResultsFormatted = String.format("%,d", resultsItems.numberOfResults.toInteger())
-            
+
             def queryString = request.getQueryString()
-            
-            if(!queryString.contains("sort=random") && urlQuery["randomSeed"])
+
+            if(!queryString?.contains("sort=random") && urlQuery["randomSeed"])
                 queryString = queryString+"&sort="+urlQuery["randomSeed"]
 
             if(params.reqType=="ajax"){
