@@ -425,7 +425,7 @@ class SearchService {
     def createSearchCookie(Map reqParameters) {
         //Create Cookie with search-parameters for use on other pages
         //convert HashMap containing parameters to JSON
-        Map paramMap = SearchService.getSearchCookieParameters(reqParameters);
+        Map paramMap = getSearchCookieParameters(reqParameters);
         def jSonObject = new JSONObject()
         for (entry in paramMap) {
             if (entry.value instanceof String[]) {

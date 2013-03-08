@@ -35,7 +35,7 @@ window.onload=function(){
     var queryParameters = {}, queryString = (urlParameters==null)?location.search.substring(1):urlParameters,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
-        queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))] = decodeURIComponent(m[2].replace(/\+/g,'%20'));
     }
     $.each(arrayParamVal, function(key, value){
       queryParameters[value[0]] = value[1];
@@ -50,24 +50,38 @@ window.onload=function(){
   }
   
   function setSearchCookieParameter(arrayParamVal){
-    var searchParameters = $.cookies.get("searchParameters");
-    var json = $.parseJSON(searchParameters);
-    $.each(arrayParamVal, function(key, value){
-      if (value[1].constructor === Array) {
-        for(var i = 0; i < value[1].length; i++) {
-            if (value[1][i].constructor === String) {
-                value[1][i] = encodeURIComponent(value[1][i]);
+    var searchParameters = readCookie("searchParameters");
+    if (searchParameters != null && searchParameters.length > 0) {
+        searchParameters = searchParameters.substring(1, searchParameters.length -1);
+        searchParameters = searchParameters.replace(/\\"/g,'"');
+        var json = $.parseJSON(searchParameters);
+        $.each(arrayParamVal, function(key, value){
+          if (value[1].constructor === Array) {
+            for(var i = 0; i < value[1].length; i++) {
+                if (value[1][i].constructor === String) {
+                    value[1][i] = encodeURIComponent(value[1][i]).replace(/%20/g,'\+');
+                }
             }
-        }
-      }
-      else if (value[1].constructor === String) {
-        value[1] = encodeURIComponent(value[1]);
-      }
-      json[value[0]] = value[1];
-    });
-    document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
+          }
+          else if (value[1].constructor === String) {
+            value[1] = encodeURIComponent(value[1]).replace(/%20/g,'\+');
+          }
+          json[value[0]] = value[1];
+        });
+        document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
+    }
   }
   
+  function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
   
   $('.page-nav a').click(function(){
     fetchResultsList(this.href);

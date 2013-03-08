@@ -38,7 +38,6 @@ class ItemController {
             //            }
             //        }
 
-
             //Check if Item-Detail was called from search-result and fill parameters
             def searchResultParameters = handleSearchResultParameters(params, request)
 
@@ -142,6 +141,7 @@ class ItemController {
      */
     def handleSearchResultParameters(reqParameters, httpRequest) {
         def searchResultParameters = [:]
+        searchResultParameters["searchParametersMap"] = [:]
         def searchParametersMap
         def resultsItems
         def searchResultUri
