@@ -26,10 +26,10 @@
                     <li class=""><a href="/content/ddb"><g:message code="ddbnext.Participate"/></a></li>
                     <li class=""><a href="/content/competence-network"><g:message code="ddbnext.CompetenceNetwork"/></a></li>
                   </ul></li>
-                <li class=""><a href="/content/help"><g:message code="ddbnext.Help"/></a>
+                <li class=""><a href="/content/help/"><g:message code="ddbnext.Help"/></a>
                   <ul>
-                    <li class=""><a href="/content/faq"><g:message code="ddbnext.Faq"/></a></li>
-                    <li class=""><a href="/content/tutorial"><g:message code="ddbnext.Tutorial"/></a></li>
+                    <li class=""><a href="/content/faq/"><g:message code="ddbnext.Faq"/></a></li>
+                    <li class=""><a href="/content/tutorial/"><g:message code="ddbnext.Tutorial"/></a></li>
                   </ul></li>
               </ul>
             </div>
