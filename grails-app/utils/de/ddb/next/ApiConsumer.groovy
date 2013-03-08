@@ -37,7 +37,7 @@ class ApiConsumer {
                     return reader.getText()
                 }
                 response.'404' = {
-                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     return 'Not found'
                 }
                 response.failure = { resp ->
@@ -86,7 +86,7 @@ class ApiConsumer {
                     return null
                 }
                 response.'404' = {resp, reader ->
-                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
                     return 'Not found'
@@ -122,7 +122,7 @@ class ApiConsumer {
                     return xml
                 }
                 response.'404' = {resp, reader ->
-                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
                     return 'Not found'
@@ -165,7 +165,7 @@ class ApiConsumer {
                     return reader
                 }
                 response.'404' = {resp, reader ->
-                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
                     return 'Not found'

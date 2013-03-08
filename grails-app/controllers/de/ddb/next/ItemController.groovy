@@ -1,5 +1,7 @@
 package de.ddb.next
 
+import java.util.Map;
+
 import de.ddb.next.exception.ItemNotFoundException;
 
 class ItemController {
@@ -37,6 +39,9 @@ class ItemController {
             //        }
 
 
+            //Check if Item-Detail was called from search-result and fill parameters
+            def searchResultParameters = handleSearchResultParameters(params)
+
             def id = params.id
             def item = itemService.findItemById(id)
 
@@ -57,33 +62,6 @@ class ItemController {
                 item.pageLabel= itemService.getItemTitle(id)
             }
 
-            def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-            def resultsItems
-            def hitNumber
-            def searchResultUri
-            //Check if Item-Detail was called from search-result
-            if (params["hitNumber"]) {
-                //Search and return 3 Hits: previous, current and last
-                params["hitNumber"] = params["hitNumber"].toInteger()
-                urlQuery["rows"] = 3
-                if (params["hitNumber"] > 1) {
-                    urlQuery["offset"] = params["hitNumber"] - 2
-                }
-                else {
-                    urlQuery["offset"] = 0
-                }
-                resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
-
-                //generate link back to search-result. Calculate Offset.
-                def searchGetParameters = searchService.getSearchGetParameters(params)
-                def offset = ((Integer)((params["hitNumber"]-1)/params["rows"]))*params["rows"]
-                searchGetParameters["offset"] = offset
-                searchResultUri = "/search?"
-                MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib();
-                searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters);
-
-            }
-
             // TODO: handle 404 and failure separately. HTTP Status Code 404, should
             // to `not found` page _and_ Internal Error should go to `internal server
             // error` page. We should send also the HTTP Status Code 404 or 500 to the
@@ -97,7 +75,7 @@ class ItemController {
                     'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
                     binaryList: binaryList, pageLabel: item.pageLabel,
                     itemDetailGetParams: searchService.getItemDetailGetParameters(params),
-                    hitNumber: params["hitNumber"], results: resultsItems, searchResultUri: searchResultUri, 'flashInformation': flashInformation])
+                    hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
 
                 //render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
                 //    'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
@@ -153,5 +131,48 @@ class ItemController {
             forward controller: "error", action: "serverError"
         }
 
+    }
+    
+    /**
+     * Get Data to build Search Result Navigation Bar for Item Detail View
+     * 
+     * @param reqParameters requestParameters
+     * @return Map with searchResult to build back + next links 
+     *  and searchResultUri for Link "Back to Search Result"
+     */
+    def handleSearchResultParameters(reqParameters) {
+        def searchResultParameters = [:]
+        def resultsItems
+        def searchResultUri
+        if (reqParameters["hitNumber"]) {
+            def urlQuery = searchService.convertQueryParametersToSearchParameters(reqParameters)
+            //Search and return 3 Hits: previous, current and last
+            reqParameters["hitNumber"] = reqParameters["hitNumber"].toInteger()
+            urlQuery["rows"] = 3
+            if (reqParameters["hitNumber"] > 1) {
+                urlQuery["offset"] = reqParameters["hitNumber"] - 2
+            }
+            else {
+                urlQuery["offset"] = 0
+            }
+            resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
+
+            //generate link back to search-result. Calculate Offset.
+            def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
+            def offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters["rows"]))*reqParameters["rows"]
+            searchGetParameters["offset"] = offset
+            searchResultUri = "/search?"
+            MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib();
+            searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters);
+            searchResultParameters["resultsItems"] = resultsItems
+            searchResultParameters["searchResultUri"] = searchResultUri
+
+            //Workaround for last-hit (Performance-issue)
+            if (reqParameters.id && reqParameters.id.equals("lasthit")) {
+                reqParameters.id = resultsItems.results["docs"][1].id
+            }
+        }
+        
+        return searchResultParameters
     }
 }
