@@ -535,7 +535,7 @@ input[type="checkbox"],input[type="radio"] {
 .flyout-right-body.body-extender .left-col >div{
   margin-right: 5px;
 }
-.flyout-right-body.body-extender .right-col >div {
+.flyout-right-body.body-extender .right-col >div, .flyout-page-nav .pages-overall-index span{
   margin-left: 5px;
 }
 .flyout-right-body .left-col >div span, .flyout-right-body .right-col >div span {

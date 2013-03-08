@@ -120,6 +120,8 @@ class SearchService {
     def buildSubFacets(LinkedHashMap urlQuery){
         def emptyFacets = this.facetsList.clone()
         def res = []
+        //We want only the first 10 facets
+        urlQuery["facet.limit"] = 10
         urlQuery["facet"].each{
             if(it != "grid_preview"){
                 emptyFacets.remove(it)

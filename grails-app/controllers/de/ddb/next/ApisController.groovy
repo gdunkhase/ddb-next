@@ -110,6 +110,10 @@ class ApisController {
             if(params.grid_preview){
                 query["grid_preview"]=params.grid_preview
             }
+            
+            if(params["facet.limit"]){
+                query["facet.limit"] = params["facet.limit"]
+            }
 
             def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search', query)
             jsonResp.results["docs"].get(0).each{

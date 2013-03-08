@@ -57,7 +57,7 @@ class ApiConsumer {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
-
+            
             http.request(method, JSON) {
                 uri.path = path
                 uri.query = query
