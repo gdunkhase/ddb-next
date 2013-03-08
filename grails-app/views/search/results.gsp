@@ -6,7 +6,6 @@
 <meta name="keywords" content="${keywords}" />
 <meta name="robots" content="${robots}" />
 <meta name="layout" content="main" />
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}">
 <jawr:script src="/i18n/messages.js"/>
 <script src="${resource(dir: 'js', file: 'search-results.js')}"></script>
 </head>

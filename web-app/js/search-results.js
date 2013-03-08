@@ -162,7 +162,7 @@ window.onload=function(){
       }
     });
   }
-  //Facet Manager --
+  //Facets Manager --
   FacetsManager = function(){
     this.init();
   }
@@ -205,9 +205,9 @@ window.onload=function(){
                 }
             });
     },
-    //Initialize the structures for the pagination logic
+    //Initialize the structures for the pagination logic inside facets flyoutWidget
     initPagination: function(){
-        var currObjInstance = this;
+      var currObjInstance = this;
       if(Math.round((this.currentFacetValuesNotSelected.length)/10)>1){
         this.connectedflyoutWidget.paginationLiPrev.click(function(e){
             e.preventDefault();
@@ -219,9 +219,9 @@ window.onload=function(){
             currObjInstance.goNextPage();
             return false;
         });
-        this.connectedflyoutWidget.setFacetValuesPage(this.currentPage);
         this.connectedflyoutWidget.paginationLiNext.removeClass('off');
       }
+      this.connectedflyoutWidget.setFacetValuesPage(this.currentPage);
     },
     goNextPage: function(){
       this.currentOffset += 10;
@@ -245,6 +245,16 @@ window.onload=function(){
       }
       this.connectedflyoutWidget.paginationLiNext.removeClass('off');
     },
+    
+    selectFacetValue: function(facetValue, localizedValue){
+        this.currentFacetValuesSelected.push(facetValue);
+        this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected, function(element) {
+            return element.value != facetValue;
+        });
+        
+        this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
+    },
+    
     getUrlVars: function(){
       var vars = {}, hash;
       var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -278,6 +288,7 @@ window.onload=function(){
     facetRightContainer:null,
     rightBody: null,
     leftBody: null,
+    selectedItems: null,
     paginationLiPrev: null,
     paginationLiNext: null,
     paginationLiSeite: null,
@@ -315,19 +326,23 @@ window.onload=function(){
       
       if(this.parentMainElement.find('.flyout-left-container').length>0){
         this.facetLeftContainer = this.parentMainElement.find('.flyout-left-container');
+        this.selectedItems = this.parentMainElement.find('.selected-items');
         inputSearchContainer = this.parentMainElement.find('.input-search-fct-container');
         this.inputSearch = this.parentMainElement.find('.input-search-fct');
       }else{
         this.facetLeftContainer = $(document.createElement('div'));
+        this.selectedItems = $(document.createElement('ul'));
         inputSearchContainer = $(document.createElement('div'));
         inputSearch = $(document.createElement('input'));
 
         this.facetLeftContainer.addClass('flyout-left-container');
+        this.selectedItems.addClass('selected-items unstyled');
         inputSearchContainer.addClass('input-search-fct-container');
         inputSearch.attr('type','text');
         inputSearch.addClass('input-search-fct');
         
         this.facetLeftContainer.appendTo(this.mainElement.parent());
+        this.selectedItems.appendTo(this.facetLeftContainer);
         inputSearch.appendTo(inputSearchContainer);
         inputSearchContainer.appendTo(this.facetLeftContainer);
       }
@@ -382,7 +397,6 @@ window.onload=function(){
       //this.parentMainElement.find('.input-search-fct-container').show('100');
     },
     initializeFacetValues: function(field, facetValues){
-        var currObjInstance = this;
         var leftCol = $(document.createElement('div'));
         var rightCol = $(document.createElement('div'));
 
@@ -398,34 +412,79 @@ window.onload=function(){
         this.fctManager.initPagination();
     },
     renderFacetValues: function(field, facetValues){
-      
+      var currObjInstance = this;
+        
       var leftCol = this.rightBody.find('.left-col');
       var rightCol = this.rightBody.find('.right-col');
-      
-      leftCol.empty();
-      rightCol.empty();
       
       if(field == this.fctManager.currentFacetField){
         if(facetValues.length > 5){
           this.rightBody.addClass('body-extender');
         }
-        $.each(facetValues, function(index){
-          var facetValueContainer = $(document.createElement('div'));
-          var spanCount = $(document.createElement('span'));
-
-          facetValueContainer.attr('data-fctvalue', this.value);
-          spanCount.html('('+this.count+')');
-
-          if(index<5){
-            facetValueContainer.appendTo(leftCol);
-          }
-          else if(index<10){
-            facetValueContainer.appendTo(rightCol);
-          }
-          spanCount.appendTo(facetValueContainer);
-          $(document.createTextNode(this.localizedValue)).appendTo(facetValueContainer);
+        this.rightBody.fadeOut('fast', function(){
+          leftCol.empty();
+          rightCol.empty();
+          
+          $.each(facetValues, function(index){
+            if(jQuery.inArray(this.value,currObjInstance.fctManager.currentFacetValuesSelected)==-1){
+                var facetValueContainer = $(document.createElement('div'));
+                var spanCount = $(document.createElement('span'));
+                var facetValue = this.value;
+                var localizedValue = this.localizedValue;
+                
+                facetValueContainer.click(function(){
+                  currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue);
+                });
+                
+                facetValueContainer.attr('data-fctvalue', facetValue);
+                spanCount.html('('+this.count+')');
+        
+                if(index<5){
+                  facetValueContainer.appendTo(leftCol);
+                }
+                else if(index<10){
+                  facetValueContainer.appendTo(rightCol);
+                }
+                spanCount.appendTo(facetValueContainer);
+                $(document.createTextNode(localizedValue)).appendTo(facetValueContainer);
+            }
+          });
+          currObjInstance.rightBody.fadeIn('fast');
         });
       }
+    },
+    renderSelectedFacetValue: function(facetValue, localizedValue){
+      var facetValueContainer = $(document.createElement('li'));
+      var facetValueSpan = $(document.createElement('span'));
+      var facetValueRemove = $(document.createElement('span'));
+      
+      facetValueContainer.attr('data-fctvalue', facetValue);
+      facetValueSpan.attr('title', localizedValue);
+      facetValueSpan.html(localizedValue);
+      facetValueRemove.attr('title', this.field_RemoveButton);
+      
+      facetValueSpan.addClass('facet-value');
+      facetValueRemove.addClass('facet-remove fr');
+      
+      facetValueSpan.appendTo(facetValueContainer);
+      facetValueRemove.appendTo(facetValueContainer);
+      facetValueContainer.appendTo(this.selectedItems);
+      console.log(this.fctManager.currentFacetValuesSelected.length)
+      if(this.fctManager.currentFacetValuesSelected.length == 1){
+          var addMoreFilters = $(document.createElement('div'));
+          var text = $(document.createElement('span'));
+          var icon = $(document.createElement('span'));
+          
+          text.html(this.field_AddMoreFiltersButtonTooltip);
+          
+          addMoreFilters.addClass('addMoreFilters');
+          icon.addClass('icon');
+          
+          text.appendTo(addMoreFilters);
+          icon.appendTo(addMoreFilters);
+          addMoreFilters.appendTo(this.facetLeftContainer);
+      }
+      //this.leftBody
     },
     setFacetValuesPage: function(pageNumber){
       this.paginationLiSeite.find('span').html(pageNumber);
