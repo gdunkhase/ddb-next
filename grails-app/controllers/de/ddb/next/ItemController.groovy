@@ -68,8 +68,8 @@ class ItemController {
                 def offset = ((Integer)((params["hitNumber"]-1)/params["rows"]))*params["rows"]
                 searchGetParameters["offset"] = offset
                 searchResultUri = "/search?"
-                MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib();
-                searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters);
+                MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib()
+                searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters)
             }
 
             // TODO: handle 404 and failure separately. HTTP Status Code 404, should
@@ -102,27 +102,14 @@ class ItemController {
     }
 
     def translate(fields) {
-        /* TODO: why do we need to catch the Exceptions in this method, is it better to throw them?
-         * because the caller already catch the same Exceptions.
-         */
-
-        try {
-            fields.each {
-                def messageKey = 'ddbnext.' + it.'@id'
-                def translated = message(code: messageKey)
-                if(translated != messageKey) {
-                    it.name = translated
-                } else {
-                    log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
-                }
+        fields.each {
+            def messageKey = 'ddbnext.' + it.'@id'
+            def translated = message(code: messageKey)
+            if(translated != messageKey) {
+                it.name = translated
+            } else {
+                log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
             }
-        } catch(MissingPropertyException mpe){
-            // TODO: can we handle the Exception centrally?
-            log.error "translate(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "translate(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
         }
     }
 
