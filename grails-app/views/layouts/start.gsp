@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
     <meta charset="utf-8">
+    <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
     <meta name="description" content="Deutsche Digitale Bibliothek">
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}">
