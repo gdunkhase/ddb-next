@@ -1,7 +1,6 @@
 package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
-// TODO: do we need this class?
 class IndexController {
 
     def index() {

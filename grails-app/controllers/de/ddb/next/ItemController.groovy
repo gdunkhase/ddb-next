@@ -1,8 +1,6 @@
 package de.ddb.next
 
-import java.util.Map;
-
-import de.ddb.next.exception.ItemNotFoundException;
+import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
     static defaultAction = "findById"
@@ -12,7 +10,6 @@ class ItemController {
 
     def children() {
         try {
-
             render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", null))
         } catch(MissingPropertyException mpe){
             log.error "children(): There was a missing property.", mpe
@@ -25,20 +22,6 @@ class ItemController {
 
     def findById() {
         try {
-            //
-            //        String url = grailsApplication.config.ddb.backend.url
-            //        List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
-            //
-            //        for(facet in facetSearchfields){
-            //            log.info "########### " + facet.name + " / " + facet.searchType + " / " + facet.sortType
-            //
-            //            List facetsOfCertainType = new FacetsService(url:url).getFacet(facet.name);
-            //            for(facetOfType in facetsOfCertainType){
-            //                log.info "########################## " + facetOfType
-            //            }
-            //        }
-
-
             //Check if Item-Detail was called from search-result and fill parameters
             def searchResultParameters = handleSearchResultParameters(params)
 
@@ -75,14 +58,9 @@ class ItemController {
                     'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
                     binaryList: binaryList, pageLabel: item.pageLabel,
                     itemDetailGetParams: searchService.getItemDetailGetParameters(params),
-                    hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
-
-                //render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                //    'title': item.title, item: item.item, institution : item.institution, fields: item.fields,
-                //    binaryList: binaryList, pageLabel: item.pageLabel, 'flashInformation': flashInformation])
-
+                    hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"],
+                    searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
             }
-
         } catch(ItemNotFoundException infe){
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
             forward controller: "error", action: "notFound"
@@ -93,7 +71,6 @@ class ItemController {
             log.error "findById(): An unexpected error occured.", e
             forward controller: "error", action: "serverError"
         }
-
     }
 
     def translate(fields) {
@@ -132,12 +109,12 @@ class ItemController {
         }
 
     }
-    
+
     /**
      * Get Data to build Search Result Navigation Bar for Item Detail View
-     * 
+     *
      * @param reqParameters requestParameters
-     * @return Map with searchResult to build back + next links 
+     * @return Map with searchResult to build back + next links
      *  and searchResultUri for Link "Back to Search Result"
      */
     def handleSearchResultParameters(reqParameters) {
@@ -162,8 +139,8 @@ class ItemController {
             def offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters["rows"]))*reqParameters["rows"]
             searchGetParameters["offset"] = offset
             searchResultUri = "/search?"
-            MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib();
-            searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters);
+            MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib()
+            searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters)
             searchResultParameters["resultsItems"] = resultsItems
             searchResultParameters["searchResultUri"] = searchResultUri
 
@@ -172,7 +149,6 @@ class ItemController {
                 reqParameters.id = resultsItems.results["docs"][1].id
             }
         }
-        
         return searchResultParameters
     }
 }
