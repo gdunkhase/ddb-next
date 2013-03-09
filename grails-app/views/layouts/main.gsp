@@ -38,81 +38,18 @@
     <g:layoutBody/>
   </div>
   <g:render template="/footer" />
-  <!--  TODO which script do we really use? -->
-  <!--  TODO why do we declare jquery here? Don't we use Grails jQuery Plug-in? -->
-  <script src="${resource(dir:'js', file:'json2.js')}"></script>  
-  <script src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
-  <script src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}"></script>
-  <script src="${resource(dir: 'js', file: 'underscore-min.js')}"></script>
-  <script src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}"></script>
-  <script src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}"></script>
-  <script src="${resource(dir: 'js', file: 'advanced-search-page.js')}"></script>
-  <script src="${resource(dir: 'js', file: 'jquery.fancybox-1.3.4.pack.js')}"></script>
-  <script src="${resource(dir: 'jwplayer', file: 'jwplayer.js')}"></script>
-  <script>jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="</script>
-  <script src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
-  <script src="${resource(dir: 'js', file: 'institution-list.js')}"></script>
-  <script>
-			var global;
-			var resources;
-
-			Ddb.siteRoot = 'http://www.deutsche-digitale-bibliothek.de/';
-
-			$(function() {
-
-				// workaround for ffox + ie click focus - prevents links that load dynamic content to be focussed/active. 
-				$("a.noclickfocus").live('mouseup', function() {
-					$(this).blur();
-				});
-
-				var languageCookie = $.cookies.get('language');
-			if (languageCookie
-						&& languageCookie != Ddb.Data.TwoLetterLanguage) {
-					$.cookies.set('language', Ddb.Data.TwoLetterLanguage); // restore to valid cookie
-				}
-
-				resources = new Resources();
-				global = new Global();
-
-				Ddb.Publisher.Get("Search").Skip(1).Subscribe(function() {
-					global.body.find('nav li.search').addClass('active');
-				});
-
-				Ddb.Publisher.Get("ObjectQuery").Skip(1).Subscribe(
-						function() {
-							global.body.find('nav li.active').removeClass(
-									'active').addClass('search');
-						});
-
-				var toolbarNav = $('nav ul.toolbar');
-				if (toolbarNav.length) {
-					ko.applyBindings(global, toolbarNav.get(0));
-				}
-
-				// register all widgets in page at DOM load
-				$(".widget").RegisterWidget();
-
-				// open all external links in a new tab
-				// ideally should be find('a[rel=external']) or similar
-				global.body.bind('click', function(e) {
-					var target = e.target;
-					if (target) {
-						var closestAnchor = $(target).closest('a');
-						if (closestAnchor.length) {
-							var href = closestAnchor.get(0).href;
-							if (href && href.indexOf('mailto:') !== 0) {
-								var isExternalLink = href
-										.indexOf(window.location.host) == -1;
-								if (isExternalLink) {
-									e.preventDefault();
-									window.open(href);
-								}
-							}
-						}
-					}
-				});
-
-			});
-  </script>
+    <!--  TODO why do we declare jquery here? Don't we use Grails jQuery Plug-in? -->
+    <script src="${resource(dir:'js', file:'json2.js')}"></script>  
+    <script src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'underscore-min.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'advanced-search-page.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'jquery.fancybox-1.3.4.pack.js')}"></script>
+    <script src="${resource(dir: 'jwplayer', file: 'jwplayer.js')}"></script>
+    <script>jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="</script>
+    <script src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'institution-list.js')}"></script>
   </body>
 </html>
