@@ -40,29 +40,18 @@
   <g:render template="/footer" />
   <!--  TODO which script do we really use? -->
   <!--  TODO why do we declare jquery here? Don't we use Grails jQuery Plug-in? -->
-  <script type="text/javascript" src="${resource(dir:'js', file:'json2.js')}"></script>  
-  <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.scrollTo-min.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.jQuery.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'underscore-min.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'dateformat.min.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout-latest.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout.mapping-latest.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.mousewheel.min.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.microdata.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'amplify.min.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'large-cookie.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'advanced-search-page.js')}" /></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.fancybox-1.3.4.pack.js')}"></script>
-  <script type="text/javascript" src="${resource(dir: 'jwplayer', file: 'jwplayer.js')}"></script>
+  <script src="${resource(dir:'js', file:'json2.js')}"></script>  
+  <script src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
+  <script src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}"></script>
+  <script src="${resource(dir: 'js', file: 'underscore-min.js')}"></script>
+  <script src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}"></script>
+  <script src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}"></script>
+  <script src="${resource(dir: 'js', file: 'advanced-search-page.js')}"></script>
+  <script src="${resource(dir: 'js', file: 'jquery.fancybox-1.3.4.pack.js')}"></script>
+  <script src="${resource(dir: 'jwplayer', file: 'jwplayer.js')}"></script>
   <script>jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="</script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
-  <script type="text/javascript" src="${resource(dir: 'js', file: 'institution-list.js')}"/></script>
+  <script src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
+  <script src="${resource(dir: 'js', file: 'institution-list.js')}"></script>
   <script>
 			var global;
 			var resources;

@@ -31,21 +31,15 @@
       <g:layoutBody />
     </div>
     <g:render template="/footer" />
-    <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.jQuery.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'underscore-min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'dateformat.min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout-latest.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout.mapping-latest.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.microdata.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'amplify.min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'start-page.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
+    <script src="${resource(dir:'js', file:'json2.js')}"></script>  
+    <script src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'underscore-min.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'amplify.min.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'start-page.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
     <script>
         var global;
         var resources;
