@@ -1,5 +1,5 @@
 window.onload = function() {
-  $(document).ready(function() {
+  $(function() {
     currentTab($("p.all"));
     $(function() {
       $("div.all").show();
@@ -29,9 +29,13 @@ window.onload = function() {
         $("#jwplayer-container").remove();
       if($("#jwplayer-container_wrapper"))
         $("#jwplayer-container_wrapper").remove();
+      $(".previews").parent().addClass("off");
       $(".previews").each(function() {
         if($(this).attr("href") == previewHref) {
           $(this).parent().removeClass("off");
+          return false;
+        } else {
+            $(this).parent().appendTo($("#previews-list"));
         }
       });
     } else {
@@ -99,7 +103,8 @@ window.onload = function() {
     });
   };
   function formatTitle() {
-    return '<div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span>';
+    return '<div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span>'
+           '<span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div>';
   }
   function hideErrors() {
     $("div.binary-viewer-error").addClass("off");
@@ -143,25 +148,23 @@ window.onload = function() {
     createGallery($("#gallery-audios"));
     updatePreview(tab);
   });
-  $(function() {
-    $(".previews").click(function(e) {
-          e.preventDefault();
-          $.fancybox($(".previews"),{
-              'padding'   :   0,
-              'closeBtn'   :   false,
-              'overlayShow'   :   true,
-              'openEffect'   : 'fade',
-              'closeEffect'   : 'fade',
-              'prevEffect'   : 'fade',
-              'nextEffect'   : 'fade',
-              'tpl' :{
-                  wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
-                  prev     : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();"></span>',
-                  next     : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();"></span>'
-              }
-          });
-          return false;
-    });
+  $(".previews").click(function(e) {
+        e.preventDefault();
+        $.fancybox($(".previews"),{
+            'padding'   :   0,
+            'closeBtn'   :   false,
+            'overlayShow'   :   true,
+            'openEffect'   : 'fade',
+            'closeEffect'   : 'fade',
+            'prevEffect'   : 'fade',
+            'nextEffect'   : 'fade',
+            'tpl' :{
+                wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
+                prev     : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();"></span>',
+                next     : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();"></span>'
+            }
+        });
+        return false;
   });
   $("a.group").click(function(e) {
       e.preventDefault();
@@ -178,9 +181,12 @@ window.onload = function() {
           $("#jwplayer-container_wrapper").remove();
         $(".previews").parent().addClass("off");
         $(".previews").each(function() {
-            if($(this).attr("href") == previewHref) {
-              $(this).parent().removeClass("off");
-            }
+          if($(this).attr("href") == previewHref) {
+            $(this).parent().removeClass("off");
+            return false;
+          } else {
+              $(this).parent().appendTo($("#previews-list"));
+          }
         });
       } else {
           jwPlayerSetup(previewHref,previewUri);

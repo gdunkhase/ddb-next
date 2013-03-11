@@ -1,7 +1,7 @@
 <div class="slide-viewer">
   <div class="binary-viewer-container">
     <div id="binary-viewer">
-      <ul>
+      <ul id="previews-list">
         <g:each in="${binaryList}">
           <g:if test="${it.full.uri == ''}">
             <g:set var="content" value="${it.preview.uri}"/>

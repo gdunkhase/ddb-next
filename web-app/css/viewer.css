@@ -159,11 +159,6 @@ noscript .scroller {
   display: block !important;
   overflow: auto !important;
 }
-.fancybox-title-over {
-  top:0px;
-  bottom:auto !important;
-  margin-left: 0 !important;
-}
 .fancybox-toolbar {
   background-color: #efebe8;
   padding: 5px;
