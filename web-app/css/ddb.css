@@ -359,7 +359,6 @@ noscript .caption {
   position: absolute;
   top: 85px;
 }
-
 .carousel a.previous {
   left: 84px;
 }
@@ -473,19 +472,6 @@ body {
   min-height: 515px;
 }
 */
-.start header,.start .header {
-  margin-bottom:0px;
-}
-.start header .navigation-header-logo ,.start .header .navigation-header-logo,.start header #form-search-header,.start .header #form-search-header{
-  display:none;
-}
-.start header .navigation,.start .header .navigation {
-  padding-top:10px;
-}
-.start header .toolbar,.start .header .toolbar {
-  margin-top:0px;
-  margin-bottom: 30px;
-}
 form label {
   display: inline-block;
   clear: left;

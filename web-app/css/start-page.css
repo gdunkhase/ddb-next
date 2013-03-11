@@ -1,0 +1,13 @@
+ header, .header {
+  margin-bottom:0px;
+}
+ header .navigation-header-logo , .header .navigation-header-logo, header #form-search-header, .header #form-search-header{
+  display:none;
+}
+ header .navigation, .header .navigation {
+  padding-top:10px;
+}
+ header .toolbar, .header .toolbar {
+  margin-top:0px;
+  margin-bottom: 30px;
+}
