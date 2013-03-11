@@ -187,6 +187,9 @@ public class AdvancedSearchFormToQueryConverter {
                 rowQuery.append(facet).append(":(")
                 for (int i = 0; i < parts.length; i++) {
                     if (parts[i] != null && parts[i].length() > 0) {
+                        //mask certain signs according to Lucene-Rules
+                        parts[i] = parts[i]
+                            .replaceAll("([\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\\"\\~\\*\\?\\:\\\\])", '\\\\$1');
                         if (i > 0) {
                             if (match.equalsIgnoreCase(orName)) {
                                 rowQuery.append(" OR ")
