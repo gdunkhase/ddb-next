@@ -12,8 +12,7 @@ class ItemController {
 
     def children() {
         try {
-
-            render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", null))
+            render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", ["rows":501]))
         } catch(MissingPropertyException mpe){
             log.error "children(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"

@@ -9,12 +9,21 @@
  * displayed object
  * 
  * @param {boolean} isLast true if the current node is the last node in the list
+ * 
+ * @param {boolean} moreHidden true if there are more children which are not displayed
  */
-function addLeafNode(currentNode, value, isCurrent, isLast) {
+function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   currentNode.empty();
   currentNode.addClass("leaf");
   if (isLast) {
-    currentNode.addClass("last");
+    if (moreHidden) {
+      currentNode.parent().append($("<li>", {
+        class : "more-available"
+      }));
+    }
+    else {
+      currentNode.addClass("last");
+    }
   } else {
     currentNode.removeClass("last");
   }
@@ -222,7 +231,8 @@ function createHierarchy(url) {
             var currentNode = $("<li>");
 
             ul.append(currentNode);
-            addLeafNode(currentNode, value, value.id == parents[parents.length - 1].id, index == length - 1);
+            addLeafNode(currentNode, value, value.id == parents[parents.length - 1].id, index == length - 1,
+                length == 501);
           });
           currentNode.append(ul);
           setNodeIcon(currentNode.find("span.branch-type>i"), true);
@@ -239,7 +249,7 @@ function getChildren(url, id, complete) {
     type : "GET",
     dataType : "json",
     async : true,
-    url : url.dir + "children/" + id + "?rows=501",
+    url : url.dir + "children/" + id,
     complete : function(data) {
       complete(jQuery.parseJSON(data.responseText));
     }
@@ -350,7 +360,7 @@ function showChildren(url, currentNode, currentId, parentId) {
         if (parents[0].aggregationEntity) {
           addParentNode(url, li, currentId, value, isCurrent, isLast, false);
         } else {
-          addLeafNode(li, value, isCurrent, isLast);
+          addLeafNode(li, value, isCurrent, isLast, length == 501);
         }
         return;
       });
