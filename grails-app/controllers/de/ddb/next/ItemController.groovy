@@ -108,6 +108,7 @@ class ItemController {
             if(translated != messageKey) {
                 it.name = translated
             } else {
+                it.name = it.name.toString().capitalize();
                 log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
             }
         }
