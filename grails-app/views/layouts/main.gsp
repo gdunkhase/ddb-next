@@ -55,6 +55,7 @@
   <script type="text/javascript" src="${resource(dir: 'js', file: 'amplify.min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}" /></script>
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'bootstrap-collapse.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'large-cookie.js')}" /></script>
   <script type="text/javascript" src="${resource(dir: 'js', file: 'advanced-search-page.js')}" /></script>
