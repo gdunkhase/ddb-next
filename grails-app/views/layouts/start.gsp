@@ -1,14 +1,13 @@
-<!-- TODO do we still need this file? -->
 <!DOCTYPE html>
 <html>
   <head>
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Deutsche Digitale Bibliothek" />
-    <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}" type="text/css">
+    <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon" />
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css" />
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" type="text/css" /> 
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}" type="text/css" />
     <link rel="search" title="Deutsche Digitale Bibliothek" href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx" type="application/opensearchdescription+xml" />
     <!--[if lt IE 9]>
       <script src="Scripts/html5shim.googlecode.html5.js"> </script>
@@ -31,21 +30,21 @@
       <g:layoutBody />
     </div>
     <g:render template="/footer" />
-    <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.jQuery.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'underscore-min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'dateformat.min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout-latest.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout.mapping-latest.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.microdata.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'amplify.min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'start-page.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" /></script>
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
+    <script type="text/javascript" src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'rx.jQuery.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'underscore-min.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'dateformat.min.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout-latest.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'knockout.mapping-latest.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.microdata.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'amplify.min.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'start-page.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.min.js')}" ></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'tooltip.js')}" ></script>
     <script>
         var global;
         var resources;

@@ -47,7 +47,7 @@
           <g:each in="${articles}">
       <div class="article">
         <a href="<%=it.uri%>" title="<%=it.title%>" target="_self">
-          <img src="${staticUrl}<%=it.src%>" alt="<%=it.title%>">
+          <img src="${staticUrl}<%=it.src%>" alt="<%=it.title%>" />
         </a>
         <div class="caption">
           <a href="/about-us/institutions" title="<%=it.title%>"><% println "${it.title}" %></a>
