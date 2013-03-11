@@ -15,7 +15,9 @@
             <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
         </a>
     </g:if> 
-    <a class="page-link" href="${itemUri}" 
+    <g:else>
+        <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
+    </g:else>    <a class="page-link" href="${itemUri}" 
        title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
       <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
     </a>
