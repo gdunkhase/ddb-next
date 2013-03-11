@@ -4,7 +4,8 @@ import groovyx.net.http.HTTPBuilder
 
 class InstitutionService {
 
-    private static final def INDEX='A'..'Z'
+    private static final def LETTERS='A'..'Z'
+    def NUMBERS = 0..9
 
     def transactional = false
 
@@ -22,29 +23,31 @@ class InstitutionService {
         def allInstitutions = [data: [:], total: totalInstitution]
 
         http.get(path: '/institutions') { resp, institutionList->
-            def institutionByFirstLetter = buildIndex()
-
+            def institutionByFirstChar = buildIndex()
 
             institutionList.each { it ->
+
                 totalInstitution++
-                def firstLetter = it?.name[0]?.toUpperCase()
 
-                it.firstChar = firstLetter
-                it.sectorLabelKey = 'ddbnext.' + it.sector
+                def firstChar = it?.name[0]?.toUpperCase()
+                it.firstChar = firstChar
 
-                if (INDEX.contains(firstLetter)) {
-                    if(institutionByFirstLetter.get(firstLetter)?.size() == 0) {
-                        it.isFirst = true
-                    }
+                /*
+                 * mark an institution as the first one that start with the
+                 * character. We will use it for assigning id in the HTML.
+                 * See: views/institutions/_listItem.gsp
+                 * */
+                if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
+                    it.isFirst = true
                 }
 
+                it.sectorLabelKey = 'ddbnext.' + it.sector
                 buildChildren(it, totalInstitution)
-                institutionByFirstLetter = putToIndex(institutionByFirstLetter, addUri(it), firstLetter)
+                institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
             }
 
-            allInstitutions.data = institutionByFirstLetter
+            allInstitutions.data = institutionByFirstChar
             allInstitutions.total = getTotal(institutionList)
-
 
             return allInstitutions
         }
@@ -57,7 +60,7 @@ class InstitutionService {
 
         for (root in rootList) {
             if (root.children?.size() > 0) {
-                total = total + root.children.size();
+                total = total + root.children.size()
                 total = total + countDescendants(root.children)
             }
         }
@@ -82,15 +85,12 @@ class InstitutionService {
             case 'Ä':
                 institutionByFirstLetter['A'].add(institutionWithUri)
                 break
-
             case 'Ö':
                 institutionByFirstLetter['O'].add(institutionWithUri)
-            break
-
+                break
             case 'Ü':
                 institutionByFirstLetter['U'].add(institutionWithUri)
                 break
-
             default:
                 institutionByFirstLetter[firstLetter].add(institutionWithUri)
         }
@@ -110,14 +110,17 @@ class InstitutionService {
     }
 
     private def buildIndex() {
-        def az = 'A'..'Z'
-        def institutionByFirstLetter = [:].withDefault{
-            []
-        }
+        def institutionByFirstLetter = [:].withDefault{ [] }
 
-        az.each {
+        // create a map with intial value an empty array.
+        // use A..Z as keys
+        LETTERS.each {
             institutionByFirstLetter[it] = []
         }
+
+        // add '0-9' as key for institution starts with a number
+        def numberIndex = '0-9'
+        institutionByFirstLetter[numberIndex] = [];
 
         return institutionByFirstLetter
     }

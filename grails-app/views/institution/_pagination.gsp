@@ -9,7 +9,6 @@
     <li><a href="#${ it.key }">${ it.key }</a></li>
     </g:else>
   </g:each>
-    <li class="disabled"><a href="#0-9">0-9</a></li>
   </ul>
 <hr>
 </div>

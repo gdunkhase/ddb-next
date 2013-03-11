@@ -43,7 +43,7 @@ var ddb = {
   },
 
   findElements: function(list) {
-    return $('.institution-listitem').filter(function() {
+    return $('li.institution-listitem').filter(function() {
       return _.contains(_.pluck(list, 'id'), $(this).data('institution-id'));
     });
   },
@@ -72,6 +72,7 @@ var ddb = {
   },
 
   onFilterSelect: function() {
+    // TODO: add id
     $('input:checkbox').click(function() {
       ddb.applyFilter();
     });
@@ -89,16 +90,12 @@ var ddb = {
     ddb.filter(institutionList, sectors, firstLetter);
   },
 
+  // TODO: only calculate it once.
   getInstitutionAsList: function() {
-    // if (ddb.institutionList) {
-    //   return ddb.institutionList;
-    // }
-
     ddb.institutionList = _.chain(ddb.institutionsBySector)
       .values()
       .flatten()
       .value();
-
     return ddb.institutionList;
   },
 
@@ -112,13 +109,12 @@ var ddb = {
   },
 
   getSelectedSectors: function() {
+    // TODO: check, if there is more efficient way to formulate the selector.
     var allSelectedSectors = $('.sector-facet input:checked');
-    // TODO: use reducer instead.
-    var sectors = [];
-    _.each(allSelectedSectors, function(el) {
+    return _.reduce(allSelectedSectors, function(sectors, el) {
       sectors.push($(el).data('sector'));
-    });
-    return sectors;
+      return sectors;
+    },[]);
   },
 
   filter: function(institutionList, sectors, firstLetter) {
@@ -227,15 +223,18 @@ var ddb = {
 
   // visible institutions are filtered institutions and their descendants.
   showResult: function(visibleInstitution, filteredBySector) {
+    console.log('show results...');
     // TODO: clear the message when sectors=[] and firstLetter !== ''
     var $msg = $('#no-match-message');
 
     // view manipulation
     if (visibleInstitution.length) {
+      console.log('has visible elements.');
       $msg.css('display', 'none');
       ddb.findElements(filteredBySector).addClass('highlight');
-      ddb.findElements(visibleInstitution).css('display',''); 
+      ddb.findElements(visibleInstitution).css('display','block'); 
     } else {
+      console.log('all elements are invisible');
       $msg.css('display', 'block'); 
     }
   },
