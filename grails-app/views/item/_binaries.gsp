@@ -1,16 +1,30 @@
 <div class="slide-viewer">
   <div class="binary-viewer-container">
     <div id="binary-viewer">
-      <a class="preview" href="#">
-         <img src="" alt="" />
-      </a>
-      <div class="binary-viewer-error">
+      <ul id="previews-list">
+        <g:each in="${binaryList}">
+          <g:if test="${it.full.uri == ''}">
+            <g:set var="content" value="${it.preview.uri}"/>
+          </g:if>
+          <g:else>
+            <g:set var="content" value="${it.full.uri}"/>
+          </g:else>
+          <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+            <li>
+              <a class="previews" rel="group1" href="${content}">
+                <img src="${it.preview.uri}" alt="${it.preview.title}" />
+              </a>
+            </li>
+          </g:if>
+        </g:each>
+      </ul>
+      <div class="binary-viewer-error off">
         <p class="error-header"><g:message code="ddbnext.We_could_not_play_the_file" /></p>
         <p>
           <g:message code="ddbnext.You_can_download_or_use_alternative" />
         </p>
       </div>
-      <div class="binary-viewer-flash-upgrade">
+      <div class="binary-viewer-flash-upgrade off">
         <p class="error-header"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
         <p>
           <a href="http://get.adobe.com/flashplayer/"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" /></a>
