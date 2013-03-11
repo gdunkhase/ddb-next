@@ -2,7 +2,6 @@ package de.ddb.next
 
 import de.ddb.next.exception.ItemNotFoundException
 
-
 class ItemController {
     static defaultAction = "findById"
 
@@ -23,6 +22,7 @@ class ItemController {
 
     def findById() {
         try {
+            //Check if Item-Detail was called from search-result and fill parameters
             def searchResultParameters = handleSearchResultParameters(params)
 
             def id = params.id
@@ -137,7 +137,6 @@ class ItemController {
                 reqParameters.id = resultsItems.results["docs"][1].id
             }
         }
-
         return searchResultParameters
     }
 }
