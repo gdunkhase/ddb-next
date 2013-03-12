@@ -29,14 +29,16 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   }
 
   var branchType = $("<span>", {
-    class : "branch-type"
+    class : "branch-type fl"
   });
   var i = $("<i>");
   var leafIndicator = $("<div>", {
     class : "leaf-indicator"
   });
   var a = $("<a>", {
-    href : value.id
+    class : "label",
+    href : value.id,
+    title : truncateTitle(value.label, 350)
   });
 
   if (isCurrent) {
@@ -82,7 +84,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   }
 
   var branchType = $("<span>", {
-    class : "branch-type"
+    class : "branch-type fl"
   });
 
   currentNode.append(branchType);
@@ -122,7 +124,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
     });
 
     var label = $("<span>", {
-      class : "item-hierarchy-label" + (isCurrent ? " current-path" : "")
+      class : "label" + (isCurrent ? " current-path" : "")
     });
 
     label.append(truncateTitle(value.label, 350));
