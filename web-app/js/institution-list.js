@@ -129,6 +129,7 @@ var ddb = {
     console.log('apply filter');
 
     if (sectors.length > 0 && firstLetter === '') {
+
       console.log('Only filter by sectors, _not_ first character.');
       console.log('sectors: ', sectors);
 
@@ -148,7 +149,6 @@ var ddb = {
       // In this case, we don't need a parent list. TODO: refactor
       console.log('first char selected: ' + firstLetter);
       console.log('sectors: ', sectors);
-
 
       /*
       1. we collect all root institutions start with the selected firstLetter, 
@@ -223,10 +223,9 @@ var ddb = {
   },
 
   showAll: function() {
-    $('#no-match-message').css('diplay', 'none');
-    $('.institution-listitem').css('display','')
+    $('#no-match-message').css('display', 'none');
+    $('.institution-listitem').css('display','');
   },
-
 
   updateIndex: function(hasNoMember) {
     if (hasNoMember) {
@@ -258,17 +257,22 @@ var ddb = {
 
     // view manipulation
     if (visibleInstitution.length) {
-      console.log('has visible elements: ' + visibleInstitution.length);
-      console.log('visible elements: ', visibleInstitution);
+      console.log('has visible institutions: ' + visibleInstitution.length);
+      console.log('visible institutions: ', visibleInstitution);
 
       // hide the 'no result' message
       console.log('hide the no result message');
       $msg.css('display', 'none');
+
       ddb.findElements(filteredBySector).addClass('highlight');
-      ddb.findElements(visibleInstitution).css('display',''); 
+
+      var $visible = ddb.findElements(visibleInstitution);
+      $visible.css('display',''); 
+
+      console.log('has visible elements: ' , $visible);
     } else {
       console.log('all elements are invisible');
-      $msg.css('display', 'block'); 
+      $msg.css('display', ''); 
     }
   },
 
