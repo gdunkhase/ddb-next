@@ -13,13 +13,13 @@ var ddb = {
   // cache for all institution, including children and their descendants
   all: $('.institution-listitem'),
 
-  institutionsBySector: null,
+  institutionsByFirstChar: null,
 
   $index: null,
 
   // find index[All| A | B |...| Z | 0-9] with no members after filtered by sectors.
   findNoMember: function(visible) {
-    return _.reduce(ddb.institutionsBySector, function(memo, array, key) {
+    return _.reduce(ddb.institutionsByFirstChar, function(memo, array, key) {
       if (_.intersection(array, visible).length === 0) {
        memo.push(key);
     }
@@ -48,10 +48,12 @@ var ddb = {
     });
   },
 
-  getInstitutionsBySector: function(onFilterSelect, onPageLoad) {
-    if (ddb.institutionsBySector === null) {
+  getinstitutionsByFirstChar: function(onFilterSelect, onPageLoad) {
+    if (ddb.institutionsByFirstChar === null) {
       $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
-        ddb.institutionsBySector = response.data;
+        console.log('data: ', JSON.stringify(response.data, null, ' ', 2));
+
+        ddb.institutionsByFirstChar = response.data;
 
         // call the callbacks, once data is loaded.
         onPageLoad();
@@ -92,7 +94,7 @@ var ddb = {
 
   // TODO: only calculate it once.
   getInstitutionAsList: function() {
-    ddb.institutionList = _.chain(ddb.institutionsBySector)
+    ddb.institutionList = _.chain(ddb.institutionsByFirstChar)
       .values()
       .flatten()
       .value();
@@ -141,25 +143,42 @@ var ddb = {
       selected, e.g.,  sector = ['Library', 'Media'], index = 'B'
       */
       // In this case, we don't need a parent list. TODO: refactor
+      console.log('first char selected: ' + firstLetter);
+      console.log('sectors: ', sectors);
+
+
+      /*
+      1. we collect all root institutions start with the selected firstLetter, 
+        for example 'W', including their children. The children do *not* have 
+        to start with the selected first letter.
+
+      2. we start to apply the sector filter, for example [Library] to all
+        institutions(roots and their children) collected from the first step.
+      */
+
+      // TODO: this is wrong
       var filteredBySector = _.reduce(institutionList, function(memory, institution) {
         if (institution.firstChar === firstLetter && _.contains(sectors, institution.sector)) {
           memory.push(institution);
         }
+        // TODO: this might causes the problem.
         ddb.filterDescendants(institution, memory, sectors, parentList);
         return memory;
       }, []);
+
+      console.log('filtered by sector and first char', JSON.stringify(filteredBySector, null, '2'));
 
       parentList = _.filter(parentList, function(parent) {
         return parent.firstChar === firstLetter;
       });
 
+      // TODO: visible is broken.
       var visible = _.union(parentList, filteredBySector);
-      ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
+      ddb.showResult(visible, filteredBySector);
 
       // find all root institutions filtered by sectors.
       // get the first letter, e.g., only As and Ls
       // show only A and L in Index.
-      // TODO: disable `0-9`
       var filtered = ddb.filterBySectors(institutionList, sectors, parentList);
       var hasNoMember = ddb.findNoMember(_.union(_.uniq(parentList), filtered));
       ddb.updateIndex(hasNoMember);
@@ -229,7 +248,9 @@ var ddb = {
 
     // view manipulation
     if (visibleInstitution.length) {
-      console.log('has visible elements.');
+      console.log('has visible elements: ' + visibleInstitution.length);
+      console.log('visible elements: ', visibleInstitution);
+
       $msg.css('display', 'none');
       ddb.findElements(filteredBySector).addClass('highlight');
       ddb.findElements(visibleInstitution).css('display','block'); 
@@ -241,7 +262,7 @@ var ddb = {
 
   showByFirstLetter: function(firstLetter) {
     // get all institution start with the letter `firstLetter`
-    var idList = _.pluck(ddb.institutionsBySector[firstLetter], 'id');
+    var idList = _.pluck(ddb.institutionsByFirstChar[firstLetter], 'id');
 
         // find all institutions match idList
     ddb.filteredEl = $('.institution-listitem').filter(function() {
@@ -250,13 +271,13 @@ var ddb = {
 
     // find all first level institutions which are not start with
     // firstLetter
-    var restKeys = _.chain(ddb.institutionsBySector)
+    var restKeys = _.chain(ddb.institutionsByFirstChar)
       .keys()
       .reject(function(key) { return key === firstLetter; })
       .value();
 
     // get all values from restKeys
-    var restIdList = _.chain(ddb.institutionsBySector)
+    var restIdList = _.chain(ddb.institutionsByFirstChar)
       .filter(function(val, key) { return _.contains(restKeys, key); })
       .flatten()
       .pluck('id')
@@ -279,5 +300,5 @@ $(function() {
   ddb.$index = $('#first-letter-index').clone(true);
   ddb.$institutionList = $('#institution-list').clone();
   
-  ddb.getInstitutionsBySector(ddb.onFilterSelect, ddb.onPageLoad);
+  ddb.getinstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
 });
