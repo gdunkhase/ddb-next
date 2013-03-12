@@ -51,8 +51,6 @@ var ddb = {
   getinstitutionsByFirstChar: function(onFilterSelect, onPageLoad) {
     if (ddb.institutionsByFirstChar === null) {
       $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
-        console.log('data: ', JSON.stringify(response.data, null, ' ', 2));
-
         ddb.institutionsByFirstChar = response.data;
 
         // call the callbacks, once data is loaded.
@@ -156,23 +154,31 @@ var ddb = {
         institutions(roots and their children) collected from the first step.
       */
 
-      // TODO: this is wrong
-      var filteredBySector = _.reduce(institutionList, function(memory, institution) {
-        if (institution.firstChar === firstLetter && _.contains(sectors, institution.sector)) {
-          memory.push(institution);
+      var filteredByFirstLetter = ddb.institutionsByFirstChar[firstLetter];
+      // console.log('filtered by first char:' + firstLetter, JSON.stringify(filteredByFirstLetter , null, ' ', 2));
+
+
+      var filteredBySector = _.reduce(filteredByFirstLetter , function(memory, institution) {
+        // assert
+        if (institution.firstChar !== firstLetter) {
+          console.log(institution);
+        } else {
+          if (_.contains(sectors, institution.sector)) {
+            memory.push(institution);
+          }
+
+          ddb.filterDescendants(institution, memory, sectors, parentList);
         }
-        // TODO: this might causes the problem.
-        ddb.filterDescendants(institution, memory, sectors, parentList);
+
         return memory;
       }, []);
 
-      console.log('filtered by sector and first char', JSON.stringify(filteredBySector, null, '2'));
+      console.log('filtered by sector and first char', JSON.stringify(filteredBySector, null, ' ', 2));
 
       parentList = _.filter(parentList, function(parent) {
         return parent.firstChar === firstLetter;
       });
 
-      // TODO: visible is broken.
       var visible = _.union(parentList, filteredBySector);
       ddb.showResult(visible, filteredBySector);
 
@@ -184,8 +190,7 @@ var ddb = {
       ddb.updateIndex(hasNoMember);
     } else if (sectors.length === 0 && firstLetter !== '') {
       /*
-       When no sector
-      selected _and_ one of the first letter is selected.
+      When no sector selected _and_ one of the first letter is selected.
       e.g. sector = [], index = 'C'
       */
       ddb.showByFirstLetter(firstLetter);
@@ -251,6 +256,8 @@ var ddb = {
       console.log('has visible elements: ' + visibleInstitution.length);
       console.log('visible elements: ', visibleInstitution);
 
+      // hide the 'no result' message
+      console.log('hide the no result message');
       $msg.css('display', 'none');
       ddb.findElements(filteredBySector).addClass('highlight');
       ddb.findElements(visibleInstitution).css('display','block'); 
@@ -260,11 +267,13 @@ var ddb = {
     }
   },
 
+  // TODO: we should *not* this extra function. We can reuse the logic in 
+  // if (sectors.length > 0 && firstLetter !== '') {...} with sectors empty
   showByFirstLetter: function(firstLetter) {
     // get all institution start with the letter `firstLetter`
     var idList = _.pluck(ddb.institutionsByFirstChar[firstLetter], 'id');
 
-        // find all institutions match idList
+    // find all institutions match idList
     ddb.filteredEl = $('.institution-listitem').filter(function() {
       return _.contains(idList, $(this).data('institution-id'));
     });
@@ -288,6 +297,7 @@ var ddb = {
       return _.contains(restIdList, $(this).data('institution-id'));
     });
 
+    $('#no-match-message').css('display', 'none');
     ddb.showAll();
     ddb.restEl.css('display', 'none');
   }
