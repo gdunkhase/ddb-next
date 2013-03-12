@@ -1,5 +1,5 @@
 <!--[if lt IE 9]>
-  <div class="footer" role="contentinfo">
+  <div class="footer container" role="contentinfo">
 <![endif]-->
 <footer class="container">
   <div class="row">

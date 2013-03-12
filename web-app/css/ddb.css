@@ -15,6 +15,7 @@ header, .header {
 }
 header .container, .header .container{
  margin-bottom: 10px;
+ min-height: 0px;
 }
 header .navigation-header-logo, .header .navigation-header-logo {
   float:left;
@@ -274,16 +275,13 @@ header .language-widget form, .header .language-widget form {
   background-position:0px -30px;
 }
 #form-search {
-  float: none;
   position: relative;
-  padding-bottom: 15px;
-  top: 0px;
-  width: 580px;
+  width: 50%;
   margin: 0 auto;
 }
 #form-search input {
   font-size: 1.25em;
-  width: 485px;
+  width: 83%;
   height: 37px;
   line-height: 40px;
   margin-left: 2px;
@@ -385,6 +383,7 @@ a.previous span, a.next span {
 footer.container, .footer .container {
   padding:20px 0 70px 0;
   clear:both;
+  min-height:0px;
 }
 footer a,.footer a {
   text-decoration:none;
@@ -467,11 +466,9 @@ body {
   font-family: Calibri,Arial,sans-serif;
   color: #3e3a37;
 }
-/*
 .container {
   min-height: 515px;
 }
-*/
 form label {
   display: inline-block;
   clear: left;

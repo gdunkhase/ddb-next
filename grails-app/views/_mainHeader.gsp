@@ -1,12 +1,12 @@
 <!--[if lt IE 9]>
   <div class="header" role="contentinfo">
 <![endif]-->
-<header class="main">
+<header>
   <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Header"/></h1>
     <div class="container">
       <div class="row">
         <!--[if lt IE 9]>
-          <div class="nav widget" data-widget="NavigationWidget">
+          <div class="nav widget span12" data-widget="NavigationWidget">
         <![endif]-->
         <nav class="widget span12" data-widget="NavigationWidget">
           <div class="row">
