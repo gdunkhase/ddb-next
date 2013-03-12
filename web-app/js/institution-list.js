@@ -43,7 +43,7 @@ var ddb = {
   },
 
   findElements: function(list) {
-    return $('li.institution-listitem').filter(function() {
+    return ddb.all.filter(function() {
       return _.contains(_.pluck(list, 'id'), $(this).data('institution-id'));
     });
   },
