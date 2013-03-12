@@ -10,8 +10,8 @@ var ddb = {
     ddbBackendUrl: '/apis/institutions'
   },
 
-  // cache for all institution, including children and their descendants
-  all: $('.institution-listitem'),
+  // TODO: does not work => cache for all institution, including children and their descendants
+  $all: $('li.institution-listitem'),
 
   institutionsByFirstChar: null,
 
@@ -43,7 +43,7 @@ var ddb = {
   },
 
   findElements: function(list) {
-    return ddb.all.filter(function() {
+    return ddb.$all.filter(function() {
       return _.contains(_.pluck(list, 'id'), $(this).data('institution-id'));
     });
   },
@@ -103,7 +103,7 @@ var ddb = {
 
   getFirstLetter: function() {
     var hash = window.location.hash.substring(1);
-    if (hash === 'All' || hash === 'ALL' || hash === 'list') {
+    if (hash === 'All' || hash === 'All' || hash === 'ALL' || hash === 'list') {
       return '';
     } else {
       return hash;
@@ -121,9 +121,8 @@ var ddb = {
 
   filter: function(institutionList, sectors, firstLetter) {
     // reset the view to empty.
-    var $allInstitution = $('.institution-listitem');
-    $allInstitution.css('display', 'none');
-    $allInstitution.removeClass('highlight');
+    ddb.$all.css('display', 'none');
+    ddb.$all.removeClass('highlight');
 
     var parentList = [];
     console.log('apply filter');
@@ -283,7 +282,7 @@ var ddb = {
     var idList = _.pluck(ddb.institutionsByFirstChar[firstLetter], 'id');
 
     // find all institutions match idList
-    ddb.filteredEl = $('.institution-listitem').filter(function() {
+    ddb.filteredEl = ddb.$all.filter(function() {
       return _.contains(idList, $(this).data('institution-id'));
     });
 
@@ -302,7 +301,7 @@ var ddb = {
       .value();
 
     // collect the HTML elements that match id in the restIdList
-    ddb.restEl = $('.institution-listitem').filter(function() {
+    ddb.restEl = ddb.$all.filter(function() {
       return _.contains(restIdList, $(this).data('institution-id'));
     });
 
