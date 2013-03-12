@@ -48,7 +48,6 @@
 
 /* highlight the current node */
 .item-hierarchy-result ul>li>a.current-node {
-  color: black;
   font-weight: bolder;
 }
 
@@ -85,6 +84,11 @@
 }
 
 /* highlight the current node */
+.item-hierarchy-result ul>li.leaf>a.current-node {
+  color: black;
+}
+
+/* highlight the current node */
 .item-hierarchy-result ul>li.leaf>div.leaf-indicator.current-node {
   background: transparent url("../images/bg/hierarchy_active_leaf.png")
     no-repeat;
@@ -99,6 +103,11 @@
 .item-hierarchy-result ul>li.leaf.last {
   background:
     url("../images/bg/advanced_search_solid_joint_last_item.png")
+    no-repeat 7px 0px;
+}
+
+.item-hierarchy-result ul>li.more-available {
+  background: url("../images/bg/advanced_search_dotted_end.png" )
     no-repeat 7px 0px;
 }
 
@@ -140,10 +149,13 @@
   height: 20px;
   background: url("../images/icons/tooltips.png") no-repeat 0px -120px;
 }
-.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus {
-  background-position:0px -150px;
+
+.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus
+  {
+  background-position: 0px -150px;
 }
-.field-header .tooltip{
+
+.field-header .tooltip {
   font-size: 0.938em;
   color: #3e3a37;
 }
