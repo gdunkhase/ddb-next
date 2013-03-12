@@ -28,6 +28,12 @@ public class AdvancedSearchFormToQueryConverter {
     private String exactName = "EXACT"
     private String andName = "ALL"
     private String orName = "ANY"
+    
+    //Replacement-Pattern for Lucene search-query
+    //mask certain signs according to Lucene-Rules
+    //lucene requires to escape certain signs in searchstring:
+    //+-&|!(){}[]^"~:\ has to get escaped with backslash
+    private String luceneReplacementPattern = "([\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\\"\\~\\:\\\\])";
 
     //Type in facet-result from ddb-backend that indicates that a facet
     //is searchable by an enumeration
@@ -187,11 +193,8 @@ public class AdvancedSearchFormToQueryConverter {
                 rowQuery.append(facet).append(":(")
                 for (int i = 0; i < parts.length; i++) {
                     if (parts[i] != null && parts[i].length() > 0) {
-                        //mask certain signs according to Lucene-Rules
-                        //lucene requires to match certain signs in searchstring:
-                        //+-&|!(){}[]^"~*?:\ has to get escaped with backslash
                         parts[i] = parts[i]
-                            .replaceAll("([\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\\"\\~\\*\\?\\:\\\\])", '\\\\$1');
+                            .replaceAll(luceneReplacementPattern, '\\\\$1');
                         if (i > 0) {
                             if (match.equalsIgnoreCase(orName)) {
                                 rowQuery.append(" OR ")
