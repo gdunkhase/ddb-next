@@ -83,7 +83,7 @@ window.onload=function(){
     return null;
   }
   
-  $('.page-nav a').click(function(){
+  $('.page-nav-result').click(function(){
     fetchResultsList(this.href);
     return false;
   });
