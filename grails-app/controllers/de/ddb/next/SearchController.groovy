@@ -18,6 +18,7 @@ class SearchController {
             
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
+                firstLastQuery["sort"] = resultsItems["randomSeed"]
                 if (!params.sort) {
                     params.sort = urlQuery["randomSeed"]
                 }

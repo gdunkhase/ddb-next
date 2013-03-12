@@ -146,7 +146,7 @@ class ItemController {
         def resultsItems
         def searchResultUri
         if (reqParameters["hitNumber"]) {
-            searchParametersMap = searchService.getSearchCookieAsMap(httpRequest)
+            searchParametersMap = searchService.getSearchCookieAsMap(httpRequest.cookies)
             def urlQuery = searchService.convertQueryParametersToSearchParameters(searchParametersMap)
                 
             //Search and return 3 Hits: previous, current and last

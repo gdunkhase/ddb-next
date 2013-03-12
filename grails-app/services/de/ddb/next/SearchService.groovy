@@ -451,10 +451,10 @@ class SearchService {
      * @param request
      * @return Map with key-values from cookie
      */
-    def getSearchCookieAsMap(HttpServletRequest request) {
+    def getSearchCookieAsMap(Cookie[] cookies) {
         def searchParams
         def searchParamsMap = [:]
-        for (cookie in request.cookies) {
+        for (cookie in cookies) {
             if (cookie.name == searchCookieName) {
                 searchParams = cookie.value
             }
