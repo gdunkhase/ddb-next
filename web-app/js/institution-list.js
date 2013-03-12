@@ -48,8 +48,10 @@ var ddb = {
     });
   },
 
-  getinstitutionsByFirstChar: function(onFilterSelect, onPageLoad) {
+  getInstitutionsByFirstChar: function(onFilterSelect, onPageLoad) {
+    console.log('get institutions by first char.');
     if (ddb.institutionsByFirstChar === null) {
+      console.log('fetch data from server.');
       $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
         ddb.institutionsByFirstChar = response.data;
 
@@ -124,8 +126,11 @@ var ddb = {
     $allInstitution.removeClass('highlight');
 
     var parentList = [];
+    console.log('apply filter');
 
     if (sectors.length > 0 && firstLetter === '') {
+      console.log('Only filter by sectors, _not_ first character.');
+      console.log('sectors: ', sectors);
 
       // when at least one sector selected _and_ no first letter filter.
       // e.g. sector = ['Media'], index = All
@@ -260,7 +265,7 @@ var ddb = {
       console.log('hide the no result message');
       $msg.css('display', 'none');
       ddb.findElements(filteredBySector).addClass('highlight');
-      ddb.findElements(visibleInstitution).css('display','block'); 
+      ddb.findElements(visibleInstitution).css('display',''); 
     } else {
       console.log('all elements are invisible');
       $msg.css('display', 'block'); 
@@ -304,11 +309,12 @@ var ddb = {
 };
 
 $(function() {
+  console.log('init');
   // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
   $('.filter').show();
 
   ddb.$index = $('#first-letter-index').clone(true);
   ddb.$institutionList = $('#institution-list').clone();
   
-  ddb.getinstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
+  ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
 });
