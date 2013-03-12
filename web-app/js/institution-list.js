@@ -103,7 +103,7 @@ var ddb = {
 
   getFirstLetter: function() {
     var hash = window.location.hash.substring(1);
-    if (hash === 'All' || hash === 'All' || hash === 'ALL' || hash === 'list') {
+    if (hash === '' || hash === 'All' || hash === 'All' || hash === 'ALL' || hash === 'list') {
       return '';
     } else {
       return hash;
