@@ -188,6 +188,8 @@ public class AdvancedSearchFormToQueryConverter {
                 for (int i = 0; i < parts.length; i++) {
                     if (parts[i] != null && parts[i].length() > 0) {
                         //mask certain signs according to Lucene-Rules
+                        //lucene requires to match certain signs in searchstring:
+                        //+-&|!(){}[]^"~*?:\ has to get escaped with backslash
                         parts[i] = parts[i]
                             .replaceAll("([\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\\"\\~\\*\\?\\:\\\\])", '\\\\$1');
                         if (i > 0) {
