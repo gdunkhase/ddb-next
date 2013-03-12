@@ -226,6 +226,33 @@ header .language-widget form, .header .language-widget form {
 }
 /* header - end */
 
+/* mobile view header */
+.brand img {
+  height:35px;
+  margin: 0px;
+  padding: 0px;
+}
+.brand {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important; 
+}
+.btn-navbar {
+  height: 30px;
+}
+.nav-list ul > li {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+.nav-list ul > li > a {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+/* mobile view header - end */
+
 /* index */
 .search-widget {
   padding-top: 60px;

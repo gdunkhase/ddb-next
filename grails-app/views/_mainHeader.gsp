@@ -1,7 +1,45 @@
 <!--[if lt IE 9]>
   <div class="header" role="contentinfo">
 <![endif]-->
-<header class="main">
+
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner visible-phone">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar" style="visibility:hidden;"></span>
+      </button>
+      <a href="/" class="brand navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
+        <r:img dir="images" file="logo_header.png" class="siteLogo" />
+      </a>
+      <div class="nav-collapse collapse">
+        <ul class="nav nav-list">
+          <li class="active"><a href="/"><g:message code="ddbnext.Search"/></a>
+            <ul class="nav">
+              <li class=""><a href="/advancedsearch"><g:message code="ddbnext.Advanced_search"/></a></li>
+            </ul></li>
+          <li class=""><a href="/content/about"><g:message code="ddbnext.AboutUs"/></a>
+            <ul class="nav">
+              <li class=""><a href="/content/news/"><g:message code="ddbnext.News"/></a></li>
+              <li class=""><a href="/about-us/institutions"><g:message code="ddbnext.Institutions"/></a></li>
+              <li class=""><a href="/content/ddb"><g:message code="ddbnext.Participate"/></a></li>
+              <li class=""><a href="/content/competence-network"><g:message code="ddbnext.CompetenceNetwork"/></a></li>
+            </ul></li>
+          <li class=""><a href="/content/help/"><g:message code="ddbnext.Help"/></a>
+            <ul class="nav">
+              <li class=""><a href="/content/faq/"><g:message code="ddbnext.Faq"/></a></li>
+              <li class=""><a href="/content/tutorial/"><g:message code="ddbnext.Tutorial"/></a></li>
+            </ul></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<header class="main hidden-phone">
   <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Header"/></h1>
     <div class="container">
       <div class="row">
