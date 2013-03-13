@@ -1,4 +1,4 @@
-<div id="first-letter-index" class="pagination">
+<div id="first-letter-index" class="pagination pagination-small">
   <ul>
     <li><a href="#All">All</a></li>
   <g:each in="${index}">

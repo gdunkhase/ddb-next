@@ -5,7 +5,10 @@ import groovyx.net.http.HTTPBuilder
 class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
-    def NUMBERS = 0..9
+
+    private static final def NUMBERS = 0..9
+
+    private static final def NUMBER_KEY = '0-9'
 
     def transactional = false
 
@@ -34,7 +37,7 @@ class InstitutionService {
 
                 /*
                  * mark an institution as the first one that start with the
-                 * character. We will use it for assigning id in the HTML.
+                 * character. We will use it for assigning the id in the HTML.
                  * See: views/institutions/_listItem.gsp
                  * */
                 if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
@@ -110,17 +113,16 @@ class InstitutionService {
     }
 
     private def buildIndex() {
+        // create a map with empty arrays as initial values.
         def institutionByFirstLetter = [:].withDefault{ [] }
 
-        // create a map with intial value an empty array.
         // use A..Z as keys
         LETTERS.each {
             institutionByFirstLetter[it] = []
         }
 
-        // add '0-9' as key for institution starts with a number
-        def numberIndex = '0-9'
-        institutionByFirstLetter[numberIndex] = [];
+        // add the '0-9' as the last key for institutions start with a number.
+        institutionByFirstLetter[NUMBER_KEY] = []
 
         return institutionByFirstLetter
     }
@@ -130,7 +132,7 @@ class InstitutionService {
         return json
     }
 
-    private String buildUri(id) {
+    private def buildUri(id) {
         grailsLinkGenerator.link(url: [controller: 'institution', action: 'readByItemId', id: id ])
     }
 }
