@@ -78,6 +78,7 @@ class SearchController {
                     subFacetsUrl = searchService.buildSubFacetsUrl(selectedFacets, mainFacetsUrl, urlQuery)
                 }
                 render(view: "results", model: [
+                    title: urlQuery["query"],
                     results: resultsItems,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),

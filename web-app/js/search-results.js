@@ -121,7 +121,7 @@ window.onload=function(){
   function fetchResultsList(url){
     $('.search-results').empty();
     var imgLoader = document.createElement('img');
-    imgLoader.src = "/static/images/icons/loader_small.gif";
+    imgLoader.src = "../images/icons/loader_small.gif";
     $('.search-results').prepend(imgLoader);
     var request = $.ajax({
       type: 'GET',
@@ -200,7 +200,8 @@ window.onload=function(){
             url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+fctValues+'&offset='+this.currentOffset+'&rows='+this.currentRows,
             complete: function(data){
                 var parsedResponse = jQuery.parseJSON(data.responseText);
-                currObjInstance.currentFacetValuesNotSelected = parsedResponse.values;
+                //Initialization of currentFacetValuesSelected / currentFacetValuesNotSelected
+                currObjInstance.initializeFacetValuesStructures(parsedResponse.values);
                 flyoutWidget.initializeFacetValues(parsedResponse.type, currObjInstance.currentFacetValuesNotSelected);
                 }
             });
@@ -222,6 +223,23 @@ window.onload=function(){
         this.connectedflyoutWidget.paginationLiNext.removeClass('off');
       }
       this.connectedflyoutWidget.setFacetValuesPage(this.currentPage);
+    },
+    initializeFacetValuesStructures: function(responseFacetValues){
+      //LeftBody will not exists on the first opening of the flyout
+      if(this.connectedflyoutWidget.facetLeftContainer){
+        var currObjInstance = this;
+        var selectedList = this.connectedflyoutWidget.facetLeftContainer.find('.selected-items li');
+        this.currentFacetValuesNotSelected = responseFacetValues;
+        if(selectedList.length>0){
+          selectedList.each(function(){
+            var tmpFacetValue = $(this).attr('data-fctvalue');
+            currObjInstance.currentFacetValuesSelected.push(tmpFacetValue);
+            currObjInstance.currentFacetValuesNotSelected = jQuery.grep(currObjInstance.currentFacetValuesNotSelected, function(element) {
+                return element.value != tmpFacetValue;
+            });
+          });
+        }
+      }
     },
     goNextPage: function(){
       this.currentOffset += 10;
@@ -247,12 +265,42 @@ window.onload=function(){
     },
     
     selectFacetValue: function(facetValue, localizedValue){
+        var currObjInstance = this;
         this.currentFacetValuesSelected.push(facetValue);
+        
         this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected, function(element) {
             return element.value != facetValue;
         });
         
-        this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
+        var selectedFacetValue = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
+        
+        selectedFacetValue.find('.facet-remove').click(function(){
+          currObjInstance.unselectFacetValue(selectedFacetValue);
+        });
+        
+        if(this.currentFacetValuesSelected.length == 1){
+            this.connectedflyoutWidget.renderAddMoreFiltersButton(this.currentFacetField);
+            this.connectedflyoutWidget.addMoreFilters.click(function(event){
+                currObjInstance.connectedflyoutWidget.build($(this));
+            });
+        }
+        this.connectedflyoutWidget.close();
+    },
+    
+    unselectFacetValue: function(element){
+      var facetFieldFilter = element.parents('.facets-item');
+      if(this.connectedflyoutWidget.opened){
+          this.connectedflyoutWidget.close();
+          this.currentFacetValuesSelected = jQuery.grep(this.currentFacetValuesSelected, function(el) {
+              return el != element.attr('data-fctvalue');
+          });
+      }
+      //if in the list there is only one element means that is the case of the last element that we are going to remove
+      if(facetFieldFilter.find('.selected-items li').length == 1){
+        var facetFieldFilter = element.parents('.facets-item');
+        this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.addMoreFilters'));
+      }
+      element.remove();
     },
     
     getUrlVars: function(){
@@ -292,6 +340,7 @@ window.onload=function(){
     paginationLiPrev: null,
     paginationLiNext: null,
     paginationLiSeite: null,
+    addMoreFilters: null,
     
 
     //i18n variables
@@ -307,19 +356,24 @@ window.onload=function(){
     init: function(){
         this.cleanNonJsStructures();
     },
+    
     build: function(element){
-        if(element.attr('data-fctname') != this.fctManager.currentFacetField || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened)){
+        if((element.attr('data-fctname') != this.fctManager.currentFacetField 
+                || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))){
           if(this.opened) this.close();
-          this.mainElement = element;
+          this.mainElement = element.parents('.facets-item').find('.h3');
           this.parentMainElement = this.mainElement.parent();
           this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
-          this.parentMainElement.hide();
-          this.parentMainElement.addClass('active');
+          if(!this.parentMainElement.hasClass('active')){
+            this.parentMainElement.hide();
+            this.parentMainElement.addClass('active');
+          }
           this.buildStructure();
           this.fctManager.fetchFacetValues(this);
           this.opened = true;
         }
     },
+    
     buildStructure: function(){
       var inputSearchContainer;
       var inputSearch;
@@ -396,6 +450,7 @@ window.onload=function(){
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
       //this.parentMainElement.find('.input-search-fct-container').show('100');
     },
+    
     initializeFacetValues: function(field, facetValues){
         var leftCol = $(document.createElement('div'));
         var rightCol = $(document.createElement('div'));
@@ -411,6 +466,7 @@ window.onload=function(){
         this.renderFacetValues(field, facetValues);
         this.fctManager.initPagination();
     },
+    
     renderFacetValues: function(field, facetValues){
       var currObjInstance = this;
         
@@ -453,6 +509,7 @@ window.onload=function(){
         });
       }
     },
+    
     renderSelectedFacetValue: function(facetValue, localizedValue){
       var facetValueContainer = $(document.createElement('li'));
       var facetValueSpan = $(document.createElement('span'));
@@ -469,55 +526,65 @@ window.onload=function(){
       facetValueSpan.appendTo(facetValueContainer);
       facetValueRemove.appendTo(facetValueContainer);
       facetValueContainer.appendTo(this.selectedItems);
-      console.log(this.fctManager.currentFacetValuesSelected.length)
-      if(this.fctManager.currentFacetValuesSelected.length == 1){
-          var addMoreFilters = $(document.createElement('div'));
-          var text = $(document.createElement('span'));
-          var icon = $(document.createElement('span'));
-          
-          text.html(this.field_AddMoreFiltersButtonTooltip);
-          
-          addMoreFilters.addClass('addMoreFilters');
-          icon.addClass('icon');
-          
-          text.appendTo(addMoreFilters);
-          icon.appendTo(addMoreFilters);
-          addMoreFilters.appendTo(this.facetLeftContainer);
-      }
-      //this.leftBody
+      
+      return facetValueContainer;
     },
+    
+    renderAddMoreFiltersButton: function(facetField){
+        this.addMoreFilters = $(document.createElement('div'));
+        var text = $(document.createElement('span'));
+        var icon = $(document.createElement('span'));
+        
+        this.addMoreFilters.attr('data-fctname', facetField);
+        text.html(this.field_AddMoreFiltersButtonTooltip);
+        
+        this.addMoreFilters.addClass('addMoreFilters');
+        icon.addClass('icon');
+        
+        text.appendTo(this.addMoreFilters);
+        icon.appendTo(this.addMoreFilters);
+        this.addMoreFilters.appendTo(this.facetLeftContainer);
+        this.facetLeftContainer.find('.input-search-fct-container').appendTo(this.facetLeftContainer);
+    },
+    
+    removeAddMoreFiltersButton: function(FacetFieldFilter , addMoreFiltersElement){
+      addMoreFiltersElement.remove();
+      this.resetFacetFieldFilter(FacetFieldFilter);
+    },
+    
     setFacetValuesPage: function(pageNumber){
       this.paginationLiSeite.find('span').html(pageNumber);
     },
+    
     renderFacetLoader: function(){
       this.rightBody.empty();
       var imgLoader = document.createElement('img');
       imgLoader.src = "/static/images/icons/loader_small.gif";
       this.rightBody.prepend(imgLoader);
     },
+    
     manageOutsideClicks: function(thisInstance){
       $(document).mouseup(function (e){
         var container = $(".facets-list");
         if (container.has(e.target).length === 0 && thisInstance.opened == true){
           thisInstance.close();
-          thisInstance.opened = false;
         }
       });
     },
+    
     cleanNonJsStructures: function(){
       $('.facets-item >ul').remove();
     },
+    
     close: function(){
+      var currObjInstance = this;
       var oldMainElement = this.mainElement;
       var oldParentMainElement = this.parentMainElement;
       oldParentMainElement.find('.input-search-fct-container').hide('100', function(){
         if(oldParentMainElement.find('.flyout-left-container ul li').length > 0){
           oldParentMainElement.find('.addMoreFilters').show('100');
         }else{
-          oldParentMainElement.fadeOut('fast',function(){
-            oldParentMainElement.removeClass('active');
-            oldParentMainElement.fadeIn('fast');
-          });
+          currObjInstance.resetFacetFieldFilter(oldParentMainElement);
         }
       });
       oldParentMainElement.find('.flyout-right-container').hide('100', function(){
@@ -525,6 +592,15 @@ window.onload=function(){
       });
       this.fctManager.currentPage = 1;
       this.fctManager.currentOffset = 0;
+      this.fctManager.currentFacetValuesSelected = new Array();
+      this.opened = false;
+    },
+    
+    resetFacetFieldFilter: function(element){
+        element.fadeOut('fast',function(){
+            element.removeClass('active');
+            element.fadeIn('fast');
+          });
     }
   });
   

@@ -1,10 +1,7 @@
 <g:set var="facetsList" value="${['time_fct', 'place_fct', 'affiliate_fct', 'keywords_fct', 'language_fct', 'type_fct', 'sector_fct', 'provider_fct']}"/>
 <html>
 <head>
-<title><%=title%></title>
-<meta name="author" content="${author}" />
-<meta name="keywords" content="${keywords}" />
-<meta name="robots" content="${robots}" />
+<title>${title} - <g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/></title>
 <meta name="layout" content="main" />
 <jawr:script src="/i18n/messages.js"/>
 <script src="${resource(dir: 'js', file: 'search-results.js')}"></script>

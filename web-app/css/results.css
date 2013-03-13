@@ -558,7 +558,7 @@ input[type="checkbox"],input[type="radio"] {
   text-decoration: underline;
   color: #a5003b;
 }
-.selected-items li{
+.selected-items li, .addMoreFilters{
   position:relative;
   line-height: 28px;
   color: #4c4a48;
@@ -585,7 +585,6 @@ input[type="checkbox"],input[type="radio"] {
   background-position-y: -60px;
 }
 .addMoreFilters{
-  position: relative;
   margin: 0 10px;
   cursor: pointer;
 }
@@ -594,5 +593,8 @@ input[type="checkbox"],input[type="radio"] {
 }
 .addMoreFilters:hover .icon{
   background-position-y:-100px;
+}
+.force-loader{
+  background: url("../images/icons/loader_small.gif") no-repeat 5px -40px;
 }
 /*Flyout end*/
