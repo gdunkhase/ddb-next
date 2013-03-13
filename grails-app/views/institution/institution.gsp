@@ -1,6 +1,9 @@
 <%@page import="de.ddb.next.ApiInstitution"%>
 <%@page import="java.lang.String"%>
 <meta name="layout" content="main" />
+
+<title>"${results.name} - Deutsche Digitale Bibliothek"</title>
+
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'institution.css')}" type="text/css" />
 <!-- link rel="stylesheet" href="/css/institution.css" type="text/css" /-->
 
@@ -19,7 +22,7 @@
        <!-- div class="institution"-->
            <div class="span10"> <!-- class="summary" -->
              <div> <!-- class="sector" {provInfo.'provider-domains'.'provider-domain'} -->
-               <g:message code="ddbnext.${results.'sector'}"/>
+              <g:message code="ddbnext.${results.'sector'}"/>
              </div>
              <div>
                  <h2>${results.name}
@@ -38,7 +41,7 @@
                  </h2>
              </div>
              <div>
-               <a href="${results.uri }/">${String.valueOf(results.uri).trim() }/</a>
+               <a href="${results.uri }/">${String.valueOf(results.uri).trim() }</a>
              </div>
            </div>
            <div class="span2">
@@ -56,11 +59,14 @@
             </script>
             
             <div class="locationContainer">
-            
+                
                 <div class="location" style="margin-bottom: 30px;" data-lat="${results.locations.location.geocode.latitude }" data-lon="${results.locations.location.geocode.longitude }">
                     <p class="address">
-                        <b>${results.'name'}</b><br>
+                        <b>${results.name}</b><br>
                         ${results.locations.location.address.street }&nbsp;${results.locations.location.address.houseIdentifier }<br>
+                        <g:if test="${(results.addressSupplement)&&(results.addressSupplement.text().length() > 0)}">
+                            (${(results.addressSupplement)})<br>
+                        </g:if>
                         ${results.locations.location.address.postalCode }&nbsp;${results.locations.location.address.city }
                         ${results.locations.location.address.addressSupplement }
                     </p>
@@ -69,13 +75,13 @@
                 <g:if test="${((subOrg != null)&&(subOrg.size() > 0))}">
                     <div class="hierarchy">
                       <span class="title"><g:message code="ddbnext.InstitutionItem_OtherLocations" /></span>
-                      <ul>
-                        <li>
-                          <i class="active"></i>
+                      <ol class="institution-list">
+                        <li class="institution-listitem">
+                          <i class="icon-institution"></i>
                           <b>${results.name}</b>
                           <g:render template="subinstitutions" />
                         </li>
-                      </ul>
+                      </ol>
                     </div>
                 </g:if>
                 

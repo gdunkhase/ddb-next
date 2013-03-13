@@ -44,7 +44,7 @@ class InstitutionController {
         render institutionService.findAll() as JSON
     }
         
-    def readByItemId() {
+    def readByItemId() { // ToDo: rename to showInstitutionsTreeByItemId
         def id = params.id
         def vApiInstitution = new ApiInstitution();
         log.println("read insitution by item id: ${id}")
@@ -64,7 +64,7 @@ class InstitutionController {
             render(view: "institution", model: [itemId: id, results: dataViewXML, subOrg: jsonOrgHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
         } 
         else {
-            redirect(controller: 'error')
+           forward controller: 'error', action: "notfound"
         }
         
     }

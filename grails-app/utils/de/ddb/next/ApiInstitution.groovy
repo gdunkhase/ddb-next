@@ -23,8 +23,16 @@ class ApiInstitution {
         def getChildrenOfInstitutionByItemId(String id, String url) {
             log.println("get chlildren of institution by item id: ${id}")
             def jsonResult;
-            def componentsPath = "/hierarchy/" + id + "/children"
-            jsonResult = ApiConsumer.getTextAsJson(url, componentsPath, null)
+            def uriPath = "/hierarchy/" + id + "/children"
+            jsonResult = ApiConsumer.getTextAsJson(url, uriPath, null)
+            return jsonResult;
+        }
+        
+        def getParentsOfInstitutionByItemId(String id, String url) {
+            log.println("get parent of institution by item id: ${id}")
+            def jsonResult;
+            def uriPath = "/hierarchy/" + id + "/parent"
+            jsonResult = ApiConsumer.getTextAsJson(url, uriPath, null)
             return jsonResult;
         }
         
