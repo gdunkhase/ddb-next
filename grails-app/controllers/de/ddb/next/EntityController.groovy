@@ -4,6 +4,6 @@ class EntityController {
 
     def show() {
         log.debug('entitycontroller.show')
-        render('Entity Page')
+        render(view: 'entity')
     }
 }
