@@ -49,9 +49,7 @@ var ddb = {
   },
 
   getInstitutionsByFirstChar: function(onFilterSelect, onPageLoad) {
-    console.log('get institutions by first char.');
     if (ddb.institutionsByFirstChar === null) {
-      console.log('fetch data from server.');
       $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
         ddb.institutionsByFirstChar = response.data;
 
@@ -125,13 +123,8 @@ var ddb = {
     $('li.institution-listitem').removeClass('highlight');
 
     var parentList = [];
-    console.log('apply filter');
 
     if (sectors.length > 0 && firstLetter === '') {
-
-      console.log('Only filter by sectors, _not_ first character.');
-      console.log('sectors: ', sectors);
-
       // when at least one sector selected _and_ no first letter filter.
       // e.g. sector = ['Media'], index = All
       var filteredBySector = ddb.filterBySectors(institutionList, sectors, parentList);
@@ -146,8 +139,6 @@ var ddb = {
       selected, e.g.,  sector = ['Library', 'Media'], index = 'B'
       */
       // In this case, we don't need a parent list. TODO: refactor
-      console.log('first char selected: ' + firstLetter);
-      console.log('sectors: ', sectors);
 
       /*
       1. we collect all root institutions start with the selected firstLetter, 
@@ -159,13 +150,10 @@ var ddb = {
       */
 
       var filteredByFirstLetter = ddb.institutionsByFirstChar[firstLetter];
-      // console.log('filtered by first char:' + firstLetter, JSON.stringify(filteredByFirstLetter , null, ' ', 2));
-
-
       var filteredBySector = _.reduce(filteredByFirstLetter , function(memory, institution) {
         // assert
         if (institution.firstChar !== firstLetter) {
-          console.log(institution);
+          // do nothing.
         } else {
           if (_.contains(sectors, institution.sector)) {
             memory.push(institution);
@@ -176,8 +164,6 @@ var ddb = {
 
         return memory;
       }, []);
-
-      console.log('filtered by sector and first char', JSON.stringify(filteredBySector, null, ' ', 2));
 
       parentList = _.filter(parentList, function(parent) {
         return parent.firstChar === firstLetter;
@@ -228,7 +214,6 @@ var ddb = {
 
   updateIndex: function(hasNoMember) {
     if (hasNoMember) {
-      console.log('has no member', hasNoMember);
       // enable all index. It means visually that the index all not grey.
       // TODO: do we need it? Is it not better to take the ddb.$index?
       $('#first-letter-index li').removeClass('disabled');
@@ -250,27 +235,17 @@ var ddb = {
 
   // visible institutions are filtered institutions and their descendants.
   showResult: function(visibleInstitution, filteredBySector) {
-    console.log('show results...');
-    // TODO: clear the message when sectors=[] and firstLetter !== ''
     var $msg = $('#no-match-message');
 
     // view manipulation
     if (visibleInstitution.length) {
-      console.log('has visible institutions: ' + visibleInstitution.length);
-      console.log('visible institutions: ', visibleInstitution);
-
       // hide the 'no result' message
-      console.log('hide the no result message');
       $msg.css('display', 'none');
 
       ddb.findElements(filteredBySector).addClass('highlight');
-
       var $visible = ddb.findElements(visibleInstitution);
       $visible.css('display',''); 
-
-      console.log('has visible elements: ' , $visible);
     } else {
-      console.log('all elements are invisible');
       $msg.css('display', 'block'); 
     }
   },
