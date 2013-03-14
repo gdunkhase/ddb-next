@@ -9,12 +9,12 @@ eventWebXmlEnd = {String tmpfile ->
     
     def root = new XmlSlurper().parse(webXmlFile)
     
-    log.info "Adding session listener (de.ddb.next.DDBSessionListener) to web.xml"
+    log.info "Adding session listener (de.ddb.next.DdbSessionListener) to web.xml"
     
     root.appendNode {
         'listener' {
             'listener-class' (
-            'de.ddb.next.DDBSessionListener'
+            'de.ddb.next.DdbSessionListener'
             )
         }
     }

@@ -10,13 +10,13 @@
     <!-- TODO: uncomment the next two lines, once we find the icons -->
     <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"/ -->
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
-    <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}">
+    <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon" />
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" />
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" />
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}" />
     <link rel="search" title="Deutsche Digitale Bibliothek" href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx" type="application/opensearchdescription+xml" />
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'institutionList.css')}">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'institutionList.css')}" />
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}" />
     <!--[if lt IE 9]>
       <script src="Scripts/html5shim.googlecode.html5.js"> </script>
     <![endif]-->

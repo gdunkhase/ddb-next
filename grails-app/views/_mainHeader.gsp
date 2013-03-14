@@ -75,19 +75,12 @@
             </div>
             <div class="span5 toolbar">
               <div class="language-wrapper">
-                <g:if test="${grailsApplication.config.locale.toString().substring(0, 2)=="de"}">
-                  <a>
-                    <g:message code="ddbnext.language_fct_ger"/>
-                  </a>
-                </g:if>
-                <g:else>
-                  <a>
-                    <g:message code="ddbnext.language_fct_eng"/>
-                  </a>
-                </g:else>
+                <a>
+                  <g:currentLanguage />
+                </a>
                 <ul class="selector language">
-                  <li class="de"><a href="#"><g:message code="ddbnext.language_fct_ger"/></a></li>
-                  <li class="en"><a href="#"><g:message code="ddbnext.language_fct_eng"/></a></li>
+                  <li class="de"><g:link params="${params.plus([lang: "de"])}"><g:message code="ddbnext.language_de"/></g:link></li>
+                  <li class="en"><g:link params="${params.plus([lang: "en"])}"><g:message code="ddbnext.language_en"/></g:link></li>
                 </ul>  
               </div>
               <div class="search-header hidden-phone">

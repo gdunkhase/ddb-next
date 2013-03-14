@@ -5,18 +5,15 @@ class IndexController {
 
     def index() {
         try{
-            def langDe = "de"
-            def langEn = "en"
             def path
             def staticUrl = grailsApplication.config.ddb.static.url
             def locale = RCU.getLocale(request)
-            grailsApplication.config.locale = locale
 
             if(locale.toString().substring(0, 2)=="de") {
-                path = "/static/"+langDe+"/homepage.xml"
+                path = "/static/"+SupportedLocales.DE.getISO2()+"/homepage.xml"
             }
             else {
-                path = "/static/"+langEn+"/homepage.xml"
+                path = "/static/"+SupportedLocales.EN.getISO2()+"/homepage.xml"
             }
 
             def query = [ client: "DDB-NEXT" ]
@@ -24,7 +21,8 @@ class IndexController {
             def response = ApiConsumer.getText(staticUrl, path, query)
 
             if (response == "Not found"){
-                redirect(controller: "error", action: "notfound")
+                forward controller: "error", action: "notfound"
+                return;
             }
 
             def articles=retrieveArguments(response)

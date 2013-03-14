@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSessionListener;
 import org.apache.log4j.Logger;
 
 
-class DDBSessionListener implements HttpSessionListener {
+class DdbSessionListener implements HttpSessionListener {
 
     private Logger log = Logger.getLogger(this.getClass())
 
