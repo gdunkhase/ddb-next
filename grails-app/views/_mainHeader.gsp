@@ -2,8 +2,8 @@
   <div class="header" role="contentinfo">
 <![endif]-->
 
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner visible-phone">
+<header class="navbar navbar-fixed-top visible-phone">
+  <div class="navbar-inner">
     <div class="container">
       <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
@@ -11,7 +11,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar" style="visibility:hidden;"></span>
       </button>
-      <a href="/" class="brand navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
+      <a href="/" class="brand" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
         <r:img dir="images" file="logo_header.png" class="siteLogo" />
       </a>
       <div class="nav-collapse collapse">
@@ -36,7 +36,7 @@
       </div>
     </div>
   </div>
-</div>
+</header>
 
 <header class="hidden-phone">
   <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Header"/></h1>
