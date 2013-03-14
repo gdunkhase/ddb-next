@@ -119,6 +119,11 @@
   width: 93px;
 }
 
+.item-hierarchy-result li.root>ul>span.sibling-count {
+  left: -45px;
+  top: 65px;
+}
+
 .item-hierarchy-result ul {
   list-style: none outside none;
   margin: 0;

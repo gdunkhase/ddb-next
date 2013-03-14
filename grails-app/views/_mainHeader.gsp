@@ -91,7 +91,7 @@
                 </ul>  
               </div>
               <div class="search-header hidden-phone">
-                <form method="get" action="/search" role="search" id="form-search-header">
+                <form method="get" action="/searchresults" role="search" id="form-search-header">
                     <label> 
                       <span><g:message code="ddbnext.Search_text_field"/></span>
                     </label>

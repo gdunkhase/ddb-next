@@ -13,7 +13,7 @@
         <img src="${resource(dir: 'images', file: 'logo_big.png')}" class="bigLogo" alt="<g:message code="ddbnext.Logo_Description"/>" title="<g:message code="ddbnext.Logo_Title"/>" />
       </div>
       <div class="row">
-        <form method="get" action="/search" role="search" id="form-search">
+        <form method="get" action="/searchresults" role="search" id="form-search">
           <div class="span7">
             <label> 
               <span><g:message code="ddbnext.Search_text_field"/></span>
