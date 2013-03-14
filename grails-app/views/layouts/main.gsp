@@ -34,7 +34,7 @@
       </div>
     </noscript>
   <g:render template="/mainHeader" />
-  <div class="container" role="main">
+  <div id="main-container" class="container" role="main">
     <g:layoutBody/>
   </div>
   <g:render template="/footer" />

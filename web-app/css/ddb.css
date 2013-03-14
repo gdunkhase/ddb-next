@@ -15,12 +15,10 @@ header, .header {
 }
 header .container, .header .container{
  margin-bottom: 10px;
- min-height: 0px;
 }
 header .navigation-header-logo, .header .navigation-header-logo {
   float:left;
   height:85px;
-  width:350px;
   border:0px;
   padding:0px;
   overflow:hidden;
@@ -138,16 +136,6 @@ header .link-adv-search, div.header .link-adv-search {
   right: -12px;
   margin: 0;
 }
-.search-header form label input{
-  padding: 0 0 0 5px;
-  -webkit-appearance: textfield;
-  font-size: 0.938em;
-  width: 315px;
-  height: 23px;
-  line-height: 25px;
-  margin-right: 4px;
-  margin-bottom: 0;
-}
 .search-header form button{
   box-shadow: none;
   overflow: hidden;
@@ -218,12 +206,6 @@ header .toolbar .selector a, .header .toolbar .selector a {
 header .selector.language li:hover {
   background-color: #eee;
 }
-header .language-widget,.header .language-widget {
-  width:980px;
-  margin:0 auto;
-  position:absolute;
-  top:0;
-}
 header .language-widget form, .header .language-widget form {
   display:none;
 }
@@ -231,7 +213,7 @@ header .language-widget form, .header .language-widget form {
 
 /* mobile view header */
 .brand img {
-  height:35px;
+  height: 35px;
   margin: 0px;
   padding: 0px;
 }
@@ -396,11 +378,11 @@ noscript .caption {
   background-position: 0 -200px;
 }
 .carousel .clearfix {
-	float: none;
-	clear: both;
+  float: none;
+  clear: both;
 }
 a.previous span, a.next span {
-	display: none;
+  display: none;
 }
 /* index - end*/
 
@@ -408,7 +390,6 @@ a.previous span, a.next span {
 footer.container, .footer .container {
   padding:20px 0 70px 0;
   clear:both;
-  min-height:0px;
 }
 footer a,.footer a {
   text-decoration:none;
@@ -431,7 +412,6 @@ footer .legal .inner,.footer .legal .inner {
   overflow:hidden;
 }
 footer .legal small,.footer .legal small {
-  float:left;
   font-size:1em;
   margin-right:35px;
 }
@@ -447,7 +427,6 @@ footer .legal ul li+li,.footer .legal ul li+li {
   float: right;
   font-size: 0.75em;
   color: #c1c1c1;
-  z-index: 3;
 }
 /* footer - end */
 /* genaral rules */
@@ -491,7 +470,7 @@ body {
   font-family: Calibri,Arial,sans-serif;
   color: #3e3a37;
 }
-.container {
+#main-container.container{
   min-height: 515px;
 }
 form label {
@@ -554,18 +533,15 @@ button, .button {
   color: #fff;
   cursor: pointer;
 }
-
 .button{
   padding: 3px 8px;
   color: #fff;
 }
-
 .button:hover{
   background-position: top center;
   text-decoration: underline;
   color:#fff;
 }
-
 img {
   border: 0;
   margin: 15px;
