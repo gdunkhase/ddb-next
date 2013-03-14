@@ -102,8 +102,8 @@ var ddb = {
   },
 
   getFirstLetter: function() {
-    var hash = window.location.hash.substring(1);
-    if (hash === '' || hash === 'All' || hash === 'All' || hash === 'ALL' || hash === 'list') {
+    var hash = window.location.hash.substring(1).toLowerCase();
+    if (hash === '' || hash === 'all' || hash === 'list') {
       return '';
     } else {
       return hash;
@@ -312,12 +312,16 @@ var ddb = {
 };
 
 $(function() {
-  console.log('init');
-  // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
-  $('.filter').show();
+  var institutionList = $('#institution-list');
 
-  ddb.$index = $('#first-letter-index').clone(true);
-  ddb.$institutionList = $('#institution-list').clone();
-  
-  ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
+  // Only execute the script when the user is in the institution list page.
+  if(institutionList) {
+    // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
+    $('.filter').show();
+
+    ddb.$index = $('#first-letter-index').clone(true);
+    ddb.$institutionList = institutionList.clone();
+    
+    ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
+  } 
 });
