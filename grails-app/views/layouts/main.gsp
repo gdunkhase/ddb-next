@@ -11,10 +11,10 @@
     <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"/ -->
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+    <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}">
-    <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'institutionList.css')}">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}">
     <!--[if lt IE 9]>
