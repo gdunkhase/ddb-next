@@ -128,7 +128,7 @@ class ItemController {
             def searchGetParameters = searchService.getSearchGetParameters(searchParametersMap)
             def offset = ((Integer)((params["hitNumber"]-1)/searchParametersMap["rows"]))*searchParametersMap["rows"]
             searchGetParameters["offset"] = offset
-            searchResultUri = "/search?"
+            searchResultUri = "/searchresults?"
             MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib()
             searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters)
             searchResultParameters["resultsItems"] = resultsItems

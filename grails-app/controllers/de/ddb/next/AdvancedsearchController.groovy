@@ -69,7 +69,7 @@ class AdvancedsearchController {
             AdvancedSearchFormToQueryConverter converter =
                     new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
             String query = converter.convertFormParameters()
-            redirect(uri: "/search?query=" + query + "&offset=" + offset + "&rows=" + rows)
+            redirect(uri: "/searchresults?query=" + query + "&offset=" + offset + "&rows=" + rows)
         } catch(MissingPropertyException mpe){
             log.error "executeSearch(): There was a missing property.", mpe
             forward controller: "error", action: "serverError"

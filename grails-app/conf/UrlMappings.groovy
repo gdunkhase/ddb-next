@@ -5,7 +5,7 @@ class UrlMappings {
         "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
         //@formatter:on
 
-        "/search/$q?" {
+        "/searchresults/$q?" {
             controller="search"
             action="results"
         }
