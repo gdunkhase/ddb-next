@@ -9,24 +9,32 @@
   <div class="row">
     <div class="span12 search-widget">
       <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Search_Widget"/></h1>
-      <img src="${resource(dir: 'images', file: 'logo_big.png')}" class="bigLogo" alt="<g:message code="ddbnext.Logo_Description"/>" title="<g:message code="ddbnext.Logo_Title"/>" />
-      <form method="get" action="/search" role="search" id="form-search">
-        <label>
-          <span><g:message code="ddbnext.Search_text_field"/></span>
-        </label>
-        <input type="search" class="query" name="query" value="" />
-        <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
-        <span class="contextual-help hidden-phone hidden-tablet"
-              title="<g:message code="ddbnext.Search_Hint"
-                                args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}"
-                                default="ddbnext.Search_Hint"/>"
-              data-content="<g:message code="ddbnext.Search_Hint"
-                                       args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}"
-                                       default="ddbnext.Search_Hint"/>">
-        </span>
-        <a class="link-adv-search" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
-        <div class="tooltip off"></div>
-      </form>
+      <div class="row">
+        <img src="${resource(dir: 'images', file: 'logo_big.png')}" class="bigLogo" alt="<g:message code="ddbnext.Logo_Description"/>" title="<g:message code="ddbnext.Logo_Title"/>" />
+      </div>
+      <div class="row">
+        <form method="get" action="/search" role="search" id="form-search">
+          <div class="span7">
+            <label> 
+              <span><g:message code="ddbnext.Search_text_field"/></span>
+            </label>
+            <input type="search" class="query" name="query" value="" />
+            <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
+            <span class="contextual-help hidden-phone hidden-tablet" 
+                  title="<g:message code="ddbnext.Search_Hint" 
+                                    args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                                    default="ddbnext.Search_Hint"/>" 
+                  data-content="<g:message code="ddbnext.Search_Hint" 
+                                           args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                                           default="ddbnext.Search_Hint"/>">
+            </span>
+            <div class="tooltip off"></div>
+          </div>
+          <div class="span3 link-adv-search"> 
+            <a class="fl" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
   <div class="row">

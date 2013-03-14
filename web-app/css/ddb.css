@@ -15,6 +15,7 @@ header, .header {
 }
 header .container, .header .container{
  margin-bottom: 10px;
+ min-height: 0px;
 }
 header .navigation-header-logo, .header .navigation-header-logo {
   float:left;
@@ -99,9 +100,12 @@ header .language-wrapper >a,.header .language-wrapper >a {
 header .language-wrapper >a,.header .language-wrapper >a{
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 40px -43px;
 }
-header nav,div.header nav,header div.nav,div.header div.nav {
-    width:980px;
-    margin:0 auto;
+header .link-adv-search, div.header .link-adv-search {
+  font-size: 0.938em;
+  display: inline-block;
+  float: left;
+  text-align: left;
+  margin-left: 130px;
 }
 .search-header{
   margin-top: 35px;
@@ -110,7 +114,6 @@ header nav,div.header nav,header div.nav,div.header div.nav {
 #form-search-header{
   display: inline-block;
 }
-
 .search-header form label span{
   display: block;
   overflow: hidden;
@@ -301,33 +304,26 @@ header .language-widget form, .header .language-widget form {
   background-position:0px -30px;
 }
 #form-search {
-  float: none;
   position: relative;
-  padding-bottom: 15px;
-  top: 0px;
-  width: 580px;
+  width: 50%;
   margin: 0 auto;
 }
 #form-search input {
   font-size: 1.25em;
-  width: 485px;
+  width: 83%;
   height: 37px;
   line-height: 40px;
-  margin-left: 2px;
   float: left;
-  
 }
 #form-search .link-adv-search {
   margin-top: 10px;
-  margin-left: 2px;
 }
 #form-search .tooltip {
-  max-width: 536px;
+  max-width: 93%;
   margin: 12px 0px;
   color: #3e3a37;
   font-size: 0.938em;
   top: 40px;
-  margin-left: 2px;
 }
 .teaser .span3 {
   display:block;
@@ -412,6 +408,7 @@ a.previous span, a.next span {
 footer.container, .footer .container {
   padding:20px 0 70px 0;
   clear:both;
+  min-height:0px;
 }
 footer a,.footer a {
   text-decoration:none;
@@ -494,11 +491,9 @@ body {
   font-family: Calibri,Arial,sans-serif;
   color: #3e3a37;
 }
-/*
 .container {
   min-height: 515px;
 }
-*/
 form label {
   display: inline-block;
   clear: left;
@@ -514,6 +509,7 @@ input {
   color: #3e3a37;
   font-family: Calibri,Arial,sans-serif;
   font-size: 1em;
+  background-color: #fff;
   border: 1px solid;
   border-color: #858280 #dcdbda #dcdbda #858280;
   box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
@@ -608,13 +604,6 @@ select {
 }
 .contextual-help:hover,.contextual-help:active,.contextual-help:focus {
   background-position:0px -90px;
-}
-.link-adv-search {
-  font-size: 0.938em;
-  display: inline-block;
-  float: left;
-  text-align: left;
-  margin-left: 130px;
 }
 .tooltip {
   color: #999;
