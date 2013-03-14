@@ -63,6 +63,10 @@ var ddb = {
   },
 
   onPageLoad: function() {
+    $('#first-letter-index li a').click(function(event) {
+      event.preventDefault();
+      console.log('clicked');
+    });
     var hash = window.location.hash.substring(1);
     if (hash === 'All' || hash === 'ALL' || hash === 'list') {
       return;
