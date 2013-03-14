@@ -45,7 +45,7 @@
     <script src="${resource(dir: 'js', file: 'underscore-min.js')}"></script>
     <script src="${resource(dir: 'js', file: 'jquery.dotdotdot-1.5.1.js')}"></script>
     <script src="${resource(dir: 'js', file: 'jquery.carouFredSel-6.2.0-packed.js')}"></script>
-    <script src="${resource(dir: 'js', file: 'bootstrap-collapse.js')}"></script>
+    <script src="${resource(dir: 'js/vendor', file: 'bootstrap-collapse.js')}"></script>
     <script src="${resource(dir: 'js', file: 'large-cookie.js')}"></script>
     <script src="${resource(dir: 'js', file: 'advanced-search-page.js')}"></script>
     <script src="${resource(dir: 'js', file: 'jquery.fancybox.pack.js')}"></script>
