@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}">
-    <link rel="search" title="Deutsche Digitale Bibliothek" href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx" type="application/opensearchdescription+xml" />
+    <link rel="search" title="Deutsche Digitale Bibliothek" href="${resource(dir: '/', file: 'opensearch.osdx')}" type="application/opensearchdescription+xml" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'institutionList.css')}">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}">
     <!--[if lt IE 9]>
@@ -50,6 +50,7 @@
     <script src="${resource(dir: 'js', file: 'jquery.fancybox.pack.js')}"></script>
     <script src="${resource(dir: 'jwplayer', file: 'jwplayer.js')}"></script>
     <script>jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="</script>
+    <script src="${resource(dir: 'js', file: 'header.js')}"></script>
     <script src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
     <script src="${resource(dir: 'js', file: 'institution-list.js')}"></script>
   </body>

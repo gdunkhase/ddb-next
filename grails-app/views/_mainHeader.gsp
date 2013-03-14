@@ -15,22 +15,25 @@
                 <r:img dir="images" file="logo_header.png" class="siteLogo" />
               </a>
               <ul class="navigation inline" role="navigation">
-                <li class="active root"><a href="/"><g:message code="ddbnext.Search"/></a>
+                <li class="root"><a href="/"><g:message code="ddbnext.Search"/></a>
                   <ul>
                     <li class=""><a href="/advancedsearch"><g:message code="ddbnext.Advanced_search"/></a></li>
-                  </ul></li>
+                  </ul>
+                </li>
                 <li class=""><a href="/content/about"><g:message code="ddbnext.AboutUs"/></a>
                   <ul>
                     <li class=""><a href="/content/news/"><g:message code="ddbnext.News"/></a></li>
                     <li class=""><a href="/about-us/institutions"><g:message code="ddbnext.Institutions"/></a></li>
                     <li class=""><a href="/content/ddb"><g:message code="ddbnext.Participate"/></a></li>
                     <li class=""><a href="/content/competence-network"><g:message code="ddbnext.CompetenceNetwork"/></a></li>
-                  </ul></li>
+                  </ul>
+                </li>
                 <li class=""><a href="/content/help/"><g:message code="ddbnext.Help"/></a>
                   <ul>
                     <li class=""><a href="/content/faq/"><g:message code="ddbnext.Faq"/></a></li>
                     <li class=""><a href="/content/tutorial/"><g:message code="ddbnext.Tutorial"/></a></li>
-                  </ul></li>
+                  </ul>
+                </li>
               </ul>
             </div>
             <div class="span5 toolbar">
