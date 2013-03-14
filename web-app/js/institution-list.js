@@ -10,14 +10,16 @@ var ddb = {
     ddbBackendUrl: '/apis/institutions'
   },
 
-  // cache for all institution, including children and their descendants
-  all: $('.institution-listitem'),
+  // TODO: does not work => cache for all institution, including children and their descendants
+  $all: $('li.institution-listitem'),
 
-  institutionsBySector: null,
+  institutionsByFirstChar: null,
+
+  $index: null,
 
   // find index[All| A | B |...| Z | 0-9] with no members after filtered by sectors.
   findNoMember: function(visible) {
-    return _.reduce(ddb.institutionsBySector, function(memo, array, key) {
+    return _.reduce(ddb.institutionsByFirstChar, function(memo, array, key) {
       if (_.intersection(array, visible).length === 0) {
        memo.push(key);
     }
@@ -41,15 +43,15 @@ var ddb = {
   },
 
   findElements: function(list) {
-    return ddb.all.filter(function() {
+    return $('li.institution-listitem').filter(function() {
       return _.contains(_.pluck(list, 'id'), $(this).data('institution-id'));
     });
   },
 
-  getInstitutionsBySector: function(onFilterSelect, onPageLoad) {
-    if (ddb.institutionsBySector === null) {
+  getInstitutionsByFirstChar: function(onFilterSelect, onPageLoad) {
+    if (ddb.institutionsByFirstChar === null) {
       $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
-        ddb.institutionsBySector = response.data;
+        ddb.institutionsByFirstChar = response.data;
 
         // call the callbacks, once data is loaded.
         onPageLoad();
@@ -70,6 +72,7 @@ var ddb = {
   },
 
   onFilterSelect: function() {
+    // TODO: add id
     $('input:checkbox').click(function() {
       ddb.applyFilter();
     });
@@ -87,22 +90,18 @@ var ddb = {
     ddb.filter(institutionList, sectors, firstLetter);
   },
 
+  // TODO: only calculate it once.
   getInstitutionAsList: function() {
-    if (ddb.institutionList) {
-      return ddb.institutionList;
-    }
-
-    ddb.institutionList = _.chain(ddb.institutionsBySector)
+    ddb.institutionList = _.chain(ddb.institutionsByFirstChar)
       .values()
       .flatten()
       .value();
-
     return ddb.institutionList;
   },
 
   getFirstLetter: function() {
-    var hash = window.location.hash.substring(1);
-    if (hash === 'All' || hash === 'ALL' || hash === 'list') {
+    var hash = window.location.hash.substring(1).toLowerCase();
+    if (hash === '' || hash === 'all' || hash === 'list') {
       return '';
     } else {
       return hash;
@@ -110,52 +109,59 @@ var ddb = {
   },
 
   getSelectedSectors: function() {
+    // TODO: check, if there is more efficient way to formulate the selector.
     var allSelectedSectors = $('.sector-facet input:checked');
-    // TODO: use reducer instead.
-    var sectors = [];
-    _.each(allSelectedSectors, function(el) {
+    return _.reduce(allSelectedSectors, function(sectors, el) {
       sectors.push($(el).data('sector'));
-    });
-    return sectors;
+      return sectors;
+    },[]);
   },
 
   filter: function(institutionList, sectors, firstLetter) {
     // reset the view to empty.
-    ddb.all.hide();
-    ddb.all.removeClass('highlight');
+    $('li.institution-listitem').css('display', 'none');
+    $('li.institution-listitem').removeClass('highlight');
 
     var parentList = [];
 
     if (sectors.length > 0 && firstLetter === '') {
-
       // when at least one sector selected _and_ no first letter filter.
       // e.g. sector = ['Media'], index = All
-      var filteredBySector = _.reduce(institutionList, function(memory, institution) {
-        if (_.contains(sectors, institution.sector)) {
-          memory.push(institution);
-        }
-        ddb.filterDescendants(institution, memory, sectors, parentList);
-        return memory;
-      }, []);
+      var filteredBySector = ddb.filterBySectors(institutionList, sectors, parentList);
+      var visible = _.union(_.uniq(parentList), filteredBySector);
 
-      // TODO: it should not be necessary
-      parentList = _.uniq(parentList);
-
-      var visible = _.union(parentList, filteredBySector);
       var hasNoMember = ddb.findNoMember(visible);
-
       ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
+      ddb.updateIndex(hasNoMember);
     } else if (sectors.length > 0 && firstLetter !== '') {
       /*
       when at least one sector selected _and_ one of the first letter is
       selected, e.g.,  sector = ['Library', 'Media'], index = 'B'
       */
       // In this case, we don't need a parent list. TODO: refactor
-      var filteredBySector = _.reduce(institutionList, function(memory, institution) {
-        if (institution.firstChar === firstLetter && _.contains(sectors, institution.sector)) {
-          memory.push(institution);
+
+      /*
+      1. we collect all root institutions start with the selected firstLetter, 
+        for example 'W', including their children. The children do *not* have 
+        to start with the selected first letter.
+
+      2. we start to apply the sector filter, for example [Library] to all
+        institutions(roots and their children) collected from the first step.
+      */
+
+      var filteredByFirstLetter = ddb.institutionsByFirstChar[firstLetter];
+      var filteredBySector = _.reduce(filteredByFirstLetter , function(memory, institution) {
+        // assert
+        if (institution.firstChar !== firstLetter) {
+          // do nothing.
+        } else {
+          if (_.contains(sectors, institution.sector)) {
+            memory.push(institution);
+          }
+
+          ddb.filterDescendants(institution, memory, sectors, parentList);
         }
-        ddb.filterDescendants(institution, memory, sectors, parentList, firstLetter);
+
         return memory;
       }, []);
 
@@ -163,75 +169,134 @@ var ddb = {
         return parent.firstChar === firstLetter;
       });
 
-      ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
+      var visible = _.union(parentList, filteredBySector);
+      ddb.showResult(visible, filteredBySector);
+
+      // find all root institutions filtered by sectors.
+      // get the first letter, e.g., only As and Ls
+      // show only A and L in Index.
+      var filtered = ddb.filterBySectors(institutionList, sectors, parentList);
+      var hasNoMember = ddb.findNoMember(_.union(_.uniq(parentList), filtered));
+      ddb.updateIndex(hasNoMember);
     } else if (sectors.length === 0 && firstLetter !== '') {
       /*
-       When no sector
-      selected _and_ one of the first letter is selected.
+      When no sector selected _and_ one of the first letter is selected.
       e.g. sector = [], index = 'C'
       */
       ddb.showByFirstLetter(firstLetter);
+      ddb.updateIndex();
     } else {
-      // the last case: sectors.length === 0 && firstLetter !== ' '.
+      // the last case: sectors.length === 0 && firstLetter === ''.
       // when no sector is selected _and_ no first letter filter.
       // e.g. sector = [], index = All
-      ddb.showAll();
+      //ddb.showAll();
+      $('#institution-list')
+        .empty()
+        .html(ddb.$institutionList.html());
+      ddb.updateIndex();
     }
   },
 
+  filterBySectors: function(institutionList, sectors, parentList) {
+    return _.reduce(institutionList, function(memory, institution) {
+      if (_.contains(sectors, institution.sector)) {
+        memory.push(institution);
+      }
+      ddb.filterDescendants(institution, memory, sectors, parentList);
+      return memory;
+    }, []);
+  },
+
   showAll: function() {
-    $('#no-match-message').hide();
-    // FIXME: this is slow
-    ddb.all.show();
+    $('#no-match-message').css('display', 'none');
+    $('.institution-listitem').css('display','');
+  },
+
+  updateIndex: function(hasNoMember) {
+    if (hasNoMember) {
+      // enable all index. It means visually that the index all not grey.
+      // TODO: do we need it? Is it not better to take the ddb.$index?
+      $('#first-letter-index li').removeClass('disabled');
+
+      // update index view, i.e., A..Z
+      _.each(hasNoMember, function(letter) {
+        var $aHref = $('#first-letter-index a[href="' + '#' + letter + '"]');
+        $aHref.parent().addClass('disabled');
+        $aHref.click(function(e) {
+          e.preventDefault();
+        });
+      });
+    } else {
+      var $currentIndex = $('#first-letter-index');
+      $currentIndex.empty();
+      $currentIndex.html(ddb.$index.html());
+    }
   },
 
   // visible institutions are filtered institutions and their descendants.
   showResult: function(visibleInstitution, filteredBySector) {
+    var $msg = $('#no-match-message');
+
     // view manipulation
     if (visibleInstitution.length) {
-      $('#no-match-message').hide();
+      // hide the 'no result' message
+      $msg.css('display', 'none');
+
       ddb.findElements(filteredBySector).addClass('highlight');
-      ddb.findElements(visibleInstitution).show();
+      var $visible = ddb.findElements(visibleInstitution);
+      $visible.css('display',''); 
     } else {
-      $('#no-match-message').show();
+      $msg.css('display', 'block'); 
     }
   },
 
+  // TODO: we should *not* this extra function. We can reuse the logic in 
+  // if (sectors.length > 0 && firstLetter !== '') {...} with sectors empty
   showByFirstLetter: function(firstLetter) {
     // get all institution start with the letter `firstLetter`
-    var idList = _.pluck(ddb.institutionsBySector[firstLetter], 'id');
+    var idList = _.pluck(ddb.institutionsByFirstChar[firstLetter], 'id');
 
-        // find all institutions match idList
-    ddb.filteredEl = ddb.all.filter(function() {
+    // find all institutions match idList
+    ddb.filteredEl = $('li.institution-listitem').filter(function() {
       return _.contains(idList, $(this).data('institution-id'));
     });
 
     // find all first level institutions which are not start with
     // firstLetter
-    var restKeys = _.chain(ddb.institutionsBySector)
+    var restKeys = _.chain(ddb.institutionsByFirstChar)
       .keys()
       .reject(function(key) { return key === firstLetter; })
       .value();
 
     // get all values from restKeys
-    var restIdList = _.chain(ddb.institutionsBySector)
+    var restIdList = _.chain(ddb.institutionsByFirstChar)
       .filter(function(val, key) { return _.contains(restKeys, key); })
       .flatten()
       .pluck('id')
       .value();
 
     // collect the HTML elements that match id in the restIdList
-    ddb.restEl = ddb.all.filter(function() {
+    ddb.restEl = $('li.institution-listitem').filter(function() {
       return _.contains(restIdList, $(this).data('institution-id'));
     });
 
+    $('#no-match-message').css('display', 'none');
     ddb.showAll();
-    ddb.restEl.hide();
+    ddb.restEl.css('display', 'none');
   }
 };
 
 $(function() {
-  // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
-  $('.filter').show();
-  ddb.getInstitutionsBySector(ddb.onFilterSelect, ddb.onPageLoad);
+  var institutionList = $('#institution-list');
+
+  // Only execute the script when the user is in the institution list page.
+  if(institutionList) {
+    // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
+    $('.filter').show();
+
+    ddb.$index = $('#first-letter-index').clone(true);
+    ddb.$institutionList = institutionList.clone();
+    
+    ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
+  } 
 });

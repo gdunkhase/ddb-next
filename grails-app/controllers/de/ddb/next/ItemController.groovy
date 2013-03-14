@@ -24,7 +24,6 @@ class ItemController {
         try {
             //Check if Item-Detail was called from search-result and fill parameters
             def searchResultParameters = handleSearchResultParameters(params, request)
-
             def id = params.id
             def item = itemService.findItemById(id)
 
@@ -113,7 +112,7 @@ class ItemController {
         if (reqParameters["hitNumber"]) {
             searchParametersMap = searchService.getSearchCookieAsMap(httpRequest.cookies)
             def urlQuery = searchService.convertQueryParametersToSearchParameters(searchParametersMap)
-                
+
             //Search and return 3 Hits: previous, current and last
             reqParameters["hitNumber"] = reqParameters["hitNumber"].toInteger()
             urlQuery["rows"] = 3

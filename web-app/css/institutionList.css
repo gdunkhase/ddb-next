@@ -38,3 +38,11 @@ div.sector-facet>label:hover {
 #no-match-message {
   display: none;
 }
+
+.visible {
+  display: block;
+}
+
+.invisible {
+  display: none;
+}
