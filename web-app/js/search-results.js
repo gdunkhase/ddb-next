@@ -1,4 +1,23 @@
+//IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 window.onload=function(){
+  if (window.history && history.pushState) {
+    historyedited = false;
+    $(window).bind('popstate', function(e) {
+     if (historyedited) {
+      stateManager(location.pathname + location.search);
+     }
+    });
+    searchResultsInitializer();
+  }
+  
+function stateManager(url){
+    $('#main-container').load(url+' .search-results-container', function(){
+      searchResultsInitializer();
+    });
+  }
+};
+
+function searchResultsInitializer(){
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
   $('.page-input').removeClass('off');
@@ -16,6 +35,8 @@ window.onload=function(){
     return false;
   });
   
+  //This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
+  //IMPORTANT: remember to pass your arrayParamVal already URL decoded
   function addParamToCurrentUrl(arrayParamVal, urlParameters){
     var queryParameters = {}, queryString = (urlParameters==null)?location.search.substring(1):urlParameters,
       re = /([^&=]+)=([^&]*)/g, m;
@@ -60,6 +81,7 @@ window.onload=function(){
       this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
     });
     window.history.pushState({path:newUrl},'',newUrl);
+    historyedited = true;
   });
   $('.page-input').keyup(function(e){
     if(e.keyCode == 13) {
@@ -88,6 +110,7 @@ window.onload=function(){
     var newUrl = addParamToCurrentUrl(paramsArray);
     fetchResultsList(newUrl);
     window.history.pushState({path:newUrl},'',newUrl);
+    historyedited= true;
   });
   $('#view-grid').click(function(){
     $('.summary-main .title a').each(function(index,value){
@@ -117,6 +140,7 @@ window.onload=function(){
       this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
     });
     window.history.pushState({path:newUrl},'',newUrl);
+    historyedited= true;
   });
   function fetchResultsList(url){
     $('.search-results').empty();
@@ -156,12 +180,14 @@ window.onload=function(){
           $(".page-nav .prev-page").addClass("off");
           $(".page-nav .first-page").addClass("off");
         }
-        window.history.pushState({path:url},'',url);
+        window.history.pushState({searchResultState:url},'',url);
+        historyedited= true;
         $('.search-results').fadeIn('fast');
         });
       }
     });
   }
+ 
   //Facets Manager --
   FacetsManager = function(){
     this.init();
@@ -285,6 +311,19 @@ window.onload=function(){
             });
         }
         this.connectedflyoutWidget.close();
+        
+        //We want to add the facet value selected, but at the same time we want to keep all the old selected values
+        var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
+        if(paramsFacetValues){
+          $.each(paramsFacetValues, function(key,value){
+            paramsFacetValues[key] = decodeURIComponent(value);
+          });
+          paramsFacetValues.push(this.currentFacetField+'='+facetValue);
+          var paramsArray = new Array(new Array('facetValues[]', paramsFacetValues));
+        }else{
+          var paramsArray = new Array(new Array('facetValues[]', this.currentFacetField+'='+facetValue));
+        }
+        fetchResultsList(addParamToCurrentUrl(paramsArray));
     },
     
     unselectFacetValue: function(element){
@@ -298,8 +337,9 @@ window.onload=function(){
       //if in the list there is only one element means that is the case of the last element that we are going to remove
       if(facetFieldFilter.find('.selected-items li').length == 1){
         var facetFieldFilter = element.parents('.facets-item');
-        this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.addMoreFilters'));
+        this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
+      fetchResultsList(window.location.href.replace('&facetValues%5B%5D='+facetFieldFilter.find('.h3').attr('data-fctname')+'%3D'+element.attr('data-fctvalue'),''));
       element.remove();
     },
     
@@ -317,7 +357,7 @@ window.onload=function(){
       return vars;
     },
     getUrlVar: function(name){
-      return $.getUrlVars()[name];
+      return this.getUrlVars()[name];
     }
   });
   
@@ -538,7 +578,7 @@ window.onload=function(){
         this.addMoreFilters.attr('data-fctname', facetField);
         text.html(this.field_AddMoreFiltersButtonTooltip);
         
-        this.addMoreFilters.addClass('addMoreFilters');
+        this.addMoreFilters.addClass('add-more-filters');
         icon.addClass('icon');
         
         text.appendTo(this.addMoreFilters);
@@ -582,7 +622,7 @@ window.onload=function(){
       var oldParentMainElement = this.parentMainElement;
       oldParentMainElement.find('.input-search-fct-container').hide('100', function(){
         if(oldParentMainElement.find('.flyout-left-container ul li').length > 0){
-          oldParentMainElement.find('.addMoreFilters').show('100');
+          oldParentMainElement.find('.add-more-filters').show('100');
         }else{
           currObjInstance.resetFacetFieldFilter(oldParentMainElement);
         }

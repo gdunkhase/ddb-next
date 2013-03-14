@@ -554,11 +554,11 @@ input[type="checkbox"],input[type="radio"] {
 .flyout-right-body .left-col >div,  .flyout-right-body .right-col >div {
   cursor: pointer;
 }
-.flyout-right-body .left-col >div:hover,  .flyout-right-body .right-col >div:hover, .addMoreFilters:hover{
+.flyout-right-body .left-col >div:hover,  .flyout-right-body .right-col >div:hover, .add-more-filters:hover{
   text-decoration: underline;
   color: #a5003b;
 }
-.selected-items li, .addMoreFilters{
+.selected-items li, .add-more-filters{
   position:relative;
   line-height: 28px;
   color: #4c4a48;
@@ -572,7 +572,7 @@ input[type="checkbox"],input[type="radio"] {
   text-indent: 0;
   margin-right: 20px;
 }
-.selected-items .facet-remove, .addMoreFilters .icon{
+.selected-items .facet-remove, .add-more-filters .icon{
   width:20px;
   height:20px;
   background: url("../images/icons/search_actions.png") no-repeat 5px -40px;
@@ -584,14 +584,14 @@ input[type="checkbox"],input[type="radio"] {
 .selected-items .facet-remove:hover{
   background-position-y: -60px;
 }
-.addMoreFilters{
+.add-more-filters{
   margin: 0 10px;
   cursor: pointer;
 }
-.addMoreFilters .icon{
+.add-more-filters .icon{
   background-position-y:-80px;
 }
-.addMoreFilters:hover .icon{
+.add-more-filters:hover .icon{
   background-position-y:-100px;
 }
 .force-loader{
