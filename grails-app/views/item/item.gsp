@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'viewer.css')}" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'item-hierarchy.css')}" />
 <jawr:script src="/i18n/messages.js"/>
-<script src="${resource(dir: 'js', file: 'item-hierarchy.js')}" /></script>
+<script src="${resource(dir: 'js', file: 'item-hierarchy.js')}" ></script>
 <!-- to remember: there is some js code needed for the institution hierarchy inside the window.onload code of this file -->
-<script src="${resource(dir: 'js', file: 'binaries-viewer.js')}" /></script>
+<script src="${resource(dir: 'js', file: 'binaries-viewer.js')}" ></script>
 </head>
 <body>
   <g:render template="controls" />

@@ -88,7 +88,7 @@
               </g:elseif>
                 title="${it.orig.title}">
               <div class="thumbnail ${type}">
-                <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
               </div>
               <span class="label">${it.orig.title}</span>
             </a>
@@ -124,7 +124,7 @@
                 </g:elseif>
                   title="${it.orig.title}">
                 <div class="thumbnail ${type}">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
                 <span class="label">${it.orig.title}</span>
               </a>
@@ -149,7 +149,7 @@
             <li>
               <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" title="${it.preview.title}">
                 <div class="thumbnail image">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
                 <span class="label">${it.preview.title}</span>
               </a>
@@ -174,7 +174,7 @@
               <li>
                 <a class="group" href="${it.orig.uri.image}" title="${it.preview.title}">
                   <div class="thumbnail image">
-                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
                   <span class="label">${it.preview.title}</span>
                 </a>
@@ -201,7 +201,7 @@
                  </g:else>  
                  data-content="${it.orig.uri.video}" data-type="video" title="${it.orig.title}">
                 <div class="thumbnail video">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
                 <span class="label">${it.orig.title}</span>
               </a>
@@ -226,7 +226,7 @@
               <li>
                 <a class="group" href="${it.orig.uri.video}" title="${it.orig.title}">
                   <div class="thumbnail video">
-                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
                   <span class="label">${it.orig.title}</span>
                 </a>
@@ -253,7 +253,7 @@
                  </g:else>
                  data-content="${it.orig.uri.audio}" data-type="audio" title="${it.orig.title}">
                 <div class="thumbnail video">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
                 <span class="label">${it.orig.title}</span>
               </a>
@@ -278,7 +278,7 @@
               <li>
                 <a class="group" href="${it.orig.uri.audio}" title="${it.orig.title}">
                   <div class="thumbnail video">
-                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}">
+                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
                   <span class="label">${it.orig.title}</span>
                 </a>

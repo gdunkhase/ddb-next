@@ -42,7 +42,7 @@
              </div>
            </div>
            <div class="span2">
-             <img style="text-align: right;" alt="${results.name}" class="logo" src="${results.logo}">
+             <img style="text-align: right;" alt="${results.name}" class="logo" src="${results.logo}" />
            </div>
        </div>
             
@@ -59,8 +59,8 @@
             
                 <div class="location" style="margin-bottom: 30px;" data-lat="${results.locations.location.geocode.latitude }" data-lon="${results.locations.location.geocode.longitude }">
                     <p class="address">
-                        <b>${results.'name'}</b><br>
-                        ${results.locations.location.address.street }&nbsp;${results.locations.location.address.houseIdentifier }<br>
+                        <b>${results.'name'}</b><br />
+                        ${results.locations.location.address.street }&nbsp;${results.locations.location.address.houseIdentifier }<br />
                         ${results.locations.location.address.postalCode }&nbsp;${results.locations.location.address.city }
                         ${results.locations.location.address.addressSupplement }
                     </p>

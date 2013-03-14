@@ -50,7 +50,7 @@
           <div class="row">
             <div class="span7">
               <a href="/" class="navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
-                <r:img dir="images" file="logo_header.png" class="siteLogo" />
+                <r:img dir="images" file="logo_header.png" class="siteLogo" alt=""/>
               </a>
               <ul class="navigation inline" role="navigation">
                 <li class="active root"><a href="/"><g:message code="ddbnext.Search"/></a>
