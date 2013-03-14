@@ -1,14 +1,15 @@
 package de.ddb.next
 
-import java.security.MessageDigest;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import groovy.json.JsonSlurper
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
+import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
 
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
-
-import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 
 /**
@@ -22,6 +23,12 @@ class SearchService {
 
     //Autowire the grails application bean
     def grailsApplication
+
+    //CharacterEncoding of query-String
+    private characterEncoding = "UTF-8"
+
+    //Name of search-cookie
+    private searchCookieName = "searchParameters"
 
     private static facetsList = [
         "time_fct",
@@ -231,7 +238,7 @@ class SearchService {
      * @param reqParameters
      * @return Map with keys used for Search on Search-Server
      */
-    def convertQueryParametersToSearchParameters(GrailsParameterMap reqParameters) {
+    def convertQueryParametersToSearchParameters(Map reqParameters) {
         def urlQuery = [:]
         if (reqParameters.query!=null){
             urlQuery["query"] = reqParameters.query
@@ -308,7 +315,8 @@ class SearchService {
             "viewType",
             "clustered",
             "isThumbnailFiltered",
-            "facetValues[]"
+            "facetValues[]",
+            "facets[]"
         ]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
@@ -324,8 +332,8 @@ class SearchService {
      * @param reqParameters
      * @return Map with keys used for item-detail-request by ddb-next.
      */
-    def getItemDetailGetParameters(Map reqParameters) {
-        def itemDetailParams = [:]
+    def getSearchCookieParameters(Map reqParameters) {
+        def searchCookieParameters = [:]
         def requiredParams = [
             "query",
             "offset",
@@ -335,15 +343,16 @@ class SearchService {
             "clustered",
             "isThumbnailFiltered",
             "facetValues[]",
+            "facets[]",
             "firstHit",
             "lastHit"
         ]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
-                itemDetailParams[entry.key] = entry.value
+                searchCookieParameters[entry.key] = entry.value
             }
         }
-        return itemDetailParams
+        return searchCookieParameters
     }
 
     /**
@@ -399,4 +408,73 @@ class SearchService {
         }
         return res
     }
+
+    /**
+     * Create Cookie with search-parameters for use on other pages
+     * convert HashMap containing parameters to JSON
+     * 
+     * @param reqParameters request-parameters
+     * @return Cookie with search-parameters
+     */
+    def createSearchCookie(Map reqParameters) {
+        //Create Cookie with search-parameters for use on other pages
+        //convert HashMap containing parameters to JSON
+        Map paramMap = getSearchCookieParameters(reqParameters);
+        def jSonObject = new JSONObject()
+        for (entry in paramMap) {
+            if (entry.value instanceof String[]) {
+                for (entry1 in entry.value) {
+                    jSonObject.accumulate(entry.key, URLEncoder.encode(entry1, characterEncoding))
+                }
+            }
+            else if (entry.value instanceof String){
+                jSonObject.put(entry.key, URLEncoder.encode(entry.value, characterEncoding))
+            }
+            else {
+                jSonObject.put(entry.key, entry.value)
+            }
+        }
+        def cookie = new Cookie(searchCookieName, jSonObject.toString())
+        cookie.maxAge = -1
+        return cookie
+    }
+    
+    /**
+     * Reads the cookie containing the search-Parameters and fills the values in Map.
+     * 
+     * @param request
+     * @return Map with key-values from cookie
+     */
+    def getSearchCookieAsMap(Cookie[] cookies) {
+        def searchParams
+        def searchParamsMap = [:]
+        for (cookie in cookies) {
+            if (cookie.name == searchCookieName) {
+                searchParams = cookie.value
+            }
+        }
+        if (searchParams) {
+            def jSonSlurper = new JsonSlurper()
+            searchParamsMap = jSonSlurper.parseText(searchParams)
+            for (entry in searchParamsMap) {
+                if (entry.value instanceof String) {
+                    entry.value = URLDecoder.decode(entry.value, characterEncoding)
+                }
+                else if (entry.value instanceof List) {
+                    String[] arr = new String[entry.value.size()]
+                    def i = 0
+                    for (entry1 in entry.value) {
+                        if (entry1 instanceof String) {
+                            entry1 = URLDecoder.decode(entry1, characterEncoding)
+                        }
+                        arr[i] = entry1
+                        i++
+                    }
+                    entry.value = arr
+                }
+            }
+        }
+        return searchParamsMap
+    }
+
 }

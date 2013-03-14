@@ -1,3 +1,9 @@
+.back-to-list-greyed-out {
+  color: #878380;
+  padding-left: 19px;
+  margin-right: 10px;
+  background: url(../images/icons/list_backarrows.png) no-repeat 0px -41px
+}
 .rights {
   margin: 30px 0px 30px 0px;
 }

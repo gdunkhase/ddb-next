@@ -14,7 +14,7 @@
         <label>
           <span><g:message code="ddbnext.Search_text_field"/></span>
         </label>
-        <input type="search" class="query" name="query" value="" data-bind="value: searchTerm" />
+        <input type="search" class="query" name="query" value="" />
         <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
         <span class="contextual-help hidden-phone hidden-tablet"
               title="<g:message code="ddbnext.Search_Hint"

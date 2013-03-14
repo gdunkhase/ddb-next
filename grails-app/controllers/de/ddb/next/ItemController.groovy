@@ -23,7 +23,7 @@ class ItemController {
     def findById() {
         try {
             //Check if Item-Detail was called from search-result and fill parameters
-            def searchResultParameters = handleSearchResultParameters(params)
+            def searchResultParameters = handleSearchResultParameters(params, request)
 
             def id = params.id
             def item = itemService.findItemById(id)
@@ -57,9 +57,8 @@ class ItemController {
                 render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
                     'title': item.title, item: item.item, institution : item.institution, fields: fields,
                     binaryList: binaryList, pageLabel: item.pageLabel,
-                    itemDetailGetParams: searchService.getItemDetailGetParameters(params),
-                    hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"],
-                    searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
+                    firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
+                    hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
             }
         } catch(ItemNotFoundException infe){
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
@@ -105,12 +104,16 @@ class ItemController {
      * @return Map with searchResult to build back + next links
      *  and searchResultUri for Link "Back to Search Result"
      */
-    def handleSearchResultParameters(reqParameters) {
+    def handleSearchResultParameters(reqParameters, httpRequest) {
         def searchResultParameters = [:]
+        searchResultParameters["searchParametersMap"] = [:]
+        def searchParametersMap
         def resultsItems
         def searchResultUri
         if (reqParameters["hitNumber"]) {
-            def urlQuery = searchService.convertQueryParametersToSearchParameters(reqParameters)
+            searchParametersMap = searchService.getSearchCookieAsMap(httpRequest.cookies)
+            def urlQuery = searchService.convertQueryParametersToSearchParameters(searchParametersMap)
+                
             //Search and return 3 Hits: previous, current and last
             reqParameters["hitNumber"] = reqParameters["hitNumber"].toInteger()
             urlQuery["rows"] = 3
@@ -123,14 +126,15 @@ class ItemController {
             resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
 
             //generate link back to search-result. Calculate Offset.
-            def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
-            def offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters["rows"]))*reqParameters["rows"]
+            def searchGetParameters = searchService.getSearchGetParameters(searchParametersMap)
+            def offset = ((Integer)((params["hitNumber"]-1)/searchParametersMap["rows"]))*searchParametersMap["rows"]
             searchGetParameters["offset"] = offset
             searchResultUri = "/search?"
             MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib()
             searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters)
             searchResultParameters["resultsItems"] = resultsItems
             searchResultParameters["searchResultUri"] = searchResultUri
+            searchResultParameters["searchParametersMap"] = searchParametersMap
 
             //Workaround for last-hit (Performance-issue)
             if (reqParameters.id && reqParameters.id.equals("lasthit")) {

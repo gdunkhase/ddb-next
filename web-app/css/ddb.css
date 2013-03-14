@@ -655,6 +655,6 @@ select {
   border-right: solid 1px #efebe8;
 }
 .off {
-  display: none;
+  display: none !important;
 }
 /* genaral rules - end */
