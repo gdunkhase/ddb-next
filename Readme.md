@@ -56,6 +56,8 @@ A list of some predefined varibales is set below:
     ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
     ddb.apis.url="http://localhost:8080"
     ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+	ddb.logging.folder="target/logs"
+	ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
     ddb.advancedSearch.searchGroupCount=3
     ddb.advancedSearch.searchFieldCount=10
     ddb.advancedSearch.defaultOffset=0
@@ -66,3 +68,9 @@ The tomcat configuration in the server.xml must ensure, that the used Connector 
 
 	<Connector [...] URIEncoding="UTF-8" /> 
  
+###Piwik configuration
+The Piwik integration is done by a separate file (tracking.txt) that must be available in the filesystem of the webserver and configured
+in the ddb-next.properties file. For example if the file is accessible under "/opt/ddb/tracking.txt", the configuration in ddb-next.properties
+would look like "ddb.tracking.piwikfile="file:/opt/ddb/tracking.txt".
+
+The file tracking.txt must contain the full Piwik tracking code. It will be rendered in the web page in exactly this form.

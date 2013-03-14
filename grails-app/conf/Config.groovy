@@ -80,6 +80,7 @@ ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
 ddb.apis.url="http://localhost:8080"
 ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
 ddb.logging.folder="target/logs"
+ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
 ddb.advancedSearch.searchGroupCount=3
 ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
@@ -102,8 +103,6 @@ environments {
         grails.config.locations = [
             "file:${userHome}/.grails/${appName}.properties"
         ]
-
-
     }
     production {
         grails.logging.jul.usebridge = false
@@ -139,7 +138,7 @@ log4j = {
     environments {
         development {
             warn    "org.codehaus.groovy.grails",               // only warnings or errors from grails
-                    "grails",                                   // only warnings or errors from grails
+                    "grails.plugin",                            // only warnings or errors from grails.plugins
                     "org.grails.plugin",                        // only warnings or errors from plugins
                     "org.springframework",                      // only warnings or errors from spring
                     "net.jawr",                                 // only warnings or errors from jawr

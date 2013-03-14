@@ -107,5 +107,6 @@
           });
         });
     </script>
+    <g:piwik />    
   </body>
 </html>
