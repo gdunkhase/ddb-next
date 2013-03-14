@@ -63,16 +63,13 @@ var ddb = {
   },
 
   onPageLoad: function() {
-    $('#first-letter-index li a').click(function(event) {
-      event.preventDefault();
-      console.log('clicked');
-    });
     var hash = window.location.hash.substring(1);
-    if (hash === 'All' || hash === 'ALL' || hash === 'list') {
+    if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
       return;
     } else {
       ddb.applyFilter();
     }
+  
   },
 
   onFilterSelect: function() {
@@ -104,8 +101,8 @@ var ddb = {
   },
 
   getFirstLetter: function() {
-    var hash = window.location.hash.substring(1).toLowerCase();
-    if (hash === '' || hash === 'all' || hash === 'list') {
+    var hash = window.location.hash.substring(1);
+    if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
       return '';
     } else {
       return hash;
@@ -295,6 +292,26 @@ $(function() {
 
   // Only execute the script when the user is in the institution list page.
   if(institutionList) {
+    // we catch the click event on index, does *not* when the user goes directyly
+    // to a page with #{first-character}, for example: //institutions#A
+    var $firstCharLinks = $('#first-letter-index a');
+    $firstCharLinks.click(function(event) {
+      console.log('clicked');
+      event.preventDefault();
+      console.log('clicked: ', this);
+
+      $(this).parent().addClass('active');
+      $(this).css('color', '#a5003b');
+
+      var $otherLinks = $firstCharLinks.not(this);
+      $otherLinks.parent().removeClass('active');
+
+      // TODO: revert others' color to the initial states.
+      $otherLinks.css('color', 'green');
+
+      return false;
+    });
+
     // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
     $('.filter').show();
 

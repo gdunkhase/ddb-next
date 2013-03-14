@@ -32,7 +32,7 @@ div.sector-facet>label:hover {
 }
 
 .selected {
-  color: #a5003b
+  color: #a5003b;
 }
 
 #no-match-message {
