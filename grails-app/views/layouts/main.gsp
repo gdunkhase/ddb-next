@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
-    <meta name="description" content="Deutsche Digitale Bibliothek">
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="description" content="Deutsche Digitale Bibliothek" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <!-- TODO: uncomment the next two lines, once we find the icons -->
     <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"/ -->
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
@@ -35,7 +35,7 @@
     <g:layoutBody/>
   </div>
   <g:render template="/footer" />
-    <!--  TODO why do we declare jquery here? Don't we use Grails jQuery Plug-in? -->
+    <!-- TODO why do we declare jquery here? Don't we use Grails jQuery Plug-in? -->
     <script src="${resource(dir:'js', file:'json2.js')}"></script>
     <script src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
     <script src="${resource(dir: 'js', file: 'jquery.cookies.2.2.0.min.js')}"></script>
@@ -50,5 +50,6 @@
     <script>jwplayer.key="AUCPxuikvGKUo7iy5PHSNvulij4OHNPvp+v47g=="</script>
     <script src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
     <script src="${resource(dir: 'js', file: 'institution-list.js')}"></script>
+    <g:piwik />
   </body>
 </html>
