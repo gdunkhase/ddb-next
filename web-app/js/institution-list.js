@@ -64,7 +64,7 @@ var ddb = {
 
   onPageLoad: function() {
     var hash = window.location.hash.substring(1);
-    if (hash === 'All' || hash === 'ALL' || hash === 'list') {
+    if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
       return;
     } else {
       ddb.applyFilter();
@@ -100,8 +100,8 @@ var ddb = {
   },
 
   getFirstLetter: function() {
-    var hash = window.location.hash.substring(1).toLowerCase();
-    if (hash === '' || hash === 'all' || hash === 'list') {
+    var hash = window.location.hash.substring(1);
+    if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
       return '';
     } else {
       return hash;
