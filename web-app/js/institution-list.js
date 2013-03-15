@@ -69,7 +69,7 @@ var ddb = {
     } else {
       ddb.applyFilter();
     }
-  
+
   },
 
   onFilterSelect: function() {
@@ -142,8 +142,8 @@ var ddb = {
       // In this case, we don't need a parent list. TODO: refactor
 
       /*
-      1. we collect all root institutions start with the selected firstLetter, 
-        for example 'W', including their children. The children do *not* have 
+      1. we collect all root institutions start with the selected firstLetter,
+        for example 'W', including their children. The children do *not* have
         to start with the selected first letter.
 
       2. we start to apply the sector filter, for example [Library] to all
@@ -245,13 +245,13 @@ var ddb = {
 
       ddb.findElements(filteredBySector).addClass('highlight');
       var $visible = ddb.findElements(visibleInstitution);
-      $visible.css('display',''); 
+      $visible.css('display','');
     } else {
-      $msg.css('display', 'block'); 
+      $msg.css('display', 'block');
     }
   },
 
-  // TODO: we should *not* this extra function. We can reuse the logic in 
+  // TODO: we should *not* this extra function. We can reuse the logic in
   // if (sectors.length > 0 && firstLetter !== '') {...} with sectors empty
   showByFirstLetter: function(firstLetter) {
     // get all institution start with the letter `firstLetter`
@@ -296,18 +296,26 @@ $(function() {
     // to a page with #{first-character}, for example: //institutions#A
     var $firstCharLinks = $('#first-letter-index a');
     $firstCharLinks.click(function(event) {
-      console.log('clicked');
       event.preventDefault();
       console.log('clicked: ', this);
 
-      $(this).parent().addClass('active');
-      $(this).css('color', '#a5003b');
+      var $this = $(this);
+      var $li = $this.parent();
 
+      if($li.hasClass('disabled')) {
+        console.log('do nothing');
+        return false;
+      }
+
+      // style the selected index.
+      $li.addClass('active');
+      // TODO: replace this with a class.
+      $this.css('color', '#a5003b');
+
+      // reset other indexes to the initial style.
       var $otherLinks = $firstCharLinks.not(this);
       $otherLinks.parent().removeClass('active');
-
-      // TODO: revert others' color to the initial states.
-      $otherLinks.css('color', 'green');
+      $otherLinks.removeAttr('style');
 
       return false;
     });
@@ -317,7 +325,7 @@ $(function() {
 
     ddb.$index = $('#first-letter-index').clone(true);
     ddb.$institutionList = institutionList.clone();
-    
+
     ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
-  } 
+  }
 });
