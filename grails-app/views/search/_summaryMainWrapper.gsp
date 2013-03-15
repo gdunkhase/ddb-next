@@ -1,7 +1,11 @@
+<g:set var="itemTitleLinkPrefix" value=""></g:set>
+<g:if test="${item.category == 'Institution'}">
+  ${itemTitleLinkPrefix = '/about-us/institutions'}
+</g:if>
 <div class="summary-main-wrapper <g:if test="${viewType != 'grid'}">span7</g:if>">
   <div class="summary-main">
     <h2 class="title">
-      <a class="persist" href="/item/${item.id}?hitNumber=${hitNumber}" title="${item.label}">
+      <a class="persist" href="${itemTitleLinkPrefix}/item/${item.id}?hitNumber=${hitNumber}" title="${item.label}">
       <g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle>
       </a>
     </h2>

@@ -132,6 +132,8 @@ class SearchService {
     def buildSubFacets(LinkedHashMap urlQuery){
         def emptyFacets = this.facetsList.clone()
         def res = []
+        //We want only the first 10 facets
+        urlQuery["facet.limit"] = 10
         urlQuery["facet"].each{
             if(it != "grid_preview"){
                 emptyFacets.remove(it)
@@ -231,6 +233,20 @@ class SearchService {
         return cleanTitle
 
     }
+    
+    /**
+     *
+     * Gives you back the string trimmed to desired length
+     *
+     * @param text
+     * @param length
+     * @return String text trimmed
+     */
+    def trimString(String text, int length){
+        if(text.length()>length)
+          return text.substring(0, text.substring(0,length).lastIndexOf(" "))+"..."
+        return text
+    }
 
     /**
      * Generate Map that can be used to call Search on Search-Server
@@ -279,6 +295,10 @@ class SearchService {
 
         if(reqParameters.sort != null){
             urlQuery["sort"] = reqParameters.sort
+        }else{
+            if(urlQuery["query"]!="*"){
+              urlQuery["sort"] = "RELEVANCE"
+            }
         }
 
         if(reqParameters.viewType == null) {
@@ -368,9 +388,9 @@ class SearchService {
         def res = [type: fctName, values: []]
         facets.each{
             if(it.field==fctName){
-                int max = (it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
+                int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
                 for(int i=0;i<max;i++){
-                    res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: it.facetValues[i].count])
+                    res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format("%,d", it.facetValues[i].count.toInteger())])
                 }
             }
         }

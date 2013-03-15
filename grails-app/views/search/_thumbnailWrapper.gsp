@@ -7,7 +7,7 @@
   </div>
   <div class="information">
     <div class="hovercard-info-item">
-      <h4><g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle></h4>
+      <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
       <ul class="unstyled">
         <g:each in="${item.properties}">
           <g:if test="${item.properties[it.key] && it.key != 'last_update'}">

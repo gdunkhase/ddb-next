@@ -14,9 +14,10 @@
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}" />
-    <link rel="search" title="Deutsche Digitale Bibliothek" href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx" type="application/opensearchdescription+xml" />
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'institutionList.css')}" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}" />
+    <link rel="search" title="Deutsche Digitale Bibliothek" href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx" type="application/opensearchdescription+xml" />
     <!--[if lt IE 9]>
       <script src="Scripts/html5shim.googlecode.html5.js"> </script>
     <![endif]-->
@@ -34,7 +35,7 @@
       </div>
     </noscript>
   <g:render template="/mainHeader" />
-  <div class="container" role="main">
+  <div id="main-container" class="container" role="main">
     <g:layoutBody/>
   </div>
   <g:render template="/footer" />

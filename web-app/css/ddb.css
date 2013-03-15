@@ -647,6 +647,9 @@ select {
 .off {
   display: none !important;
 }
+.on {
+  display: block !important;
+}
 .nopointer {
   cursor: default !important;
 }
