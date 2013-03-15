@@ -141,8 +141,8 @@ var ddb = {
       // In this case, we don't need a parent list. TODO: refactor
 
       /*
-      1. we collect all root institutions start with the selected firstLetter, 
-        for example 'W', including their children. The children do *not* have 
+      1. we collect all root institutions start with the selected firstLetter,
+        for example 'W', including their children. The children do *not* have
         to start with the selected first letter.
 
       2. we start to apply the sector filter, for example [Library] to all
@@ -244,13 +244,13 @@ var ddb = {
 
       ddb.findElements(filteredBySector).addClass('highlight');
       var $visible = ddb.findElements(visibleInstitution);
-      $visible.css('display',''); 
+      $visible.css('display','');
     } else {
-      $msg.css('display', 'block'); 
+      $msg.css('display', 'block');
     }
   },
 
-  // TODO: we should *not* this extra function. We can reuse the logic in 
+  // TODO: we should *not* this extra function. We can reuse the logic in
   // if (sectors.length > 0 && firstLetter !== '') {...} with sectors empty
   showByFirstLetter: function(firstLetter) {
     // get all institution start with the letter `firstLetter`
@@ -290,13 +290,13 @@ $(function() {
   var institutionList = $('#institution-list');
 
   // Only execute the script when the user is in the institution list page.
-  if(institutionList) {
+  if(institutionList.length) {
     // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
     $('.filter').show();
 
     ddb.$index = $('#first-letter-index').clone(true);
     ddb.$institutionList = institutionList.clone();
-    
+
     ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
-  } 
+  }
 });
