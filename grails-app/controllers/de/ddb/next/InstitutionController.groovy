@@ -44,14 +44,27 @@ class InstitutionController {
         render institutionService.findAll() as JSON
     }
         
-    def readByItemId() { // ToDo: rename to showInstitutionsTreeByItemId
-        def id = params.id
+    def showInstitutionsTreeByItemId() { // ToDo: rename to showInstitutionsTreeByItemId
+        def id = params.id;
+        def itemId = id;
         def vApiInstitution = new ApiInstitution();
-        log.println("read insitution by item id: ${id}")
-        def dataViewXML = vApiInstitution.getInstitutionViewByItemId(id, grailsApplication.config.ddb.backend.url.toString())
-        if (dataViewXML != null) {
-            def jsonOrgHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(id, grailsApplication.config.ddb.backend.url.toString())
-            def jsonFacets = vApiInstitution.getFacetValues(dataViewXML.name.text(), grailsApplication.config.ddb.backend.url.toString())
+        log.println("read insitution by item id: ${id}");
+        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, grailsApplication.config.ddb.backend.url.toString());
+        if (selectedOrgXML) {
+            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, grailsApplication.config.ddb.backend.url.toString())
+            log.println("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}"); // ToDo: remove!
+            if (jsonOrgParentHierarchy.size() == 1) {
+                if (jsonOrgParentHierarchy[0].id != id) {
+                    log.println("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}");
+                }
+            }
+            else if (jsonOrgParentHierarchy.size() > 1) {
+                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
+            }
+            log.println("root itemId = ${itemId}"); // ToDo: remove!
+            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, grailsApplication.config.ddb.backend.url.toString())
+            log.println("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}") // TODo: remove!
+            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), grailsApplication.config.ddb.backend.url.toString())
             int countObjectsForProv = 0;
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {
@@ -61,7 +74,7 @@ class InstitutionController {
                     countObjectsForProv = -1;
                 }
             }
-            render(view: "institution", model: [itemId: id, results: dataViewXML, subOrg: jsonOrgHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
+            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
         } 
         else {
            forward controller: 'error', action: "notfound"

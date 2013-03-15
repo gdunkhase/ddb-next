@@ -1,33 +1,23 @@
-<%@page import="de.ddb.next.ApiInstitution"%>
-<%@page import="java.lang.String"%>
 <meta name="layout" content="main" />
 
-<title>"${results.name} - Deutsche Digitale Bibliothek"</title>
+<title>"${selectedOrgXML.name} - Deutsche Digitale Bibliothek"</title>
 
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'institution.css')}" type="text/css" />
-<!-- link rel="stylesheet" href="/css/institution.css" type="text/css" /-->
-
 <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
 <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-<!-- script type="text/javascript" src="/js/ddb.osm.institutiondetailview.js"></script-->
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.osm.institutiondetailview.js')}"></script>
-<script type="text/javascript">
-<!--
-//-->
-</script>
 
     <div class="institutionItemPage">
     
        <div class="row-fluid" style="padding-bottom: 10px; margin-bottom: 10px; border-bottom-style: solid; border-bottom-width: 4px; border-bottom-color: silver;">
-       <!-- div class="institution"-->
-           <div class="span10"> <!-- class="summary" -->
-             <div> <!-- class="sector" {provInfo.'provider-domains'.'provider-domain'} -->
-              <g:message code="ddbnext.${results.'sector'}"/>
+           <div class="span10">
+             <div>
+              <g:message code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
              <div>
-                 <h2>${results.name}
+                 <h2>${selectedOrgXML.name}
                  <g:if test="${(countObjcs > 0)}">
-                     <a class="count" style="color: black; font-size: small;" href="/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${results.'name'}" 
+                     <a class="count" style="color: black; font-size: small;" href="/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${selectedOrgXML.name}" 
                         title="<g:message code="ddbnext.InstitutionItem_IngestedObjectCountTitleText" />">
                         ${countObjcs}&nbsp;
                         <g:if test="${(countObjcs = 1)}">
@@ -41,11 +31,11 @@
                  </h2>
              </div>
              <div>
-               <a href="${results.uri }/">${String.valueOf(results.uri).trim() }</a>
+               <a href="${selectedOrgXML.uri }/">${String.valueOf(selectedOrgXML.uri).trim() }</a>
              </div>
            </div>
            <div class="span2">
-             <img style="text-align: right;" alt="${results.name}" class="logo" src="${results.logo}">
+             <img style="text-align: right;" alt="${selectedOrgXML.name}" class="logo" src="${selectedOrgXML.logo}">
            </div>
        </div>
             
@@ -54,31 +44,37 @@
             <div id="divOSM"></div>
             <script type="text/javascript">
               <!--
-              //drawmap(${results.locations.location.geocode.longitude},${results.locations.location.geocode.latitude}, "${results.name}", "${results.locations.location.address.street}", "${results.locations.location.address.houseIdentifier}", "${results.locations.location.address.postalCode}", "${results.locations.location.address.city}");
+              //drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
               //-->
             </script>
             
             <div class="locationContainer">
                 
-                <div class="location" style="margin-bottom: 30px;" data-lat="${results.locations.location.geocode.latitude }" data-lon="${results.locations.location.geocode.longitude }">
+                <div class="location" style="margin-bottom: 30px;" data-lat="${selectedOrgXML.locations.location.geocode.latitude }" data-lon="${selectedOrgXML.locations.location.geocode.longitude }">
                     <p class="address">
-                        <b>${results.name}</b><br>
-                        ${results.locations.location.address.street }&nbsp;${results.locations.location.address.houseIdentifier }<br>
-                        <g:if test="${(results.addressSupplement)&&(results.addressSupplement.text().length() > 0)}">
-                            (${(results.addressSupplement)})<br>
+                        <b>${selectedOrgXML.name}</b><br>
+                        ${selectedOrgXML.locations.location.address.street }&nbsp;${selectedOrgXML.locations.location.address.houseIdentifier }<br>
+                        <g:if test="${(selectedOrgXML.addressSupplement)&&(selectedOrgXML.addressSupplement.text().length() > 0)}">
+                            (${(selectedOrgXML.addressSupplement)})<br>
                         </g:if>
-                        ${results.locations.location.address.postalCode }&nbsp;${results.locations.location.address.city }
-                        ${results.locations.location.address.addressSupplement }
+                        ${selectedOrgXML.locations.location.address.postalCode }&nbsp;${selectedOrgXML.locations.location.address.city }
+                        ${selectedOrgXML.locations.location.address.addressSupplement }
                     </p>
                 </div>
                 
-                <g:if test="${((subOrg != null)&&(subOrg.size() > 0))}">
+                <g:if test="${((subOrg)&&(subOrg.size() > 0)&&(!(parentOrg[parentOrg.size() - 1].aggregationEntity)))}">
                     <div class="hierarchy">
                       <span class="title"><g:message code="ddbnext.InstitutionItem_OtherLocations" /></span>
                       <ol class="institution-list">
                         <li class="institution-listitem">
-                          <i class="icon-institution"></i>
-                          <b>${results.name}</b>
+                          <g:if test="${(selectedItemId == itemId)}">
+                              <i class="icon-institution"></i>
+                              <b>${parentOrg[parentOrg.size() - 1].label}</b>
+                          </g:if>
+                          <g:else>
+                              <i class="icon-child-institution"></i>
+                              <a href="/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
+                          </g:else>
                           <g:render template="subinstitutions" />
                         </li>
                       </ol>
@@ -87,5 +83,6 @@
                 
             </div>
       </div>
+      
     </div>
     
