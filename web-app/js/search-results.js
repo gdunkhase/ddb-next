@@ -134,6 +134,7 @@ function searchResultsInitializer(){
       this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
     });
     historyManager(newUrl);
+    setSearchCookieParameter(paramsArray);
   });
   $('.page-input').keyup(function(e){
     if(e.keyCode == 13) {
