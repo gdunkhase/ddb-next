@@ -21,13 +21,13 @@
   <li class="first-item ${displayLeftPagination}">
     <a href="/item/${navData.firstHit}?hitNumber=1"><g:message code="ddbnext.First_Label" /></a>  
   </li>
-  <li class="prev-item br ${displayLeftPagination}">
+  <li class="prev-item br-white ${displayLeftPagination}">
     <a href="/item/${prevId}?hitNumber=${navData.hitNumber - 1}"><g:message code="ddbnext.Previous_Label" /></a> 
   </li>
-  <li class="items-overall-index">
+  <li>
     <span><g:message code="ddbnext.Hit" /> ${navData.hitNumber} <g:message code="ddbnext.Of" /> ${navData.results["numberOfResults"]}</span>
   </li>
-  <li class="next-item bl ${displayRightPagination}">
+  <li class="next-item bl-white ${displayRightPagination}">
     <a href="/item/${nextId}?hitNumber=${navData.hitNumber + 1}"><g:message code="ddbnext.Next_Label" /></a> 
   </li>
   <li class="last-item ${displayRightPagination}">

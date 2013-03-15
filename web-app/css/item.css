@@ -72,31 +72,26 @@
   padding: 0;
 }
 .item-nav .first-item a,.item-nav .prev-item a,.item-nav .next-item a,.item-nav .last-item a {
-  color: #878380;
   background: url("../images/icons/pagination.png") no-repeat;
 }
 .item-nav .first-item a {
-  color: #878380;
   padding-left: 14px;
   background-position: left -21px;
 }
 .item-nav .prev-item {
-  color: #878380;
   margin-right: 5px;
 }
 .item-nav .prev-item a {
-  color: #878380;
   padding-left: 14px;
   padding-right: 5px;
   background-position: left -61px;
 }
 .item-nav .next-item a {
-  color: #878380;
   padding-right: 14px;
-  background-position: right -41px;
+  padding-left: 5px;
+background-position: right -41px;
 }
 .item-nav .next-item {
-  color: #878380;
   margin-left: 5px;
 }
 .item-nav .last-item a {
@@ -104,5 +99,5 @@
   background-position: right -1px;
 }
 .item-nav .items-overall-index {
-  padding-right: 5px;
+  margin-right: 5px;
 }
