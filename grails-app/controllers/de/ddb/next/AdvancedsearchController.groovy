@@ -101,7 +101,13 @@ class AdvancedsearchController {
                     facetDisplayValuesMap = facetDisplayValuesMap.sort {it.value}
                 }
                 else {
-                    facetDisplayValuesMap = facetDisplayValuesMap.sort {it.key}
+                    //workaround for time_fct, sort desc by id
+                    if (facetSearchfield.name == "time") {
+                        facetDisplayValuesMap = facetDisplayValuesMap.sort {a, b -> b.key <=> a.key}
+                    }
+                    else {
+                        facetDisplayValuesMap = facetDisplayValuesMap.sort {it.key}
+                    }
                 }
 
                 facetValuesMap[facetSearchfield.name + facetNameSuffix] = facetDisplayValuesMap
