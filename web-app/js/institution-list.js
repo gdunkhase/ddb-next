@@ -29,7 +29,7 @@ var ddb = {
 
   filterDescendants: function(institution, memory, selectedSector, parentList) {
     if (institution.children && institution.children.length > 0) {
-      // when a institution has a least one child.
+      // when an institution has a least one child.
       _.reduce(institution.children, function(otherMemory, child) {
         if (_.contains(selectedSector, child.sector)) {
           otherMemory.push(child);
@@ -53,7 +53,7 @@ var ddb = {
       $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
         ddb.institutionsByFirstChar = response.data;
 
-        // call the callbacks, once data is loaded.
+        // call the callback, once data is loaded.
         onPageLoad();
         onFilterSelect();
         window.onhashchange = ddb.onHashChange;
@@ -190,7 +190,6 @@ var ddb = {
       // the last case: sectors.length === 0 && firstLetter === ''.
       // when no sector is selected _and_ no first letter filter.
       // e.g. sector = [], index = All
-      //ddb.showAll();
       $('#institution-list')
         .empty()
         .html(ddb.$institutionList.html());
@@ -318,9 +317,17 @@ $(function() {
       $otherLinks.parent().removeClass('active');
       $otherLinks.removeAttr('style');
 
-
       // TODO: change the hash
-      // TODO: apply filter here
+      if (history.pushState) {
+        console.log("push state is enabled.");
+        history.pushState({}, "", $this.attr('href'));
+        ddb.applyFilter();
+        // TODO: apply filter here
+      } else {
+        // TODO: provide a fallback
+        // window.location.hash = this.hash;
+        // window.location.reload(false);
+      }
 
       return false;
     });
