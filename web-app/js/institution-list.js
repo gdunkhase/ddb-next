@@ -93,7 +93,8 @@ var ddb = {
     var $li = $aHref.parent();
 
     if($li.hasClass('disabled')) {
-      console.log('show no member message.');
+      console.log('show no message');
+      $('#no-match-message').css('display', 'block');
       return false;
     }
     // style the selected index.
@@ -107,6 +108,7 @@ var ddb = {
     var $otherLinks = $firstCharLinks.not($aHref);
     $otherLinks.parent().removeClass('active');
     $otherLinks.removeAttr('style');
+    return true;
   },
 
   applyFilter: function() {
@@ -314,6 +316,11 @@ var ddb = {
 
     ddb.showAll();
     ddb.restEl.css('display', 'none');
+    if(idList.length === 0) {
+      console.log('has no member');
+      var $msg = $('#no-match-message');
+      $msg.css('display', 'block');
+    }
   },
 
   onIndexClick: function() {
