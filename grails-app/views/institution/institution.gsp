@@ -1,6 +1,8 @@
 <%@page import="de.ddb.next.ApiInstitution"%>
 <%@page import="java.lang.String"%>
 <meta name="layout" content="main" />
+<r:require module="institution" />
+<%-- 
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'institution.css')}" type="text/css" />
 <!-- link rel="stylesheet" href="/css/institution.css" type="text/css" /-->
 
@@ -12,6 +14,7 @@
 <!--
 //-->
 </script>
+--%>
 
     <div class="institutionItemPage">
     

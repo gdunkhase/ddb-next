@@ -17,7 +17,7 @@ Endpoint-Example:
 
 
 #Third-party-component included in existing template
-## Template is needed. State Link to third-party-template in template for page (<g:render template="/third-party/test/views/testpart" />).
+## Template is needed. State Link to third-party-template in template for page (<g:render template="/third-party/test/views/testpart" />). Put template starting with underscore and ending with .gsp in appropriate folder (_testpart.gsp)
 
 Third-Party Component can get data by requesting an URL via a ddb-next Wrapper Service.
 Wrapper Service has static methods that return data eg as Json
@@ -47,7 +47,23 @@ Import files in your template:
 <link rel="stylesheet" href="${resource(dir: 'third-party/<yourcomponent>/css', file: 'test.css')}" />
 <script src="${resource(dir: 'third-party/<yourcomponent>/js', file: 'test.js')}" /></script>
 
+#Ajax-call from Javascript to Backend:
+In directory grails-app/controllers/de/ddb/next exists a class ApisController.
+This class is called when calling endpoint /apis
+/apis/search calls method search in Class ApisController.
+Maybe you have to implement new methods in this class.
 
+/apis/institutions/something?test=eins&test1=zwei
+-method institutions in Class ApisController is called
+-all path + query-parameters come in variable params (params.id = something, params.test=eins ...)
+
+From there we can execute requests to the backend via Class ApiConsumer:
+eg:  def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search', query)
+
+grailsApplication.config.ddb.backend.url references the property ddb.backend.url in the file ddb-next.properties in Folder .grails
+
+The response can get returned as JSON to the javascript:
+render (contentType:"text/json"){resultList}
 
 
 

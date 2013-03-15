@@ -6,7 +6,10 @@
 <meta name="keywords" content="${keywords}" />
 <meta name="robots" content="${robots}" />
 <meta name="layout" content="main" />
+<r:require module="results"/> 
+<%-- 
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
+--%>
 <jawr:script src="/i18n/messages.js"/>
 <script>
 window.onload=function(){
