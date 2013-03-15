@@ -7,15 +7,23 @@ window.onload=function(){
       stateManager(location.pathname + location.search);
      }
     });
-    searchResultsInitializer();
   }
   
-function stateManager(url){
+  searchResultsInitializer();
+  
+  function stateManager(url){
     $('#main-container').load(url+' .search-results-container', function(){
       searchResultsInitializer();
     });
   }
 };
+
+function historyManager(path){
+if(window.history && history.pushState) {
+  window.history.pushState({path:path},'',path);
+    historyedited = true;
+  }
+}
 
 function searchResultsInitializer(){
   $('.results-paginator-options').removeClass('off');
@@ -35,22 +43,64 @@ function searchResultsInitializer(){
     return false;
   });
   
+  function addParamToCurrentUrl(arrayParamVal, urlParameters){
+    return addParamToUrl(arrayParamVal, null, urlParameters);
+  }
   //This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
   //IMPORTANT: remember to pass your arrayParamVal already URL decoded
-  function addParamToCurrentUrl(arrayParamVal, urlParameters){
+  function addParamToUrl(arrayParamVal, path, urlParameters){
     var queryParameters = {}, queryString = (urlParameters==null)?location.search.substring(1):urlParameters,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
-        queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))] = decodeURIComponent(m[2].replace(/\+/g,'%20'));
     }
     $.each(arrayParamVal, function(key, value){
       queryParameters[value[0]] = value[1];
     });
     var tmp = jQuery.param(queryParameters, true);
-    return window.location.pathname+'?'+tmp;
+    if (path == null) {
+      return window.location.pathname+'?'+tmp;
+    }
+    else {
+      return path+'?'+tmp;
+    }
   }
   
-  $('.page-nav a').click(function(){
+  function setSearchCookieParameter(arrayParamVal){
+    var searchParameters = readCookie("searchParameters");
+    if (searchParameters != null && searchParameters.length > 0) {
+        searchParameters = searchParameters.substring(1, searchParameters.length -1);
+        searchParameters = searchParameters.replace(/\\"/g,'"');
+        var json = $.parseJSON(searchParameters);
+        $.each(arrayParamVal, function(key, value){
+          if (value[1].constructor === Array) {
+            for(var i = 0; i < value[1].length; i++) {
+                if (value[1][i].constructor === String) {
+                    value[1][i] = encodeURIComponent(value[1][i]).replace(/%20/g,'\+');
+                }
+            }
+          }
+          else if (value[1].constructor === String) {
+            value[1] = encodeURIComponent(value[1]).replace(/%20/g,'\+');
+          }
+          json[value[0]] = value[1];
+        });
+        document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
+    }
+  }
+  
+  function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+  
+  $('.page-nav-result').click(function(){
     fetchResultsList(this.href);
     return false;
   });
@@ -80,8 +130,10 @@ function searchResultsInitializer(){
     $('.page-nav a').each(function(){
       this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
     });
-    window.history.pushState({path:newUrl},'',newUrl);
-    historyedited = true;
+    $('.results-list a').each(function(){
+      this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
+    });
+    historyManager(newUrl);
   });
   $('.page-input').keyup(function(e){
     if(e.keyCode == 13) {
@@ -109,8 +161,7 @@ function searchResultsInitializer(){
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'false'));
     var newUrl = addParamToCurrentUrl(paramsArray);
     fetchResultsList(newUrl);
-    window.history.pushState({path:newUrl},'',newUrl);
-    historyedited= true;
+    historyManager(newUrl);
   });
   $('#view-grid').click(function(){
     $('.summary-main .title a').each(function(index,value){
@@ -139,7 +190,11 @@ function searchResultsInitializer(){
     $('.page-nav a').each(function(){
       this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
     });
-    window.history.pushState({path:newUrl},'',newUrl);
+    $('.results-list a').each(function(){
+      this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
+    });
+    historyManager(newUrl);
+    setSearchCookieParameter(paramsArray);
     historyedited= true;
   });
   function fetchResultsList(url){
@@ -180,8 +235,7 @@ function searchResultsInitializer(){
           $(".page-nav .prev-page").addClass("off");
           $(".page-nav .first-page").addClass("off");
         }
-        window.history.pushState({searchResultState:url},'',url);
-        historyedited= true;
+        historyManager(url);
         $('.search-results').fadeIn('fast');
         });
       }
