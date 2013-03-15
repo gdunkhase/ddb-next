@@ -56,7 +56,7 @@ function searchResultsInitializer(){
   });
   $('#view-list').click(function(){
     $('.summary-main .title a').each(function(index,value){
-      var newTitle = (value.title.length>100)?value.title.substring(0,96)+'...':value.title;
+      var newTitle = value.title.trim().substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
       $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
         newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
       });
@@ -114,7 +114,7 @@ function searchResultsInitializer(){
   });
   $('#view-grid').click(function(){
     $('.summary-main .title a').each(function(index,value){
-      var newTitle = (value.title.length>53)?value.title.substring(0,50)+'...':value.title;
+      var newTitle = value.title.trim().substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
       $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
         newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
       });
