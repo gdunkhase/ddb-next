@@ -292,6 +292,7 @@ $(function() {
 
   // Only execute the script when the user is in the institution list page.
   if(institutionList) {
+    // TODO: refactor this
     // we catch the click event on index, does *not* when the user goes directyly
     // to a page with #{first-character}, for example: //institutions#A
     var $firstCharLinks = $('#first-letter-index a');
@@ -316,6 +317,10 @@ $(function() {
       var $otherLinks = $firstCharLinks.not(this);
       $otherLinks.parent().removeClass('active');
       $otherLinks.removeAttr('style');
+
+
+      // TODO: change the hash
+      // TODO: apply filter here
 
       return false;
     });
