@@ -187,6 +187,9 @@ header .link-adv-search, div.header .link-adv-search {
   display: inline-block;
   cursor: pointer;
 }
+.language-wrapper a:hover {
+  text-decoration: none;  
+}
 header .selector,.header .selector {
   display:none;
   background-color:#fff;
@@ -644,4 +647,8 @@ select {
 .off {
   display: none !important;
 }
+.nopointer {
+  cursor: default !important;
+}
+
 /* genaral rules - end */
