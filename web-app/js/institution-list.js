@@ -15,8 +15,6 @@ var ddb = {
 
   institutionsByFirstChar: null,
 
-  $index: null,
-
   // find index[All| A | B |...| Z | 0-9] with no members after filtered by sectors.
   findNoMember: function(visible) {
     return _.reduce(ddb.institutionsByFirstChar, function(memo, array, key) {
@@ -63,13 +61,15 @@ var ddb = {
   },
 
   onPageLoad: function() {
+    console.log('on page load');
     var hash = window.location.hash.substring(1);
+
+    ddb.styleIndex(hash);
     if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
       return;
     } else {
       ddb.applyFilter();
     }
-
   },
 
   onFilterSelect: function() {
@@ -81,10 +81,36 @@ var ddb = {
 
   /* Function Callback for the URI's hash change event. */
   onHashChange: function() {
+    console.log('hash change');
+
+    var hash = window.location.hash.substring(1);
+    ddb.styleIndex(hash);
     ddb.applyFilter();
   },
 
+  styleIndex: function(hash) {
+    var $aHref = $('#first-letter-index a[href="' + '#' + hash + '"]');
+    var $li = $aHref.parent();
+
+    if($li.hasClass('disabled')) {
+      console.log('show no member message.');
+      return false;
+    }
+    // style the selected index.
+    $li.addClass('active');
+    // TODO: replace this with a class.
+    $aHref.css('color', '#a5003b');
+
+    // TODO: refactor this, a lot of duplicate code.
+    // reset other indexes to the initial style.
+    var $firstCharLinks = $('#first-letter-index a');
+    var $otherLinks = $firstCharLinks.not($aHref);
+    $otherLinks.parent().removeClass('active');
+    $otherLinks.removeAttr('style');
+  },
+
   applyFilter: function() {
+    console.log('apply filter');
     var institutionList = ddb.getInstitutionAsList();
     var sectors = ddb.getSelectedSectors();
     var firstLetter = ddb.getFirstLetter();
@@ -120,12 +146,14 @@ var ddb = {
 
   filter: function(institutionList, sectors, firstLetter) {
     // reset the view to empty.
-    $('li.institution-listitem').css('display', 'none');
-    $('li.institution-listitem').removeClass('highlight');
+    var $listItems = $('li.institution-listitem');
+    $listItems.css('display', 'none');
+    $listItems.removeClass('highlight');
 
     var parentList = [];
 
     if (sectors.length > 0 && firstLetter === '') {
+      console.log('foo');
       // when at least one sector selected _and_ no first letter filter.
       // e.g. sector = ['Media'], index = All
       var filteredBySector = ddb.filterBySectors(institutionList, sectors, parentList);
@@ -228,13 +256,16 @@ var ddb = {
       });
     } else {
       var $currentIndex = $('#first-letter-index');
-      $currentIndex.empty();
-      $currentIndex.html(ddb.$index.html());
+      //$currentIndex.empty();
+      // TODO: does it still have our click event handler?
+      // $currentIndex.html(ddb.$index.html());
+      // ddb.onIndexClick();
     }
   },
 
   // visible institutions are filtered institutions and their descendants.
   showResult: function(visibleInstitution, filteredBySector) {
+    console.log('show result');
     var $msg = $('#no-match-message');
 
     // view manipulation
@@ -257,7 +288,8 @@ var ddb = {
     var idList = _.pluck(ddb.institutionsByFirstChar[firstLetter], 'id');
 
     // find all institutions match idList
-    ddb.filteredEl = $('li.institution-listitem').filter(function() {
+    var $listItems = $('li.institution-listitem');
+    ddb.filteredEl = $listItems.filter(function() {
       return _.contains(idList, $(this).data('institution-id'));
     });
 
@@ -276,22 +308,15 @@ var ddb = {
       .value();
 
     // collect the HTML elements that match id in the restIdList
-    ddb.restEl = $('li.institution-listitem').filter(function() {
+    ddb.restEl = $listItems.filter(function() {
       return _.contains(restIdList, $(this).data('institution-id'));
     });
 
-    $('#no-match-message').css('display', 'none');
     ddb.showAll();
     ddb.restEl.css('display', 'none');
-  }
-};
+  },
 
-$(function() {
-  var institutionList = $('#institution-list');
-
-  // Only execute the script when the user is in the institution list page.
-  if(institutionList) {
-    // TODO: refactor this
+  onIndexClick: function() {
     // we catch the click event on index, does *not* when the user goes directyly
     // to a page with #{first-character}, for example: //institutions#A
     var $firstCharLinks = $('#first-letter-index a');
@@ -331,13 +356,22 @@ $(function() {
 
       return false;
     });
+  }
+
+};
+
+$(function() {
+  var institutionList = $('#institution-list');
+
+  // Only execute the script when the user is in the institution list page.
+  if(institutionList) {
+    console.log('init');
 
     // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
     $('.filter').show();
-
-    ddb.$index = $('#first-letter-index').clone(true);
+    ddb.onIndexClick();
+    ddb.$index = $('#first-letter-index').clone(true, true);
     ddb.$institutionList = institutionList.clone();
-
     ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
   }
 });
