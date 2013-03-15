@@ -18,19 +18,19 @@
 </g:else>
 
 <ul class="inline">
-  <li class="first-page ${displayLeftPagination}">
+  <li class="first-item ${displayLeftPagination}">
     <a href="/item/${navData.firstHit}?hitNumber=1"><g:message code="ddbnext.First_Label" /></a>  
   </li>
-  <li class="prev-page br ${displayLeftPagination}">
+  <li class="prev-item br ${displayLeftPagination}">
     <a href="/item/${prevId}?hitNumber=${navData.hitNumber - 1}"><g:message code="ddbnext.Previous_Label" /></a> 
   </li>
-  <li class="pages-overall-index">
+  <li class="items-overall-index">
     <span><g:message code="ddbnext.Hit" /> ${navData.hitNumber} <g:message code="ddbnext.Of" /> ${navData.results["numberOfResults"]}</span>
   </li>
-  <li class="next-page bl ${displayRightPagination}">
+  <li class="next-item bl ${displayRightPagination}">
     <a href="/item/${nextId}?hitNumber=${navData.hitNumber + 1}"><g:message code="ddbnext.Next_Label" /></a> 
   </li>
-  <li class="last-page ${displayRightPagination}">
+  <li class="last-item ${displayRightPagination}">
     <a href="/item/${navData.lastHit}?hitNumber=${navData.results["numberOfResults"]}"><g:message code="ddbnext.Last_Label" /></a>  
   </li>
 </ul>
