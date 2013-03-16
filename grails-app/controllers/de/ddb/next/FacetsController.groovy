@@ -21,8 +21,8 @@ class FacetsController {
                 urlQuery["query"] = '*'
             else urlQuery["query"] = params.searchQuery
 
-            if (params.rows == null)
-                urlQuery["rows"] = 11
+            if (params.rows == null || params.rows == -1)
+              urlQuery["rows"] = 1
             else urlQuery["rows"] = params.rows
 
             if (params.offset == null)
@@ -40,7 +40,10 @@ class FacetsController {
                 if(!urlQuery["facet"].contains(params.get("name")))
                     urlQuery["facet"].add(params.get("name"))
             }
-
+            
+            //We ask for a maximum of 310 facets
+            urlQuery["facet.limit"] = 310
+            
             def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
 
             def facetValues = searchService.getSelectedFacetValues(resultsItems.facets, params.name, urlQuery["rows"].toInteger())
