@@ -31,22 +31,74 @@
       <!-- entity-works -->
       <div class="works">
         <h3>Werke von:</h3>
+        <!-- TODO: span or div? -->
+        <span>
+          <label>
+            <input type="checkbox">
+            Nur Objekte mit Normdaten
+          </label>
+          <!-- TODO: add help -->
+        </span>
         <ol>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
+          <!-- TODO: replace br tag with CSS -->
+          <li class="work">
+            <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
+            <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
+          </li>
+          <!-- TODO: replace br tag with CSS -->
+          <li class="work">
+            <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
+            <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
+          </li>
+          <!-- TODO: replace br tag with CSS -->
+          <li class="work">
+            <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
+            <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
+          </li>
+          <!-- TODO: replace br tag with CSS -->
+          <li class="work">
+            <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
+            <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
+          </li>
+          <!-- TODO: replace br tag with CSS -->
+          <li class="work">
+            <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
+            <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
+          </li>
         </ol>
         <a href="">Alle Objekte (XX)</a>
       </div>
       <!-- entity-themes -->
       <div class="themes">
         <h3>Thema in:</h3>
+        <!-- TODO: span or div? -->
+        <span>
+          <label>
+            <input type="checkbox">
+            Nur Objekte mit Normdaten
+          </label>
+        </span>
         <ol>
-          <li></li>
-          <li></li>
-          <li></li>
+          <!-- TODO: replace br tag with CSS -->
+          <li class="theme">
+            <span>Goethe ueber den Faust</span><br>
+            <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
+          </li>
+          <!-- TODO: replace br tag with CSS -->
+          <li class="theme">
+            <span>Goethe ueber den Faust</span><br>
+            <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
+          </li>
+          <!-- TODO: replace br tag with CSS -->
+          <li class="theme">
+            <span>Goethe ueber den Faust</span><br>
+            <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
+          </li>
+          <!-- TODO: replace br tag with CSS -->
+          <li class="theme">
+            <span>Goethe ueber den Faust</span><br>
+            <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
+          </li>
         </ol>
         <a href="">Alle Objekte (XX)</a>
       </div>
@@ -56,7 +108,15 @@
       <div class="thumb">
         <div class="thumbinner">
           <a href="//commons.wikimedia.org/wiki/File:Goethe_(Stieler_1828).jpg" class="image">
-            <img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/220px-Goethe_%28Stieler_1828%29.jpg" width="220" height="271" class="thumbimage" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/330px-Goethe_%28Stieler_1828%29.jpg 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/440px-Goethe_%28Stieler_1828%29.jpg 2x">
+            <!-- TODO: refactor to use figure element -->
+            <!-- TODO: remove width and height, use CSS -->
+            <img alt=""
+            src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/220px-Goethe_%28Stieler_1828%29.jpg"
+            width="220" height="271" class="thumbimage"
+            srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/330px-Goethe_%28Stieler_1828%29.jpg
+            1.5x,
+            //upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/440px-Goethe_%28Stieler_1828%29.jpg
+            2x">
           </a>
           <div class="thumbcaption">
             <i>Johann Wolfgang von Goethe</i>,<br>
