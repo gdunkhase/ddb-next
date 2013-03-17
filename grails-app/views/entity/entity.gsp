@@ -1,4 +1,5 @@
 <html>
+<!-- TODO i18n -->
 <head>
   <title>${pageLabel} - Deutsche Digitale Bibliothek</title>
   <meta name="layout" content="main" />
@@ -15,8 +16,8 @@
       </div>
       <!-- entity-dates -->
       <div class="dates">
-        <div>Geboren: 28. August 1749, <a href="">Frankfurt am Main</a></div> 
-        <div>Gestorben: 28. August 1832, <a href="">Weimar</a></div> 
+        <div>Geboren: 28. August 1749, <a href="">Frankfurt am Main</a></div>
+        <div>Gestorben: 28. August 1832, <a href="">Weimar</a></div>
       </div>
       <hr>
       <!-- entity-objects -->
@@ -110,6 +111,7 @@
           <a href="//commons.wikimedia.org/wiki/File:Goethe_(Stieler_1828).jpg" class="image">
             <!-- TODO: refactor to use figure element -->
             <!-- TODO: remove width and height, use CSS -->
+            <!-- TODO srcset is not a valid attribute -->
             <img alt=""
             src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Goethe_%28Stieler_1828%29.jpg/220px-Goethe_%28Stieler_1828%29.jpg"
             width="220" height="271" class="thumbimage"
@@ -136,11 +138,48 @@
       <div class="external-links">
         <h3>Externe Links</h3>
         <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
+          <li>
+            <a href="https://de.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe"
+              rel="external">
+              <i class="icon-wikipedia"></i>
+              Deutschsprachige Wikipedia
+            </a
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe"
+              rel="external">
+              <i class="icon-wikipedia"></i>
+              Englishsprachige Wikipedia
+            </a
+          </li>
+          <li>
+            <a href="http://swb.bsz-bw.de/DB=2.104/PPNSET?PPN=161142842&INDEXSET=1"
+              rel="external">
+              <i class="icon-dnb"></i>
+              GND Eintrag bei der Deutschen Nationalbibliothek
+            </a
+          </li>
+          <li>
+            <a href="https://portal.dnb.de/opac.htm"
+              rel="external">
+              <i class="icon-dnb"></i>
+              Katalog der Deutschen Nationalbibliothek
+            </a
+          </li>
+          <li>
+            <a href="https://opacplus.bsb-muenchen.de/InfoGuideClient/start.do"
+              rel="external">
+              <i class="icon-dnb"></i>
+              Katalog der Bayerischen Staatsbibliothek
+            </a
+          </li>
+          <li>
+            <a href="http://viaf.org/viaf/24602065/#Goethe,_Johann_Wolfgang_%C2%98von%C2%9C_1749-1832"
+              rel="external">
+              <i class="icon-viaf"></i>
+              Virtual International Authority File (VIAF)
+            </a
+          </li>
         </ul>
       </div>
     </div>
