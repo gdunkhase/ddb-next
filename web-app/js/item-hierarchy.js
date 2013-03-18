@@ -72,7 +72,6 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
 function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, countSiblings) {
   currentNode.empty();
   if (isLast) {
-    value.aggregationEntity
     currentNode.addClass("last");
   } else {
     currentNode.removeClass("last");
