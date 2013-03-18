@@ -12,6 +12,7 @@ modules = {
         resource url:'/css/item.css'
         resource url:'/css/institutionList.css'
         resource url:'/css/results.css'
+        resource url:'/css/pdf.css'
 
         // General Javascripts
         resource url:'/js/onloadManager.js', disposition: 'head'
