@@ -2,14 +2,14 @@
 
 <title>"${selectedOrgXML.name} - Deutsche Digitale Bibliothek"</title>
 
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'institution.css')}" type="text/css" />
-<script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
-<script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'ddb.osm.institutiondetailview.js')}"></script>
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'institution.css')}" />
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+<script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+<script src="${resource(dir: 'js', file: 'ddb.osm.institutiondetailview.js')}"></script>
 
-    <div class="institutionItemPage">
+    <div class="institution-item-page">
     
-       <div class="row-fluid" style="padding-bottom: 10px; margin-bottom: 10px; border-bottom-style: solid; border-bottom-width: 4px; border-bottom-color: silver;">
+       <div class="row institution">
            <div class="span10">
              <div>
               <g:message code="ddbnext.${selectedOrgXML.sector}"/>
@@ -17,9 +17,9 @@
              <div>
                  <h2>${selectedOrgXML.name}
                  <g:if test="${(countObjcs > 0)}">
-                     <a class="count" style="color: black; font-size: small;" href="/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${selectedOrgXML.name}" 
+                     <a class="count" href="/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${selectedOrgXML.name}" 
                         title="<g:message code="ddbnext.InstitutionItem_IngestedObjectCountTitleText" />">
-                        ${countObjcs}&nbsp;
+                        ${countObjcs}
                         <g:if test="${(countObjcs = 1)}">
                             <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
                         </g:if>
@@ -35,7 +35,7 @@
              </div>
            </div>
            <div class="span2">
-             <img style="text-align: right;" alt="${selectedOrgXML.name}" class="logo" src="${selectedOrgXML.logo}">
+             <img class="logo" alt="${selectedOrgXML.name}" src="${selectedOrgXML.logo}">
            </div>
        </div>
             
@@ -44,20 +44,20 @@
             <div id="divOSM"></div>
             <script type="text/javascript">
               <!--
-              //drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
+              drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
               //-->
             </script>
             
-            <div class="locationContainer">
+            <div class="location-container">
                 
-                <div class="location" style="margin-bottom: 30px;" data-lat="${selectedOrgXML.locations.location.geocode.latitude }" data-lon="${selectedOrgXML.locations.location.geocode.longitude }">
+                <div class="location" data-lat="${selectedOrgXML.locations.location.geocode.latitude }" data-lon="${selectedOrgXML.locations.location.geocode.longitude }">
                     <p class="address">
                         <b>${selectedOrgXML.name}</b><br>
-                        ${selectedOrgXML.locations.location.address.street }&nbsp;${selectedOrgXML.locations.location.address.houseIdentifier }<br>
+                        <span>${selectedOrgXML.locations.location.address.street }</span>${selectedOrgXML.locations.location.address.houseIdentifier }<br>
                         <g:if test="${(selectedOrgXML.addressSupplement)&&(selectedOrgXML.addressSupplement.text().length() > 0)}">
                             (${(selectedOrgXML.addressSupplement)})<br>
                         </g:if>
-                        ${selectedOrgXML.locations.location.address.postalCode }&nbsp;${selectedOrgXML.locations.location.address.city }
+                        <span class="space">${selectedOrgXML.locations.location.address.postalCode }</span>${selectedOrgXML.locations.location.address.city }
                         ${selectedOrgXML.locations.location.address.addressSupplement }
                     </p>
                 </div>

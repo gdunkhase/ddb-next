@@ -48,22 +48,23 @@ class InstitutionController {
         def id = params.id;
         def itemId = id;
         def vApiInstitution = new ApiInstitution();
-        log.println("read insitution by item id: ${id}");
+        log.debug("read insitution by item id: ${id}");
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, grailsApplication.config.ddb.backend.url.toString());
         if (selectedOrgXML) {
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, grailsApplication.config.ddb.backend.url.toString())
-            log.println("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}"); // ToDo: remove!
+            log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
             if (jsonOrgParentHierarchy.size() == 1) {
                 if (jsonOrgParentHierarchy[0].id != id) {
-                    log.println("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}");
+                    log.error("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}");
+                    forward controller: 'error', action: "ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}"
                 }
             }
             else if (jsonOrgParentHierarchy.size() > 1) {
                 itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
             }
-            log.println("root itemId = ${itemId}"); // ToDo: remove!
+            log.debug("root itemId = ${itemId}");
             def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, grailsApplication.config.ddb.backend.url.toString())
-            log.println("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}") // TODo: remove!
+            log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
             def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), grailsApplication.config.ddb.backend.url.toString())
             int countObjectsForProv = 0;
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {

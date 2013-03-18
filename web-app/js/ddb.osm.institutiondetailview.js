@@ -50,14 +50,14 @@ var layer_tah;
 var layer_markers;
 
 function drawmap(lon, lat, instName, street, houseIdentifier, postalCode, city) {
-    // Popup und Popuptext mit evtl. Grafik
+    // -- Popup und Popuptext mit evtl. Grafik
     var popuptext = "<font color=\"black\"><b>" + instName + 
-                    "<br>" + street + "&nbsp;" + houseIdentifier + 
-                    "<br>" + postalCode + "&nbsp;" + city + "</b></font>";
+                    "</br>" + street + "&nbsp;" + houseIdentifier + 
+                    "</br>" + postalCode + "&nbsp;" + city + "</b></font>";
     OpenLayers.Lang.setCode('de');
     
-    //map = new OpenLayers.Map("divOSM");
-    
+    map = new OpenLayers.Map("divOSM");
+    /*
     map = new OpenLayers.Map('divOSM', {
         projection: new OpenLayers.Projection("EPSG:900913"),
         displayProjection: new OpenLayers.Projection("EPSG:4326"),
@@ -72,15 +72,16 @@ function drawmap(lon, lat, instName, street, houseIdentifier, postalCode, city) 
         maxResolution: 156543,
         units: 'meters'
     });
-    
+    */
     layer_mapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
     layer_markers = new OpenLayers.Layer.Markers("Address", { projection: new OpenLayers.Projection("EPSG:4326"), 
                                                   visibility: true, displayInLayerSwitcher: false });
     map.addLayers([layer_mapnik, layer_markers]);
     jumpTo(lon, lat, zoom);
     
-    // Position des Markers
-    addMarker(layer_markers, lon, lat, popuptext);
+    // -- Position des Markers
+    //addMarker(layer_markers, lon, lat, popuptext);
+    addMarker(layer_markers, lon, lat);
 }
 
 function jumpTo(lon, lat, zoom) {
