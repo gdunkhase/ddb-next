@@ -101,7 +101,6 @@ var ddb = {
     $li.addClass('active');
     // TODO: replace this with a class.
     $aHref.css('color', '#a5003b');
-
     // TODO: refactor this, a lot of duplicate code.
     // reset other indexes to the initial style.
     var $firstCharLinks = $('#first-letter-index a');
@@ -367,12 +366,9 @@ var ddb = {
       $otherLinks.parent().removeClass('active');
       $otherLinks.removeAttr('style');
 
-      // TODO: change the hash
       if (history.pushState) {
-        console.log("push state is enabled.");
         history.pushState({}, "", $this.attr('href'));
         ddb.applyFilter();
-        // TODO: apply filter here
       } else {
         // TODO: provide a fallback
         // window.location.hash = this.hash;
