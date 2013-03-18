@@ -46,22 +46,26 @@ var ddb = {
     });
   },
 
-  getInstitutionsByFirstChar: function(onFilterSelect, onPageLoad) {
+  getInstitutionsByFirstChar: function(onFilterSelect, onIndexClick, onPageLoad) {
     if (ddb.institutionsByFirstChar === null) {
       $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
         ddb.institutionsByFirstChar = response.data;
 
+        $('.filter').show();
         // call the callback, once data is loaded.
         onPageLoad();
+        onIndexClick();
         onFilterSelect();
         window.onhashchange = ddb.onHashChange;
+      })
+      .error(function(jqXhr, textStatus, errorThrown) {
+        /* when we fail to fetch the JSON via AJAX, then we do not activate the 
+        JS-feature.*/
       });
-      // TODO: handle failure.
     }
   },
 
   onPageLoad: function() {
-    console.log('on page load');
     var hash = window.location.hash.substring(1);
 
     ddb.styleIndex(hash);
@@ -81,8 +85,6 @@ var ddb = {
 
   /* Function Callback for the URI's hash change event. */
   onHashChange: function() {
-    console.log('hash change');
-
     var hash = window.location.hash.substring(1);
     ddb.styleIndex(hash);
     ddb.applyFilter();
@@ -111,7 +113,6 @@ var ddb = {
   },
 
   applyFilter: function() {
-    console.log('apply filter');
     var institutionList = ddb.getInstitutionAsList();
     var sectors = ddb.getSelectedSectors();
     var firstLetter = ddb.getFirstLetter();
@@ -239,7 +240,7 @@ var ddb = {
 
   showAll: function() {
     $('#no-match-message').css('display', 'none');
-    $('.institution-listitem').css('display','');
+    $('li.institution-listitem').css('display','');
   },
 
   updateIndex: function(hasNoMember) {
@@ -256,16 +257,6 @@ var ddb = {
           e.preventDefault();
         });
       });
-    } else {
-      /*
-      var $currentIndex = $('#first-letter-index');
-      // $currentIndex.empty();
-      // TODO: does it still have our click event handler?
-      // $currentIndex.html(ddb.$index.html());
-      console.log(ddb.$index);
-      $currentIndex.html(ddb.$index.html());
-      ddb.onIndexClick();
-      */
     }
   },
 
@@ -388,11 +379,9 @@ $(function() {
   if(institutionList) {
     console.log('init');
 
-    // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
-    $('.filter').show();
-    ddb.onIndexClick();
+   // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
     ddb.$index = $('#first-letter-index').clone(true, true);
     ddb.$institutionList = institutionList.clone();
-    ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onPageLoad);
+    ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onIndexClick, ddb.onPageLoad);
   }
 });
