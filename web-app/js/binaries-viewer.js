@@ -68,9 +68,11 @@ window.ddbAddOnloadListener(function() {
                     $("#jwplayer-container").remove();
                   if($("#jwplayer-container_wrapper"))
                     $("#jwplayer-container_wrapper").remove();
-                  if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash")
+                  if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
                     $("binary-viewer-flash-upgrade").removeClass("off");
-                    else $("div.binary-viewer-error").removeClass("off");
+                  }else{ 
+                	$("div.binary-viewer-error").removeClass("off");
+                  }
               },
               onReady: function () {
                   if ($.browser.msie && this.getRenderingMode() === "html5") {
@@ -195,7 +197,7 @@ window.ddbAddOnloadListener(function() {
       return false;
   });
   //institution hierarchy
-  $(".item-hierarchy").removeClass("off");
+  //$(".item-hierarchy").removeClass("off");
 
   var imgLoader = document.createElement("img");
 
