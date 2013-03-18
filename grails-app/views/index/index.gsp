@@ -50,9 +50,7 @@
                 <img class="article" src="${staticUrl}${it.src}" alt="${it.title}"/>
               </a>
               <div class="caption">
-                <a href="${it.uri}" title="${it.title}">
-                  ${it.title}
-                </a>
+                <a href="${it.uri}" title="${it.title}">${it.title}</a>
               </div>
             </div>
           </g:each>
@@ -67,7 +65,7 @@
                   <img src="${staticUrl}${it.src}" alt="${it.title}" />
                 </a>
                 <div class="caption">
-                  <a href="/about-us/institutions" title="${it.title}">${it.title}</a>
+                  <a href="${it.uri}" title="${it.title}">${it.title}</a>
                 </div>
               </div>
             </g:each>

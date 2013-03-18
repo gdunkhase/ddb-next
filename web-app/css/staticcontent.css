@@ -1,68 +1,62 @@
 .static_content {
-    margin: 0 0 0 0;
-    width: 728px;
-    float: left;
-    clear: left;
+  margin: 0 0 0 0;
+  width: 75%;
+  float: left;
+  clear: left;
 }
-
 .static_marginal {
-    width: 224px;
-    margin: 0 0 0 28px;
-    float: right;
-    clear: right;
+  width: 23%;
+  margin: 0 0 0 2%;
+  float: right;
+  clear: right;
 }
-
 .static_content a, .static_marginal a {
-    text-decoration: underline;
+  text-decoration: underline;
 }
-
 .static_marginal img {
-    margin: 0;
+  margin: 0;
 }
-
-h2 {
-    color:#3e3a37;
-    font-weight:normal;
-    margin-top: 5px;
+.static_content h2, .static_marginal h2 {
+  color:#3e3a37;
+  font-weight:normal;
+  margin-top: 5px;
 }
-
-.date {
-    font-size: 14px;
-    padding: 0;
-    margin: 0;
+.static_content .date {
+  font-size: 14px;
+  margin: 0;
 }
-
 .static_content h2 a, .static_marginal h2 a, h2 a {
-    color:#a5003b;
-    font-weight:normal;
-    font-size: 1em;
-    text-decoration: none;
+  font-weight:normal;
+  font-size: 1em;
+  text-decoration: none;
 }
-
-.static_content h2 a:hover, .static_marginal h2 a:hover, h2 a:hover {
-    text-decoration: underline;
-} 
-
-.static_content h2 a:active, .static_marginal h2 a:active, h2 a:active {
-    text-decoration: underline;
-} 
-
+.plum-arrow li a:hover, .grey-arrow li a:hover, .lightgrey-arrow li a:hover, .plum-arrow li a:active, 
+.grey-arrow li a:active, .lightgrey-arrow li a:active, .plum-arrow li a:focus, .grey-arrow li a:focus, 
+.lightgrey-arrow li a:focus {
+  text-decoration: underline;
+}
+.static_content h2 a:hover, .static_marginal h2 a:hover, h2 a:hover,
+.static_content h2 a:active, .static_marginal h2 a:active, h2 a:active,
 .static_content h2 a:focus, .static_marginal h2 a:focus, h2 a:focus {
-    text-decoration: underline;
-} 
-
-ul.plum-arrow, ul.grey-arrow, ul.lightgrey-arrow {
-    padding-left: 17px;    
+  text-decoration: underline;
+}  
+.plum-arrow li a, .grey-arrow li a, .lightgrey-arrow li a {
+  text-decoration: none;
 }
-
-.inlineBox {
-    padding: 10px;
-    margin: 15px;
-    width: 300px;
-    border: 1px solid #EFEBE8;
-    font-style: italic;
+.plum-arrow li, .grey-arrow li, .lightgrey-arrow li {
+  list-style: none outside none;
+  padding-left: 17px;
+  margin-left: -24px;
+  padding-bottom: 3px;
+  padding-top: 3px;
 }
-
+.plum-arrow li {
+  background: url("../images/icons/list_arrow_plum.png") no-repeat 0 4px;
+}
+.grey-arrow li {
+  background: url("../images/icons/list_arrow_grey.png") no-repeat 0 4px;
+}
+/*TODO find a solution for the conflict with fl and fr classes*/
 .floatLeft {
     float: left;
 }
