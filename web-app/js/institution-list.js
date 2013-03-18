@@ -214,8 +214,9 @@ var ddb = {
       When no sector selected _and_ one of the first letter is selected.
       e.g. sector = [], index = 'C'
       */
+      console.log('no sectors and first letter is selected.');
       ddb.showByFirstLetter(firstLetter);
-      ddb.updateIndex();
+      // ddb.updateIndex();
     } else {
       // the last case: sectors.length === 0 && firstLetter === ''.
       // when no sector is selected _and_ no first letter filter.
@@ -257,11 +258,15 @@ var ddb = {
         });
       });
     } else {
+      /*
       var $currentIndex = $('#first-letter-index');
-      //$currentIndex.empty();
+      // $currentIndex.empty();
       // TODO: does it still have our click event handler?
       // $currentIndex.html(ddb.$index.html());
-      // ddb.onIndexClick();
+      console.log(ddb.$index);
+      $currentIndex.html(ddb.$index.html());
+      ddb.onIndexClick();
+      */
     }
   },
 
@@ -321,6 +326,19 @@ var ddb = {
       var $msg = $('#no-match-message');
       $msg.css('display', 'block');
     }
+
+    // update the indext with cache
+    var $currentIndex = $('#first-letter-index');
+    $currentIndex.html(ddb.$index.html());
+    
+    ddb.onIndexClick();
+
+
+    // style the selected index.
+    var $aHref = $('#first-letter-index a[href="' + '#' + firstLetter + '"]');
+    $aHref.parent().addClass('active');
+    // TODO: replace this with a class.
+    $aHref.css('color', '#a5003b');
   },
 
   onIndexClick: function() {
