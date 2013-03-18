@@ -59,7 +59,7 @@ var ddb = {
         window.onhashchange = ddb.onHashChange;
       })
       .error(function(jqXhr, textStatus, errorThrown) {
-        /* when we fail to fetch the JSON via AJAX, then we do not activate the 
+        /* when we fail to fetch the JSON via AJAX, then we do not activate the
         JS-feature.*/
       });
     }
@@ -91,9 +91,7 @@ var ddb = {
   },
 
   styleIndex: function(hash) {
-    console.log('style index', hash);
     if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
-      console.log('style all');
       var $allHref = $('#first-letter-index a[href="#All"]');
       var $allLi = $allHref.parent();
       $allLi.addClass('active');
@@ -102,7 +100,7 @@ var ddb = {
       var $aHref = $('#first-letter-index a[href="' + '#' + hash + '"]');
       var $li = $aHref.parent();
 
-      if($li.hasClass('disabled')) {
+      if ($li.hasClass('disabled')) {
         $('#no-match-message').css('display', 'block');
         return false;
       }
@@ -128,7 +126,7 @@ var ddb = {
   },
 
   getInstitutionAsList: function() {
-    if(ddb.institutionList) {
+    if (ddb.institutionList) {
       return ddb.institutionList;
     } else {
       ddb.institutionList = _.chain(ddb.institutionsByFirstChar)
@@ -154,7 +152,7 @@ var ddb = {
     return _.reduce(allSelectedSectors, function(sectors, el) {
       sectors.push($(el).data('sector'));
       return sectors;
-    },[]);
+    }, []);
   },
 
   filter: function(institutionList, sectors, firstLetter) {
@@ -191,7 +189,7 @@ var ddb = {
       */
 
       var filteredByFirstLetter = ddb.institutionsByFirstChar[firstLetter];
-      var filteredBySector = _.reduce(filteredByFirstLetter , function(memory, institution) {
+      var filteredBySector = _.reduce(filteredByFirstLetter, function(memory, institution) {
         // assert
         if (institution.firstChar !== firstLetter) {
           // do nothing.
@@ -229,7 +227,6 @@ var ddb = {
       // the last case: sectors.length === 0 && firstLetter === ''.
       // when no sector is selected _and_ no first letter filter.
       // e.g. sector = [], index = All
-      console.log('All, no sector.')
       $('#institution-list')
         .empty()
         .html(ddb.$institutionList.html());
@@ -249,11 +246,10 @@ var ddb = {
 
   showAll: function() {
     $('#no-match-message').css('display', 'none');
-    $('li.institution-listitem').css('display','');
+    $('li.institution-listitem').css('display', '');
   },
 
   updateIndex: function(hasNoMember) {
-    console.log('update index');
     if (hasNoMember) {
       // enable all index. It means visually that the index all not grey.
       $('#first-letter-index li').removeClass('disabled');
@@ -280,7 +276,7 @@ var ddb = {
 
       ddb.findElements(filteredBySector).addClass('highlight');
       var $visible = ddb.findElements(visibleInstitution);
-      $visible.css('display','');
+      $visible.css('display', '');
     } else {
       $msg.css('display', 'block');
     }
@@ -319,7 +315,7 @@ var ddb = {
 
     ddb.showAll();
     ddb.restEl.css('display', 'none');
-    if(idList.length === 0) {
+    if (idList.length === 0) {
       var $msg = $('#no-match-message');
       $msg.css('display', 'block');
     }
@@ -327,7 +323,7 @@ var ddb = {
     // update the indext with cache
     var $currentIndex = $('#first-letter-index');
     $currentIndex.html(ddb.$index.html());
-    
+
     ddb.onIndexClick();
 
 
@@ -348,7 +344,7 @@ var ddb = {
       var $this = $(this);
       var $li = $this.parent();
 
-      if($li.hasClass('disabled')) {
+      if ($li.hasClass('disabled')) {
         return false;
       }
 
@@ -363,7 +359,7 @@ var ddb = {
       $otherLinks.removeAttr('style');
 
       if (history.pushState) {
-        history.pushState({}, "", $this.attr('href'));
+        history.pushState({}, '', $this.attr('href'));
         ddb.applyFilter();
       } else {
         // TODO: test on IE8,9
@@ -378,11 +374,10 @@ var ddb = {
 };
 
 $(function() {
-  console.log('init');
   var institutionList = $('#institution-list');
 
   // Only execute the script when the user is in the institution list page.
-  if(institutionList) {
+  if (institutionList) {
    // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
     ddb.$index = $('#first-letter-index').clone(true, true);
     ddb.$institutionList = institutionList.clone();
