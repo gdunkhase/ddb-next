@@ -11,10 +11,14 @@ header, .header {
   background:transparent url("../images/bg/back_header.png") no-repeat center bottom;
   /*height:160px;*/
   margin-bottom:20px;
+  /* TODO: what is this for? (FRS)
   min-height: 85px;
+  */
 }
 header .container, .header .container{
+  /* TODO: what is this for? (FRS)
   margin-bottom: 10px;
+  */
 }
 header .navigation-header-logo, .header .navigation-header-logo {
   float:left;
@@ -220,6 +224,9 @@ header .language-widget form, .header .language-widget form {
 /* mobile view header */
 .navbar {
   background: none;
+}
+.navbar-fixed-top {
+  margin-bottom: 0px;
 }
 .brand img {
   height:20px;
