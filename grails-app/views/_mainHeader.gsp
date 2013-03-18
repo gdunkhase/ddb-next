@@ -12,7 +12,7 @@
         <span class="icon-bar" style="visibility:hidden;"></span>
       </button>
       <a href="/" class="brand" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
-        <r:img dir="images" file="logo_header.png" class="siteLogo" />
+        <r:img dir="images" file="logo_header.png" class="siteLogo" alt="Deutsche Digitale Bibliothek"/>
       </a>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
