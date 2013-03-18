@@ -95,7 +95,6 @@ var ddb = {
     var $li = $aHref.parent();
 
     if($li.hasClass('disabled')) {
-      console.log('show no message');
       $('#no-match-message').css('display', 'block');
       return false;
     }
@@ -155,7 +154,6 @@ var ddb = {
     var parentList = [];
 
     if (sectors.length > 0 && firstLetter === '') {
-      console.log('foo');
       // when at least one sector selected _and_ no first letter filter.
       // e.g. sector = ['Media'], index = All
       var filteredBySector = ddb.filterBySectors(institutionList, sectors, parentList);
@@ -214,9 +212,7 @@ var ddb = {
       When no sector selected _and_ one of the first letter is selected.
       e.g. sector = [], index = 'C'
       */
-      console.log('no sectors and first letter is selected.');
       ddb.showByFirstLetter(firstLetter);
-      // ddb.updateIndex();
     } else {
       // the last case: sectors.length === 0 && firstLetter === ''.
       // when no sector is selected _and_ no first letter filter.
@@ -246,7 +242,6 @@ var ddb = {
   updateIndex: function(hasNoMember) {
     if (hasNoMember) {
       // enable all index. It means visually that the index all not grey.
-      // TODO: do we need it? Is it not better to take the ddb.$index?
       $('#first-letter-index li').removeClass('disabled');
 
       // update index view, i.e., A..Z
@@ -262,7 +257,6 @@ var ddb = {
 
   // visible institutions are filtered institutions and their descendants.
   showResult: function(visibleInstitution, filteredBySector) {
-    console.log('show result');
     var $msg = $('#no-match-message');
 
     // view manipulation
@@ -312,7 +306,6 @@ var ddb = {
     ddb.showAll();
     ddb.restEl.css('display', 'none');
     if(idList.length === 0) {
-      console.log('has no member');
       var $msg = $('#no-match-message');
       $msg.css('display', 'block');
     }
@@ -337,13 +330,11 @@ var ddb = {
     var $firstCharLinks = $('#first-letter-index a');
     $firstCharLinks.click(function(event) {
       event.preventDefault();
-      console.log('clicked: ', this);
 
       var $this = $(this);
       var $li = $this.parent();
 
       if($li.hasClass('disabled')) {
-        console.log('do nothing');
         return false;
       }
 
@@ -361,9 +352,9 @@ var ddb = {
         history.pushState({}, "", $this.attr('href'));
         ddb.applyFilter();
       } else {
-        // TODO: provide a fallback
-        // window.location.hash = this.hash;
-        // window.location.reload(false);
+        // TODO: test on IE8,9
+        window.location.hash = this.hash;
+        window.location.reload(false);
       }
 
       return false;
@@ -377,8 +368,6 @@ $(function() {
 
   // Only execute the script when the user is in the institution list page.
   if(institutionList) {
-    console.log('init');
-
    // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
     ddb.$index = $('#first-letter-index').clone(true, true);
     ddb.$institutionList = institutionList.clone();
