@@ -416,6 +416,7 @@ function searchResultsInitializer(){
         var facetFieldFilter = element.parents('.facets-item');
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
+      console.log(escape(element.attr('data-fctvalue')))
       fetchResultsList(window.location.href.replace('&facetValues%5B%5D='+facetFieldFilter.find('.h3').attr('data-fctname')+'%3D'+element.attr('data-fctvalue'),''));
       element.remove();
     },
@@ -609,7 +610,7 @@ function searchResultsInitializer(){
                   currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue);
                 });
                 
-                facetValueContainer.attr('data-fctvalue', facetValue);
+                facetValueContainer.attr('data-fctvalue', encodeURIComponent(facetValue));
                 spanCount.html('('+this.count+')');
         
                 if(index<5){
@@ -632,7 +633,7 @@ function searchResultsInitializer(){
       var facetValueSpan = $(document.createElement('span'));
       var facetValueRemove = $(document.createElement('span'));
       
-      facetValueContainer.attr('data-fctvalue', facetValue);
+      facetValueContainer.attr('data-fctvalue', encodeURIComponent(facetValue));
       facetValueSpan.attr('title', localizedValue);
       facetValueSpan.html(localizedValue);
       facetValueRemove.attr('title', this.field_RemoveButton);
