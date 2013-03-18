@@ -40,12 +40,12 @@
         </div>
       </div>
     </noscript>
-  <g:render template="/mainHeader" />
-  <div id="main-container" class="container" role="main">
-    <g:layoutBody/>
-  </div>
-  <g:render template="/footer" />
-    <%-- 
+    <g:render template="/mainHeader" />
+    <div id="main-container" class="container" role="main">
+      <g:layoutBody/>
+    </div>
+    <g:render template="/footer" />
+    <%--
     <!-- TODO why do we declare jquery here? Don't we use Grails jQuery Plug-in? -->
     <script src="${resource(dir:'js', file:'json2.js')}"></script>
     <script src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>

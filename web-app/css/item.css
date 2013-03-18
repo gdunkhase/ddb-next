@@ -54,7 +54,7 @@
   background-position: -2px -120px;
 }
 .has-origin {
-  background-position-y: -80px !important; 
+  background-position: -2px -80px !important; 
 }
 .show-origin {
   margin-right: 10px;
