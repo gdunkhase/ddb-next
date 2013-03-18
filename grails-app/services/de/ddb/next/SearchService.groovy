@@ -259,7 +259,7 @@ class SearchService {
      */
     def convertQueryParametersToSearchParameters(Map reqParameters) {
         def urlQuery = [:]
-        if (reqParameters.query!=null){
+        if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
             urlQuery["query"] = reqParameters.query
         }else{
             urlQuery["query"] = "*"
@@ -295,8 +295,8 @@ class SearchService {
 
         if(reqParameters.minDocs)
             urlQuery["minDocs"] = reqParameters.minDocs
-
-        if(reqParameters.sort != null){
+            
+        if(reqParameters["sort"] != null){
             urlQuery["sort"] = reqParameters.sort
         }else{
             if(urlQuery["query"]!="*"){
