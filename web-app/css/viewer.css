@@ -3,6 +3,17 @@
   padding:10px;
   background:#efebe8;
 }
+@media (max-width: 767px) {
+  .slide-viewer {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (max-width: 529px) {
+  .slide-viewer {
+    width: 340px;
+  }
+}
 .slide-viewer ul {
   list-style: none;
   margin: 0;
@@ -226,6 +237,16 @@ noscript .scroller {
 #binary-viewer {
   width: 445px;
   height: 323px;
+}
+@media (max-width: 529px) {
+  #binary-viewer {
+    width: 340px;
+    height: 243px;
+  }
+  .previews img {
+    max-width: 340px;
+    max-height: 243px;
+  }
 }
 #binary-viewer img {
   cursor: pointer;
