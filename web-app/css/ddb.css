@@ -429,6 +429,9 @@ footer .legal ul li+li,.footer .legal ul li+li {
   color: #c1c1c1;
 }
 /* footer - end */
+
+
+
 /* genaral rules */
 h1, h2, h3, h4 {
   font-family: KarbidWeb,Calibri,Arial,sans-serif;
@@ -623,3 +626,18 @@ select {
   display: none !important;
 }
 /* genaral rules - end */
+/* responsive footer */
+@media (max-width: 979px) {
+   footer .legal small, .footer .legal small {
+     float: none;
+   }
+}
+
+@media (max-width: 767px) {
+   footer .legal ul li,.footer .legal ul li {
+     border-left:1px solid #d1cdcb;
+     padding-left:17px;
+     float: none;
+   }
+}
+/* responsive footer - end */
