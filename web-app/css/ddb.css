@@ -647,6 +647,18 @@ select {
 .br {
   border-right: solid 1px #efebe8;
 }
+.bb-white {
+  border-bottom: solid 1px #ffffff;
+}
+.bt-white {
+  border-top: solid 1px #ffffff;
+}
+.bl-white {
+  border-left: solid 1px #ffffff;
+}
+.br-white {
+  border-right: solid 1px #ffffff;
+}
 .off {
   display: none !important;
 }
