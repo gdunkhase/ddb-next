@@ -190,6 +190,9 @@ header .link-adv-search, div.header .link-adv-search {
 .language-wrapper a:hover {
   text-decoration: none;  
 }
+.language-wrapper .nopointer {
+  background-color: #EEEEEE !important;
+}
 header .selector,.header .selector {
   display:none;
   background-color:#fff;

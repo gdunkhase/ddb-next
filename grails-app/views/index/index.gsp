@@ -2,8 +2,11 @@
 <head>
 <title><g:message code="ddbnext.Homepage"/> - <g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/></title>
 <meta name="layout" content="main" />
+<r:require module="startpage"/>
+<%-- 
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'start-page.css')}" />
 <script type="text/javascript" src="${resource(dir: 'js', file: 'start-page.js')}" ></script>
+--%>
 </head>
 <body>
   <div class="row">

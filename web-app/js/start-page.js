@@ -1,6 +1,6 @@
 ﻿/// <reference path="/Scripts/jquery.carouFredSel-6.2.0-packed.js"/>
 /// <reference path="/Scripts/jquery.dotdotdot-1.5.1.js"/>
-window.onload = function() {
+window.ddbAddOnloadListener(function() {
 	$(function() {
 		$('div.carousel').show();
 		$(".article .caption").dotdotdot({});
@@ -34,4 +34,4 @@ window.onload = function() {
 			});
 		}
 	});
-};
+});
