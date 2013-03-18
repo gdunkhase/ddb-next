@@ -3,8 +3,12 @@
 <head>
 <title>${title} - <g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/></title>
 <meta name="layout" content="main" />
-<jawr:script src="/i18n/messages.js"/>
+<r:require module="results"/> 
+<%-- 
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
 <script src="${resource(dir: 'js', file: 'search-results.js')}"></script>
+--%>
+<jawr:script src="/i18n/messages.js"/>
 </head>
 
 <body>

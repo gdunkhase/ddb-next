@@ -1,5 +1,5 @@
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
-window.onload=function(){
+window.ddbAddOnloadListener(function() {
   if (window.history && history.pushState) {
     historyedited = false;
     $(window).bind('popstate', function(e) {
@@ -16,7 +16,7 @@ window.onload=function(){
       searchResultsInitializer();
     });
   }
-};
+});
 
 function historyManager(path){
 if(window.history && history.pushState) {

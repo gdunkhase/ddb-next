@@ -1,4 +1,4 @@
-window.onload = function() {
+window.ddbAddOnloadListener(function() {
   $(function() {
     currentTab($("p.all"));
     $(function() {
@@ -201,5 +201,5 @@ window.onload = function() {
 
   imgLoader.src = "../images/icons/loader_small.gif";
   $(".item-hierarchy-result").prepend(imgLoader);
-  createHierarchy(parseUrl(this.location.href));
-};
+  createHierarchy(parseUrl(location.href));
+});
