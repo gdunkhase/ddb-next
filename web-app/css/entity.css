@@ -1,0 +1,19 @@
+.work {
+  list-style: none;
+}
+
+.theme {
+  list-style: none;
+}
+
+.external-link {
+  list-style: none;
+}
+
+.icon-work {
+  background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
+}
+
+.icon-theme {
+  background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
+}

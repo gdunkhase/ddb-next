@@ -11,3 +11,4 @@ Guardfile
 .buildpath
 .idea
 ddb-next.iml
+bin

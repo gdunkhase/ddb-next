@@ -8,7 +8,7 @@
 <body>
   <g:render template="controls" />
   <div class="row">
-    <div class="span7">
+    <div class="span8">
       <!-- entity-name -->
       <div class="name">
         <h2>Johann Wolfgang von Goethe</h2>
@@ -31,38 +31,47 @@
       </div>
       <!-- entity-works -->
       <div class="works">
-        <h3>Werke von:</h3>
-        <!-- TODO: span or div? -->
-        <span>
-          <label>
-            <input type="checkbox">
-            Nur Objekte mit Normdaten
-          </label>
-          <!-- TODO: add help -->
-        </span>
+        <div class="row">
+          <div class="span4">
+            <h3>Werke von:</h3>
+          </div>
+          <div class="span4">
+            <label>
+              <input type="checkbox">
+              Nur Objekte mit Normdaten
+              </label>
+            <span class="icon-user"></span>
+          </div>
+        </div>
         <ol>
           <!-- TODO: replace br tag with CSS -->
           <li class="work">
+            <i class="icon-work"></i>
             <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
             <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
           </li>
-          <!-- TODO: replace br tag with CSS -->
           <li class="work">
+            <i class="icon-work"></i>
             <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
             <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
           </li>
-          <!-- TODO: replace br tag with CSS -->
           <li class="work">
+            <i class="icon-work"></i>
             <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
             <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
           </li>
-          <!-- TODO: replace br tag with CSS -->
           <li class="work">
+            <i class="icon-work"></i>
             <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
             <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
           </li>
-          <!-- TODO: replace br tag with CSS -->
           <li class="work">
+            <i class="icon-work"></i>
+            <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
+            <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
+          </li>
+          <li class="work">
+            <i class="icon-work"></i>
             <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
             <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
           </li>
@@ -71,32 +80,40 @@
       </div>
       <!-- entity-themes -->
       <div class="themes">
-        <h3>Thema in:</h3>
-        <!-- TODO: span or div? -->
-        <span>
-          <label>
-            <input type="checkbox">
-            Nur Objekte mit Normdaten
-          </label>
-        </span>
+        <div class="row">
+          <div class="span4">
+            <h3>Thema in:</h3>
+          </div>
+          <div class="span4">
+            <label>
+              <input type="checkbox">
+              Nur Objekte mit Normdaten
+              </label>
+            <span class="icon-user"></span>
+          </div>
+        </div>
         <ol>
           <!-- TODO: replace br tag with CSS -->
           <li class="theme">
+            <i class="icon-theme"></i>
             <span>Goethe ueber den Faust</span><br>
             <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
           </li>
           <!-- TODO: replace br tag with CSS -->
           <li class="theme">
+            <i class="icon-theme"></i>
             <span>Goethe ueber den Faust</span><br>
             <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
           </li>
           <!-- TODO: replace br tag with CSS -->
           <li class="theme">
+            <i class="icon-theme"></i>
             <span>Goethe ueber den Faust</span><br>
             <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
           </li>
           <!-- TODO: replace br tag with CSS -->
           <li class="theme">
+            <i class="icon-theme"></i>
             <span>Goethe ueber den Faust</span><br>
             <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
           </li>
@@ -104,7 +121,7 @@
         <a href="">Alle Objekte (XX)</a>
       </div>
     </div>
-    <div class="span5">
+    <div class="span4">
       <!-- thumbnail -->
       <div class="thumb">
         <div class="thumbinner">
@@ -130,6 +147,8 @@
       <div class="search">
         <form class="form-search">
           <h3><label for="search">Suche</label>:</h3>
+
+          <span><i class="icon-search"></i></span>
           <input id="search" type="text"  class="input-xlarge search-query"
             value="Johann Wolfgang von Goethe in DDB">
         </form>
@@ -138,42 +157,42 @@
       <div class="external-links">
         <h3>Externe Links</h3>
         <ul>
-          <li>
+          <li class="external-link">
             <a href="https://de.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe"
               rel="external">
               <i class="icon-wikipedia"></i>
               Deutschsprachige Wikipedia
             </a
           </li>
-          <li>
+          <li class="external-link">
             <a href="https://en.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe"
               rel="external">
               <i class="icon-wikipedia"></i>
               Englishsprachige Wikipedia
             </a
           </li>
-          <li>
+          <li class="external-link">
             <a href="http://swb.bsz-bw.de/DB=2.104/PPNSET?PPN=161142842&INDEXSET=1"
               rel="external">
               <i class="icon-dnb"></i>
               GND Eintrag bei der Deutschen Nationalbibliothek
             </a
           </li>
-          <li>
+          <li class="external-link">
             <a href="https://portal.dnb.de/opac.htm"
               rel="external">
               <i class="icon-dnb"></i>
               Katalog der Deutschen Nationalbibliothek
             </a
           </li>
-          <li>
+          <li class="external-link">
             <a href="https://opacplus.bsb-muenchen.de/InfoGuideClient/start.do"
               rel="external">
               <i class="icon-dnb"></i>
               Katalog der Bayerischen Staatsbibliothek
             </a
           </li>
-          <li>
+          <li class="external-link">
             <a href="http://viaf.org/viaf/24602065/#Goethe,_Johann_Wolfgang_%C2%98von%C2%9C_1749-1832"
               rel="external">
               <i class="icon-viaf"></i>
