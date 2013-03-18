@@ -118,12 +118,15 @@ var ddb = {
     ddb.filter(institutionList, sectors, firstLetter);
   },
 
-  // TODO: only calculate it once.
   getInstitutionAsList: function() {
-    ddb.institutionList = _.chain(ddb.institutionsByFirstChar)
-      .values()
-      .flatten()
-      .value();
+    if(ddb.institutionList) {
+      return ddb.institutionList;
+    } else {
+      ddb.institutionList = _.chain(ddb.institutionsByFirstChar)
+        .values()
+        .flatten()
+        .value();
+    }
     return ddb.institutionList;
   },
 
