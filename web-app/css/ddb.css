@@ -390,6 +390,7 @@ a.previous span, a.next span {
 footer.container, .footer .container {
   padding:20px 0 70px 0;
   clear:both;
+  min-height:0px;
 }
 footer a,.footer a {
   text-decoration:none;
@@ -412,6 +413,7 @@ footer .legal .inner,.footer .legal .inner {
   overflow:hidden;
 }
 footer .legal small,.footer .legal small {
+  float:left;
   font-size:1em;
   margin-right:35px;
 }
@@ -427,10 +429,25 @@ footer .legal ul li+li,.footer .legal ul li+li {
   float: right;
   font-size: 0.75em;
   color: #c1c1c1;
+  z-index: 3;
 }
 /* footer - end */
 
+/* responsive footer */
+@media (max-width: 979px) {
+   footer .legal small, .footer .legal small {
+     float: none;
+   }
+}
 
+@media (max-width: 767px) {
+   footer .legal ul li,.footer .legal ul li {
+     border-left:1px solid #d1cdcb;
+     padding-left:17px;
+     float: none;
+   }
+}
+/* responsive footer - end */
 
 /* genaral rules */
 h1, h2, h3, h4 {
@@ -626,18 +643,3 @@ select {
   display: none !important;
 }
 /* genaral rules - end */
-/* responsive footer */
-@media (max-width: 979px) {
-   footer .legal small, .footer .legal small {
-     float: none;
-   }
-}
-
-@media (max-width: 767px) {
-   footer .legal ul li,.footer .legal ul li {
-     border-left:1px solid #d1cdcb;
-     padding-left:17px;
-     float: none;
-   }
-}
-/* responsive footer - end */
