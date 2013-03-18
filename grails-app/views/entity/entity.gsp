@@ -8,7 +8,7 @@
 <body>
   <g:render template="controls" />
   <div class="row">
-    <div class="span8">
+    <div class="span9">
       <!-- entity-name -->
       <div class="name">
         <h2>Johann Wolfgang von Goethe</h2>
@@ -32,18 +32,19 @@
       <!-- entity-works -->
       <div class="works">
         <div class="row">
-          <div class="span4">
+          <div class="span6">
             <h3>Werke von:</h3>
           </div>
-          <div class="span4">
+          <div class="span3">
             <label>
               <input type="checkbox">
               Nur Objekte mit Normdaten
               </label>
-            <span class="icon-user"></span>
+            <span class="icon-question-sign"></span>
           </div>
         </div>
-        <ol>
+
+        <ol class="unstyled">
           <!-- TODO: replace br tag with CSS -->
           <li class="work">
             <i class="icon-work"></i>
@@ -81,18 +82,18 @@
       <!-- entity-themes -->
       <div class="themes">
         <div class="row">
-          <div class="span4">
+          <div class="span6">
             <h3>Thema in:</h3>
           </div>
-          <div class="span4">
+          <div class="span3">
             <label>
               <input type="checkbox">
               Nur Objekte mit Normdaten
               </label>
-            <span class="icon-user"></span>
+            <span class="icon-question-sign"></span>
           </div>
         </div>
-        <ol>
+        <ol class="unstyled">
           <!-- TODO: replace br tag with CSS -->
           <li class="theme">
             <i class="icon-theme"></i>
@@ -121,7 +122,7 @@
         <a href="">Alle Objekte (XX)</a>
       </div>
     </div>
-    <div class="span4">
+    <div class="span3">
       <!-- thumbnail -->
       <div class="thumb">
         <div class="thumbinner">
@@ -145,57 +146,56 @@
       </div>
       <!-- search -->
       <div class="search">
-        <form class="form-search">
-          <h3><label for="search">Suche</label>:</h3>
+        <h3>Suche:<h3>
+        <div class="input-prepend">
+          <span class="add-on"><i class="icon-search"></i></span>		
+          <input id="prependedInput" type="text"  class="span3" value="Johann Wolfgang von Goethe in DDB">
+        </div>
 
-          <span><i class="icon-search"></i></span>
-          <input id="search" type="text"  class="input-xlarge search-query"
-            value="Johann Wolfgang von Goethe in DDB">
-        </form>
       </div>
       <!-- external links -->
       <div class="external-links">
         <h3>Externe Links</h3>
-        <ul>
+        <ul class="unstyled">
           <li class="external-link">
             <a href="https://de.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe"
               rel="external">
-              <i class="icon-wikipedia"></i>
+              <i class="icon-globe"></i>
               Deutschsprachige Wikipedia
             </a
           </li>
           <li class="external-link">
             <a href="https://en.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe"
               rel="external">
-              <i class="icon-wikipedia"></i>
+              <i class="icon-globe"></i>
               Englishsprachige Wikipedia
             </a
           </li>
           <li class="external-link">
             <a href="http://swb.bsz-bw.de/DB=2.104/PPNSET?PPN=161142842&INDEXSET=1"
               rel="external">
-              <i class="icon-dnb"></i>
+              <i class="icon-globe"></i>
               GND Eintrag bei der Deutschen Nationalbibliothek
             </a
           </li>
           <li class="external-link">
             <a href="https://portal.dnb.de/opac.htm"
               rel="external">
-              <i class="icon-dnb"></i>
+              <i class="icon-globe"></i>
               Katalog der Deutschen Nationalbibliothek
             </a
           </li>
           <li class="external-link">
             <a href="https://opacplus.bsb-muenchen.de/InfoGuideClient/start.do"
               rel="external">
-              <i class="icon-dnb"></i>
+              <i class="icon-globe"></i>
               Katalog der Bayerischen Staatsbibliothek
             </a
           </li>
           <li class="external-link">
             <a href="http://viaf.org/viaf/24602065/#Goethe,_Johann_Wolfgang_%C2%98von%C2%9C_1749-1832"
               rel="external">
-              <i class="icon-viaf"></i>
+              <i class="icon-globe"></i>
               Virtual International Authority File (VIAF)
             </a
           </li>
