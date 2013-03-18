@@ -43,7 +43,7 @@ class SearchService {
 
     def transactional=false
 
-    def getFacets(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, String key, int currentDepth){
+    def getFacets(Map reqParameters, Map urlQuery, String key, int currentDepth){
         List facetValues = []
         def facets = urlQuery
         facets["facet"] = []
