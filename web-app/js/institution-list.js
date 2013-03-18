@@ -91,23 +91,32 @@ var ddb = {
   },
 
   styleIndex: function(hash) {
-    var $aHref = $('#first-letter-index a[href="' + '#' + hash + '"]');
-    var $li = $aHref.parent();
+    console.log('style index', hash);
+    if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
+      console.log('style all');
+      var $allHref = $('#first-letter-index a[href="#All"]');
+      var $allLi = $allHref.parent();
+      $allLi.addClass('active');
+      $allHref.css('color', '#a5003b');
+    } else {
+      var $aHref = $('#first-letter-index a[href="' + '#' + hash + '"]');
+      var $li = $aHref.parent();
 
-    if($li.hasClass('disabled')) {
-      $('#no-match-message').css('display', 'block');
-      return false;
+      if($li.hasClass('disabled')) {
+        $('#no-match-message').css('display', 'block');
+        return false;
+      }
+      // style the selected index.
+      $li.addClass('active');
+      // TODO: replace this with a class.
+      $aHref.css('color', '#a5003b');
+      // TODO: refactor this, a lot of duplicate code.
+      // reset other indexes to the initial style.
+      var $firstCharLinks = $('#first-letter-index a');
+      var $otherLinks = $firstCharLinks.not($aHref);
+      $otherLinks.parent().removeClass('active');
+      $otherLinks.removeAttr('style');
     }
-    // style the selected index.
-    $li.addClass('active');
-    // TODO: replace this with a class.
-    $aHref.css('color', '#a5003b');
-    // TODO: refactor this, a lot of duplicate code.
-    // reset other indexes to the initial style.
-    var $firstCharLinks = $('#first-letter-index a');
-    var $otherLinks = $firstCharLinks.not($aHref);
-    $otherLinks.parent().removeClass('active');
-    $otherLinks.removeAttr('style');
     return true;
   },
 
@@ -220,6 +229,7 @@ var ddb = {
       // the last case: sectors.length === 0 && firstLetter === ''.
       // when no sector is selected _and_ no first letter filter.
       // e.g. sector = [], index = All
+      console.log('All, no sector.')
       $('#institution-list')
         .empty()
         .html(ddb.$institutionList.html());
@@ -243,6 +253,7 @@ var ddb = {
   },
 
   updateIndex: function(hasNoMember) {
+    console.log('update index');
     if (hasNoMember) {
       // enable all index. It means visually that the index all not grey.
       $('#first-letter-index li').removeClass('disabled');
@@ -367,6 +378,7 @@ var ddb = {
 };
 
 $(function() {
+  console.log('init');
   var institutionList = $('#institution-list');
 
   // Only execute the script when the user is in the institution list page.
