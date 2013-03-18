@@ -19,10 +19,6 @@
   font-weight: bolder;
 }
 
-.item-hierarchy-result li.leaf a {
-  margin-left: 50px;
-}
-
 /* draw a text page symbol in front of the label */
 .item-hierarchy-result div.leaf-indicator {
   background: url("../images/bg/hierarchy_leaf.png") no-repeat;
@@ -44,20 +40,20 @@
   width: 20px;
 }
 
-.item-hierarchy-result li.root>span>i {
+.item-hierarchy-result i.root {
   background: #999 none;
   cursor: pointer;
 }
 
 /* draw a plus sign */
-.item-hierarchy-result li.node>span>i.collapsed {
+.item-hierarchy-result i.collapsed {
   background: #a5003b
     url("../images/bg/advanced_search_parent_node_default.png");
   cursor: pointer;
 }
 
 /* draw a minus sign */
-.item-hierarchy-result li.node>span>i.expanded {
+.item-hierarchy-result i.expanded {
   background: #a5003b
     url("../images/bg/advanced_search_parent_node_collapse.png");
   cursor: pointer;
@@ -70,7 +66,7 @@
 
 .item-hierarchy-result li {
   background:
-    url("../images/bg/advanced_search_solid_joint_last_item.png")
+    url("../images/bg/advanced_search_solid_joint_standard_top.png")
     no-repeat 7px 0px;
   min-height: 26px;
   padding: 17px 0 0 56px;
@@ -83,8 +79,8 @@
     no-repeat 7px 0px;
 }
 
-/* last leaf node in the tree */
-.item-hierarchy-result li.leaf.last {
+/* last node in the tree */
+.item-hierarchy-result li.last {
   background:
     url("../images/bg/advanced_search_solid_joint_last_item.png")
     no-repeat 7px 0px;
