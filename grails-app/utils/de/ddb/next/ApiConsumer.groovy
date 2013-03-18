@@ -5,13 +5,16 @@ import org.apache.commons.logging.LogFactory
 import java.util.regex.Pattern
 
 import static groovyx.net.http.ContentType.*
-
+import grails.util.Holders
 import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+
 import java.util.regex.Pattern
+
 import org.apache.commons.logging.LogFactory
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 
 class ApiConsumer {
@@ -20,6 +23,7 @@ class ApiConsumer {
 
     static def postText(String baseUrl, String path, query, method = Method.POST) {
         try {
+            path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
@@ -63,6 +67,7 @@ class ApiConsumer {
 
     static def getTextAsJson(String baseUrl, String path, query, method = Method.GET) {
         try {
+            path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
@@ -106,6 +111,7 @@ class ApiConsumer {
 
     static def getTextAsXml(String baseUrl, String path, query, method = Method.GET) {
         try {
+            path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
@@ -149,6 +155,7 @@ class ApiConsumer {
 
     static def getAnyText(String baseUrl, String path, query, method = Method.GET) {
         try {
+            path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
@@ -211,6 +218,17 @@ class ApiConsumer {
             }
             http.setProxy(proxyHost, new Integer(proxyPort), 'http')
         }
+    }
+
+    static def checkContext(String baseUrl, String path) {
+        def grailsApplication = Holders.getGrailsApplication()
+        if (grailsApplication.config.ddb.apis.url == baseUrl) {
+            if (path == null) {
+                path = ""
+            }
+            path = ServletContextHolder.servletContext.contextPath + path
+        }
+        return path
     }
 
 }

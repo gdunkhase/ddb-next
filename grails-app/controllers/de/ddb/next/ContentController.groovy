@@ -16,7 +16,7 @@ class ContentController {
             if (params.dir!=null){
                 firstLvl=getFirstLvl();
             }
-            def browserUrl = request.forwardURI
+            def browserUrl = request.forwardURI.substring(request.contextPath.size())
 
             //Check if the called url ends with "/content/help" (invalid) or "/content/help/" (valid).
             //If the url does not end with "/", make a redirect, otherwise the relative linking
