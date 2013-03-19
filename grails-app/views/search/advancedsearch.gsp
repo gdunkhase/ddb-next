@@ -10,9 +10,13 @@
             <div class="span6">
                 <div class="fl"><h1><g:message code="ddbnext.AdvancedSearch"/></h1></div>
                 <span class="contextual-help fl hidden-phone hidden-tablet" 
-                      title="<g:message code="ddbnext.AdvancedSearch_Hint"/>" 
-                      data-content="<g:message code="ddbnext.AdvancedSearch_Hint"/>">
-                </span>
+                      title="<g:message code="ddbnext.AdvancedSearch_Hint" 
+                      args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-advanced']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                      default="ddbnext.AdvancedSearch_Hint"/>" 
+                      data-content="<g:message code="ddbnext.AdvancedSearch_Hint" 
+                      args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-advanced']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                      default="ddbnext.AdvancedSearch_Hint"/>">
+                </span> 
                 <div class="tooltip off"></div>
             </div>
         </div>

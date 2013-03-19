@@ -92,11 +92,11 @@
                     <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
                     <span class="contextual-help hidden-phone hidden-tablet" 
                           title="<g:message code="ddbnext.Search_Hint" 
-                                            args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                                            default="ddbnext.Search_Hint"/>" 
+                          args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                          default="ddbnext.Search_Hint"/>" 
                           data-content="<g:message code="ddbnext.Search_Hint" 
-                                                   args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                                                   default="ddbnext.Search_Hint"/>">
+                          args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                          default="ddbnext.Search_Hint"/>">
                     </span> 
                     <g:link class="link-adv-search" controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link>
                     <div class="tooltip off">
