@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
 <script src="${resource(dir: 'js', file: 'search-results.js')}"></script>
 --%>
-<jawr:script src="/i18n/messages.js"/>
 </head>
 
 <body>

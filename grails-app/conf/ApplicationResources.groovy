@@ -58,8 +58,10 @@ modules = {
         resource url:'/css/jquery.fancybox.css'
         resource url:'/css/viewer.css'
         resource url:'/css/item-hierarchy.css'
+        resource url:'/css/modalDialog.css'
         resource url:'/js/item-hierarchy.js'
         resource url:'/js/binaries-viewer.js'
+        resource url:'/js/persistent-links-modal-dialog.js'
     }
 
     advancedsearch {
