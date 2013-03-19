@@ -8,6 +8,11 @@ import grails.util.Environment
 class ErrorController {
 
 
+    def uncaughtException() {
+        log.error "uncaughtException(): An uncaught exception occured in the frontend."
+        serverError();
+    }
+
     /**
      * Handler method for error 500 situations
      * @return Either the 500_development view or the 500_production view, dependent on the environment
@@ -16,7 +21,7 @@ class ErrorController {
 
 
         //Lot of logging to make bugfixing easier
-        log.error "An uncaught exception occured in the frontend. The user will be redirected to the 500 page."
+        log.error "serverError(): The user will be redirected to the 500 page."
         if(request?.exception){
             try{
                 log.error "Source of the error is: '"+request.exception.getMessage()+"'"
