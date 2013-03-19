@@ -3,9 +3,9 @@
     <div class="row">
         <div class="span10">
             <div><g:message code="ddbnext.Institution" /></div>
-            <a class="institution-name" href="/about-us/institutions/item/${institution.id}">
+            <g:link class="institution-name" controller="institution" action="readByItemId" params="[id: institution.id]">
             ${institution.name}
-            </a>
+            </g:link>
             <a class="institution-link" href="${institution.uri}>">${institution.uri}</a>
         </div>
         <div class="span2">

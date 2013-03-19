@@ -1,13 +1,15 @@
-<g:set var="itemTitleLinkPrefix" value=""></g:set>
+<g:set var="controller" value="item"></g:set>
+<g:set var="action" value="findById"></g:set>
 <g:if test="${item.category == 'Institution'}">
-  ${itemTitleLinkPrefix = '/about-us/institutions'}
+  ${controller = 'institution'}
+  ${action = 'readByItemId'}
 </g:if>
 <div class="summary-main-wrapper <g:if test="${viewType != 'grid'}">span7</g:if>">
   <div class="summary-main">
     <h2 class="title">
-      <a class="persist" href="${itemTitleLinkPrefix}/item/${item.id}?hitNumber=${hitNumber}" title="<g:truncateHovercardTitle title="${item.label}" length="${ 350 }"/>">
+      <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: item.id, hitNumber: hitNumber]" title="${truncateHovercardTitle(title: item.label, length: 350)}">
       <g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle>
-      </a>
+      </g:link>
     </h2>
     <div class="subtitle">${item.preview.subtitle}</div>
     <ul class="matches unstyled">

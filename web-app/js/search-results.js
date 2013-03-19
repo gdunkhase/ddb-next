@@ -273,7 +273,7 @@ function searchResultsInitializer(){
   $.extend(FacetsManager.prototype, {
       
     connectedflyoutWidget: null,
-    facetsEndPoint: '/facets',
+    facetsEndPoint: contextPath +'/facets',
     currentOffset: 0, 
     currentRows: -1, //all facets
     currentFacetField: null,

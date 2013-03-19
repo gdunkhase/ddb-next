@@ -13,6 +13,7 @@
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
 
     <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
+    <script>var contextPath="<%=request.getContextPath()%>"</script>
 
     <%-- 
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon" />

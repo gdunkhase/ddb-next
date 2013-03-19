@@ -27,8 +27,9 @@
              <div>
                  <h2>${results.name}
                  <g:if test="${(countObjcs > 0)}">
-                     <a class="count" style="color: black; font-size: small;" href="/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${results.'name'}" 
-                        title="<g:message code="ddbnext.InstitutionItem_IngestedObjectCountTitleText" />">
+                    <g:set var="facetvalue" value="provider_fct=${results.name}"/>
+                    <g:link class="count" style="color: black; font-size: small;" controller="search" action="results" params="[query: '', offset: '0',
+                               rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
                         ${countObjcs}&nbsp;
                         <g:if test="${(countObjcs = 1)}">
                             <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
@@ -36,7 +37,7 @@
                         <g:if test="${(countObjcs > 1)}">
                             <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
                         </g:if>
-                     </a>
+                     </g:link>
                  </g:if>
                  </h2>
              </div>

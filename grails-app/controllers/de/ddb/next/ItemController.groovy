@@ -7,6 +7,8 @@ class ItemController {
 
     def itemService
     def searchService
+    def grailsLinkGenerator
+    
 
     def children() {
         try {
@@ -128,9 +130,7 @@ class ItemController {
             def searchGetParameters = searchService.getSearchGetParameters(searchParametersMap)
             def offset = ((Integer)((params["hitNumber"]-1)/searchParametersMap["rows"]))*searchParametersMap["rows"]
             searchGetParameters["offset"] = offset
-            searchResultUri = "/searchresults?"
-            MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib()
-            searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters)
+            searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
             searchResultParameters["resultsItems"] = resultsItems
             searchResultParameters["searchResultUri"] = searchResultUri
             searchResultParameters["searchParametersMap"] = searchParametersMap
