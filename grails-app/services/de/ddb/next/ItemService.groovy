@@ -239,57 +239,13 @@ class ItemService {
 
 
     def getParent(itemId){
-
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
-
-        final def componentsPath = "/hierarchy/" + itemId + "/parent/"
-
-        http.request( GET) { req ->
-            uri.path = componentsPath
-
-            response.success = { resp, json ->
-
-                return json
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp ->
-                log.error "Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
-                return response
-            }
-        }
-
-
+        final def parentsPath = "/hierarchy/" + itemId + "/parent/"
+        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), parentsPath, [:]);
     }
 
     def getChildren(itemId){
-
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
-
         final def childrenPath = "/hierarchy/" + itemId + "/children/"
-
-        http.request( GET) { req ->
-            uri.path = childrenPath
-
-            response.success = { resp, json ->
-
-                return json
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp ->
-                log.error "Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
-                return response
-            }
-        }
-
-
+        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), childrenPath, [:]);
     }
 
     private def log(list) {

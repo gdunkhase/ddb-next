@@ -33,12 +33,6 @@ modules = {
 
     // These are page specific bundles which should be merged back into ddbnext in the second step
 
-    openstreetmap {
-        resource url:'http://www.openlayers.org/api/OpenLayers.js'
-        resource url:'http://www.openstreetmap.org/openlayers/OpenStreetMap.js'
-        resource url:'/js/ddb.osm.institutiondetailview.js'
-    }
-
     startpage {
         resource url:'/css/start-page.css'
         resource url:'/js/start-page.js'

@@ -13,13 +13,14 @@ class HierarchyOutputTagLib {
 
         // Build the hierarchy from the item to the root element. The root element is kept.
         def parentList = itemService.getParent(itemId)
-        def rootItem = Item.buildHierarchy(parentList)
 
-        // No hierarchy -> No root item
-        if(!rootItem) {
+        // No parentList -> No hierarchy
+        if(!parentList || parentList.size() == 0) {
             out << ""
             return
         }
+
+        def rootItem = Item.buildHierarchy(parentList)
 
         // Get all the sibling nodes
         def parentNode = rootItem.getItemFromHierarchy(itemId).getParentItem()
@@ -69,7 +70,7 @@ class HierarchyOutputTagLib {
         // Check if the item has parents
         def parentList = itemService.getParent(itemId)
 
-        if(parentList.size() > 0){
+        if(parentList && parentList.size() > 0){
             out << body()
         }else{
             out << ""
