@@ -15,7 +15,13 @@
 .page-link {
   padding-left: 25px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -1px;
+  margin-right: 10px
 }
+.pdf-link {
+  padding-left: 25px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -40px;
+}
+
 .viewer.dfg {
   padding-left: 22px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -42px;

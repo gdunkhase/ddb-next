@@ -57,7 +57,8 @@ class ItemService {
             response.'404' = { return '404' }
 
             //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
+            response.failure = { resp ->
+                log.warn """
                 Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
                 """
                 return response
@@ -79,9 +80,7 @@ class ItemService {
         http.request( GET) { req ->
             uri.path = titlePath
 
-            response.success = { resp, html ->
-                return html
-            }
+            response.success = { resp, html -> return html }
 
             response.'404' = { return '404' }
 
@@ -236,6 +235,61 @@ class ItemService {
             }
         }
         return (['images':images,'audios':audios,'videos':videos])
+    }
+
+
+    def getParent(itemId){
+
+        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+
+        final def componentsPath = "/hierarchy/" + itemId + "/parent/"
+
+        http.request( GET) { req ->
+            uri.path = componentsPath
+
+            response.success = { resp, json ->
+
+                return json
+            }
+
+            response.'404' = { return '404' }
+
+            //TODO: handle other failure such as '500'
+            response.failure = { resp ->
+                log.error "Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                return response
+            }
+        }
+
+
+    }
+
+    def getChildren(itemId){
+
+        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+
+        final def childrenPath = "/hierarchy/" + itemId + "/children/"
+
+        http.request( GET) { req ->
+            uri.path = childrenPath
+
+            response.success = { resp, json ->
+
+                return json
+            }
+
+            response.'404' = { return '404' }
+
+            //TODO: handle other failure such as '500'
+            response.failure = { resp ->
+                log.error "Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                return response
+            }
+        }
+
+
     }
 
     private def log(list) {

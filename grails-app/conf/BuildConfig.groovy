@@ -42,7 +42,8 @@ grails.project.dependency.resolution = {
 
         compile ':cache:1.0.0'
         compile ":cache-headers:1.1.5"
-        compile ":pdf:0.6"
+        compile ":rendering:0.4.3"
+
 
         build ":tomcat:$grailsVersion"
 

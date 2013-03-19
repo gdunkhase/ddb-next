@@ -1,107 +1,111 @@
-  
-  .print .header {
-    background: none !important;
-    width: 700px;
-    height: 50px !important;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0px !important;
-    border-bottom: 3px solid #E9E5E2;
-  }
-  
-  .print .container {
-    display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
-  }
-  .print .container:before {
-    display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
-  }
-  .print .container:after {
-    display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
-  }
-  
-  .print .row {
-    display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
-  }
-  .print .row:before {
-    display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
-  }
-  .print .row:after {
-    display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
-  }
-  
-  .print .fixprintwidth {
-    width: 700px !important;
-  }
-  
-  .print .printrow {
-    margin-left: 0px !important;
-  }
-  
-  .print .borderbottom {
-    border-bottom: 3px solid #E9E5E2;
-    margin-bottom: 15px !important;
-    padding-bottom: 15px !important;
-  }
-  
-  .print .institution {
-  }
-  
-  .print .institution_text {
-    float: left;
-    width: 500px;
-  }
-  
-  .print .institution_logo {
-    float: right;
-    width: 200px;
-    text-align: right;
-  }
-  
-  .print .institution_logo img {
-    max-width: 170px;
-  }
-  
-  .print .institution-name {
-    background: none !important;
-    padding-left: 0px !important;
-  }
-  
-  .print .item {
-  }
-  
-  .print .item .previewrow {
-    margin-top: 10px; 
-    margin-bottom: 20px;
-  }
-  
-  
-  .print .item img {
-    margin: 0px !important; 
-  }
-  
-  .print .item .fieldtitle {
-    width: 200px; 
-    float: left;
-  }
-  
-  .print .item .fieldvalue {
-    width: 500px; 
-    float: left;
-  }
-  
-  .print .deeplink {
-    font-size: 12px;
-  }
-  
-  .print .hierarchy {
-  }
-  
-  .print .hierarchy ul {
-    margin: 0px 0px 10px 15px !important;  
-    list-style-type: square !important;
-  }
-  
+
+.print .header {
+  background: none !important;
+  width: 700px;
+  height: 50px !important;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0px !important;
+  border-bottom: 3px solid #E9E5E2;
+}
+
+.print .container {
+  display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
+}
+.print .container:before {
+  display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
+}
+.print .container:after {
+  display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
+}
+
+.print .row {
+  display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
+}
+.print .row:before {
+  display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
+}
+.print .row:after {
+  display: block !important; /** fix for pdf boodstrap bug when using display:table; **/
+}
+
+.print .fixprintwidth {
+  width: 700px !important;
+}
+
+.print .printrow {
+  margin-left: 0px !important;
+}
+
+.print .borderbottom {
+  border-bottom: 3px solid #E9E5E2;
+  margin-bottom: 15px !important;
+  padding-bottom: 15px !important;
+}
+
+.print .institution {
+}
+
+.print .institution_text {
+  float: left;
+  width: 500px;
+}
+
+.print .institution_logo {
+  float: right;
+  width: 200px;
+  text-align: right;
+}
+
+.print .institution_logo img {
+  max-width: 170px;
+}
+
+.print .institution-name {
+  background: none !important;
+  padding-left: 0px !important;
+}
+
+.print .item {
+}
+
+.print .item .previewrow {
+  margin-top: 10px; 
+  margin-bottom: 20px;
+}
+
+
+.print .item img {
+  margin: 0px !important; 
+}
+
+.print .item .fieldtitle {
+  width: 200px; 
+  float: left;
+}
+
+.print .item .fieldvalue {
+  width: 500px; 
+  float: left;
+}
+
+.print .deeplink {
+  font-size: 12px;
+}
+
+.print .hierarchy {
+}
+
+.print .hierarchy ul {
+  margin: 0px 0px 10px 15px !important;  
+  list-style-type: square !important;
+}
+
   
 .print .hierarchy .field-header {
   margin-bottom: 10px;
+}
+
+h2 {
+  color: #A5003B !important;
 }

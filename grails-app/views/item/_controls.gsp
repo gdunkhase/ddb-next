@@ -21,11 +21,6 @@
        title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
       <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
     </a>
-    <span title="<g:message code="ddbnext.export_pdf" />">
-      <g:pdfLink class="pdf-link" url="${request.forwardURI}?print=true">
-        <span><g:message code="ddbnext.export_pdf"/></span>
-      </g:pdfLink>
-    </span>
   </div>
   <!-- (DFG) viewer -->
   <g:if test="${!viewerUri?.isEmpty()}">

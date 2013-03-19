@@ -195,7 +195,7 @@ window.ddbAddOnloadListener(function() {
       return false;
   });
   //institution hierarchy
-  $(".item-hierarchy").removeClass("off");
+//  $(".item-hierarchy").removeClass("off");
 
   var imgLoader = document.createElement("img");
 

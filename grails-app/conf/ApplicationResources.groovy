@@ -69,4 +69,11 @@ modules = {
     }
 
     results { resource url:'/js/search-results.js' }
+
+    pdf {
+        resource url:'/css/bootstrap.css'//, exclude:'zip'
+        resource url:'/css/ddb.css'//, exclude:'zip'
+        resource url:'/css/item.css'//, exclude:'zip'
+        resource url:'/css/pdf.css'//, exclude:'zip'
+    }
 }
