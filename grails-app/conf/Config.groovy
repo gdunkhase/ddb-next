@@ -86,6 +86,16 @@ ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
 
+
+grails.resources.mappers.zip.excludes = [
+    '**/*.png',
+    '**/*.gif',
+    '**/*.jpg',
+    '**/*.jpeg',
+    '**/*.gz',
+    '**/*.zip'
+]
+
 ddb {
     backend {
         facets {
@@ -127,7 +137,7 @@ log4j = {
     // The root logger defines the basic log level and to which appenders the logging is going
     environments {
         development {
-            root {  info "console", "ddbnext-info"  }
+            root {  info "console", "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace"  }
         }
         production {
             root { info "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace" }
@@ -174,3 +184,5 @@ jawr {
         resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
 }
 grails.app.context = "/"
+
+

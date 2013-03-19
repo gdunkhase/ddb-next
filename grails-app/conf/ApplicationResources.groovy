@@ -12,6 +12,7 @@ modules = {
         resource url:'/css/item.css'
         resource url:'/css/institutionList.css'
         resource url:'/css/results.css'
+        resource url:'/css/pdf.css'
 
         // General Javascripts
         resource url:'/js/onloadManager.js', disposition: 'head'
@@ -31,12 +32,6 @@ modules = {
     }
 
     // These are page specific bundles which should be merged back into ddbnext in the second step
-
-    openstreetmap {
-        resource url:'http://www.openlayers.org/api/OpenLayers.js'
-        resource url:'http://www.openstreetmap.org/openlayers/OpenStreetMap.js'
-        resource url:'/js/ddb.osm.institutiondetailview.js'
-    }
 
     startpage {
         resource url:'/css/start-page.css'
@@ -68,4 +63,11 @@ modules = {
     }
 
     results { resource url:'/js/search-results.js' }
+
+    pdf {
+        resource url:'/css/bootstrap.css'//, exclude:'zip'
+        resource url:'/css/ddb.css'//, exclude:'zip'
+        resource url:'/css/item.css'//, exclude:'zip'
+        resource url:'/css/pdf.css'//, exclude:'zip'
+    }
 }

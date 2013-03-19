@@ -79,8 +79,8 @@
                   <g:currentLanguage />
                 </a>
                 <ul class="selector language">
-                  <g:languageLink params="${params}" locale="de" islocaleclass="nopointer"><g:message code="ddbnext.language_de"/></g:languageLink>
-                  <g:languageLink params="${params}" locale="en" islocaleclass="nopointer"><g:message code="ddbnext.language_en"/></g:languageLink>
+                  <li><g:languageLink params="${params}" locale="de" islocaleclass="nopointer"><g:message code="ddbnext.language_de"/></g:languageLink></li>
+                  <li><g:languageLink params="${params}" locale="en" islocaleclass="nopointer"><g:message code="ddbnext.language_en"/></g:languageLink></li>
                 </ul>  
               </div>
               <div class="search-header hidden-phone">
