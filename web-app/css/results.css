@@ -594,10 +594,10 @@ input[type="checkbox"],input[type="radio"] {
   cursor: pointer;
 }
 .add-more-filters .icon{
-  background-position-y:-80px;
+  background-position:5px -80px;
 }
 .add-more-filters:hover .icon{
-  background-position-y:-100px;
+  background-position-y:5px -100px;
 }
 .force-loader{
   background: url("../images/icons/loader_small.gif") no-repeat 5px -40px;
