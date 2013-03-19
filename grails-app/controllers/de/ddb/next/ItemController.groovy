@@ -53,11 +53,22 @@ class ItemController {
             } else {
                 def itemUri = request.forwardURI
                 def fields = translate(item.fields)
-                render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                    'title': item.title, item: item.item, institution : item.institution, fields: fields,
-                    binaryList: binaryList, pageLabel: item.pageLabel,
-                    firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-                    hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
+
+                if(params.print){
+                    renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
+                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
+                        binaryList: binaryList, pageLabel: item.pageLabel,
+                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
+                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation],
+                    filename: "Item-Detail.pdf")
+                }else{
+                    render(view: "item", model: [itemUri: itemUri, viewerUri: item.viewerUri,
+                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
+                        binaryList: binaryList, pageLabel: item.pageLabel,
+                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
+                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
+
+                }
             }
         } catch(ItemNotFoundException infe){
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."

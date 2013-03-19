@@ -204,7 +204,7 @@ header .selector li,.header .selector li {
   float:none;
   cursor:pointer;
   padding:0 15px 0 0;
-  margin-bottom:5px;
+  margin-bottom:0px;
   white-space:nowrap;
 }
 header .selector.language li,.header .selector.language li {
@@ -212,9 +212,6 @@ header .selector.language li,.header .selector.language li {
 }
 header .toolbar .selector a, .header .toolbar .selector a {
   background: none;
-}
-header .selector.language li:hover {
-  background-color: #eee;
 }
 header .language-widget form, .header .language-widget form {
   display:none;
