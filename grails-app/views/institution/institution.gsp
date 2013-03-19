@@ -45,7 +45,14 @@
             <div id="divOSM"></div>
             <script type="text/javascript">
               <!--
-              drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
+              <%--
+              $("#divOSM").onload(function(){
+                drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
+              });
+              --%>
+              window.ddbAddOnloadListener(function() {
+                drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
+              });
               //-->
             </script>
             
