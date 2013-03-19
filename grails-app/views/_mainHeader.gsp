@@ -2,6 +2,7 @@
   <div class="header" role="contentinfo">
 <![endif]-->
 
+<!--[if !IE]><!-->
 <header class="navbar navbar-fixed-top visible-phone">
   <div class="navbar-inner">
     <div class="container">
@@ -37,6 +38,7 @@
     </div>
   </div>
 </header>
+<!--<![endif]-->
 
 <header class="hidden-phone">
   <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Header"/></h1>
