@@ -566,7 +566,7 @@ button, .button {
   cursor: pointer;
 }
 .button{
-  padding: 3px 8px;
+  padding: 6px 10px;
   color: #fff;
 }
 .button:hover{

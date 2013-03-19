@@ -63,6 +63,7 @@
     <script src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
     <script src="${resource(dir: 'js', file: 'institution-list.js')}"></script>
     --%>
+    <jawr:script src="/i18n/messages.js"/>
     <r:layoutResources />
     <g:piwik />
   </body>
