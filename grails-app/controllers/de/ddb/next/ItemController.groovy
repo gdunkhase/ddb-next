@@ -9,15 +9,7 @@ class ItemController {
     def searchService
 
     def children() {
-        try {
-            render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", ["rows":501]))
-        } catch(MissingPropertyException mpe){
-            log.error "children(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "children(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
-        }
+        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", ["rows":501]))
     }
 
     def findById() {
@@ -62,12 +54,6 @@ class ItemController {
         } catch(ItemNotFoundException infe){
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
             forward controller: "error", action: "notFound"
-        } catch(MissingPropertyException mpe){
-            log.error "findById(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "findById(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
         }
     }
 
@@ -85,15 +71,7 @@ class ItemController {
     }
 
     def parents() {
-        try {
-            render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
-        } catch(MissingPropertyException mpe){
-            log.error "parents(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "parents(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
-        }
+        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
     }
 
     /**

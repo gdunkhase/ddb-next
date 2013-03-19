@@ -51,6 +51,7 @@ class UrlMappings {
         }
 
         "500"(controller: "error", action: "serverError")
+        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
 
         "404"(controller: "error", action: "notFound")
 

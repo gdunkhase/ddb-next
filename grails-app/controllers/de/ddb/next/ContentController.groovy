@@ -46,14 +46,7 @@ class ContentController {
         } catch(ItemNotFoundException infe){
             log.error "staticcontent(): Request for nonexisting item with id: '" + params?.dir + "'. Going 404..."
             forward controller: "error", action: "notFound"
-        } catch(MissingPropertyException mpe){
-            log.error "staticcontent(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "staticcontent(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
         }
-
     }
 
     private def getFirstLvl(){
