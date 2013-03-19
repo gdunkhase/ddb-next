@@ -12,7 +12,7 @@
             <a href="https://en.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe"
               rel="external">
               <i class="icon-globe"></i>
-              Englishsprachige Wikipedia
+              Englischsprachige Wikipedia
             </a
           </li>
           <li class="external-link">
