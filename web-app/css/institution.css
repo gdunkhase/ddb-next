@@ -1,4 +1,4 @@
-.locations #divOSM {
+.locations #divOSM { 
 float: right;
 clear: right;
 width: 476px;
@@ -19,12 +19,37 @@ position: relative;
 
 }
 
-.institutionItemPage .institution {
-border-color: #efebe8;
-border-style: solid;
-border-width: 0 0 5px 0;
-padding: 0 0 18px 0;
-overflow: hidden;
+.location-container .location {
+  margin-bottom: 30px;
+}
+
+.location-container .location .count {
+  margin-bottom: 30px;
+}
+
+.location-container .space {
+  margin-right: 6px;
+}
+
+.institution .space-in-front {
+  margin-left: 6px;
+}
+.institution .count {
+  font-size: small; 
+  color: black;
+}
+
+.institution-item-page .institution {
+  border-color: #efebe8;
+  border-style: solid;
+  border-width: 0 0 5px 0;
+  padding: 0 0 18px 0;
+  overflow: hidden;
+}
+
+.institution-item-page .logo {
+  color: black; 
+  font-size: small;
 }
  
 #header {
@@ -49,4 +74,11 @@ overflow: hidden;
   font-style: italic;
   margin-bottom: 20px;
   position: relative;
+}
+
+img {
+  max-width: none;
+  vertical-align: initial;
+  border: none;
+  margin: 0;
 }

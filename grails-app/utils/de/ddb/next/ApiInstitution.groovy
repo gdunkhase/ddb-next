@@ -14,27 +14,36 @@ class ApiInstitution {
    
    private static final log = LogFactory.getLog(this)
    
-        def getInstitutionViewByItemId(String id, String url) {
-            log.println("get insitution view by item id: ${id}")
-            def uriPath = "/access/" + id + "/components/view"
-            return ApiConsumer.getTextAsXml(url, uriPath, null);
-        }
-        
-        def getChildrenOfInstitutionByItemId(String id, String url) {
-            log.println("get chlildren of institution by item id: ${id}")
-            def jsonResult;
-            def componentsPath = "/hierarchy/" + id + "/children"
-            jsonResult = ApiConsumer.getTextAsJson(url, componentsPath, null)
-            return jsonResult;
-        }
-        
-        def getFacetValues(String provName, String url) {
-            log.println("get facets values for: ${provName}")
-            def jsonResult;
-            def uriPath = "/search/facets/provider_fct"
-            def query = ['query':"${provName}" ]
-            jsonResult = ApiConsumer.getTextAsJson(url, uriPath, query)
-            return jsonResult;
-        }
-        
+    def getInstitutionViewByItemId(String id, String url) {
+        log.debug("get insitution view by item id: ${id}")
+        def uriPath = "/access/" + id + "/components/view"
+        return ApiConsumer.getTextAsXml(url, uriPath, null);
+    }
+    
+    def getChildrenOfInstitutionByItemId(String id, String url) {
+        log.debug("get chlildren of institution by item id: ${id}")
+        def jsonResult;
+        def uriPath = "/hierarchy/" + id + "/children"
+        jsonResult = ApiConsumer.getTextAsJson(url, uriPath, null)
+        return jsonResult;
+    }
+    
+    def getParentsOfInstitutionByItemId(String id, String url) {
+        log.debug("get parent of institution by item id: ${id}")
+        def jsonResult;
+        def uriPath = "/hierarchy/" + id + "/parent"
+        jsonResult = ApiConsumer.getTextAsJson(url, uriPath, null)
+        return jsonResult;
+    }
+    
+    def getFacetValues(String provName, String url) {
+        log.debug("get facets values for: ${provName}")
+        def jsonResult;
+        def uriPath = "/search/facets/provider_fct"
+        def query = ['query':"${provName}" ]
+        jsonResult = ApiConsumer.getTextAsJson(url, uriPath, query)
+        return jsonResult;
+    }
+    
+    
 }

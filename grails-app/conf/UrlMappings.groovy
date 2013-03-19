@@ -42,7 +42,7 @@ class UrlMappings {
 
         "/about-us/institutions/item/$id" {
             controller="institution"
-            action="readByItemId"
+            action="showInstitutionsTreeByItemId"
         }
 
         "/apis/institutions" {
