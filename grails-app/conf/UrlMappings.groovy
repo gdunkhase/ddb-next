@@ -50,6 +50,11 @@ class UrlMappings {
             action="getJson"
         }
 
+        "/entity/$id" {
+            controller="entity"
+            action="show"
+        }
+
         "500"(controller: "error", action: "serverError")
 
         "404"(controller: "error", action: "notFound")
