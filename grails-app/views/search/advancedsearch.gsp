@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="span12">
-                <form action="advancedsearch" id="advanced-search-form" method="post">
+                <g:form method="post" id="advanced-search-form" url="[controller:'advancedsearch']">
                     <div class="row">
                         <div class="span12">
                             <div class="row operator global-operator">
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </g:form>
             </div>
         </div>   
     </div>
