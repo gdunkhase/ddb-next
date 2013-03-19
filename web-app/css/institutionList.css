@@ -46,3 +46,9 @@ div.sector-facet>label:hover {
 .invisible {
   display: none;
 }
+
+.sector-facet .checkbox input[type="checkbox"] { 
+  float: initial; 
+  margin-top: -3px; 
+  margin-left: -10px; 
+}
