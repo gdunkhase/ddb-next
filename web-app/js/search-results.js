@@ -65,7 +65,11 @@ function searchResultsInitializer(){
     var queryParameters = {}, queryString = (urlParameters==null)?location.search.substring(1):urlParameters,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
-        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))] = decodeURIComponent(m[2].replace(/\+/g,'%20'));
+        var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+        if (queryParameters[decodedKey] == null) {
+            queryParameters[decodedKey] = new Array();
+        }
+        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
     }
     $.each(arrayParamVal, function(key, value){
       queryParameters[value[0]] = value[1];

@@ -39,11 +39,6 @@ class SearchController {
                 //Set id to "lasthit" to signal ItemController to find id of lasthit.
                 params["lastHit"] = "lasthit"
 
-                //                firstLastQuery["offset"] = resultsItems["numberOfResults"] - 1
-                //                def lastHit = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', firstLastQuery)
-                //                if (lastHit != null && lastHit["numberOfResults"] != null && (Integer)lastHit["numberOfResults"] > 0) {
-                //                    params["lastHit"] = lastHit["results"]["docs"][0].id
-                //                }
             }
             
             //create cookie with search parameters
