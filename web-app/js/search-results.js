@@ -608,6 +608,7 @@ function searchResultsInitializer(){
                 
                 facetValueContainer.click(function(){
                   currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue);
+                  $(this).remove();
                 });
                 
                 facetValueContainer.attr('data-fctvalue', encodeURIComponent(facetValue));

@@ -1,0 +1,71 @@
+.modal-dialog-overlay {
+  width: 100%;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+  position: fixed;
+  overflow: hidden;
+  background-color: rgba(255,255,255,0.5);
+  filter:alpha(opacity=50); 
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
+.modal-dialog-wrapper {
+  width: 360px;
+  height: 160px;
+  background: #fff;
+  top: 30%;
+  left: 50%;
+  position: absolute;
+  margin-top: -50px;
+  margin-left: -215px;
+  box-shadow: 0px 10px 48px rgba(50, 50, 50, 0.5);
+  border: 1px solid #ddd;
+  padding: 25px 30px;
+}
+.modal-dialog-title {
+  font-weight: bold;
+  font-size: 14px;
+  padding-bottom: 10px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.modal-dialog-content {
+  margin-bottom: 46px;
+  padding-top: 15px;
+  max-height: 70px;
+}
+
+.modal-dialog-footer {
+  padding: 15px 30px 25px 30px;
+  text-align: right;
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #e8e8e8;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f4f4f4), to(#dddddd));
+  background: -webkit-linear-gradient(0% 0%, 0% 100%, from(#f4f4f4), to(#dddddd));
+  background: -moz-linear-gradient(center top, #f4f4f4, #dddddd);
+  background: linear-gradient(#f4f4f4, #dddddd);
+  -webkit-box-shadow: inset 0 1px 0 white;
+  -moz-box-shadow: inset 0 1px 0 white;
+  box-shadow: inset 0 1px 0 white;
+  border-top: #ddd 1px solid;
+}
+.modal-dialog-content input[type="text"] {
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+  font-size: 17px;
+  font-style: italic;
+  border: none;
+  box-shadow: none;
+  border-bottom: 2px solid #ec0a3c;
+}
+.modal-dialog-wrapper input[type="text"]:focus {
+  border-color: indianred;
+  box-shadow:none;
+  outline:none;
+}
