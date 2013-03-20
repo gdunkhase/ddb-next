@@ -6,7 +6,7 @@
 <script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 <script src="${resource(dir: 'js', file: 'ddb.osm.institutiondetailview.js')}"></script>
 --%>
-<title>"${selectedOrgXML.name} - Deutsche Digitale Bibliothek"</title>
+<title>${selectedOrgXML.name} - Deutsche Digitale Bibliothek</title>
 
     <div class="institution-item-page">
     
