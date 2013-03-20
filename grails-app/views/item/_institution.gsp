@@ -6,7 +6,7 @@
             <a class="institution-name" href="/about-us/institutions/item/${institution.id}">
             ${institution.name}
             </a>
-            <a class="institution-link" href="${institution.uri}>">${institution.uri}</a>
+            <a class="institution-link" href="${institution.uri}">${institution.uri}</a>
         </div>
         <div class="span2">
             <img alt="${institution.name}" src="${institution.logo.a}" />

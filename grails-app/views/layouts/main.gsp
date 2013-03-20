@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Deutsche Digitale Bibliothek" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -63,6 +64,7 @@
     <script src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
     <script src="${resource(dir: 'js', file: 'institution-list.js')}"></script>
     --%>
+    <jawr:script src="/i18n/messages.js"/>
     <r:layoutResources />
     <g:piwik />
   </body>
