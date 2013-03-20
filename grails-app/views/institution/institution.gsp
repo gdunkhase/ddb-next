@@ -61,7 +61,7 @@
                 <div class="location" data-lat="${selectedOrgXML.locations.location.geocode.latitude }" data-lon="${selectedOrgXML.locations.location.geocode.longitude }">
                     <p class="address">
                         <b>${selectedOrgXML.name}</b><br>
-                        <span>${selectedOrgXML.locations.location.address.street }</span>${selectedOrgXML.locations.location.address.houseIdentifier }<br>
+                        <span class="space">${selectedOrgXML.locations.location.address.street }</span>${selectedOrgXML.locations.location.address.houseIdentifier }<br>
                         <g:if test="${(selectedOrgXML.addressSupplement)&&(selectedOrgXML.addressSupplement.text().length() > 0)}">
                             (${(selectedOrgXML.addressSupplement)})<br>
                         </g:if>
