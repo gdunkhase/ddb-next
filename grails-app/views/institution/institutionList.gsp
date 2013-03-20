@@ -1,6 +1,6 @@
 <meta name="layout" content="main" />
 
-<h1>Institutions</h1>
+<h1><g:message code="ddbnext.Institutions" /></h1>
 
 <div class="row">
   <div class="span9">

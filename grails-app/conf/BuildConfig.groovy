@@ -35,24 +35,30 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.20'
+        runtime "org.springframework:spring-test:3.1.2.RELEASE" //Needed as dependency for rendering-plugin when used in WAR
+
     }
 
     plugins {
-        runtime ":jquery:1.9.0"
-        runtime ":resources:1.1.6"
 
-        // Uncomment these (or add new ones) to enable additional resources capabilities
-        //runtime ":zipped-resources:1.0"
-        //runtime ":cached-resources:1.0"
-        //runtime ":yui-minify-resources:0.1.4"
+
+        compile ':cache:1.0.0'
+        compile ":cache-headers:1.1.5"
+        compile ":rendering:0.4.3"
+
 
         build ":tomcat:$grailsVersion"
 
-        compile ':cache:1.0.0'
+        runtime ":jquery:1.9.0"
+        runtime ":resources:1.1.6"
+        runtime ":zipped-resources:1.0"
+        runtime ":cached-resources:1.0"
+
+        //runtime ":yui-minify-resources:0.1.4"
     }
 
     // don't put Selenium tests into war file
     grails.war.resources = {stagingDir, args ->
-        delete(dir: "${stagingDir}/selenium") 
+        delete(dir: "${stagingDir}/selenium")
     }
 }

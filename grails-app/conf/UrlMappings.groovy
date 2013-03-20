@@ -42,7 +42,7 @@ class UrlMappings {
 
         "/about-us/institutions/item/$id" {
             controller="institution"
-            action="readByItemId"
+            action="showInstitutionsTreeByItemId"
         }
 
         "/apis/institutions" {
@@ -50,7 +50,13 @@ class UrlMappings {
             action="getJson"
         }
 
+        "/entity/$id" {
+            controller="entity"
+            action="show"
+        }
+
         "500"(controller: "error", action: "serverError")
+        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
 
         "404"(controller: "error", action: "notFound")
 

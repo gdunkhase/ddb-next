@@ -12,7 +12,7 @@
         <span class="icon-bar" style="visibility:hidden;"></span>
       </button>
       <a href="/" class="brand" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
-        <r:img dir="images" file="logo_header.png" class="siteLogo" />
+        <r:img dir="images" file="logo_header.png" class="siteLogo" alt="Deutsche Digitale Bibliothek"/>
       </a>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
@@ -79,8 +79,8 @@
                   <g:currentLanguage />
                 </a>
                 <ul class="selector language">
-                  <g:languageLink params="${params}" locale="de" islocaleclass="nopointer"><g:message code="ddbnext.language_de"/></g:languageLink>
-                  <g:languageLink params="${params}" locale="en" islocaleclass="nopointer"><g:message code="ddbnext.language_en"/></g:languageLink>
+                  <li><g:languageLink params="${params}" locale="de" islocaleclass="nopointer"><g:message code="ddbnext.language_de"/></g:languageLink></li>
+                  <li><g:languageLink params="${params}" locale="en" islocaleclass="nopointer"><g:message code="ddbnext.language_en"/></g:languageLink></li>
                 </ul>  
               </div>
               <div class="search-header hidden-phone">

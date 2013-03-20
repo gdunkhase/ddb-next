@@ -1,4 +1,4 @@
-window.onload = function() {
+window.ddbAddOnloadListener(function() {
   $(function() {
     currentTab($("p.all"));
     $(function() {
@@ -68,9 +68,11 @@ window.onload = function() {
                     $("#jwplayer-container").remove();
                   if($("#jwplayer-container_wrapper"))
                     $("#jwplayer-container_wrapper").remove();
-                  if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash")
+                  if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
                     $("binary-viewer-flash-upgrade").removeClass("off");
-                    else $("div.binary-viewer-error").removeClass("off");
+                  }else{ 
+                	$("div.binary-viewer-error").removeClass("off");
+                  }
               },
               onReady: function () {
                   if ($.browser.msie && this.getRenderingMode() === "html5") {
@@ -91,7 +93,7 @@ window.onload = function() {
       height: 131,
       items: {
         visible: 3,
-        minimum: 3
+        minimum: 1
       },
       scroll: {
         fx: "fade",
@@ -101,6 +103,9 @@ window.onload = function() {
       prev: ".btn-prev",
       next: ".btn-next"
     });
+    if(el.find('li').size()<3) {
+      $(".btn-next").addClass("disabled");
+    }
   };
   function formatTitle() {
     return '<div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span>'
@@ -115,7 +120,9 @@ window.onload = function() {
     currentTab(this);
     $("div.scroller").hide();
     tab.show();
-    createGallery($("#gallery-all"));
+    if($("#gallery-all").find('li').size()>3) {
+       createGallery($("#gallery-all"));
+    }
     updatePreview(tab);
   });
   $("p.images").click(function() {
@@ -195,11 +202,11 @@ window.onload = function() {
       return false;
   });
   //institution hierarchy
-  $(".item-hierarchy").removeClass("off");
+  //$(".item-hierarchy").removeClass("off");
 
   var imgLoader = document.createElement("img");
 
   imgLoader.src = "../images/icons/loader_small.gif";
   $(".item-hierarchy-result").prepend(imgLoader);
-  createHierarchy(parseUrl(this.location.href));
-};
+  createHierarchy(parseUrl(location.href));
+});

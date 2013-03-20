@@ -25,30 +25,21 @@ class AdvancedsearchController {
      * @return
      */
     def fillValues() {
-        try {
+        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
+        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
+        String url = grailsApplication.config.ddb.backend.url
+        List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        Map facetValuesMap = getFacetValues(facetSearchfields)
 
-            int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
-            int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
-            String url = grailsApplication.config.ddb.backend.url
-            List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
-            Map facetValuesMap = getFacetValues(facetSearchfields)
-
-            render(view: "/search/advancedsearch", model: [searchGroupCount: searchGroupCount,
-                searchFieldCount: searchFieldCount,
-                facetSearchfields: facetSearchfields,
-                facetValuesMap : facetValuesMap,
-                textSearchType : textSearchType,
-                languageTagPrefix : languageTagPrefix,
-                facetNameSuffix : facetNameSuffix,
-                labelSortType : labelSortType,
-                enumSearchType : enumSearchType])
-        } catch(MissingPropertyException mpe){
-            log.error "fillValues(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "fillValues(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
-        }
+        render(view: "/search/advancedsearch", model: [searchGroupCount: searchGroupCount,
+            searchFieldCount: searchFieldCount,
+            facetSearchfields: facetSearchfields,
+            facetValuesMap : facetValuesMap,
+            textSearchType : textSearchType,
+            languageTagPrefix : languageTagPrefix,
+            facetNameSuffix : facetNameSuffix,
+            labelSortType : labelSortType,
+            enumSearchType : enumSearchType])
     }
 
     /**
@@ -57,26 +48,18 @@ class AdvancedsearchController {
      * @throws IOException
      */
     def executeSearch() throws IOException {
-        try {
 
-            int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
-            int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
-            int offset = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultOffset)
-            int rows = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultRows)
-            def url = grailsApplication.config.ddb.backend.url
-            def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
+        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
+        int offset = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultOffset)
+        int rows = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultRows)
+        def url = grailsApplication.config.ddb.backend.url
+        def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
 
-            AdvancedSearchFormToQueryConverter converter =
-                    new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
-            String query = converter.convertFormParameters()
-            redirect(uri: "/searchresults?query=" + query + "&offset=" + offset + "&rows=" + rows)
-        } catch(MissingPropertyException mpe){
-            log.error "executeSearch(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "executeSearch(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
-        }
+        AdvancedSearchFormToQueryConverter converter =
+                new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
+        String query = converter.convertFormParameters()
+        redirect(uri: "/searchresults?query=" + query + "&offset=" + offset + "&rows=" + rows)
     }
 
     /**

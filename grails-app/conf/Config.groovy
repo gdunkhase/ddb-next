@@ -86,6 +86,16 @@ ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
 
+
+grails.resources.mappers.zip.excludes = [
+    '**/*.png',
+    '**/*.gif',
+    '**/*.jpg',
+    '**/*.jpeg',
+    '**/*.gz',
+    '**/*.zip'
+]
+
 ddb {
     backend {
         facets {
@@ -118,16 +128,16 @@ log4j = {
     // The appenders define the output method of the loggings
     appenders {
         console name: "console", threshold: org.apache.log4j.Level.INFO, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "ddbnext-info", threshold: org.apache.log4j.Level.INFO, file: config.ddb.logging.folder+"/ddbnext-info.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "ddbnext-warn", threshold: org.apache.log4j.Level.WARN, file: config.ddb.logging.folder+"/ddbnext-warn.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "ddbnext-error", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-error.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        rollingFile name: "stacktrace", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-stacktrace.log", maxFileSize: 1024, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-info", threshold: org.apache.log4j.Level.INFO, file: config.ddb.logging.folder+"/ddbnext-info.log", maxFileSize: "50MB", layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-warn", threshold: org.apache.log4j.Level.WARN, file: config.ddb.logging.folder+"/ddbnext-warn.log", maxFileSize: "50MB", layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "ddbnext-error", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-error.log", maxFileSize: "50MB", layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        rollingFile name: "stacktrace", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-stacktrace.log", maxFileSize: "50MB", layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
     }
 
     // The root logger defines the basic log level and to which appenders the logging is going
     environments {
         development {
-            root {  info "console", "ddbnext-info"  }
+            root {  info "console", "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace"  }
         }
         production {
             root { info "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace" }
@@ -174,3 +184,5 @@ jawr {
         resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
 }
 grails.app.context = "/"
+
+

@@ -3,8 +3,11 @@
 <head>
 <title>${title} - <g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/></title>
 <meta name="layout" content="main" />
-<jawr:script src="/i18n/messages.js"/>
+<r:require module="results"/> 
+<%-- 
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
 <script src="${resource(dir: 'js', file: 'search-results.js')}"></script>
+--%>
 </head>
 
 <body>
@@ -13,7 +16,8 @@
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <span class="contextual-help hidden-phone hidden-tablet" title="" data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'></span>
+        <span class="contextual-help hidden-phone hidden-tablet" title='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />' data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'></span>
+        <div class="tooltip off"></div>
       </div>
       <div class="facets-list bt bb">
         <g:each in="${facetsList}" var="mit">

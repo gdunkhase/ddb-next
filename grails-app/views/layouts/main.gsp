@@ -3,24 +3,31 @@
   <head>
     <meta charset="utf-8" />
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Deutsche Digitale Bibliothek" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
     <!-- TODO: uncomment the next two lines, once we find the icons -->
     <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"/ -->
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
+
+    <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
+
+    <%-- 
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'ddb.css')}" />
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'institutionList.css')}" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'item.css')}" />
     <link rel="search" title="Deutsche Digitale Bibliothek" href="http://www.deutsche-digitale-bibliothek.de/opensearch.osdx" type="application/opensearchdescription+xml" />
     <!--[if lt IE 9]>
       <script src="Scripts/html5shim.googlecode.html5.js"> </script>
     <![endif]-->
+    --%>
+    <r:require module="ddbnext" />
     <g:layoutHead />
     <r:layoutResources />
   </head>
@@ -34,11 +41,12 @@
         </div>
       </div>
     </noscript>
-  <g:render template="/mainHeader" />
-  <div id="main-container" class="container" role="main">
-    <g:layoutBody/>
-  </div>
-  <g:render template="/footer" />
+    <g:render template="/mainHeader" />
+    <div id="main-container" class="container" role="main">
+      <g:layoutBody/>
+    </div>
+    <g:render template="/footer" />
+    <%--
     <!-- TODO why do we declare jquery here? Don't we use Grails jQuery Plug-in? -->
     <script src="${resource(dir:'js', file:'json2.js')}"></script>
     <script src="${resource(dir:'js', file:'jquery-1.8.2.min.js')}"></script>
@@ -55,6 +63,9 @@
     <script src="${resource(dir: 'js', file: 'header.js')}"></script>
     <script src="${resource(dir: 'js', file: 'tooltip.js')}"></script>
     <script src="${resource(dir: 'js', file: 'institution-list.js')}"></script>
+    --%>
+    <jawr:script src="/i18n/messages.js"/>
+    <r:layoutResources />
     <g:piwik />
   </body>
 </html>

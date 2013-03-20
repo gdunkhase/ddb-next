@@ -11,15 +11,18 @@ header, .header {
   background:transparent url("../images/bg/back_header.png") no-repeat center bottom;
   /*height:160px;*/
   margin-bottom:20px;
+  /* TODO: what is this for? (FRS)
   min-height: 85px;
+  */
 }
 header .container, .header .container{
- min-height: 0px;
+  /* TODO: what is this for? (FRS)
+  margin-bottom: 10px;
+  */
 }
 header .navigation-header-logo, .header .navigation-header-logo {
   float:left;
   height:85px;
-  width:350px;
   border:0px;
   padding:0px;
   overflow:hidden;
@@ -137,16 +140,6 @@ header .link-adv-search, div.header .link-adv-search {
   right: -12px;
   margin: 0;
 }
-.search-header form label input{
-  padding: 0 0 0 5px;
-  -webkit-appearance: textfield;
-  font-size: 0.938em;
-  width: 315px;
-  height: 23px;
-  line-height: 25px;
-  margin-right: 4px;
-  margin-bottom: 0;
-}
 .search-header form button{
   box-shadow: none;
   overflow: hidden;
@@ -190,6 +183,9 @@ header .link-adv-search, div.header .link-adv-search {
 .language-wrapper a:hover {
   text-decoration: none;  
 }
+.language-wrapper .nopointer {
+  background-color: #EEEEEE !important;
+}
 header .selector,.header .selector {
   display:none;
   background-color:#fff;
@@ -208,7 +204,7 @@ header .selector li,.header .selector li {
   float:none;
   cursor:pointer;
   padding:0 15px 0 0;
-  margin-bottom:5px;
+  margin-bottom:0px;
   white-space:nowrap;
 }
 header .selector.language li,.header .selector.language li {
@@ -216,15 +212,6 @@ header .selector.language li,.header .selector.language li {
 }
 header .toolbar .selector a, .header .toolbar .selector a {
   background: none;
-}
-header .selector.language li:hover {
-  background-color: #eee;
-}
-header .language-widget,.header .language-widget {
-  width:980px;
-  margin:0 auto;
-  position:absolute;
-  top:0;
 }
 header .language-widget form, .header .language-widget form {
   display:none;
@@ -234,6 +221,9 @@ header .language-widget form, .header .language-widget form {
 /* mobile view header */
 .navbar {
   background: none;
+}
+.navbar-fixed-top {
+  margin-bottom: 0px;
 }
 .brand img {
   height:20px;
@@ -363,8 +353,8 @@ noscript .caption {
   position: relative;
 }
 .teaser .article img {
-   width:204px;
-   height:180px; 
+  width:204px;
+  height:180px; 
 }
 .carousel {
   padding: 0px 0 0px 1px;
@@ -397,11 +387,11 @@ noscript .caption {
   background-position: 0 -200px;
 }
 .carousel .clearfix {
-	float: none;
-	clear: both;
+  float: none;
+  clear: both;
 }
 a.previous span, a.next span {
-	display: none;
+  display: none;
 }
 /* index - end*/
 
@@ -451,6 +441,23 @@ footer .legal ul li+li,.footer .legal ul li+li {
   z-index: 3;
 }
 /* footer - end */
+
+/* responsive footer */
+@media (max-width: 979px) {
+   footer .legal small, .footer .legal small {
+     float: none;
+   }
+}
+
+@media (max-width: 767px) {
+   footer .legal ul li,.footer .legal ul li {
+     border-left:1px solid #d1cdcb;
+     padding-left:17px;
+     float: none;
+   }
+}
+/* responsive footer - end */
+
 /* genaral rules */
 h1, h2, h3, h4 {
   font-family: KarbidWeb,Calibri,Arial,sans-serif;
@@ -492,7 +499,7 @@ body {
   font-family: Calibri,Arial,sans-serif;
   color: #3e3a37;
 }
-.container {
+#main-container.container{
   min-height: 515px;
 }
 form label {
@@ -555,18 +562,15 @@ button, .button {
   color: #fff;
   cursor: pointer;
 }
-
 .button{
-  padding: 3px 8px;
+  padding: 6px 10px;
   color: #fff;
 }
-
 .button:hover{
   background-position: top center;
   text-decoration: underline;
   color:#fff;
 }
-
 img {
   border: 0;
   margin: 15px;
@@ -644,6 +648,18 @@ select {
 .br {
   border-right: solid 1px #efebe8;
 }
+.bb-white {
+  border-bottom: solid 1px #ffffff;
+}
+.bt-white {
+  border-top: solid 1px #ffffff;
+}
+.bl-white {
+  border-left: solid 1px #ffffff;
+}
+.br-white {
+  border-right: solid 1px #ffffff;
+}
 .off {
   display: none !important;
 }
@@ -653,5 +669,4 @@ select {
 .nopointer {
   cursor: default !important;
 }
-
 /* genaral rules - end */

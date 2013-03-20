@@ -133,6 +133,6 @@ class InstitutionService {
     }
 
     private def buildUri(id) {
-        grailsLinkGenerator.link(url: [controller: 'institution', action: 'readByItemId', id: id ])
+        grailsLinkGenerator.link(url: [controller: 'institution', action: 'showInstitutionsTreeByItemId', id: id ])
     }
 }

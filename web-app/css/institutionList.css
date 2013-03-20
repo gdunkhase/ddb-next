@@ -32,7 +32,7 @@ div.sector-facet>label:hover {
 }
 
 .selected {
-  color: #a5003b
+  color: #a5003b;
 }
 
 #no-match-message {
@@ -45,4 +45,10 @@ div.sector-facet>label:hover {
 
 .invisible {
   display: none;
+}
+
+.sector-facet .checkbox input[type="checkbox"] { 
+  float: initial; 
+  margin-top: -3px; 
+  margin-left: -10px; 
 }

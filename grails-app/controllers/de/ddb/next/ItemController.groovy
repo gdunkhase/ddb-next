@@ -9,15 +9,7 @@ class ItemController {
     def searchService
 
     def children() {
-        try {
-            render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", ["rows":501]))
-        } catch(MissingPropertyException mpe){
-            log.error "children(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "children(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
-        }
+        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", ["rows":501]))
     }
 
     def findById() {
@@ -53,21 +45,26 @@ class ItemController {
             } else {
                 def itemUri = request.forwardURI
                 def fields = translate(item.fields)
-                render(view: 'item', model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                    'title': item.title, item: item.item, institution : item.institution, fields: fields,
-                    binaryList: binaryList, pageLabel: item.pageLabel,
-                    firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-                    hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
+
+                if(params.print){
+                    renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
+                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
+                        binaryList: binaryList, pageLabel: item.pageLabel,
+                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
+                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation],
+                    filename: "Item-Detail.pdf")
+                }else{
+                    render(view: "item", model: [itemUri: itemUri, viewerUri: item.viewerUri,
+                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
+                        binaryList: binaryList, pageLabel: item.pageLabel,
+                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
+                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
+
+                }
             }
         } catch(ItemNotFoundException infe){
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
             forward controller: "error", action: "notFound"
-        } catch(MissingPropertyException mpe){
-            log.error "findById(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "findById(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
         }
     }
 
@@ -85,15 +82,7 @@ class ItemController {
     }
 
     def parents() {
-        try {
-            render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
-        } catch(MissingPropertyException mpe){
-            log.error "parents(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "parents(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
-        }
+        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
     }
 
     /**

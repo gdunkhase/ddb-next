@@ -4,38 +4,29 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 class IndexController {
 
     def index() {
-        try{
-            def path
-            def staticUrl = grailsApplication.config.ddb.static.url
-            def locale = RCU.getLocale(request)
+        def path
+        def staticUrl = grailsApplication.config.ddb.static.url
+        def locale = RCU.getLocale(request)
 
-            if(locale.toString().substring(0, 2)=="de") {
-                path = "/static/"+SupportedLocales.DE.getISO2()+"/homepage.xml"
-            }
-            else {
-                path = "/static/"+SupportedLocales.EN.getISO2()+"/homepage.xml"
-            }
-
-            def query = [ client: "DDB-NEXT" ]
-            // Submit a request via GET
-            def response = ApiConsumer.getText(staticUrl, path, query)
-
-            if (response == "Not found"){
-                forward controller: "error", action: "notfound"
-                return;
-            }
-
-            def articles=retrieveArguments(response)
-
-            render(view: "index", model: [articles: articles, staticUrl: staticUrl])
-
-        } catch(MissingPropertyException mpe){
-            log.error "index(): There was a missing property.", mpe
-            forward controller: "error", action: "serverError"
-        } catch(Exception e) {
-            log.error "index(): An unexpected error occured.", e
-            forward controller: "error", action: "serverError"
+        if(locale.toString().substring(0, 2)=="de") {
+            path = "/static/"+SupportedLocales.DE.getISO2()+"/homepage.xml"
         }
+        else {
+            path = "/static/"+SupportedLocales.EN.getISO2()+"/homepage.xml"
+        }
+
+        def query = [ client: "DDB-NEXT" ]
+        // Submit a request via GET
+        def response = ApiConsumer.getText(staticUrl, path, query)
+
+        if (response == "Not found"){
+            forward controller: "error", action: "notfound"
+            return;
+        }
+
+        def articles=retrieveArguments(response)
+
+        render(view: "index", model: [articles: articles, staticUrl: staticUrl])
 
     }
 

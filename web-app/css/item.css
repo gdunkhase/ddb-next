@@ -16,6 +16,7 @@
   padding-left: 25px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -1px;
 }
+
 .viewer.dfg {
   padding-left: 22px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -42px;
@@ -54,50 +55,50 @@
   background-position: -2px -120px;
 }
 .has-origin {
-  background-position-y: -80px !important; 
+  background-position: -2px -80px !important; 
 }
-.page-nav {
-  line-height: 42px;
+.show-origin {
+  margin-right: 10px;
 }
-.page-nav {
+.item-nav {
+  line-height: 30px;
+}
+.item-nav {
   text-align: right;
 }
-.page-nav ul {
+.item-nav ul {
   margin-bottom: 0;
 }
-.page-nav ul li {
+.item-nav ul li {
   padding: 0;
 }
-.page-nav .first-page a,.page-nav .prev-page a,.page-nav .next-page a,.page-nav .last-page a {
-  color: #878380;
+.item-nav .first-item a,.item-nav .prev-item a,.item-nav .next-item a,.item-nav .last-item a {
   background: url("../images/icons/pagination.png") no-repeat;
 }
-.page-nav .first-page a {
-  color: #878380;
+.item-nav .first-item a {
   padding-left: 14px;
   background-position: left -21px;
 }
-.page-nav .prev-page {
-  color: #878380;
+.item-nav .prev-item {
   margin-right: 5px;
 }
-.page-nav .prev-page a {
-  color: #878380;
+.item-nav .prev-item a {
   padding-left: 14px;
   padding-right: 5px;
   background-position: left -61px;
 }
-.page-nav .next-page a {
-  color: #878380;
+.item-nav .next-item a {
   padding-right: 14px;
   padding-left: 5px;
-  background-position: right -41px;
+background-position: right -41px;
 }
-.page-nav .next-page {
-  color: #878380;
+.item-nav .next-item {
   margin-left: 5px;
 }
-.page-nav .last-page a {
+.item-nav .last-item a {
   padding-right: 14px;
   background-position: right -1px;
+}
+.item-nav .items-overall-index {
+  margin-right: 5px;
 }

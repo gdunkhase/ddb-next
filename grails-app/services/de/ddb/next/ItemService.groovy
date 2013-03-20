@@ -57,7 +57,8 @@ class ItemService {
             response.'404' = { return '404' }
 
             //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
+            response.failure = { resp ->
+                log.warn """
                 Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
                 """
                 return response
@@ -79,9 +80,7 @@ class ItemService {
         http.request( GET) { req ->
             uri.path = titlePath
 
-            response.success = { resp, html ->
-                return html
-            }
+            response.success = { resp, html -> return html }
 
             response.'404' = { return '404' }
 
@@ -236,6 +235,17 @@ class ItemService {
             }
         }
         return (['images':images,'audios':audios,'videos':videos])
+    }
+
+
+    def getParent(itemId){
+        final def parentsPath = "/hierarchy/" + itemId + "/parent/"
+        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), parentsPath, [:]);
+    }
+
+    def getChildren(itemId){
+        final def childrenPath = "/hierarchy/" + itemId + "/children/"
+        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), childrenPath, [:]);
     }
 
     private def log(list) {
