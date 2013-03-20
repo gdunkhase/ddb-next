@@ -56,19 +56,45 @@ function searchResultsInitializer(){
     return false;
   });
   
-  function addParamToCurrentUrl(arrayParamVal, urlParameters){
-    return addParamToUrl(arrayParamVal, null, urlParameters);
+  function addParamToCurrentUrl(arrayParamVal, urlString){
+    return addParamToUrl(arrayParamVal, null, urlString);
   }
   //This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
   //IMPORTANT: remember to pass your arrayParamVal already URL decoded
-  function addParamToUrl(arrayParamVal, path, urlParameters){
-    var queryParameters = {}, queryString = (urlParameters==null)?location.search.substring(1):urlParameters,
+  function addParamToUrl(arrayParamVal, path, urlString){
+    var queryParameters = {}, queryString = (urlString==null)?location.search.substring(1):urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
         queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))] = decodeURIComponent(m[2].replace(/\+/g,'%20'));
     }
     $.each(arrayParamVal, function(key, value){
       queryParameters[value[0]] = value[1];
+    });
+    var tmp = jQuery.param(queryParameters, true);
+    if (path == null) {
+      return window.location.pathname+'?'+tmp;
+    }
+    else {
+      return path+'?'+tmp;
+    }
+  }
+  
+  function removeParamFromUrl(arrayParamVal, path, urlString){
+    var queryParameters = {}, queryString = (urlString==null)?location.search.substring(1):urlString,
+      re = /([^&=]+)=([^&]*)/g, m;
+    while (m = re.exec(queryString)) {
+        var keyParam = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+        if(queryParameters[keyParam]==null){
+          queryParameters[keyParam] = new Array();
+        }
+        queryParameters[keyParam].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
+    }
+    $.each(arrayParamVal, function(key, value){
+      if(queryParameters[value[0]] && (paramIndex = $.inArray(value[1], queryParameters[value[0]]))>-1){
+        queryParameters[value[0]] = jQuery.grep(queryParameters[value[0]], function(cValue){
+            return cValue != value[1];
+        });
+      }
     });
     var tmp = jQuery.param(queryParameters, true);
     if (path == null) {
@@ -393,7 +419,7 @@ function searchResultsInitializer(){
         var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
         if(paramsFacetValues){
           $.each(paramsFacetValues, function(key,value){
-            paramsFacetValues[key] = decodeURIComponent(value);
+            paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
           });
           paramsFacetValues.push(this.currentFacetField+'='+facetValue);
           var paramsArray = new Array(new Array('facetValues[]', paramsFacetValues));
@@ -416,8 +442,8 @@ function searchResultsInitializer(){
         var facetFieldFilter = element.parents('.facets-item');
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
-      console.log(escape(element.attr('data-fctvalue')))
-      fetchResultsList(window.location.href.replace('&facetValues%5B%5D='+facetFieldFilter.find('.h3').attr('data-fctname')+'%3D'+element.attr('data-fctvalue'),''));
+      var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+element.attr('data-fctvalue'))));
+      fetchResultsList(newUrl);
       element.remove();
     },
     
@@ -611,7 +637,7 @@ function searchResultsInitializer(){
                   $(this).remove();
                 });
                 
-                facetValueContainer.attr('data-fctvalue', encodeURIComponent(facetValue));
+                facetValueContainer.attr('data-fctvalue', facetValue);
                 spanCount.html('('+this.count+')');
         
                 if(index<5){
@@ -634,7 +660,7 @@ function searchResultsInitializer(){
       var facetValueSpan = $(document.createElement('span'));
       var facetValueRemove = $(document.createElement('span'));
       
-      facetValueContainer.attr('data-fctvalue', encodeURIComponent(facetValue));
+      facetValueContainer.attr('data-fctvalue', facetValue);
       facetValueSpan.attr('title', localizedValue);
       facetValueSpan.html(localizedValue);
       facetValueRemove.attr('title', this.field_RemoveButton);
