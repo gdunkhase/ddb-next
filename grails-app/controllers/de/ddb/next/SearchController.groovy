@@ -86,7 +86,7 @@ class SearchController {
                 resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url,
                     offset: params["offset"]]).replaceAll("\r\n", '')
             }else{
-                resultsHTML = g.render(template:"/search/noResults",model:[:]).replaceAll("\r\n", '')
+                resultsHTML = g.render(template:"/search/noResults").replaceAll("\r\n", '')
             }
             def jsonReturn = [results: resultsHTML,
                 resultsPaginatorOptions: resultsPaginatorOptions,
