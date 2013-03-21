@@ -81,8 +81,13 @@ class SearchController {
             queryString = queryString+"&sort="+urlQuery["randomSeed"]
 
         if(params.reqType=="ajax"){
-            def resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url,
-                offset: params["offset"]]).replaceAll("\r\n", '')
+            def resultsHTML = ""
+            if(resultsItems.numberOfResults > 0){
+                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url,
+                    offset: params["offset"]]).replaceAll("\r\n", '')
+            }else{
+                resultsHTML = g.render(template:"/search/noResults").replaceAll("\r\n", '')
+            }
             def jsonReturn = [results: resultsHTML,
                 resultsPaginatorOptions: resultsPaginatorOptions,
                 resultsOverallIndex:resultsOverallIndex,

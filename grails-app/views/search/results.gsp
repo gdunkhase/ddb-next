@@ -67,6 +67,10 @@
             <g:if test="${results}">
               <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
             </g:if>
+            <g:if test="${results.numberOfResults == 0}">
+              <g:render template="noResults" />
+            </g:if>
+            
           </div>
         </div>
       </div>
