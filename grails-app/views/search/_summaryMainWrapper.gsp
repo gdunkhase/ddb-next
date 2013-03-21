@@ -1,9 +1,3 @@
-<g:set var="controller" value="item"></g:set>
-<g:set var="action" value="findById"></g:set>
-<g:if test="${item.category == 'Institution'}">
-  ${controller = 'institution'}
-  ${action = 'readByItemId'}
-</g:if>
 <div class="summary-main-wrapper <g:if test="${viewType != 'grid'}">span7</g:if>">
   <div class="summary-main">
     <h2 class="title">

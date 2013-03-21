@@ -14,20 +14,18 @@
     </div>
       <div class="origin">
           <g:if test="${!item.origin?.toString().isEmpty()}">
-              <span class="has-origin">
-                  <a class="show-origin" href="${item.origin.a}" title="<g:message code="ddbnext.stat_008" />">
-                  <g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" />
+                  <a target="_blank" class="show-origin" href="${item.origin.a}" title="<g:message code="ddbnext.stat_008" />">
+                  <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
                   </a>
-              </span>
           </g:if>
           <g:else>
               <span><g:message code="ddbnext.Link_to_data_supplier_not_available" /></span>
           </g:else>
           <!-- (DFG) viewer -->
           <g:if test="${!viewerUri?.isEmpty()}">
-              <span class="viewer dfg">
-                  <a target="about:blank" href="${viewerUri}"><g:message code="ddbnext.ObjectViewer_dfgKey" /></a>
-              </span>
+              <a target="_blank" href="${viewerUri}">
+                <span class="viewer dfg"><g:message code="ddbnext.ObjectViewer_dfgKey" /></span>
+              </a>
           </g:if>
       </div>
   </div>
