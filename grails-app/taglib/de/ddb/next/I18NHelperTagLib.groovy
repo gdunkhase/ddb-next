@@ -31,7 +31,15 @@ class I18NHelperTagLib {
      */
     def currentLanguage = { attrs, body ->
         def locale = RequestContextUtils.getLocale(request)
-        def i18nLanguageString = messageSource.getMessage("ddbnext.language_"+locale.getLanguage(), null, locale)
+        if(!locale){
+            locale = SupportedLocales.getDefaultLocale()
+        }
+        if(!SupportedLocales.supports(locale)){
+            locale = SupportedLocales.getDefaultLocale()
+        }
+
+        def localeLanguage = locale.getLanguage()
+        def i18nLanguageString = messageSource.getMessage("ddbnext.language_"+localeLanguage, null, locale)
 
         out << i18nLanguageString
     }
@@ -43,11 +51,15 @@ class I18NHelperTagLib {
         def checkLocaleString = attrs.locale
         def localeclass = attrs.islocaleclass
         def locale = RequestContextUtils.getLocale(request)
+        if(!locale){
+            locale = SupportedLocales.getDefaultLocale()
+        }
 
         boolean isLocale = false
 
         if(checkLocaleString && locale){
-            if(locale.getLanguage().equalsIgnoreCase(checkLocaleString)){
+            def localeLanguage = locale.getLanguage()
+            if(localeLanguage.equalsIgnoreCase(checkLocaleString)){
                 isLocale = true
             }
         }
@@ -55,14 +67,21 @@ class I18NHelperTagLib {
         if(isLocale){
             out << "<a class=\""+localeclass+"\">"+currentLanguage(attrs)+"</a>"
         }else{
-            attrs.remove("locale")
-            attrs.remove("islocaleclass")
-            if(attrs.params){
-                attrs.params = attrs.params.plus([lang: checkLocaleString])
-            }else{
-                attrs.params = [lang: checkLocaleString]
+            //TODO check this code after update to Grails 2.2.1 or higher! the createLink method has known bugs!
+            def linkUrl = createLink("url": attrs.params)
+            def cleanedParams = attrs.params.clone()
+            cleanedParams.remove("controller")
+            cleanedParams.remove("action")
+            cleanedParams.remove("id")
+            cleanedParams.put("lang", checkLocaleString)
+            def paramString = "?"
+            cleanedParams.each {
+                paramString += it.key + "=" + it.value + "&"
             }
-            out << link(attrs, { body() })
+            if(paramString.length() > 1){
+                paramString = paramString.substring(0, paramString.length()-1)
+            }
+            out << "<a href=\""+linkUrl+paramString+"\" >"+body()+"</a>"
         }
     }
 }
