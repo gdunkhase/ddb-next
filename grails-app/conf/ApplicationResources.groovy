@@ -41,12 +41,15 @@ modules = {
 
     cssprint {
         resource url:'/css/ddb.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/item.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/institutionList.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/results.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/print.css', attrs:[media:'print'], bundle: 'print'
     }
 
     javascript {
-        resource url:'/js/onloadManager.js', disposition: 'head'
         resource url:'/js/jquery-1.8.2.min.js', disposition: 'head'
+        resource url:'/js/onloadManager.js', disposition: 'head'
         resource url:'/js/jquery.cookies.2.2.0.min.js', disposition: 'head'
         resource url:'/js/jquery.dotdotdot-1.5.1.js', disposition: 'head'
         resource url:'/js/jquery.carouFredSel-6.2.0-packed.js', disposition: 'head'
