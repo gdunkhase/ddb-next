@@ -30,8 +30,8 @@ modules = {
         resource url:'/css/pdf.css'
 
         // General Javascripts
-        resource url:'/js/onloadManager.js', disposition: 'head'
         resource url:'/js/jquery-1.8.2.min.js', disposition: 'head'
+        resource url:'/js/onloadManager.js', disposition: 'head'
         resource url:'/js/jquery.cookies.2.2.0.min.js', disposition: 'head'
         resource url:'/js/jquery.dotdotdot-1.5.1.js', disposition: 'head'
         resource url:'/js/jquery.carouFredSel-6.2.0-packed.js', disposition: 'head'

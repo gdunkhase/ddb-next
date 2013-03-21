@@ -16,8 +16,8 @@ window.ddbNotifyOnloadListener = function(){
 	}
 };
 
-window.onload = function() {
+$(document).ready(function() {
 	window.ddbNotifyOnloadListener();
-};
+});
 
 
