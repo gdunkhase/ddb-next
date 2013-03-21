@@ -15,9 +15,19 @@
  */
 package de.ddb.next
 
+import java.util.regex.Pattern;
+
 import net.sf.json.JSONNull
 
 import groovy.json.JsonSlurper
+import groovyx.net.http.AsyncHTTPBuilder
+
+import static groovyx.net.http.ContentType.*
+
+import groovy.json.*
+import groovyx.net.http.ContentType
+import org.apache.commons.logging.LogFactory
+import groovyx.net.http.Method
 
 class ApisController {
 
@@ -162,7 +172,8 @@ class ApisController {
             tmpResult["category"] = (it.category instanceof JSONNull)?"":it.category
 
             def path = grailsApplication.config.ddb.backend.url.toString()+'/access/'+it.id+'/components/indexing-profile'
-
+            
+            /*
             def xmlSubresp = ApiConsumer.getTextAsXml(grailsApplication.config.ddb.backend.url.toString(),'/access/'+it.id+'/components/indexing-profile', [:])
             def jsonSubresp = new JsonSlurper().parseText(xmlSubresp.toString())
 
@@ -173,12 +184,19 @@ class ApisController {
             def typeFct = (jsonSubresp.properties.type_fct)?jsonSubresp.properties.type_fct: ""
             def sectorFct = (jsonSubresp.properties.sector_fct)?jsonSubresp.properties.sector_fct: ""
             def providerFct = (jsonSubresp.properties.provider_fct)?jsonSubresp.properties.provider_fct: ""
-
+            */
+            
+            def properties = [:]
+            /*
             def properties = [time_fct: timeFct, place_fct: placeFct, affiliate_fct:affiliateFct, keywords_fct:keywordsFct, type_fct:typeFct, sector_fct:sectorFct, provider_fct:providerFct, last_update: jsonSubresp.properties.last_update ]
-
+            */
             tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
             tmpResult["properties"] = properties
             docs.add(tmpResult)
+        }
+        fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() {
+          obj, i ->
+          docs[i].properties = obj
         }
         resultList["facets"] = jsonResp.facets
         resultList["highlightedTerms"] = jsonResp.highlightedTerms
@@ -187,5 +205,87 @@ class ApisController {
         resultList["randomSeed"] = jsonResp.randomSeed
 
         render (contentType:"text/json"){resultList}
+    }
+    
+    def fetchItemsProperties(docs){
+      def threadNumber = (docs.size()<20)?docs.size():20
+      def baseUrl = grailsApplication.config.ddb.backend.url.toString()
+      try {
+        def http = new AsyncHTTPBuilder(
+            poolSize: threadNumber,
+            uri: baseUrl)
+        setProxy(http, baseUrl)
+        def itemsPropertiesResponses = []
+        docs.each {
+          def currentItem = it
+          itemsPropertiesResponses << http.request(Method.GET, XML){
+            uri.path = '/access/'+currentItem.id+'/components/indexing-profile'
+            headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+            response.success = { resp, xml ->
+              def jsonSubresp = new JsonSlurper().parseText(xml.toString())
+              
+              def timeFct = (jsonSubresp.properties.time_fct)? jsonSubresp.properties.time_fct: ""
+              def placeFct = (jsonSubresp.properties.place_fct)? jsonSubresp.properties.place_fct: ""
+              def affiliateFct = (jsonSubresp.properties.affiliate_fct)? jsonSubresp.properties.affiliate_fct: ""
+              def keywordsFct = (jsonSubresp.properties.keywords_fct)?jsonSubresp.properties.keywords_fct: ""
+              def typeFct = (jsonSubresp.properties.type_fct)?jsonSubresp.properties.type_fct: ""
+              def sectorFct = (jsonSubresp.properties.sector_fct)?jsonSubresp.properties.sector_fct: ""
+              def providerFct = (jsonSubresp.properties.provider_fct)?jsonSubresp.properties.provider_fct: ""
+              
+              def properties = [time_fct: timeFct, place_fct: placeFct, affiliate_fct:affiliateFct, keywords_fct:keywordsFct, type_fct:typeFct, sector_fct:sectorFct, provider_fct:providerFct, last_update: jsonSubresp.properties.last_update ]
+              
+              return properties
+            }
+          }
+        }
+        def timeout = 60000
+        def time = 0
+        while ( true ) {
+            if ( itemsPropertiesResponses.every{ it.done ? it.get() : 0 } ) break
+            print '.'
+            Thread.sleep 1
+            time += 1
+        if ( time > timeout ) assert false
+        }
+        def result = []
+        itemsPropertiesResponses.each{
+          result.add(it.get())
+        }
+        http.shutdown()
+        return result
+      } catch (groovyx.net.http.HttpResponseException ex) {
+          log.error "A HttpResponseException occured", ex
+          return null
+        } catch (java.net.ConnectException ex) {
+          log.error "A ConnectException occured", ex
+          return null
+        } catch (java.lang.Exception ex) {
+          log.error "An unexpected exception occured", ex
+          return null
+        }
+    }
+    private static Pattern nonProxyHostsPattern
+    static def setProxy(http, String baseUrl) {
+        def proxyHost = System.getProperty("http.proxyHost")
+        def proxyPort = System.getProperty("http.proxyPort")
+        def nonProxyHosts = System.getProperty("http.nonProxyHosts")
+
+        if (proxyHost) {
+            if (nonProxyHosts) {
+                if (!nonProxyHostsPattern) {
+                    nonProxyHosts = nonProxyHosts.replaceAll("\\.", "\\\\.")
+                    nonProxyHosts = nonProxyHosts.replaceAll("\\*", "")
+                    nonProxyHosts = nonProxyHosts.replaceAll("\\?", "\\\\?")
+                    nonProxyHostsPattern = Pattern.compile(nonProxyHosts)
+                }
+                if (nonProxyHostsPattern.matcher(baseUrl).find()) {
+                    return
+                }
+            }
+            if (!proxyPort) {
+                proxyPort = "80"
+            }
+            http.setProxy(proxyHost, new Integer(proxyPort), 'http')
+        }
     }
 }
