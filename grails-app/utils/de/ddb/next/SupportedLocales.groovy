@@ -95,8 +95,4 @@ public enum SupportedLocales {
         }
         return null;
     }
-
-    public static String test() {
-        return "test";
-    }
 }
