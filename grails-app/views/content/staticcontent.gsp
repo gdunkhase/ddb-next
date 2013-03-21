@@ -12,7 +12,6 @@
   <meta name="robots" content="${robots}" />
 </g:if>
   <meta name="layout" content="main" />
-  <r:require module="staticcontent"/>
   <%-- 
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'staticcontent.css')}" />
   --%>

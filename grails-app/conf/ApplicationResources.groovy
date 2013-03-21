@@ -16,22 +16,40 @@
 modules = {
     ddbnext {
         defaultBundle 'ddbnext'
+        dependsOn "images, cssscreen, cssprint, javascript"
+    }
 
-        // Images
-        resource url:'/images/favicon.ico'
+    images {  resource url:'/images/favicon.ico' }
 
-        // CSS
-        resource url:'/css/bootstrap.css'
-        resource url:'/css/bootstrap-responsive.css'
-        resource url:'/css/ddb.css'
-        resource url:'/css/item.css'
-        resource url:'/css/institutionList.css'
-        resource url:'/css/results.css'
-        resource url:'/css/pdf.css'
+    cssscreen {
+        resource url:'/css/bootstrap.css', bundle: 'screen'
+        resource url:'/css/bootstrap-responsive.css', bundle: 'screen'
+        resource url:'/css/ddb.css', bundle: 'screen'
+        resource url:'/css/item.css', bundle: 'screen'
+        resource url:'/css/institutionList.css', bundle: 'screen'
+        resource url:'/css/results.css', bundle: 'screen'
+        resource url:'/css/pdf.css', bundle: 'screen'
+        resource url:'/css/staticcontent.css', bundle: 'screen'
+        resource url:'/css/error.css', bundle: 'screen'
+        resource url:'/css/institution.css', bundle: 'screen'
+        resource url:'/css/jquery.fancybox.css', bundle: 'screen'
+        resource url:'/css/viewer.css', bundle: 'screen'
+        resource url:'/css/item-hierarchy.css', bundle: 'screen'
+        resource url:'/css/modalDialog.css', bundle: 'screen'
+        resource url:'/css/advancedsearch.css', bundle: 'screen'
+    }
 
-        // General Javascripts
-        resource url:'/js/onloadManager.js', disposition: 'head'
+    cssprint {
+        resource url:'/css/ddb.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/item.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/institutionList.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/results.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/print.css', attrs:[media:'print'], bundle: 'print'
+    }
+
+    javascript {
         resource url:'/js/jquery-1.8.2.min.js', disposition: 'head'
+        resource url:'/js/onloadManager.js', disposition: 'head'
         resource url:'/js/jquery.cookies.2.2.0.min.js', disposition: 'head'
         resource url:'/js/jquery.dotdotdot-1.5.1.js', disposition: 'head'
         resource url:'/js/jquery.carouFredSel-6.2.0-packed.js', disposition: 'head'
@@ -42,42 +60,32 @@ modules = {
         resource url:'/js/large-cookie.js', disposition: 'head'
         resource url:'/js/header.js', disposition: 'head'
         resource url:'/js/tooltip.js', disposition: 'head'
-        resource url:'/js/json2.js', disposition: 'head' // This file was removed in GIT but still present in dev.escidoc.org: check!
+        resource url:'/js/json2.js', disposition: 'head'
         resource url:'/js/institution-list.js', disposition: 'head'
     }
 
     // These are page specific bundles which should be merged back into ddbnext in the second step
 
     startpage {
-        resource url:'/css/start-page.css'
+        resource url:'/css/start-page.css', bundle: 'startpage'
+        resource url:'/css/start-page.css', attrs:[media:'print'], bundle: 'startpageprint'
         resource url:'/js/start-page.js'
     }
 
-    staticcontent { resource url:'/css/staticcontent.css' }
-
-    error { resource url:'/css/error.css' }
 
     institution {
-        resource url:'/css/institution.css'
         resource url:'http://www.openlayers.org/api/OpenLayers.js'
         resource url:'http://www.openstreetmap.org/openlayers/OpenStreetMap.js'
         resource url:'/js/ddb.osm.institutiondetailview.js'
     }
 
     item {
-        resource url:'/css/jquery.fancybox.css'
-        resource url:'/css/viewer.css'
-        resource url:'/css/item-hierarchy.css'
-        resource url:'/css/modalDialog.css'
         resource url:'/js/item-hierarchy.js'
         resource url:'/js/binaries-viewer.js'
         resource url:'/js/persistent-links-modal-dialog.js'
     }
 
-    advancedsearch {
-        resource url:'/css/advancedsearch.css'
-        resource url:'/js/advanced-search-page.js'
-    }
+    advancedsearch { resource url:'/js/advanced-search-page.js' }
 
     results { resource url:'/js/search-results.js' }
 
