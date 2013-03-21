@@ -38,6 +38,7 @@ function searchResultsInitializer(){
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
   $('.page-input').removeClass('off');
+  $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
   
   setHovercardEvents();
@@ -244,6 +245,15 @@ function searchResultsInitializer(){
     historyManager(newUrl);
     setSearchCookieParameter(paramsArray);
     historyedited= true;
+  });
+  $('#keep-filters').click(function(){
+    var valueCheck = $(this);
+    if(valueCheck.is(':checked'))
+      var paramsArray = new Array(new Array('keepFilters', 'true'));
+    else
+      var paramsArray = new Array(new Array('keepFilters', 'false'));
+    addParamToCurrentUrl(paramsArray);
+    setSearchCookieParameter(paramsArray);
   });
   function fetchResultsList(url){
     $('.search-results').empty();
