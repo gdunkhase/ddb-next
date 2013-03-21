@@ -1,10 +1,13 @@
 <meta name="layout" content="main" />
+<r:require module="institutionlist" />
 
 <h1><g:message code="ddbnext.Institutions" /></h1>
 
+<div class="selector">
+</div>
 <div class="row">
-  <div class="span9">
-  <g:render template="pagination" />
+  <div id="institution-list" class="span9">
+    <g:render template="pagination" />
     <div id="no-match-message">
       <g:message code="ddbnext.InstitutionPage_NoMatches" />
     </div>
@@ -18,6 +21,8 @@
       </li>
       </g:each>
     </ol>
+  </div>
+  <div id="institution-map" class="span9 off">
   </div>
   <div class="span3">
     <g:render template="filter" />

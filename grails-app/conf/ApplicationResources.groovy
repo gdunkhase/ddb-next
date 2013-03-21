@@ -64,6 +64,11 @@ modules = {
         resource url:'/js/ddb.osm.institutiondetailview.js'
     }
 
+    institutionlist {
+        resource url:'http://www.openlayers.org/api/OpenLayers.js'
+        resource url:'/js/institution-map.js'
+    }
+
     item {
         resource url:'/css/jquery.fancybox.css'
         resource url:'/css/viewer.css'
