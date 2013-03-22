@@ -8,7 +8,11 @@ window.ddbAddOnloadListener(function() {
     });
     createGallery($("#gallery-all"));
     updatePreview($("div.all"));
+    updateGalleryPagination();
   });
+  function updateGalleryPagination() {
+    $("p.gallery-pagination").text("/"+$("p.all").attr("info-elements"))
+  };
   function currentTab(el) {
     $("p.tab").removeClass("current-tab")
     $(el).addClass("current-tab");
@@ -107,11 +111,11 @@ window.ddbAddOnloadListener(function() {
       $(".btn-next").addClass("disabled");
     }
   };
-  function formatTitle() {
-    return '<div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span>'
-           '<span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div>';
-  }
   function hideErrors() {
+    $("div.binary-viewer-error").addClass("off");
+    $("div.binary-viewer-flash-upgrade").addClass("off");
+  }
+  function updatePagination() {
     $("div.binary-viewer-error").addClass("off");
     $("div.binary-viewer-flash-upgrade").addClass("off");
   }
@@ -166,9 +170,15 @@ window.ddbAddOnloadListener(function() {
             'prevEffect'   : 'fade',
             'nextEffect'   : 'fade',
             'tpl' :{
-                wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
+                wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-pagination"><span></span></div></div></div></div></div>',
                 prev     : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();"></span>',
                 next     : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();"></span>'
+            },
+            'afterLoad': function() {
+                var title = $(this.element).attr('caption');
+                var position = $(this.element).attr('pos') + '/' +$("#previews-list li").size();
+                $("span.fancybox-toolbar-title").text(title);
+                $("div.fancybox-pagination span").text(position);
             }
         });
         return false;

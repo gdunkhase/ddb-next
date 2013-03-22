@@ -2,6 +2,7 @@
   <div class="binary-viewer-container">
     <div id="binary-viewer">
       <ul id="previews-list">
+        <g:set var="counter" value="${0}" />
         <g:each in="${binaryList}">
           <g:if test="${it.full.uri == ''}">
             <g:set var="content" value="${it.preview.uri}"/>
@@ -10,9 +11,10 @@
             <g:set var="content" value="${it.full.uri}"/>
           </g:else>
           <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+            <g:set var="counter" value="${counter + 1}" />
             <li>
-              <a class="previews" rel="group1" href="${content}">
-                <img src="${it.preview.uri}" alt="${it.preview.title}" />
+              <a class="previews" caption="${(it.preview.title).encodeAsHTML()}" pos="${counter}" rel="group1" href="${content}">
+                <img src="${it.preview.uri}" alt="${(it.preview.title).encodeAsHTML()}" />
               </a>
             </li>
           </g:if>
@@ -42,7 +44,7 @@
   </div>
 
   <div class="tabs">
-    <p class="tab all">
+    <p class="tab all" info-elements="${flashInformation.all}">
       <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
                  args="${flashInformation.all}" 
                  default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
@@ -288,5 +290,6 @@
         </ul>
       </div>
     </noscript>
+    <p class="tab gallery-pagination"></p>
   </div>
 </div>
