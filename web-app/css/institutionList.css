@@ -1,3 +1,58 @@
+.view-type-switch {
+  background: #efebe8;
+  overflow: hidden;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: right;
+}
+
+#view-list, #view-map {
+ margin-right: 10px;
+}
+
+.view-type-switch #view-list {
+  width: 24px;
+  height: 24px;
+  background: url("../images/icons/viewSelector.png");
+}
+
+.view-type-switch #view-list,.view-type-switch #view-map {
+  width: 24px;
+  height: 24px;
+  box-shadow: none;
+  overflow: hidden;
+  background: none;
+}
+
+.view-type-switch button::before {
+  display: inline-block;
+  content: url("../images/icons/viewSelector.png");
+}
+
+.view-type-switch #view-list::before {
+  margin: -24px 0 0 0;
+}
+
+.view-type-switch #view-list:hover::before{
+  margin: -24px 0 0 -24px;
+}
+
+.view-type-switch #view-list.selected::before,.view-type-switch #view-list.selected:hover::before,.view-type-switch #view-list.selected:focus::before
+  {
+  margin: -24px 0 0 -48px;
+}
+
+.view-type-switch #view-map::before {
+  margin: -48px 0 0 0;
+}
+
+.view-type-switch #view-map:hover::before{
+  margin: -48px 0 0 -24px;
+}
+
+.view-type-switch #view-map.selected::before,.view-type-switch #view-map.selected:hover::before,.view-type-switch #view-map.selected:focus::before{
+  margin: -48px 0 0 -48px;
+}
 .institution-listitem {
   list-style: none;
 }
@@ -48,7 +103,7 @@ div.sector-facet>label:hover {
 }
 
 .sector-facet .checkbox input[type="checkbox"] { 
-  float: initial; 
+  float: none; 
   margin-top: -3px; 
   margin-left: -10px; 
 }

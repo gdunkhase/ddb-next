@@ -5,9 +5,24 @@ window.ddbAddOnloadListener(function() {
 });
 
 function mapInitializer(){
-  $('#institution-map').removeClass('off');
   $('#institution-list').addClass('off');
+  $('#institution-map').removeClass('off');
+  $('.view-type-switch').removeClass('off');
   
+  $('#view-list').click(function(){
+    $('#view-list').addClass('selected');
+    $('#view-map').removeClass('selected');
+    $('#institution-map').addClass('off');
+    $('#institution-list').removeClass('off');
+  });
+
+  $('#view-map').click(function(){
+    $('#view-map').addClass('selected');
+    $('#view-list').removeClass('selected');
+    $('#institution-list').addClass('off');
+    $('#institution-map').removeClass('off');
+  });
+
   $('input:checkbox').click(function() {
       applyFilters();
   });

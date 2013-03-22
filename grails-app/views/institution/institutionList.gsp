@@ -3,7 +3,11 @@
 
 <h1><g:message code="ddbnext.Institutions" /></h1>
 
-<div class="selector">
+<div class="row">
+  <div class="view-type-switch span12 off">
+    <button id="view-map" class="selected" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Label" /></button>
+    <button id="view-list" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsListButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsListButton_Label" /></button>
+  </div>
 </div>
 <div class="row">
   <div id="institution-list" class="span9">
