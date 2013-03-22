@@ -22,6 +22,8 @@ class ItemController {
 
     def itemService
     def searchService
+    def grailsLinkGenerator
+    
 
     def children() {
         render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", ["rows":501]))
@@ -115,6 +117,10 @@ class ItemController {
         def searchResultUri
         if (reqParameters["hitNumber"]) {
             searchParametersMap = searchService.getSearchCookieAsMap(httpRequest.cookies)
+            if (!searchParametersMap || searchParametersMap.isEmpty()) {
+                reqParameters["hitNumber"] = null
+                return searchResultParameters
+            }
             def urlQuery = searchService.convertQueryParametersToSearchParameters(searchParametersMap)
 
             //Search and return 3 Hits: previous, current and last
@@ -132,9 +138,7 @@ class ItemController {
             def searchGetParameters = searchService.getSearchGetParameters(searchParametersMap)
             def offset = ((Integer)((params["hitNumber"]-1)/searchParametersMap["rows"]))*searchParametersMap["rows"]
             searchGetParameters["offset"] = offset
-            searchResultUri = "/searchresults?"
-            MapToGetParametersTagLib mapToGetParametersTagLib = new MapToGetParametersTagLib()
-            searchResultUri += mapToGetParametersTagLib.convert(searchGetParameters)
+            searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
             searchResultParameters["resultsItems"] = resultsItems
             searchResultParameters["searchResultUri"] = searchResultUri
             searchResultParameters["searchParametersMap"] = searchParametersMap

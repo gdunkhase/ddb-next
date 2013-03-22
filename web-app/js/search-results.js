@@ -65,7 +65,11 @@ function searchResultsInitializer(){
     var queryParameters = {}, queryString = (urlString==null)?location.search.substring(1):urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
-        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))] = decodeURIComponent(m[2].replace(/\+/g,'%20'));
+        var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+        if (queryParameters[decodedKey] == null) {
+            queryParameters[decodedKey] = new Array();
+        }
+        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
     }
     $.each(arrayParamVal, function(key, value){
       queryParameters[value[0]] = value[1];
@@ -299,7 +303,7 @@ function searchResultsInitializer(){
   $.extend(FacetsManager.prototype, {
       
     connectedflyoutWidget: null,
-    facetsEndPoint: '/facets',
+    facetsEndPoint: contextPath +'/facets',
     currentOffset: 0, 
     currentRows: -1, //all facets
     currentFacetField: null,

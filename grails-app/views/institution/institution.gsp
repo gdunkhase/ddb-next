@@ -18,8 +18,9 @@
              <div>
                  <h2>${selectedOrgXML.name}
                  <g:if test="${(countObjcs > 0)}">
-                     <a class="count" href="/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${selectedOrgXML.name}" 
-                        title="<g:message code="ddbnext.InstitutionItem_IngestedObjectCountTitleText" />">
+                    <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
+                    <g:link class="count" style="color: black; font-size: small;" controller="search" action="results" params="[query: '', offset: '0',
+                               rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
                         ${countObjcs}
                         <g:if test="${(countObjcs = 1)}">
                             <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
@@ -27,7 +28,7 @@
                         <g:if test="${(countObjcs > 1)}">
                             <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
                         </g:if>
-                     </a>
+                     </g:link>
                  </g:if>
                  </h2>
              </div>

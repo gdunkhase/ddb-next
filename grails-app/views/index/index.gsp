@@ -16,7 +16,7 @@
         <img src="${resource(dir: 'images', file: 'logo_big.png')}" class="bigLogo" alt="<g:message code="ddbnext.Logo_Description"/>" title="<g:message code="ddbnext.Logo_Title"/>" />
       </div>
       <div class="row">
-        <form method="get" action="/searchresults" role="search" id="form-search">
+        <g:form method="get" role="search" id="form-search" url="[controller:'search', action:'results']">
           <div class="span7">
             <label> 
               <span><g:message code="ddbnext.Search_text_field"/></span>
@@ -25,18 +25,18 @@
             <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
             <span class="contextual-help hidden-phone hidden-tablet" 
                   title="<g:message code="ddbnext.Search_Hint" 
-                                    args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                                    default="ddbnext.Search_Hint"/>" 
+                  args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                  default="ddbnext.Search_Hint"/>" 
                   data-content="<g:message code="ddbnext.Search_Hint" 
-                                           args="${[('<a href="/content/help/search-simple">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                                           default="ddbnext.Search_Hint"/>">
+                  args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                  default="ddbnext.Search_Hint"/>">
             </span>
             <div class="tooltip off"></div>
           </div>
           <div class="span3 link-adv-search"> 
-            <a class="fl" href="advancedsearch"><g:message code="ddbnext.Advanced_search"/></a>
+            <g:link class="fl" controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link>
           </div>
-        </form>
+        </g:form>
       </div>
     </div>
   </div>
@@ -46,11 +46,11 @@
         <g:if test="${articles}">
           <g:each in="${articles}">
             <div class="span3">
-              <a href="${it.uri}" title="${it.title}">
+              <a href="${request.contextPath}${it.uri}" title="${it.title}">
                 <img class="article" src="${staticUrl}${it.src}" alt="${it.title}"/>
               </a>
               <div class="caption">
-                <a href="${it.uri}" title="${it.title}">${it.title}</a>
+                <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>
               </div>
             </div>
           </g:each>
@@ -61,11 +61,11 @@
           <g:if test="${articles}">
             <g:each in="${articles}">
               <div class="article">
-                <a href="${it.uri}" title="${it.title}" target="_self">
+                <a href="${request.contextPath}${it.uri}" title="${it.title}" target="_self">
                   <img src="${staticUrl}${it.src}" alt="${it.title}" />
                 </a>
                 <div class="caption">
-                  <a href="${it.uri}" title="${it.title}">${it.title}</a>
+                  <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>
                 </div>
               </div>
             </g:each>
