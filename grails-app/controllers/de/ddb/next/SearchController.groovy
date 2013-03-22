@@ -102,7 +102,7 @@ class SearchController {
         else{
             //We want to build the subfacets urls only if a main facet has been selected
             def keepFiltersChecked = ""
-            if (searchParametersMap["keepFiltersChecked"] && searchParametersMap["keepFiltersChecked"] == "true") {
+            if (searchParametersMap["keepFilters"] && searchParametersMap["keepFilters"] == "true") {
                 keepFiltersChecked = "checked=\"checked\""
             }
             def subFacetsUrl = [:]
