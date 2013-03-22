@@ -306,6 +306,7 @@ function searchResultsInitializer(){
     currentFacetValuesSelected: new Array(),
     currentFacetValuesNotSelected: new Array(),
     currentPage: 1,
+    searchFacetValuesTimeout: 0,
 
     init: function(){
     },
@@ -447,6 +448,27 @@ function searchResultsInitializer(){
       element.remove();
     },
     
+    initializeFacetValuesDynamicSearch: function(inputSearchElement){
+      var currObjInstance = this;
+      console.log(inputSearchElement)
+      inputSearchElement.keyup(function(){
+        if(this.value.length != 0){
+            var d = new Date();
+            currObjInstance.searchFacetValuesTimeout = d.getTime();
+            setTimeout(function(){
+                var currentD = new Date();
+                console.log(currObjInstance.searchFacetValuesTimeout+400+" "+currentD.getTime())
+              if(currObjInstance.searchFacetValuesTimeout+400<currentD.getTime()  && currObjInstance.connectedflyoutWidget.opened){
+                console.log('ciao');
+              }
+              else{
+                return;
+              }
+            },500);
+          }
+      });
+    },
+    
     getUrlVars: function(){
       var vars = {}, hash;
       var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -485,6 +507,7 @@ function searchResultsInitializer(){
     paginationLiNext: null,
     paginationLiSeite: null,
     addMoreFilters: null,
+    inputSearch: null,
     
 
     //i18n variables
@@ -520,7 +543,6 @@ function searchResultsInitializer(){
     
     buildStructure: function(){
       var inputSearchContainer;
-      var inputSearch;
       
       if(this.parentMainElement.find('.flyout-left-container').length>0){
         this.facetLeftContainer = this.parentMainElement.find('.flyout-left-container');
@@ -531,17 +553,17 @@ function searchResultsInitializer(){
         this.facetLeftContainer = $(document.createElement('div'));
         this.selectedItems = $(document.createElement('ul'));
         inputSearchContainer = $(document.createElement('div'));
-        inputSearch = $(document.createElement('input'));
+        this.inputSearch = $(document.createElement('input'));
 
         this.facetLeftContainer.addClass('flyout-left-container');
         this.selectedItems.addClass('selected-items unstyled');
         inputSearchContainer.addClass('input-search-fct-container');
-        inputSearch.attr('type','text');
-        inputSearch.addClass('input-search-fct');
+        this.inputSearch.attr('type','text');
+        this.inputSearch.addClass('input-search-fct');
         
         this.facetLeftContainer.appendTo(this.mainElement.parent());
         this.selectedItems.appendTo(this.facetLeftContainer);
-        inputSearch.appendTo(inputSearchContainer);
+        this.inputSearch.appendTo(inputSearchContainer);
         inputSearchContainer.appendTo(this.facetLeftContainer);
       }
       
@@ -592,7 +614,8 @@ function searchResultsInitializer(){
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
-      //this.parentMainElement.find('.input-search-fct-container').show('100');
+      console.log(this.fctManager)
+      this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
     },
     
     initializeFacetValues: function(field, facetValues){
