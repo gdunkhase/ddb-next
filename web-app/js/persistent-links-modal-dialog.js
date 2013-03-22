@@ -3,7 +3,7 @@ $(document).ready(function() {
     if(event.which==1){
       event.preventDefault();
       var linkForContent = $(document.createElement('input'));
-      linkForContent.attr('value',window.location.origin+$(this).attr('href'));
+      linkForContent.attr('value',window.location.protocol + "//" + window.location.host+$(this).attr('href'));
       linkForContent.attr('type', 'text');
       var title = $(document.createElement('div'));
       title.addClass('page-link');
