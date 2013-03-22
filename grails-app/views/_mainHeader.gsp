@@ -1,3 +1,7 @@
+<div class="print-logo off">
+  <r:img  dir="images" file="logo_header.png" alt=""/>
+</div>
+
 <!--[if lt IE 9]>
   <div class="header" role="contentinfo">
 <![endif]-->
@@ -12,7 +16,7 @@
         <span class="icon-bar" style="visibility:hidden;"></span>
       </button>
       <a href="/" class="brand" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
-        <r:img dir="images" file="logo_header.png" class="siteLogo" alt="Deutsche Digitale Bibliothek"/>
+        <r:img dir="images" file="logo_header.png" alt="Deutsche Digitale Bibliothek"/>
       </a>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
@@ -49,7 +53,7 @@
           <div class="row">
             <div class="span7">
               <a href="/" class="navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
-                <r:img dir="images" file="logo_header.png" class="siteLogo" alt=""/>
+                <r:img dir="images" file="logo_header.png" alt=""/>
               </a>
               <ul class="navigation inline" role="navigation">
                 <li class="root"><a href="/"><g:message code="ddbnext.Search"/></a>
