@@ -24,6 +24,11 @@ class SearchController {
 
     def results() {
 
+        def searchParametersMap = searchService.getSearchCookieAsMap(request.cookies)
+        def additionalParams = [:]
+        if (searchService.checkPersistentFacets(searchParametersMap, params, additionalParams)) {
+            redirect(controller: "search", action: "results", params: params)
+        }
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
         def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
@@ -61,7 +66,7 @@ class SearchController {
         }
 
         //create cookie with search parameters
-        response.addCookie(searchService.createSearchCookie(params))
+        response.addCookie(searchService.createSearchCookie(params, additionalParams))
 
         //Calculating results details info (number of results in page, total results number)
         def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
@@ -96,6 +101,10 @@ class SearchController {
         }
         else{
             //We want to build the subfacets urls only if a main facet has been selected
+            def keepFiltersChecked = ""
+            if (searchParametersMap["keepFiltersChecked"] && searchParametersMap["keepFiltersChecked"] == "true") {
+                keepFiltersChecked = "checked=\"checked\""
+            }
             def subFacetsUrl = [:]
             def selectedFacets = searchService.buildSubFacets(urlQuery)
             if(urlQuery["facet"]){
@@ -114,7 +123,8 @@ class SearchController {
                 totalPages: totalPages,
                 paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                 numberOfResultsFormatted: numberOfResultsFormatted,
-                offset: params["offset"]
+                offset: params["offset"],
+                keepFiltersChecked: keepFiltersChecked
             ])
         }
 

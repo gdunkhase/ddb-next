@@ -29,7 +29,7 @@ class CookieTagLib {
         def map = [:]
         if (params && params.controller == "search" && params.action == "results") {
             def cookies = new Cookie[1]
-            cookies[0] = searchService.createSearchCookie(params)
+            cookies[0] = searchService.createSearchCookie(params, null)
             map = searchService.getSearchCookieAsMap(cookies)
         }
         else {

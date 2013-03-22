@@ -36,7 +36,7 @@
         </g:each>
       </div>
       <div class="keep-filters off">
-        <label class="checkbox"> <input id="keep-filters" type="checkbox" name="keepFilters" checked="${keepFiltersChecked}">
+        <label class="checkbox"> <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked}>
           <g:message code="ddbnext.Keep_filters" />
         </label>
       </div>

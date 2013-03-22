@@ -383,7 +383,8 @@ class SearchService {
             "facetValues[]",
             "facets[]",
             "firstHit",
-            "lastHit"
+            "lastHit",
+            "keepFilters"
         ]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
@@ -454,9 +455,14 @@ class SearchService {
      * @param reqParameters request-parameters
      * @return Cookie with search-parameters
      */
-    def createSearchCookie(Map reqParameters) {
+    def createSearchCookie(Map reqParameters, Map additionalParams) {
         //Create Cookie with search-parameters for use on other pages
         //convert HashMap containing parameters to JSON
+        if (additionalParams) {
+            for (entry in additionalParams) {
+                reqParameters[entry.key] = entry.value
+            }
+        }
         Map paramMap = getSearchCookieParameters(reqParameters);
         def jSonObject = new JSONObject()
         for (entry in paramMap) {
@@ -513,6 +519,31 @@ class SearchService {
             }
         }
         return searchParamsMap
+    }
+
+    /**
+     * Check if searchCookie contains keepFilters=true.
+     * If yes, expand requestParameters with facets and return true.
+     * Otherwise return false
+     * 
+     * @param cookieMap
+     * @param requestParameters
+     * @return boolean
+     */
+    def checkPersistentFacets(Map cookieMap, Map requestParameters, Map additionalParams) {
+        if (cookieMap["keepFilters"] && cookieMap["keepFilters"] == "true") {
+            additionalParams["keepFilters"] = "true"
+            if (!requestParameters["facetValues[]"] && cookieMap["facetValues[]"]) {
+                requestParameters["facetValues[]"] = cookieMap["facetValues[]"]
+                return true
+            }
+            else {
+                return false
+            }
+        }
+        else {
+            return false
+        }
     }
 
 }
