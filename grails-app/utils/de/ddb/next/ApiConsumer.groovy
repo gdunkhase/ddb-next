@@ -15,8 +15,6 @@
  */
 package de.ddb.next
 
-import org.apache.commons.logging.LogFactory
-
 import java.util.regex.Pattern
 
 import static groovyx.net.http.ContentType.*
