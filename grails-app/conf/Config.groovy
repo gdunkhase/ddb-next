@@ -49,7 +49,8 @@ grails.mime.types = [
     text:          'text/plain',
     xml:           [
         'text/xml',
-        'application/xml']
+        'application/xml'
+    ]
 ]
 
 // URL Mapping Cache Max Size, defaults to 5000
@@ -198,6 +199,36 @@ jawr {
     locale { // Define resolver so ?lang= Grails functionality works with controllers.
         resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
 }
+
+
+compress {
+    enabled = true
+
+    debug = false
+    statsEnabled = true
+    compressionThreshold = 1024
+    // filter's url-patterns
+    urlPatterns = ["/*"]
+    includePathPatterns = []
+    excludePathPatterns = [
+        ".*\\.png",
+        ".*\\.gif",
+        ".*\\.ico",
+        ".*\\.jpg",
+        ".*\\.jpeg",
+        ".*\\.swf",
+        '.*\\.gz',
+        '.*\\.zip'
+    ]
+    includeContentTypes = ["application/json"]
+    excludeContentTypes = [".*"]
+    includeUserAgentPatterns = []
+    excludeUserAgentPatterns = []
+    development { debug = true }
+
+    production {  statsEnabled = false  }
+}
+
 grails.app.context = "/"
 
 
