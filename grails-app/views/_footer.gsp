@@ -4,7 +4,7 @@
 <footer class="container">
   <div class="row">
     <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Footer"/></h1>
-    <div class="legal">
+    <div class="span12 legal">
       <div class="inner">
         <small><g:message code="ddbnext.Copyright_Deutsche_Digitale_Bibliothek"/></small>
         <ul>

@@ -44,6 +44,9 @@
   line-height: 30px;
   background-color: #efebe8;
 }
+.object-controls .span6{
+  margin-left: 10px;
+}
 .origin {
   margin-top: 20px;
 }

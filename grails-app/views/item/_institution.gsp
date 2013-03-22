@@ -1,5 +1,5 @@
-<div class="row institution">
-  <div class="span12">
+<div class="row">
+  <div class="span12 institution">
     <div class="row">
         <div class="span10">
             <div><g:message code="ddbnext.Institution" /></div>
