@@ -37,6 +37,7 @@ modules = {
         resource url:'/css/item-hierarchy.css', bundle: 'screen'
         resource url:'/css/modalDialog.css', bundle: 'screen'
         resource url:'/css/advancedsearch.css', bundle: 'screen'
+        resource url:'/css/entity.css', bundle: 'screen'
     }
 
     cssprint {

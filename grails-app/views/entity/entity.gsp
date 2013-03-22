@@ -2,7 +2,6 @@
 <!-- TODO i18n -->
 <head>
   <title>${pageLabel} - Deutsche Digitale Bibliothek</title>
-  <link rel="stylesheet" href="${resource(dir: 'css', file: 'entity.css')}" />
   <meta name="layout" content="main" />
 </head>
 <body>
