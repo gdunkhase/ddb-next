@@ -11,12 +11,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar" style="visibility:hidden;"></span>
       </button>
-      <a href="${request.contextPath}" class="brand" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
+      <g:link url="/" class="brand" title="${message(code: 'ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml')}" tabindex="-1">
         <r:img dir="images" file="logo_header.png" class="siteLogo" alt="Deutsche Digitale Bibliothek"/>
-      </a>
+      </g:link>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
-          <li class="active"><a href="${request.contextPath}"><g:message code="ddbnext.Search"/></a>
+          <li class="active"><g:link url="/"><g:message code="ddbnext.Search"/></g:link>
             <ul class="nav">
               <li class=""><g:link controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link></li>
             </ul></li>
@@ -48,11 +48,11 @@
         <nav class="widget span12" data-widget="NavigationWidget">
           <div class="row">
             <div class="span7">
-              <a href="${request.contextPath}" class="navigation-header-logo" title="<g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/>" tabindex="-1">
+              <g:link url="/" class="navigation-header-logo" title="${message(code: 'ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml')}" tabindex="-1">
                 <r:img dir="images" file="logo_header.png" class="siteLogo" alt=""/>
-              </a>
+              </g:link>
               <ul class="navigation inline" role="navigation">
-                <li class="root"><a href="${request.contextPath}"><g:message code="ddbnext.Search"/></a>
+                <li class="root"><g:link url="/"><g:message code="ddbnext.Search"/></g:link>
                   <ul>
                     <li class=""><g:link controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link></li>
                   </ul>
