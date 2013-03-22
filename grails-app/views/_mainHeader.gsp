@@ -11,12 +11,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar" style="visibility:hidden;"></span>
       </button>
-      <g:link url="/" class="brand" title="${message(code: 'ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml')}" tabindex="-1">
+      <g:link uri="/" class="brand" title="${message(code: 'ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml')}" tabindex="-1">
         <r:img dir="images" file="logo_header.png" class="siteLogo" alt="Deutsche Digitale Bibliothek"/>
       </g:link>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
-          <li class="active"><g:link url="/"><g:message code="ddbnext.Search"/></g:link>
+          <li class="active"><g:link uri="/"><g:message code="ddbnext.Search"/></g:link>
             <ul class="nav">
               <li class=""><g:link controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link></li>
             </ul></li>
@@ -48,11 +48,11 @@
         <nav class="widget span12" data-widget="NavigationWidget">
           <div class="row">
             <div class="span7">
-              <g:link url="/" class="navigation-header-logo" title="${message(code: 'ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml')}" tabindex="-1">
+              <g:link uri="/" class="navigation-header-logo" title="${message(code: 'ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml')}" tabindex="-1">
                 <r:img dir="images" file="logo_header.png" class="siteLogo" alt=""/>
               </g:link>
               <ul class="navigation inline" role="navigation">
-                <li class="root"><g:link url="/"><g:message code="ddbnext.Search"/></g:link>
+                <li class="root"><g:link uri="/"><g:message code="ddbnext.Search"/></g:link>
                   <ul>
                     <li class=""><g:link controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link></li>
                   </ul>
