@@ -9,7 +9,8 @@ footer .inner ul, footer .inner .build, .footer .inner ul, .footer .inner .build
 .facets-container, .results-paginator-options, .page-info-nav .page-nav, .results-paginator-view, .information,
 .object-controls, .origin, .slide-viewer .tabs, .sibling-count,
 #first-letter-index li:not(.active),
-.group-operator, .add-group-button {
+.group-operator, .add-group-button,
+#articles-prev, #articles-next, .link-adv-search, .contextual-help {
   display: none;
 }
 

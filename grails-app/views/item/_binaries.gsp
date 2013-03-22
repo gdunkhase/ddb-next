@@ -105,6 +105,7 @@
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
+      <p class="gallery-pagination"></p>
     </div>
     <noscript>
       <div class="scroller all">
@@ -167,6 +168,7 @@
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
+      <p class="gallery-pagination"></p>
     </div>
     <noscript>
       <div class="scroller images">
@@ -219,6 +221,7 @@
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
+      <p class="gallery-pagination"></p>
     </div>
     <noscript>
       <div class="scroller videos">
@@ -271,6 +274,7 @@
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
+      <p class="gallery-pagination"></p>
     </div>
     <noscript>
       <div class="scroller audios">
@@ -290,6 +294,5 @@
         </ul>
       </div>
     </noscript>
-    <p class="tab gallery-pagination"></p>
   </div>
 </div>

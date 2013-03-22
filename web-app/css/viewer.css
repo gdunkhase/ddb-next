@@ -67,10 +67,6 @@
   width:100px;
   font-size:13px;
 }
-.gallery-pagination {
-  cursor:default;
-  float:right;
-}
 .previews img {
   max-width: 445px;
   max-height: 323px;
@@ -156,8 +152,11 @@
   text-decoration:none;
 }
 .slide-viewer .gallery-pagination {
-  cursor:default;
+  margin-bottom:0;
+  margin-top:0;
   float:right;
+  z-index: 1;
+  position: relative;
 }
 .slide-viewer .gallery-pagination:hover {
   text-decoration:none;

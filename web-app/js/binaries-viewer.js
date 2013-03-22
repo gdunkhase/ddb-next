@@ -94,7 +94,7 @@ window.ddbAddOnloadListener(function() {
       infinite: false,
       width: 445,
       align: false,
-      height: 131,
+      height: 114,
       items: {
         visible: 3,
         minimum: 1
