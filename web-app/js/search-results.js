@@ -264,6 +264,8 @@ function searchResultsInitializer(){
         var JSONresponse = jQuery.parseJSON(data.responseText);
     	if(JSONresponse.numberOfResults==0){
     		$('.noresult-hidden').addClass("off");
+    	}else{
+    		$('.noresult-hidden').removeClass("off");
     	}
         $('.search-results').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
