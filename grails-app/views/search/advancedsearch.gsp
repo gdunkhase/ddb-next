@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="span12">
-                <g:form method="post" id="advanced-search-form" url="[controller:'advancedsearch']">
+                <g:form method="post" id="advanced-search-form" controller="advancedsearch" action="executeSearch" >
                     <div class="row">
                         <div class="span12">
                             <div class="row operator global-operator">
