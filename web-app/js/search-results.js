@@ -262,6 +262,9 @@ function searchResultsInitializer(){
       complete: function(data){
         $('.search-results').fadeOut('fast', function(){
         var JSONresponse = jQuery.parseJSON(data.responseText);
+    	if(JSONresponse.numberOfResults==0){
+    		$('.noresult-hidden').addClass("off");
+    	}
         $('.search-results').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
         $('.page-input').attr("value", JSONresponse.page);

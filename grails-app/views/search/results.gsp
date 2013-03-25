@@ -48,7 +48,7 @@
       
       <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"></g:pageInfoNavRender>
       
-      <div class="row">
+      <div class="row noresult-hidden <g:if test="${results.numberOfResults == 0}">off</g:if>">
         <div class="span9">
           <div class="results-paginator-view off">
             <div class="group-actions">
