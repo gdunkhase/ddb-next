@@ -30,7 +30,7 @@ class HierarchyOutputTagLib {
         def parentList = itemService.getParent(itemId)
 
         // No parentList -> No hierarchy
-        if(!parentList || parentList.size() == 0) {
+        if(!Item.doesParentListContainHierarchy(itemId, parentList)) {
             out << ""
             return
         }
@@ -85,7 +85,7 @@ class HierarchyOutputTagLib {
         // Check if the item has parents
         def parentList = itemService.getParent(itemId)
 
-        if(parentList && parentList.size() > 0){
+        if(Item.doesParentListContainHierarchy(itemId, parentList)){
             out << body()
         }else{
             out << ""

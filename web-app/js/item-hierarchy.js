@@ -203,7 +203,7 @@ function addWaitSymbol(currentNode) {
 function createHierarchy(url) {
   getParents(url, url.file, function(parents) {
     // check if there is a hierarchy
-    if (parents.length > 0) {
+    if (parents.length > 1) {
       $(".item-hierarchy").removeClass("off");
     }
 
