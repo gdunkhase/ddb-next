@@ -190,7 +190,7 @@ class ApisController {
     }
     
     def institutionsmap(){
-        def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/institutions/map', query)
+        def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/institutions/map', params)
         render (contentType:"text/json"){jsonResp}
     }
 }
