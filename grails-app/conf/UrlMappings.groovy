@@ -27,7 +27,7 @@ class UrlMappings {
 
         "/facets/$q?" {
             controller="facets"
-            action=facetsList
+            action="facetsList"
         }
 
         "/content/$dir/$id?" {
