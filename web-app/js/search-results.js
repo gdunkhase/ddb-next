@@ -464,6 +464,8 @@ function searchResultsInitializer(){
             setTimeout(function(){
                 var currentD = new Date();
               if(currObjInstance.searchFacetValuesTimeout+400<currentD.getTime()  && currObjInstance.connectedflyoutWidget.opened){
+                  currObjInstance.connectedflyoutWidget.parentMainElement.find('.flyout-right-container').remove();
+                  currObjInstance.connectedflyoutWidget.buildStructure();
                   currObjInstance.fetchFacetValues(null,inputValue);
               }
               else{
@@ -570,6 +572,7 @@ function searchResultsInitializer(){
         this.selectedItems.appendTo(this.facetLeftContainer);
         this.inputSearch.appendTo(inputSearchContainer);
         inputSearchContainer.appendTo(this.facetLeftContainer);
+        this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
       }
       
       this.facetRightContainer = $(document.createElement('div'));
@@ -619,7 +622,6 @@ function searchResultsInitializer(){
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
-      this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
     },
     
     initializeFacetValues: function(field, facetValues){
