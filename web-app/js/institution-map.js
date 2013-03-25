@@ -1,3 +1,5 @@
+var institutionsMapRef = contextPath + '/apis/institutionsmap';
+
 window.ddbAddOnloadListener(function() {
     mapInitializer();
 });
@@ -7,7 +9,7 @@ function mapInitializer(){
       type: 'GET',
       dataType: 'json',
       async: true,
-      url: contextPath + '/apis/institutionsmap?clusterid=1',
+      url: institutionsMapRef + '?clusterid=1',
       success: function (data) {
           mapWidget.showMap(data);
       }
