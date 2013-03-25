@@ -67,7 +67,6 @@ class I18NHelperTagLib {
         if(isLocale){
             out << "<a class=\""+localeclass+"\">"+currentLanguage(attrs)+"</a>"
         }else{
-            //TODO check this code after update to Grails 2.2.1 or higher! the createLink method has known bugs!
             def linkUrl = createLink("url": attrs.params)
             def cleanedParams = attrs.params.clone()
             cleanedParams.remove("controller")
