@@ -3,11 +3,20 @@ window.ddbAddOnloadListener(function() {
 });
 
 function mapInitializer(){
+  $.ajax({
+      type: 'GET',
+      dataType: 'json',
+      async: true,
+      url: contextPath + '/apis/institutionsmap?clusterid=1',
+      success: function (data) {
+          mapWidget.showMap(data);
+      }
+  });
+  
   $('#institution-list').addClass('off');
   $('#institution-map').removeClass('off');
   $('.view-type-switch').removeClass('off');
   
-  mapWidget.showMap();
   
   $('#view-list').click(function(){
     $('#view-list').addClass('selected');
