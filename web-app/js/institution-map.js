@@ -39,9 +39,28 @@ function mapInitializer(){
   });
   
   function applyFilters() {
-    var sectors = ddb.getSelectedSectors();
-    alert(sectors);
+    var sectors = getSectorMap();
   }
 
-
+  function getSectorMap() {
+    var sectors = {};
+    sectors["selected"] = [];
+    sectors["deselected"] = [];
+    $('.sector-facet').each(function () {
+        var sectorData = {};
+        sectorData["sector"] = $(this).find('input').data('sector');
+        sectorData["name"] = $(this).children('label').text().trim();
+        if ($(this).find('input').is(":checked")) {
+            sectors["selected"].push(sectorData);
+        }
+        else {
+            sectors["deselected"].push(sectorData);
+        }
+    });
+    if (sectors["selected"].length == 0) {
+        sectors["selected"] = sectors["deselected"];
+        sectors["deselected"] = [];
+    }
+    return sectors;
+  }
 };
