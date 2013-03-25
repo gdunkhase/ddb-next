@@ -196,6 +196,7 @@ function searchResultsInitializer(){
       else {
         this.value = 1;
       }
+      $('.page-input').attr('value', this.value);
       var paramsArray = new Array(new Array('offset', (this.value - 1) * $('.page-filter').find("select").val()));
       var newUrl = addParamToCurrentUrl(paramsArray);
       fetchResultsList(newUrl);
