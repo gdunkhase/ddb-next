@@ -45,7 +45,7 @@ class ApiConsumer {
                 uri.path = path
                 uri.query = query
                 response.success = { resp, reader ->
-                    log.info "Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.info "postText(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug "response status: ${resp.statusLine}"
                     log.debug 'Headers: -----------'
                     resp.headers.each { h ->
@@ -54,22 +54,22 @@ class ApiConsumer {
                     return reader.getText()
                 }
                 response.'404' = {
-                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.error "postText(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     return 'Not found'
                 }
                 response.failure = { resp ->
-                    log.error "Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
-                    return 'Not found'
+                    log.error "postText(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                    return null
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "A HttpResponseException occured", ex
+            log.error "postText(): A HttpResponseException occured", ex
             return null
         } catch (java.net.ConnectException ex) {
-            log.error "A ConnectException occured", ex
+            log.error "postText(): A ConnectException occured", ex
             return null
         } catch (java.lang.Exception ex) {
-            log.error "An unexpected exception occured", ex
+            log.error "postText(): An unexpected exception occured", ex
             return null
         }
     }
@@ -89,14 +89,14 @@ class ApiConsumer {
                 uri.path = path
                 uri.query = query
                 response.success = { resp, json ->
-                    log.info "Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.info "getTextAsJson(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug "response status: ${resp.statusLine}"
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
                     return json
                 }
                 response.failure = { resp ->
-                    log.error "Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                    log.error "getTextAsJson(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
                     //                    response.
                     log.debug 'Headers: -----------'
 
@@ -104,20 +104,20 @@ class ApiConsumer {
                     return null
                 }
                 response.'404' = {resp, reader ->
-                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.error "getTextAsJson(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
                     return 'Not found'
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "A HttpResponseException occured", ex
+            log.error "getTextAsJson(): A HttpResponseException occured", ex
             return null
         } catch (java.net.ConnectException ex) {
-            log.error "A ConnectException occured", ex
+            log.error "getTextAsJson(): A ConnectException occured", ex
             return null
         } catch (java.lang.Exception ex) {
-            log.error "An unexpected exception occured", ex
+            log.error "getTextAsJson(): An unexpected exception occured", ex
             return null
         }
     }
@@ -134,20 +134,20 @@ class ApiConsumer {
                 uri.query = query
                 headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
                 response.success = { resp, xml ->
-                    log.info "Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.info "getTextAsXml(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug "response status: ${resp.statusLine}"
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
                     return xml
                 }
                 response.'404' = {resp, reader ->
-                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.error "getTextAsXml(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
                     return 'Not found'
                 }
                 response.failure = { resp ->
-                    log.error "Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                    log.error "getTextAsXml(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
                     log.debug 'Headers: -----------'
 
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
@@ -155,13 +155,13 @@ class ApiConsumer {
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "A HttpResponseException occured", ex
+            log.error "getTextAsXml(): A HttpResponseException occured", ex
             return null
         } catch (java.net.ConnectException ex) {
-            log.error "A ConnectException occured", ex
+            log.error "getTextAsXml(): A ConnectException occured", ex
             return null
         } catch (java.lang.Exception ex) {
-            log.error "An unexpected exception occured", ex
+            log.error "getTextAsXml(): An unexpected exception occured", ex
             return null
         }
     }
@@ -177,7 +177,7 @@ class ApiConsumer {
                 uri.path = path
                 uri.query = query
                 response.success = { resp, reader ->
-                    log.info "Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.info "getAnyText(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug "response status: ${resp.statusLine}"
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
@@ -185,26 +185,26 @@ class ApiConsumer {
                     return reader
                 }
                 response.'404' = {resp, reader ->
-                    log.error "Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.error "getAnyText(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
                     return 'Not found'
                 }
                 response.failure = { resp ->
-                    log.error "Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                    log.error "getAnyText(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
                     log.debug 'Headers: -----------'
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
                     return null
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "A HttpResponseException occured", ex
+            log.error "getAnyText(): A HttpResponseException occured", ex
             return null
         } catch (java.net.ConnectException ex) {
-            log.error "A ConnectException occured", ex
+            log.error "getAnyText(): A ConnectException occured", ex
             return null
         } catch (java.lang.Exception ex) {
-            log.error "An unexpected exception occured", ex
+            log.error "getAnyText(): An unexpected exception occured", ex
             return null
         }
     }
