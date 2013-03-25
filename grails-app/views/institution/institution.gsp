@@ -1,11 +1,5 @@
 <meta name="layout" content="main" />
-<r:require module="institution" />
-<%-- 
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'institution.css')}" />
-<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-<script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-<script src="${resource(dir: 'js', file: 'ddb.osm.institutiondetailview.js')}"></script>
---%>
+<r:require module="openstreetmap" />
 <title>${selectedOrgXML.name} - Deutsche Digitale Bibliothek</title>
 
     <div class="institution-item-page">
@@ -46,14 +40,14 @@
             <div id="divOSM"></div>
             <script type="text/javascript">
               <!--
-              <%--
-              $("#divOSM").onload(function(){
-                drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
-              });
-              --%>
-              window.ddbAddOnloadListener(function() {
-                drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
-              });
+                var ddbInstitution = {};
+                ddbInstitution["longitude"] = ${selectedOrgXML.locations.location.geocode.longitude};
+                ddbInstitution["latitude"] = ${selectedOrgXML.locations.location.geocode.latitude};
+                ddbInstitution["name"] = "${selectedOrgXML.name}";
+                ddbInstitution["street"] = "${selectedOrgXML.locations.location.address.street}";
+                ddbInstitution["housenumber"] = "${selectedOrgXML.locations.location.address.houseIdentifier}";
+                ddbInstitution["postalcode"] = "${selectedOrgXML.locations.location.address.postalCode}";
+                ddbInstitution["city"] = "${selectedOrgXML.locations.location.address.city}";
               //-->
             </script>
             

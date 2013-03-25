@@ -1,8 +1,4 @@
 <meta name="layout" content="main" />
-<r:require module="advancedsearch" />
-<%-- 
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'advancedsearch.css')}" type="text/css" />
---%> 
 
 <div class="row advanced-search">
     <div class="span12">

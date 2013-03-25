@@ -37,6 +37,7 @@ modules = {
         resource url:'/css/item-hierarchy.css', bundle: 'screen'
         resource url:'/css/modalDialog.css', bundle: 'screen'
         resource url:'/css/advancedsearch.css', bundle: 'screen'
+        resource url:'/css/entity.css', bundle: 'screen'
     }
 
     cssprint {
@@ -48,20 +49,27 @@ modules = {
     }
 
     javascript {
-        resource url:'/js/jquery-1.8.2.min.js', disposition: 'head'
-        resource url:'/js/onloadManager.js', disposition: 'head'
-        resource url:'/js/jquery.cookies.2.2.0.min.js', disposition: 'head'
-        resource url:'/js/jquery.dotdotdot-1.5.1.js', disposition: 'head'
-        resource url:'/js/jquery.carouFredSel-6.2.0-packed.js', disposition: 'head'
-        resource url:'/js/vendor/bootstrap-collapse.js', disposition: 'head'
-        resource url:'/js/jquery.fancybox.pack.js', disposition: 'head'
-        resource url:'/js/underscore-min.js', disposition: 'head'
-        resource url:'/jwplayer/jwplayer.js', disposition: 'head'
-        resource url:'/js/large-cookie.js', disposition: 'head'
-        resource url:'/js/header.js', disposition: 'head'
-        resource url:'/js/tooltip.js', disposition: 'head'
-        resource url:'/js/json2.js', disposition: 'head'
-        resource url:'/js/institution-list.js', disposition: 'head'
+        resource url:'/js/jquery-1.8.2.min.js'
+        resource url:'/js/onloadManager.js'
+        resource url:'/js/jquery.cookies.2.2.0.min.js'
+        resource url:'/js/jquery.dotdotdot-1.5.1.js'
+        resource url:'/js/jquery.carouFredSel-6.2.0-packed.js'
+        resource url:'/js/vendor/bootstrap-collapse.js'
+        resource url:'/js/jquery.fancybox.pack.js'
+        resource url:'/js/underscore-min.js'
+        resource url:'/jwplayer/jwplayer.js'
+        resource url:'/js/large-cookie.js'
+        resource url:'/js/header.js'
+        resource url:'/js/tooltip.js'
+        resource url:'/js/json2.js'
+        resource url:'/js/institution-list.js'
+        resource url:'/js/start-page.js'
+        resource url:'/js/ddb.osm.institutiondetailview.js'
+        resource url:'/js/item-hierarchy.js'
+        resource url:'/js/binaries-viewer.js'
+        resource url:'/js/persistent-links-modal-dialog.js'
+        resource url:'/js/advanced-search-page.js'
+        resource url:'/js/search-results.js'
     }
 
     // These are page specific bundles which should be merged back into ddbnext in the second step
@@ -69,25 +77,12 @@ modules = {
     startpage {
         resource url:'/css/start-page.css', bundle: 'startpage'
         resource url:'/css/start-page.css', attrs:[media:'print'], bundle: 'startpageprint'
-        resource url:'/js/start-page.js'
     }
 
-
-    institution {
+    openstreetmap {
         resource url:'http://www.openlayers.org/api/OpenLayers.js'
         resource url:'http://www.openstreetmap.org/openlayers/OpenStreetMap.js'
-        resource url:'/js/ddb.osm.institutiondetailview.js'
     }
-
-    item {
-        resource url:'/js/item-hierarchy.js'
-        resource url:'/js/binaries-viewer.js'
-        resource url:'/js/persistent-links-modal-dialog.js'
-    }
-
-    advancedsearch { resource url:'/js/advanced-search-page.js' }
-
-    results { resource url:'/js/search-results.js' }
 
     pdf {
         resource url:'/css/bootstrap.css'//, exclude:'zip'
