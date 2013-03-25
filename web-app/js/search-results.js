@@ -311,28 +311,33 @@ function searchResultsInitializer(){
     init: function(){
     },
 
-    fetchFacetValues: function(flyoutWidget){
-        this.connectedflyoutWidget = flyoutWidget;
+    fetchFacetValues: function(flyoutWidget, query){
+        if(flyoutWidget!=null)
+            this.connectedflyoutWidget = flyoutWidget;
         var oldParams = this.getUrlVars();
         var currObjInstance = this;
-        var fctValues = "";
+        var fctValues = '';
+        var queryParam = '';
         var resp = new Array();
         if(oldParams['facetValues%5B%5D']){
           $.each(oldParams['facetValues%5B%5D'], function(key, value){
             fctValues = (value.indexOf(currObjInstance.currentFacetField)>=0)?fctValues:fctValues+'&facetValues%5B%5D='+value;
           });
         }
+        if(query){
+            queryParam='&query='+query;
+        }
         this.connectedflyoutWidget.renderFacetLoader();
         var request = $.ajax({
             type: 'GET',
             dataType: 'json',
             async: true,
-            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+fctValues+'&offset='+this.currentOffset+'&rows='+this.currentRows,
+            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+queryParam+fctValues+'&offset='+this.currentOffset+'&rows='+this.currentRows,
             complete: function(data){
                 var parsedResponse = jQuery.parseJSON(data.responseText);
                 //Initialization of currentFacetValuesSelected / currentFacetValuesNotSelected
                 currObjInstance.initializeFacetValuesStructures(parsedResponse.values);
-                flyoutWidget.initializeFacetValues(parsedResponse.type, currObjInstance.currentFacetValuesNotSelected);
+                currObjInstance.connectedflyoutWidget.initializeFacetValues(parsedResponse.type, currObjInstance.currentFacetValuesNotSelected);
                 }
             });
     },
@@ -450,16 +455,16 @@ function searchResultsInitializer(){
     
     initializeFacetValuesDynamicSearch: function(inputSearchElement){
       var currObjInstance = this;
-      console.log(inputSearchElement)
-      inputSearchElement.keyup(function(){
-        if(this.value.length != 0){
+      inputSearchElement.keyup(function(e){
+        var code = (e.keyCode ? e.keyCode : e.which);
+        var inputValue = this.value;
+        if(code!=37 && code!=38 && code!=39 && code!=40 && code!=13){
             var d = new Date();
             currObjInstance.searchFacetValuesTimeout = d.getTime();
             setTimeout(function(){
                 var currentD = new Date();
-                console.log(currObjInstance.searchFacetValuesTimeout+400+" "+currentD.getTime())
               if(currObjInstance.searchFacetValuesTimeout+400<currentD.getTime()  && currObjInstance.connectedflyoutWidget.opened){
-                console.log('ciao');
+                  currObjInstance.fetchFacetValues(null,inputValue);
               }
               else{
                 return;
@@ -614,7 +619,6 @@ function searchResultsInitializer(){
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
-      console.log(this.fctManager)
       this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
     },
     
@@ -656,7 +660,7 @@ function searchResultsInitializer(){
                 var localizedValue = this.localizedValue;
                 
                 facetValueContainer.click(function(){
-                  currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue);
+                  currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue.replace('<strong>','').replace('</strong>',''));
                   $(this).remove();
                 });
                 
@@ -669,8 +673,8 @@ function searchResultsInitializer(){
                 else if(index<10){
                   facetValueContainer.appendTo(rightCol);
                 }
-                spanCount.appendTo(facetValueContainer);
-                $(document.createTextNode(localizedValue)).appendTo(facetValueContainer);
+                facetValueContainer.html(localizedValue);
+                spanCount.prependTo(facetValueContainer);
             }
           });
           currObjInstance.rightBody.fadeIn('fast');
@@ -714,7 +718,7 @@ function searchResultsInitializer(){
         this.addMoreFilters.appendTo(this.facetLeftContainer);
         this.facetLeftContainer.find('.input-search-fct-container').appendTo(this.facetLeftContainer);
     },
-    
+  
     removeAddMoreFiltersButton: function(FacetFieldFilter , addMoreFiltersElement){
       addMoreFiltersElement.remove();
       this.resetFacetFieldFilter(FacetFieldFilter);
@@ -758,6 +762,7 @@ function searchResultsInitializer(){
       oldParentMainElement.find('.flyout-right-container').hide('100', function(){
         oldParentMainElement.find('.flyout-right-container').remove();
       });
+      this.inputSearch.attr('value','');
       this.fctManager.currentPage = 1;
       this.fctManager.currentOffset = 0;
       this.fctManager.currentFacetValuesSelected = new Array();

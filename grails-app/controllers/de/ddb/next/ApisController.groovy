@@ -71,9 +71,11 @@ class ApisController {
             tmpResult["properties"] = properties
             docs.add(tmpResult)
         }
-        apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() {
-          obj, i ->
-          docs[i].properties = obj
+        if(jsonResp.results["docs"].get(0).size()>0){
+            apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() {
+              obj, i ->
+              docs[i].properties = obj
+            }
         }
         resultList["facets"] = jsonResp.facets
         resultList["highlightedTerms"] = jsonResp.highlightedTerms

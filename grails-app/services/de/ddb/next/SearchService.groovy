@@ -402,13 +402,19 @@ class SearchService {
      * @param numberOfElements number of elements to return
      * @return List of Map
      */
-    def getSelectedFacetValues(List facets, String fctName, int numberOfElements){
+    def getSelectedFacetValues(List facets, String fctName, int numberOfElements, String matcher){
         def res = [type: fctName, values: []]
         facets.each{
             if(it.field==fctName){
                 int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
                 for(int i=0;i<max;i++){
-                    res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format("%,d", it.facetValues[i].count.toInteger())])
+                    if(matcher && this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()).toLowerCase().contains(matcher.toLowerCase())){
+                        def localizedValue = this.getI18nFacetValue(fctName, it.facetValues[i].value.toString())
+                        def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
+                        localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
+                        res.values.add([value: it.facetValues[i].value, localizedValue: localizedValue, count: String.format("%,d", it.facetValues[i].count.toInteger())])
+                    }else if(!matcher)
+                        res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format("%,d", it.facetValues[i].count.toInteger())])
                 }
             }
         }
