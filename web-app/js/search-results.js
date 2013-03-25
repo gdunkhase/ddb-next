@@ -129,6 +129,17 @@ function searchResultsInitializer(){
     }
   }
   
+  function removeSearchCookieParameter(paramName){
+    var searchParameters = readCookie("searchParameters");
+    if (searchParameters != null && searchParameters.length > 0) {
+        searchParameters = searchParameters.substring(1, searchParameters.length -1);
+        searchParameters = searchParameters.replace(/\\"/g,'"');
+        var json = $.parseJSON(searchParameters);
+        json[paramName] = null;
+        document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
+    }
+  }
+  
   function readCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -254,6 +265,9 @@ function searchResultsInitializer(){
       var paramsArray = new Array(new Array('keepFilters', 'false'));
     addParamToCurrentUrl(paramsArray);
     setSearchCookieParameter(paramsArray);
+  });
+  $('#clear-filters-button').click(function(){
+    removeSearchCookieParameter('facetValues[]');
   });
   function fetchResultsList(url){
     $('.search-results').empty();
