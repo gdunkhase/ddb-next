@@ -282,7 +282,7 @@ class ItemService {
         resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
 
         log.debug 'Response data: -----'
-        System.out << xml
+        log.debug xml
         log.debug '\n--------------------'
 
         // parse
