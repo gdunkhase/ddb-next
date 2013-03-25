@@ -342,11 +342,6 @@ input[type="checkbox"],input[type="radio"] {
   margin-bottom: 50px;
 }
 
-.search-results .noresults div {
-  width: 50%;  
-  margin: auto;
-}
-
 .results-list .item .summary {
   padding-bottom: 5px;
 }
