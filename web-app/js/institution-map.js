@@ -1,13 +1,13 @@
 window.ddbAddOnloadListener(function() {
-  
     mapInitializer();
-  
 });
 
 function mapInitializer(){
   $('#institution-list').addClass('off');
   $('#institution-map').removeClass('off');
   $('.view-type-switch').removeClass('off');
+  
+  mapWidget.showMap();
   
   $('#view-list').click(function(){
     $('#view-list').addClass('selected');

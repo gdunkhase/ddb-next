@@ -43,7 +43,9 @@ modules = {
         resource url:'/js/header.js', disposition: 'head'
         resource url:'/js/tooltip.js', disposition: 'head'
         resource url:'/js/json2.js', disposition: 'head' // This file was removed in GIT but still present in dev.escidoc.org: check!
+        resource url:'/js/StringBuilder.js', disposition: 'head'
         resource url:'/js/institution-list.js', disposition: 'head'
+        resource url:'/js/apis-wrapper.js', disposition: 'head'
     }
 
     // These are page specific bundles which should be merged back into ddbnext in the second step
@@ -66,6 +68,7 @@ modules = {
 
     institutionlist {
         resource url:'http://www.openlayers.org/api/OpenLayers.js'
+        resource url:'/js/map-widget-test.js'
         resource url:'/js/institution-map.js'
     }
 
