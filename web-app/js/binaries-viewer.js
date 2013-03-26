@@ -255,12 +255,4 @@ window.ddbAddOnloadListener(function() {
       $("div.binary-title span").text(title);
       return false;
   });
-  //institution hierarchy
-  //$(".item-hierarchy").removeClass("off");
-
-  var imgLoader = document.createElement("img");
-
-  imgLoader.src = "../images/icons/loader_small.gif";
-  $(".item-hierarchy-result").prepend(imgLoader);
-  createHierarchy(parseUrl(location.href));
 });
