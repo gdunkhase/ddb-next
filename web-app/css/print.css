@@ -5,7 +5,7 @@
 
 /* Removing unwanted elements */
 header, .header,
-footer .inner ul, footer .inner .build, .footer .inner ul, .footer .inner .build,
+footer, .footer,
 .facets-container, .results-paginator-options, .page-info-nav .page-nav, .results-paginator-view, .information,
 .object-controls, .origin, .slide-viewer .tabs, .sibling-count,
 #first-letter-index li:not(.active),
@@ -34,11 +34,14 @@ footer .inner ul, footer .inner .build, .footer .inner ul, .footer .inner .build
   width: 130px;
 }
 .search-results .results-list .summary-main-wrapper .title a {
-  font-size: 25px;
+  font-size: 22px;
 }
 .search-results .results-list .matches {
   font-size: 14px;
-  line-height: 18px;
+  line-height: 16px;
+}
+.page-info-nav .page-info{
+  margin-left: 40px;
 }
 /* Search page - end*/
 
