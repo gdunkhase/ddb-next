@@ -73,7 +73,6 @@ modules = {
     }
 	
 	autocomplete {
-		dependsOn 'jquery'
 		resource url: '/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
 		resource url: '/js/myautocomplete.js'
 		resource url:'/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
