@@ -6,7 +6,7 @@
             <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
             ${institution.name}
             </g:link>
-            <a class="institution-link" href="${institution.uri}>">${institution.uri}</a>
+            <a class="institution-link" href="${institution.uri}">${institution.uri}</a>
         </div>
         <div class="span2">
             <img alt="${institution.name}" src="${institution.logo.a}" />
