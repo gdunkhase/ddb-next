@@ -1,14 +1,31 @@
 window.ddbAddOnloadListener(function() {
   $(function() {
     currentTab($("p.all"));
-    $(function() {
-      $("div.all").show();
-      $("p.divider").show();
-      $("div.tabs").addClass("fix");
-    });
-    createGallery($("#gallery-all"));
+    $("div.all").show();
+    $("p.divider").show();
+    $("div.tabs").addClass("fix");
     updatePreview($("div.all"));
+    createGallery($("#gallery-all"));
+    updateGalleryPagination(0,"#gallery-all li");
   });
+  function updateGalleryPagination(pag,list) {
+    var pos;
+    var tot=$(list).size();
+    if(tot>1){
+      if(tot==2){
+        pos="1-2";
+      } else {
+          a= 1 + pag*3;
+          b=3 + pag*3;
+          while (b > tot) {
+            a--;
+            b--;
+          }
+          pos=a+"-"+b;
+        }
+    } else pos="1";
+    $("p.gallery-pagination").text(pos+"/"+tot)
+  };
   function currentTab(el) {
     $("p.tab").removeClass("current-tab")
     $(el).addClass("current-tab");
@@ -90,28 +107,55 @@ window.ddbAddOnloadListener(function() {
       infinite: false,
       width: 445,
       align: false,
-      height: 131,
+      height: 116,
       items: {
         visible: 3,
         minimum: 1
       },
       scroll: {
-        fx: "fade",
-        easing: "linear"
+        items: 3,
+        fx: "fade"
       },
       auto: false,
       prev: ".btn-prev",
       next: ".btn-next"
     });
-    if(el.find('li').size()<3) {
+    if(el.find('li').size()<4) {
       $(".btn-next").addClass("disabled");
+      $(".btn-next").attr("disabled", true);
+    } else {
+      $(".btn-next").attr("disabled", false);
     }
   };
-  function formatTitle() {
-    return '<div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span>'
-           '<span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div>';
-  }
+  $(".btn-prev").click(function() {
+    if(!$(this).hasClass("disabled")){
+      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("pag");
+      var prevPage = parseInt(currentTabPage)-1;
+      updateGalleryPagination(prevPage,$(this).parent().find(".gallery-tab li"));
+      $(this).parent().find(".gallery-pagination").attr("pag",prevPage);
+      $(this).addClass("disabled");
+      setTimeout(function() {
+        $(this).removeClass("disabled");
+      }, 500);
+    }
+  });
+  $(".btn-next").click(function() {
+    if(!$(this).hasClass("disabled")){
+      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("pag");
+      var nextPage = parseInt(currentTabPage)+1;
+      updateGalleryPagination(nextPage,$(this).parent().find(".gallery-tab li"));
+      $(this).parent().find(".gallery-pagination").attr("pag",nextPage);
+      $(this).addClass("disabled");
+      setTimeout(function() {
+        $(this).removeClass("disabled");
+      }, 500);
+    }
+  });
   function hideErrors() {
+    $("div.binary-viewer-error").addClass("off");
+    $("div.binary-viewer-flash-upgrade").addClass("off");
+  }
+  function updatePagination() {
     $("div.binary-viewer-error").addClass("off");
     $("div.binary-viewer-flash-upgrade").addClass("off");
   }
@@ -121,9 +165,10 @@ window.ddbAddOnloadListener(function() {
     $("div.scroller").hide();
     tab.show();
     if($("#gallery-all").find('li').size()>3) {
-       createGallery($("#gallery-all"));
+      createGallery($("#gallery-all"));
     }
     updatePreview(tab);
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-all li");
   });
   $("p.images").click(function() {
     var tab = $("div.images");
@@ -134,6 +179,7 @@ window.ddbAddOnloadListener(function() {
     tab.show();
     createGallery($("#gallery-images"));
     updatePreview(tab);
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-images li");
   });
   $("p.videos").click(function() {
     var tab = $("div.videos");
@@ -144,6 +190,7 @@ window.ddbAddOnloadListener(function() {
     tab.show();
     createGallery($("#gallery-videos"));
     updatePreview(tab);
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-videos li");
   });
   $("p.audios").click(function() {
     var tab = $("div.audios");
@@ -154,6 +201,7 @@ window.ddbAddOnloadListener(function() {
     tab.show();
     createGallery($("#gallery-audios"));
     updatePreview(tab);
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-audios li");
   });
   $(".previews").click(function(e) {
         e.preventDefault();
@@ -166,9 +214,15 @@ window.ddbAddOnloadListener(function() {
             'prevEffect'   : 'fade',
             'nextEffect'   : 'fade',
             'tpl' :{
-                wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
+                wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-pagination"><span></span></div></div></div></div></div>',
                 prev     : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();"></span>',
                 next     : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();"></span>'
+            },
+            'afterLoad': function() {
+                var title = $(this.element).attr('caption');
+                var position = $(this.element).attr('pos') + '/' +$("#previews-list li").size();
+                $("span.fancybox-toolbar-title").text(title);
+                $("div.fancybox-pagination span").text(position);
             }
         });
         return false;

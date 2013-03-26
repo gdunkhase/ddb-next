@@ -2,6 +2,7 @@
   <div class="binary-viewer-container">
     <div id="binary-viewer">
       <ul id="previews-list">
+        <g:set var="counter" value="${0}" />
         <g:each in="${binaryList}">
           <g:if test="${it.full.uri == ''}">
             <g:set var="content" value="${it.preview.uri}"/>
@@ -10,9 +11,10 @@
             <g:set var="content" value="${it.full.uri}"/>
           </g:else>
           <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+            <g:set var="counter" value="${counter + 1}" />
             <li>
-              <a class="previews" rel="group1" href="${content}">
-                <img src="${it.preview.uri}" alt="${it.preview.title}" />
+              <a class="previews" caption="${(it.preview.title).encodeAsHTML()}" pos="${counter}" rel="group1" href="${content}">
+                <img src="${it.preview.uri}" alt="${(it.preview.title).encodeAsHTML()}" />
               </a>
             </li>
           </g:if>
@@ -42,13 +44,13 @@
   </div>
 
   <div class="tabs">
-    <p class="tab all">
+    <p class="tab all" >
       <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
                  args="${flashInformation.all}" 
                  default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
     </p>
     <div class="scroller all">
-      <ul id="gallery-all">
+      <ul id="gallery-all" class="gallery-tab">
         <g:each in="${binaryList}">
           <g:if test="${it.full.uri == ''}">
             <g:set var="content" value="${it.preview.uri}"/>
@@ -103,6 +105,7 @@
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
+      <p class="gallery-pagination" pag="0"></p>
     </div>
     <noscript>
       <div class="scroller all">
@@ -137,7 +140,7 @@
     <p class="tab divider">|</p>
     <p class="tab images"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
     <div class="scroller images">
-      <ul id="gallery-images">
+      <ul id="gallery-images" class="gallery-tab">
         <g:each in="${binaryList}">
           <g:if test="${it.full.uri == ''}">
             <g:set var="content" value="${it.preview.uri}"/>
@@ -165,6 +168,7 @@
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
+      <p class="gallery-pagination" pag="0"></p>
     </div>
     <noscript>
       <div class="scroller images">
@@ -188,7 +192,7 @@
     <p class="tab divider">|</p>
     <p class="tab videos"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
     <div class="scroller videos">
-      <ul id="gallery-videos">
+      <ul id="gallery-videos" class="gallery-tab">
         <g:each in="${binaryList}">
           <g:if test="${it.orig.uri.video != '' }">
             <li>
@@ -217,6 +221,7 @@
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
+      <p class="gallery-pagination" pag="0"></p>
     </div>
     <noscript>
       <div class="scroller videos">
@@ -240,7 +245,7 @@
     <p class="tab divider">|</p>
     <p class="tab audios"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
     <div class="scroller audios">
-      <ul id="gallery-audios">
+      <ul id="gallery-audios" class="gallery-tab">
         <g:each in="${binaryList}">
           <g:if test="${it.orig.uri.audio != '' }">
             <li>
@@ -269,6 +274,7 @@
         <g:message code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
+      <p class="gallery-pagination" pag="0"></p>
     </div>
     <noscript>
       <div class="scroller audios">
