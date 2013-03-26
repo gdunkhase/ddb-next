@@ -49,6 +49,9 @@ class ApisService {
 
         if(queryParameters.rows)
             query["rows"] = queryParameters.rows
+			
+		if(queryParameters.callback)
+			query["callback"] = queryParameters.callback
 
         if(queryParameters.facet){
             if(queryParameters.facet.getClass().isArray()){
