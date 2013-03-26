@@ -35,11 +35,6 @@ class UrlMappings {
             action="staticcontent"
         }
 
-        //        "/advancedsearch" {
-        //            controller="advancedsearch"
-        //            action=[GET: "fillValues", POST: "executeSearch"]
-        //        }
-
         "/advancedsearch" {
             controller="advancedsearch"
             action="fillValues"
