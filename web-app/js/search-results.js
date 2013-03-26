@@ -208,6 +208,7 @@ function searchResultsInitializer(){
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'true'));
     else
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'false'));
+    paramsArray.push(new Array('offset', 0));
     var newUrl = addParamToCurrentUrl(paramsArray);
     fetchResultsList(newUrl);
     historyManager(newUrl);
@@ -436,6 +437,7 @@ function searchResultsInitializer(){
         }else{
           var paramsArray = new Array(new Array('facetValues[]', this.currentFacetField+'='+facetValue));
         }
+        paramsArray.push(new Array('offset', 0));
         fetchResultsList(addParamToCurrentUrl(paramsArray));
     },
     
@@ -453,6 +455,7 @@ function searchResultsInitializer(){
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
       var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+element.attr('data-fctvalue'))));
+      paramsArray.push(new Array('offset', 0));
       fetchResultsList(newUrl);
       element.remove();
     },
