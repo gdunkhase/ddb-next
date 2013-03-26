@@ -1,3 +1,14 @@
+$(document).ready(function() {
+	
+  if($(".item-hierarchy").length > 0){
+	var imgLoader = document.createElement("img");
+	imgLoader.src = "../images/icons/loader_small.gif";
+	$(".item-hierarchy-result").prepend(imgLoader);
+	  
+	createHierarchy(parseUrl(location.href));
+  }
+});
+
 /*
  * Add a leaf node to the current node.
  * 
