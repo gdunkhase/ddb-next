@@ -15,8 +15,8 @@
 
     <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
     <script>var contextPath="${request.contextPath}"</script>
-
     <r:require module="ddbnext" />
+    <r:require module="autocomplete" />
     <g:layoutHead />
     <r:layoutResources />
   </head>

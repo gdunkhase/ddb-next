@@ -18,7 +18,7 @@ package de.ddb.next
 import java.util.regex.Pattern;
 
 import net.sf.json.JSONNull
-
+import grails.converters.JSON
 import groovy.json.JsonSlurper
 
 class ApisController {
@@ -83,4 +83,21 @@ class ApisController {
 
         render (contentType:"text/json"){resultList}
     }
+	
+	/**
+	 * This function should be obsolete once the 
+	 * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
+	 * If that happens, the "myautocomplete.js" script should refer to the backend URL and not to this URL.
+	 * @return
+	 */
+	def autocomplete (){
+		def query = apisService.getQueryParameters(params)
+		def callback = apisService.getQueryParameters(params)
+		def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.search.autocomplete.url.toString(),'/search/suggest', query)	
+		if (callback) {
+			render "${params.callback}(${result as JSON})"
+		} else {
+			render (contentType:"text/json"){result}
+		}
+	}
 }
