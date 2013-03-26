@@ -10,6 +10,11 @@
   float: right;
   clear: right;
 }
+@media (max-width: 767px) {
+  .static_marginal {
+    display: none;
+  }
+}
 .static_content a, .static_marginal a {
   text-decoration: underline;
 }
