@@ -246,7 +246,7 @@ class SearchService {
         def tmpTitle = (cleanTitle.length()>length)?cleanTitle.substring(0,cleanTitle.substring(0,length).lastIndexOf(" "))+"...":cleanTitle
         if(matchesMatch.size()>0){
             matchesMatch.each{
-                tmpTitle = tmpTitle.replaceAll(it[1], "<strong>"+it[1]+"</strong>")
+                tmpTitle = tmpTitle.replaceAll(Pattern.quote(it[1]), "<strong>"+it[1]+"</strong>")
             }
         }
         return tmpTitle
