@@ -22,9 +22,9 @@ import net.sf.json.JSONNull
 import groovy.json.JsonSlurper
 
 class ApisController {
-    
+
     def apisService
-    
+
     def search(){
 
         def resultList = [:]
@@ -42,20 +42,20 @@ class ApisController {
             def thumbnail
             def media = []
 
-            def titleMatch = it.preview.toString() =~ /(?m)<div class="title">(.*?)<\/div>$/
+            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
             if (titleMatch)
-                title= titleMatch[0][1]
+                title= titleMatch[0][3]
 
-            def subtitleMatch = it.preview.toString() =~ /(?m)<div class="subtitle">(.*?)<\/div>$/
-            subtitle= (subtitleMatch)?subtitleMatch[0][1]:""
+            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
+            subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
 
-            def thumbnailMatch = it.preview.toString() =~ /(?m)<img src="(.*?)" \/>$/
+            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
             if (thumbnailMatch)
-                thumbnail= thumbnailMatch[0][1]
+                thumbnail= thumbnailMatch[0][2]
 
-            def mediaMatch = it.preview.toString() =~ /(?m)<div data-media="(.*?)"/
+            def mediaMatch = it.preview.toString() =~ /(?m)<div (.*?)data-media="(.*?)"/
             if (mediaMatch)
-                mediaMatch[0][1].split (",").each{ media.add(it) }
+                mediaMatch[0][2].split (",").each{ media.add(it) }
 
             tmpResult["id"] = it.id
 
@@ -64,16 +64,15 @@ class ApisController {
             tmpResult["latitude"] = (it.latitude instanceof JSONNull)?"":it.latitude
             tmpResult["longitude"] = (it.longitude instanceof JSONNull)?"":it.longitude
             tmpResult["category"] = (it.category instanceof JSONNull)?"":it.category
-            
+
             def properties = [:]
 
             tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
             tmpResult["properties"] = properties
             docs.add(tmpResult)
         }
-        apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() {
-          obj, i ->
-          docs[i].properties = obj
+        apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() { obj, i ->
+            docs[i].properties = obj
         }
         resultList["facets"] = jsonResp.facets
         resultList["highlightedTerms"] = jsonResp.highlightedTerms
