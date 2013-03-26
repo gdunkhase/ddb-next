@@ -1,4 +1,4 @@
-window.ddbAddOnloadListener(function(){
+$(document).ready(function(){
 
 	if (typeof ddbInstitution != "undefined"){ // Only start if we have information on this page
 

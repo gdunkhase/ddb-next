@@ -1,4 +1,4 @@
-window.ddbAddOnloadListener(function() {
+$(document).ready(function() {
   $(function() {
     currentTab($("p.all"));
     $(function() {

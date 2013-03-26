@@ -1,4 +1,4 @@
-window.ddbAddOnloadListener(function() {
+$(document).ready(function() {
 	$(".widget").mouseenter(function() {
 	        $(".navigation > li").hover(function(){
 	          $(".navigation li").removeClass("active");
