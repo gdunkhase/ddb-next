@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 $(function() {
-	$("#searchinput").autocomplete(
+	$('input.query').autocomplete(
 			{
 				source : function(request, response) {		
 					$.ajax(
