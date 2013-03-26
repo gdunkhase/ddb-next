@@ -69,6 +69,10 @@ class I18NHelperTagLib {
         }else{
             def linkUrl = createLink("url": attrs.params)
             def cleanedParams = attrs.params.clone()
+            if(linkUrl.contains("staticcontent")){
+                linkUrl = linkUrl.replaceAll("staticcontent", attrs.params?.dir)
+                cleanedParams.remove("dir")
+            }
             cleanedParams.remove("controller")
             cleanedParams.remove("action")
             cleanedParams.remove("id")
