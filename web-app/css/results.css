@@ -522,6 +522,7 @@ input[type="checkbox"],input[type="radio"] {
   font-weight: bold;
   border-bottom: #ddd 1px solid;
   width: 100%;
+  overflow: hidden;
 }
 .selected-items{
   margin: 0 10px!important;

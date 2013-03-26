@@ -6,13 +6,15 @@ window.ddbAddOnloadListener = function(listener) {
 
 window.ddbNotifyOnloadListener = function() {
     for ( var i = 0; i < window.ddbOnloadListenerQueue.length; i++) {
+        window.ddbOnloadListenerQueue[i]();
+        /*
         try {
             window.ddbOnloadListenerQueue[i]();
         } catch (error) {
             if (typeof console != "undefined") {
                 console.log(error);
             }
-        }
+        }*/
     }
 };
 

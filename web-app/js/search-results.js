@@ -458,7 +458,7 @@ function searchResultsInitializer(){
       inputSearchElement.keyup(function(e){
         var code = (e.keyCode ? e.keyCode : e.which);
         var inputValue = this.value;
-        if(code!=37 && code!=38 && code!=39 && code!=40 && code!=13){
+        if(code!=16 && code!=17 && code!=18 && code!=37 && code!=38 && code!=39 && code!=40 && code!=13){
             var d = new Date();
             currObjInstance.searchFacetValuesTimeout = d.getTime();
             setTimeout(function(){
@@ -476,6 +476,51 @@ function searchResultsInitializer(){
       });
     },
     
+    initializeSelectedFacetOnLoad: function(connectedflyoutWidget){
+      var currObjInstance = this;
+      this.connectedflyoutWidget = connectedflyoutWidget;
+      var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
+      if(paramsFacetValues){
+        var selectedFacets = {};
+        $.each(paramsFacetValues, function(key,value){
+          var decodedElement = decodeURIComponent(value.replace(/\+/g,'%20')).split('=');
+          var fctField = decodedElement[0];
+          var fctValue = decodedElement[1];
+          console.log(selectedFacets[fctField]?true:false)
+          if(!selectedFacets[fctField]){
+            selectedFacets[fctField] = new Array();
+          }
+          selectedFacets[fctField].push(fctValue);
+        });
+        console.log(selectedFacets)
+        $.each(selectedFacets, function(fctField, fctValues){
+            console.log($('.facets-list').find('a[data-fctname="'+fctField+'"]'));
+            currObjInstance.connectedflyoutWidget.mainElement = $('.facets-list').find('a[data-fctname="'+fctField+'"]');
+            currObjInstance.connectedflyoutWidget.parentMainElement = currObjInstance.connectedflyoutWidget.mainElement.parent();
+            currObjInstance.currentFacetField = currObjInstance.connectedflyoutWidget.mainElement.attr('data-fctname');
+            currObjInstance.connectedflyoutWidget.buildLeftContainer();
+            currObjInstance.connectedflyoutWidget.parentMainElement.find('.input-search-fct-container').hide();
+            
+            console.log(fctValues)
+            $.each(fctValues, function(){
+                var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, currObjInstance.getLocalizedValue(fctField, this));
+                
+                selectedFacetValue.find('.facet-remove').click(function(){
+                  currObjInstance.unselectFacetValue(selectedFacetValue);
+                });
+            });
+            
+            currObjInstance.connectedflyoutWidget.renderAddMoreFiltersButton(fctField);
+            currObjInstance.connectedflyoutWidget.addMoreFilters.click(function(event){
+                currObjInstance.connectedflyoutWidget.build($(this));
+            });
+            console.log("giro")
+        });
+      }
+      console.log(paramsFacetValues);
+      console.log(selectedFacets);
+    },
+    
     getUrlVars: function(){
       var vars = {}, hash;
       var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -491,6 +536,24 @@ function searchResultsInitializer(){
     },
     getUrlVar: function(name){
       return this.getUrlVars()[name];
+    },
+    getLocalizedValue: function(facetField, facetValue){
+        if(facetField=='affiliate_fct' || facetField=='keywords_fct' || facetField=='place_fct' || facetField=='provider_fct'){
+            return facetValue.toString();
+        }
+        if(facetField=='type_fct'){
+            return messages.ddbnext['type_fct_'+facetValue];
+        }
+        if(facetField=='time_fct'){
+            return messages.ddbnext['time_fct_'+facetValue];
+        }
+        if(facetField=='language_fct'){
+            return messages.ddbnext['language_fct_'+facetValue];
+        }
+        if(facetField=='sector_fct'){
+            return messages.ddbnext['sector_fct_'+facetValue];
+        }
+        return '';
     }
   });
   
@@ -529,6 +592,7 @@ function searchResultsInitializer(){
     
     init: function(){
         this.cleanNonJsStructures();
+        this.fctManager.initializeSelectedFacetOnLoad(this);
     },
     
     build: function(element){
@@ -549,30 +613,14 @@ function searchResultsInitializer(){
     },
     
     buildStructure: function(){
-      var inputSearchContainer;
       
       if(this.parentMainElement.find('.flyout-left-container').length>0){
         this.facetLeftContainer = this.parentMainElement.find('.flyout-left-container');
         this.selectedItems = this.parentMainElement.find('.selected-items');
-        inputSearchContainer = this.parentMainElement.find('.input-search-fct-container');
+        var inputSearchContainer = this.parentMainElement.find('.input-search-fct-container');
         this.inputSearch = this.parentMainElement.find('.input-search-fct');
       }else{
-        this.facetLeftContainer = $(document.createElement('div'));
-        this.selectedItems = $(document.createElement('ul'));
-        inputSearchContainer = $(document.createElement('div'));
-        this.inputSearch = $(document.createElement('input'));
-
-        this.facetLeftContainer.addClass('flyout-left-container');
-        this.selectedItems.addClass('selected-items unstyled');
-        inputSearchContainer.addClass('input-search-fct-container');
-        this.inputSearch.attr('type','text');
-        this.inputSearch.addClass('input-search-fct');
-        
-        this.facetLeftContainer.appendTo(this.mainElement.parent());
-        this.selectedItems.appendTo(this.facetLeftContainer);
-        this.inputSearch.appendTo(inputSearchContainer);
-        inputSearchContainer.appendTo(this.facetLeftContainer);
-        this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
+        this.buildLeftContainer();
       }
       
       this.facetRightContainer = $(document.createElement('div'));
@@ -624,6 +672,25 @@ function searchResultsInitializer(){
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
     },
     
+    buildLeftContainer: function(){
+        this.facetLeftContainer = $(document.createElement('div'));
+        this.selectedItems = $(document.createElement('ul'));
+        var inputSearchContainer = $(document.createElement('div'));
+        this.inputSearch = $(document.createElement('input'));
+
+        this.facetLeftContainer.addClass('flyout-left-container');
+        this.selectedItems.addClass('selected-items unstyled');
+        inputSearchContainer.addClass('input-search-fct-container');
+        this.inputSearch.attr('type','text');
+        this.inputSearch.addClass('input-search-fct');
+        
+        this.facetLeftContainer.appendTo(this.mainElement.parent());
+        this.selectedItems.appendTo(this.facetLeftContainer);
+        this.inputSearch.appendTo(inputSearchContainer);
+        inputSearchContainer.appendTo(this.facetLeftContainer);
+        this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
+    },
+    
     initializeFacetValues: function(field, facetValues){
         var leftCol = $(document.createElement('div'));
         var rightCol = $(document.createElement('div'));
@@ -649,6 +716,9 @@ function searchResultsInitializer(){
       if(field == this.fctManager.currentFacetField){
         if(facetValues.length > 5){
           this.rightBody.addClass('body-extender');
+        }
+        else{
+          this.rightBody.removeClass('body-extender');
         }
         this.rightBody.fadeOut('fast', function(){
           leftCol.empty();
