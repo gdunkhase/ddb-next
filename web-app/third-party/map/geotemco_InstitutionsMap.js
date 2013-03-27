@@ -51,6 +51,8 @@ var arrayIndex = function(array, obj) {
 	return -1;
 }
 
+/* for ISS */
+/*
 for (var i = 0; i < document.getElementsByTagName("script").length; i++) {
 	var script = document.getElementsByTagName("script")[i];
 	var index = script.src.search(/geotemco[^\/]*\.js$/);
@@ -62,6 +64,24 @@ for (var i = 0; i < document.getElementsByTagName("script").length; i++) {
 		break;
 	}
 }
+*/
+
+/* for ddb-next */
+var GeoTemCo_scripts = document.getElementsByTagName("script");
+//console.log("GeoTemCo_all_scripts.length == " + GeoTemCo_scripts.length);
+for (var i = 0; i < GeoTemCo_scripts.length; i++) {
+	var scriptName = GeoTemCo_scripts[i].src.replace(/\?.*$/,'');
+    //console.log("scriptName: " + scriptName);
+	var index = scriptName.search(/geotemco[^\/]*\.js$/);
+	if (index == -1) {
+		index = scriptName.indexOf("geotemco-min.js");
+	}
+	if (index != -1) {
+		GeoTemCoMinifier_urlPrefix = scriptName.substring(0, index);
+		break;
+	}
+}
+
 
 if (typeof console != "undefined") {
     if (typeof GeoTemCoMinifier_urlPrefix != "undefined") {

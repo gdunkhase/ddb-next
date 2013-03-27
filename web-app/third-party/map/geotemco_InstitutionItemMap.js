@@ -51,6 +51,8 @@ var arrayIndex = function(array, obj) {
 	return -1;
 }
 
+/* for ISS */
+/*
 for (var i = 0; i < document.getElementsByTagName("script").length; i++) {
 	var script = document.getElementsByTagName("script")[i];
 	var index = script.src.search(/geotemco[^\/]*\.js$/);
@@ -62,6 +64,24 @@ for (var i = 0; i < document.getElementsByTagName("script").length; i++) {
 		break;
 	}
 }
+*/
+
+/* for ddb-next */
+var GeoTemCo_scripts = document.getElementsByTagName("script");
+//console.log("GeoTemCo_all_scripts.length == " + GeoTemCo_scripts.length);
+for (var i = 0; i < GeoTemCo_scripts.length; i++) {
+	var scriptName = GeoTemCo_scripts[i].src.replace(/\?.*$/,'');
+    //console.log("scriptName: " + scriptName);
+	var index = scriptName.search(/geotemco[^\/]*\.js$/);
+	if (index == -1) {
+		index = scriptName.indexOf("geotemco-min.js");
+	}
+	if (index != -1) {
+		GeoTemCoMinifier_urlPrefix = scriptName.substring(0, index);
+		break;
+	}
+}
+
 
 if (typeof console != "undefined") {
     if (typeof GeoTemCoMinifier_urlPrefix != "undefined") {
@@ -9317,81 +9337,13 @@ function WidgetWrapper() {
 
 var INSTITUTION_ITEM_MAP_DIV = 'divOSM';
 
-function drawmap(lon, lat, instName, street, houseIdentifier, postalCode, city) {
-    var textHtml = "<font color=\"black\"><b>"
-                    + "lon: " + lon + "  lat: " + lat
-                    + instName + "</br>" + street + "&nbsp;" + houseIdentifier + "</br>"
-                    + postalCode + "&nbsp;" + city
-                    + "</b></font>";
+function drawmap(itemDiv,language,lon, lat, instName, street, houseIdentifier, postalCode, city) {
+    console.log("xxx called: drawmap('" + itemDiv + "','" + language + "') ");
 
-    console.log("called: drawmap(..) " + textHtml);
-    $('#'+INSTITUTION_ITEM_MAP_DIV).innerHtml = textHtml;
+    var position =  { longitude: lon, latitude: lat };
+    InstitutionItemMapModel.initialize(itemDiv, language, position);
 }
 
-
-if ( typeof InstitutionItemMapController == 'undefined' ) {
-/*
-
-    InstitutionItemMapController = (function () {
-
-        var Events = {
-            /// event that notifies the subscribers that the detail map is ready
-            /// this should trigger subscriber to start listening to map events
-            /// accepts non-null param (true)
-            InstitutionItemMapReady: "InstitutionDetailMapReady",
-
-            /// event to startup and position the map to coordinate
-            /// accepts param (args) {
-            ///             "language": "en|de",
-            ///             "mapDiv": "<DOM id for map>",
-            ///             "position": {
-            ///                 "longitude": <longitude with decimal fraction>,
-            ///                 "latitude": <latitude with decimal fraction>
-            ///              }
-            ///         }
-            InstitutionItemMapActivate: "InstitutionDetailMapActivate"
-
-        };
-
-        var setupEventSubscriptions = function () {
-
-            GeoPublisher.GeoSubscribe('GeoTemCoReady', this, function () {
-
-                if (typeof console != 'undefined') {
-                    console.log("InstitutionItemMapController  - received: GeoTemCoReady");
-                };
-
-                Ddb.Publisher.Publish(Events.InstitutionItemMapReady, true);
-                
-                // now map resources have loaded, start listening for map activation...
-                Ddb.Publisher.Subscribe(Events.InstitutionItemMapActivate, function (args) {
-                    if (args) {
-                        if (typeof console !== 'undefined') {
-                            console.log("InstitutionItemMapModel isInitialized:" + InstitutionItemMapModel.isInitialized());
-                        }
-
-                        if (!InstitutionItemMapModel.isInitialized()) {
-                            var position =  { longitude: 7.2, latitude: 51.2 };
-                            if (args.position) {
-                                position = args.position;
-                            };
-                            InstitutionItemMapModel.initialize(args.mapDiv, args.language, position);
-                        }
-                    }
-                });
-            });
-        };
-
-        setupEventSubscriptions();
-
-        return {
-            Events: Events
-        };
-
-    })();
-
-*/
-}
 
 
 if ( typeof InstitutionItemMapModel == 'undefined' ) {
