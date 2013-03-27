@@ -352,8 +352,8 @@ input[type="checkbox"],input[type="radio"] {
   background-position: 0px -20px;
 }
 
-.search-results .noresults {
-  margin-top: 30px;
+.search-noresults-content .noresults {
+  margin-top: 40px;
   margin-bottom: 50px;
 }
 
