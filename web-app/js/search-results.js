@@ -90,6 +90,7 @@ function searchResultsInitializer(){
       queryParameters[value[0]] = value[1];
     });
     var tmp = jQuery.param(queryParameters, true);
+    updateLanguageSwitch(tmp);
     if (path == null) {
       return window.location.pathname+'?'+tmp;
     }
@@ -116,6 +117,7 @@ function searchResultsInitializer(){
       }
     });
     var tmp = jQuery.param(queryParameters, true);
+    updateLanguageSwitch(tmp);
     if (path == null) {
       return window.location.pathname+'?'+tmp;
     }
@@ -124,6 +126,21 @@ function searchResultsInitializer(){
     }
   }
   
+function updateLanguageSwitch(params) {
+    params = params.replace(/\&?lang=[^\&]*/g, '');
+    if (params.length > 0) {
+        params += '&'
+    }
+    if (params.indexOf('&') == 0) {
+        params = params.substring(1);
+    }
+    var pattern = /(.*?\?).*?(lang=\w*)/;
+    $('.language-wrapper').find('a[href]').each(function(){
+      var matches = pattern.exec($(this).attr('href'));
+      $(this).attr('href', matches[1] + params + matches[2]);
+    }); 
+}
+
   function setSearchCookieParameter(arrayParamVal){
     var searchParameters = readCookie("searchParameters");
     if (searchParameters != null && searchParameters.length > 0) {
