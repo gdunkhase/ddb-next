@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-window.ddbAddOnloadListener(function() {
+$(document).ready(function() {
 	$(".widget").mouseenter(function() {
 	        $(".navigation > li").hover(function(){
 	          $(".navigation li").removeClass("active");

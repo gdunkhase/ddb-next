@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-window.ddbAddOnloadListener(function() {
+$(document).ready(function() {
   $(function() {
     currentTab($("p.all"));
     $("div.all").show();

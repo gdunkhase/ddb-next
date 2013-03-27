@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
-window.ddbAddOnloadListener(function() {
+$(document).ready(function() {
   if (window.history && history.pushState) {
     historyedited = false;
     $(window).bind('popstate', function(e) {

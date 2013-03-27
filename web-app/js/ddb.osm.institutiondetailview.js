@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-window.ddbAddOnloadListener(function(){
+$(document).ready(function(){
 
 	if (typeof ddbInstitution != "undefined"){ // Only start if we have information on this page
 
