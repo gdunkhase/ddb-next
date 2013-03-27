@@ -3,7 +3,12 @@
     <span class="results-overall-index">${navData.resultsOverallIndex}</span>
     <span><g:message code="ddbnext.Of" /></span>
     <span><b><span class="results-total" id="results-total">${numberOfResultsFormatted}</span></b></span>
-    <span><g:message code="ddbnext.Results_lowercase" /></span>
+    <g:if test="${numberOfResultsFormatted == '1'}">
+        <span><g:message code="ddbnext.Result_lowercase" /></span>
+    </g:if>
+    <g:else>
+        <span><g:message code="ddbnext.Results_lowercase" /></span>
+    </g:else>
   </div>
   <div class="page-nav">
     <ul class="inline">
