@@ -17,6 +17,7 @@ package de.ddb.next
 
 import groovy.json.JsonSlurper
 
+import java.util.Map;
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -251,7 +252,7 @@ class SearchService {
         }
         return tmpTitle
     }
-    
+
     /**
      *
      * Gives you back the string trimmed to desired length
@@ -262,7 +263,7 @@ class SearchService {
      */
     def trimString(String text, int length){
         if(text.length()>length)
-          return text.substring(0, text.substring(0,length).lastIndexOf(" "))+"..."
+            return text.substring(0, text.substring(0,length).lastIndexOf(" "))+"..."
         return text
     }
 
@@ -310,12 +311,12 @@ class SearchService {
 
         if(reqParameters.minDocs)
             urlQuery["minDocs"] = reqParameters.minDocs
-            
+
         if(reqParameters["sort"] != null){
             urlQuery["sort"] = reqParameters.sort
         }else{
             if(urlQuery["query"]!="*"){
-              urlQuery["sort"] = "RELEVANCE"
+                urlQuery["sort"] = "RELEVANCE"
             }
         }
 
@@ -482,7 +483,7 @@ class SearchService {
         cookie.maxAge = -1
         return cookie
     }
-    
+
     /**
      * Reads the cookie containing the search-Parameters and fills the values in Map.
      * 
@@ -519,6 +520,53 @@ class SearchService {
             }
         }
         return searchParamsMap
+    }
+
+    /**
+     * Converts the params list received from the frontend during a request to get all the facets to be displayed in the flyout widget.
+     * 
+     * @param reqParameters the params variable containing all the req parameters
+     * @return a map containing all the converted request parameters ready to be submitted to the related service to fetch the right facets values
+     */
+    def convertFacetQueryParametersToFacetSearchParameters(Map reqParameters) {
+        def urlQuery = [:]
+
+        if (reqParameters.searchQuery == null)
+            urlQuery["query"] = '*'
+        else urlQuery["query"] = reqParameters.searchQuery
+
+        if (reqParameters.rows == null || reqParameters.rows == -1)
+            urlQuery["rows"] = 1
+        else urlQuery["rows"] = reqParameters.rows
+
+        if (reqParameters.offset == null)
+            urlQuery["offset"] = 0
+        else urlQuery["offset"] = reqParameters.offset
+
+        //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
+        //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
+        if(reqParameters["facetValues[]"]){
+            urlQuery = getFacets(reqParameters, urlQuery,"facet", 0)
+        }
+
+        if(reqParameters.get("name")){
+            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+            if(!urlQuery["facet"].contains(reqParameters.get("name")))
+                urlQuery["facet"].add(reqParameters.get("name"))
+        }
+
+        if(reqParameters.isThumbnailFiltered){
+            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+            if(!urlQuery["facet"].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+                urlQuery["facet"].add("grid_preview")
+                urlQuery["grid_preview"] = "true"
+            }
+        }
+
+        //We ask for a maximum of 310 facets
+        urlQuery["facet.limit"] = 310
+
+        return urlQuery
     }
 
 }

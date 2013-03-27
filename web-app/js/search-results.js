@@ -329,12 +329,16 @@ function searchResultsInitializer(){
         var oldParams = this.getUrlVars();
         var currObjInstance = this;
         var fctValues = '';
+        var isThumbnailFIltered = '';
         var queryParam = '';
         var resp = new Array();
         if(oldParams['facetValues%5B%5D']){
           $.each(oldParams['facetValues%5B%5D'], function(key, value){
             fctValues = (value.indexOf(currObjInstance.currentFacetField)>=0)?fctValues:fctValues+'&facetValues%5B%5D='+value;
           });
+        }
+        if(oldParams['isThumbnailFiltered'] && oldParams['isThumbnailFiltered']=='true'){
+            isThumbnailFIltered = '&isThumbnailFiltered=true';
         }
         if(query){
             queryParam='&query='+query;
@@ -344,7 +348,7 @@ function searchResultsInitializer(){
             type: 'GET',
             dataType: 'json',
             async: true,
-            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+queryParam+fctValues+'&offset='+this.currentOffset+'&rows='+this.currentRows,
+            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+queryParam+fctValues+isThumbnailFIltered+'&offset='+this.currentOffset+'&rows='+this.currentRows,
             complete: function(data){
                 var parsedResponse = jQuery.parseJSON(data.responseText);
                 //Initialization of currentFacetValuesSelected / currentFacetValuesNotSelected
@@ -587,6 +591,7 @@ function searchResultsInitializer(){
     //i18n variables
     
     field_MostRelevant: messages.ddbnext.Most_relevant,
+    field_NoAvailableValues: messages.ddbnext.No_Available_Values,
     field_AddMoreFiltersButtonTooltip: messages.ddbnext.Add_More_Filters_ButtonTooltip,
     field_SearchResultsFacetValueNext: messages.ddbnext.SearchResultsFacetValue_Next,
     field_SearchResultsFacetValuePrevious: messages.ddbnext.SearchResultsFacetValue_Previous,
@@ -656,8 +661,6 @@ function searchResultsInitializer(){
       rightHead.appendTo(this.facetRightContainer);
       this.rightBody.appendTo(this.facetRightContainer);
       
-      rightHead.html(this.field_MostRelevant);
-      
       paginationAPrev.html(this.field_SearchResultsFacetValuePrevious);
       paginationANext.html(this.field_SearchResultsFacetValueNext);
       this.paginationLiSeite.html(this.field_Page);
@@ -716,8 +719,9 @@ function searchResultsInitializer(){
         
       var leftCol = this.rightBody.find('.left-col');
       var rightCol = this.rightBody.find('.right-col');
-      
-      if(field == this.fctManager.currentFacetField){
+      var flyoutRightHeadTitle = $(document.createElement('span'));
+      if(field == this.fctManager.currentFacetField && facetValues.length >0){
+        flyoutRightHeadTitle.html(this.field_MostRelevant);
         if(facetValues.length > 5){
           this.rightBody.addClass('body-extender');
         }
@@ -755,7 +759,10 @@ function searchResultsInitializer(){
           });
           currObjInstance.rightBody.fadeIn('fast');
         });
+      }else{
+        flyoutRightHeadTitle.html(this.field_NoAvailableValues);
       }
+      flyoutRightHeadTitle.prependTo(this.facetRightContainer.find('.flyout-right-head'));
     },
     
     renderSelectedFacetValue: function(facetValue, localizedValue){
