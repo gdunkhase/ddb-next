@@ -1,12 +1,18 @@
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
-window.ddbAddOnloadListener(function() {
+$(document).ready(function() {
   if (window.history && history.pushState) {
     historyedited = false;
+    historySupport = true;
     $(window).bind('popstate', function(e) {
      if (historyedited) {
       stateManager(location.pathname + location.search);
      }
     });
+  }else{
+      historySupport = false;
+      //Utilized for browser that doesn't supports pushState.
+      //It will be used as reference URL for all the ajax actions
+      globalUrl = location.search.substring(1);
   }
   
   searchResultsInitializer();
@@ -19,9 +25,13 @@ window.ddbAddOnloadListener(function() {
 });
 
 function historyManager(path){
-if(window.history && history.pushState) {
-  window.history.pushState({path:path},'',path);
+  if(historySupport) {
+    window.history.pushState({path:path},'',path);
     historyedited = true;
+  }else{
+    console.log("before change: "+globalUrl);
+    globalUrl = (path.indexOf('?')>-1)?path.split('?')[1]:path;
+    console.log("after change: "+globalUrl);
   }
 }
 
@@ -62,7 +72,8 @@ function searchResultsInitializer(){
   //This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
   //IMPORTANT: remember to pass your arrayParamVal already URL decoded
   function addParamToUrl(arrayParamVal, path, urlString){
-    var queryParameters = {}, queryString = (urlString==null)?location.search.substring(1):urlString,
+    var currentUrl = (historySupport)?location.search.substring(1):globalUrl;
+    var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
         queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))] = decodeURIComponent(m[2].replace(/\+/g,'%20'));
@@ -80,7 +91,8 @@ function searchResultsInitializer(){
   }
   
   function removeParamFromUrl(arrayParamVal, path, urlString){
-    var queryParameters = {}, queryString = (urlString==null)?location.search.substring(1):urlString,
+    var currentUrl = (historySupport)?location.search.substring(1):globalUrl;
+    var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
         var keyParam = decodeURIComponent(m[1].replace(/\+/g,'%20'));
@@ -486,22 +498,17 @@ function searchResultsInitializer(){
           var decodedElement = decodeURIComponent(value.replace(/\+/g,'%20')).split('=');
           var fctField = decodedElement[0];
           var fctValue = decodedElement[1];
-          console.log(selectedFacets[fctField]?true:false)
           if(!selectedFacets[fctField]){
             selectedFacets[fctField] = new Array();
           }
           selectedFacets[fctField].push(fctValue);
         });
-        console.log(selectedFacets)
         $.each(selectedFacets, function(fctField, fctValues){
-            console.log($('.facets-list').find('a[data-fctname="'+fctField+'"]'));
             currObjInstance.connectedflyoutWidget.mainElement = $('.facets-list').find('a[data-fctname="'+fctField+'"]');
             currObjInstance.connectedflyoutWidget.parentMainElement = currObjInstance.connectedflyoutWidget.mainElement.parent();
             currObjInstance.currentFacetField = currObjInstance.connectedflyoutWidget.mainElement.attr('data-fctname');
             currObjInstance.connectedflyoutWidget.buildLeftContainer();
             currObjInstance.connectedflyoutWidget.parentMainElement.find('.input-search-fct-container').hide();
-            
-            console.log(fctValues)
             $.each(fctValues, function(){
                 var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, currObjInstance.getLocalizedValue(fctField, this));
                 
@@ -514,11 +521,8 @@ function searchResultsInitializer(){
             currObjInstance.connectedflyoutWidget.addMoreFilters.click(function(event){
                 currObjInstance.connectedflyoutWidget.build($(this));
             });
-            console.log("giro")
         });
       }
-      console.log(paramsFacetValues);
-      console.log(selectedFacets);
     },
     
     getUrlVars: function(){
