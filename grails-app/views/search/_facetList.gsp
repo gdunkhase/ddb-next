@@ -3,7 +3,7 @@
 <g:each var="i" in="${ (0..<upperBound) }">
   <li>
     <a href="${facetValues[i]['url']}" class="${facetValues[i]['selected']}">
-      <span class="count">(${String.format('%,d',facetValues[i]['cnt'].toInteger())})</span>
+      <span class="count"><g:localizeNumbers>${facetValues[i]['cnt']}</g:localizeNumbers></span>
       <g:if test="${facetType == 'affiliate_fct' || facetType == 'keywords_fct' || facetType == 'place_fct' || facetType == 'provider_fct'}">
         <span class="label">${facetValues[i]['fctValue'].encodeAsHTML()}</span>
       </g:if>
