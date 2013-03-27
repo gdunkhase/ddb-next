@@ -107,6 +107,12 @@ MapWidget.prototype = {
 		 map.addEditingMode(new OpenLayers.Control.EditingMode.PointArraySnapping());
 		 */
 
+		var linkForGeoTemCo = 'http://www.informatik.uni-leipzig.de:8080/geotemco/';
+		this.geotemcoLink = document.createElement("div");
+		this.geotemcoLink.setAttribute('class', 'geotemcoLink');
+		this.geotemcoLink.innerHTML = '<a href=' + linkForGeoTemCo + '>GeoTemCo</a>';
+		this.gui.mapWindow.appendChild(this.geotemcoLink);
+
 		var linkForOsm = 'http://www.openstreetmap.org/';
 		var linkForLicense = 'http://creativecommons.org/licenses/by-sa/2.0/';
 		this.osmLink = document.createElement("div");

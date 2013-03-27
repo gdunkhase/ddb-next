@@ -1,22 +1,19 @@
 .locations #divOSM { 
-float: right;
-clear: right;
-width: 476px;
-height: 300px;
+  position: relative;
+  float: right;
+  clear: right;
+  width: 476px;
+  height: 300px;
 
-padding: 0; 
-padding-left:10px;
-padding-right:8px;
-margin: 0;
+  line-height: 0px;
 
-line-height:30px;
-background-color:#efebe8;
+  margin-left: 8px;
 
-overflow: hidden;
-font-size:0.938em;
-font-style: italic;
-position: relative;
+  background-color:#efebe8;
 
+  overflow: hidden;
+  font-size:0.938em;
+  font-style: italic;
 }
 
 .location-container .location {

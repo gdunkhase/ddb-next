@@ -5309,6 +5309,12 @@ MapWidget.prototype = {
 		 map.addEditingMode(new OpenLayers.Control.EditingMode.PointArraySnapping());
 		 */
 
+		var linkForGeoTemCo = 'http://www.informatik.uni-leipzig.de:8080/geotemco/';
+		this.geotemcoLink = document.createElement("div");
+		this.geotemcoLink.setAttribute('class', 'geotemcoLink');
+		this.geotemcoLink.innerHTML = '<a href=' + linkForGeoTemCo + '>GeoTemCo</a>';
+		this.gui.mapWindow.appendChild(this.geotemcoLink);
+
 		var linkForOsm = 'http://www.openstreetmap.org/';
 		var linkForLicense = 'http://creativecommons.org/licenses/by-sa/2.0/';
 		this.osmLink = document.createElement("div");
@@ -8746,9 +8752,7 @@ function MapZoomSlider(parent, orientation) {
         if (zs.parent.core.widget.popup) {
             zs.parent.core.widget.popup.reset();
         }
-        if (zs.parent.getZoom() < 18) { // avoid zoom Level 19. 19 has no tiles / does not exists
-            zs.parent.zoom(1);  
-        }
+		zs.parent.zoom(1);
 	}
 	this.div.appendChild(zoomIn);
 
@@ -8789,7 +8793,7 @@ function MapZoomSlider(parent, orientation) {
 
 	this.setMaxAndLevels = function(max, levels) {
 		this.max = max;
-		this.levels = (levels==19)?18:levels;
+		this.levels = levels;
 		this.slider.setMaximum(max);
 	}
 	//	this.setMaxAndLevels(1000,parent.openlayersMap.getNumZoomLevels());

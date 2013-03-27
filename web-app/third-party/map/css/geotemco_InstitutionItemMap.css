@@ -579,10 +579,34 @@ filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	visibility: hidden;
 }
 
+.geotemcoLink {
+	position: absolute;
+	left: 5px;
+	bottom: 8px;
+	font-size: 11px;
+	color: #56524F;
+	visibility: visible;
+	z-index: 1100;
+}
+
+.geotemcoLink a {
+	color: #56524f;
+}
+
+.geotemcoLink a:visited {
+	color: #56524f;
+}
+
+.geotemcoLink a:hover, a:active, a:focus { 
+        text-decoration: underline;
+        color: #A5003B;
+}
+
+
 .osmLink {
 	position: absolute;
 	right: 5px;
-	bottom: 5px;
+	bottom: 8px;
 	font-size: 11px;
 	color: #56524F;
 	visibility: hidden;
