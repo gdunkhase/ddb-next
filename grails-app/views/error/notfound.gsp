@@ -1,6 +1,6 @@
 <html>
 <head>
-<title><g:message code="error.notfound.title"/> - Deutsche Digitale Bibliothek</title>
+<title><g:message code="error.notfound.title"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="layout" content="main" />
 

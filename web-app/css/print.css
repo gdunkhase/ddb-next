@@ -22,16 +22,18 @@ footer, .footer,
 .results-list, .matches, #previews-list {
   list-style: none;
 }
-.results-list .item {
-  width: 575px;
+.results-list .item, .results-list.grid .item {
+  display: block;
+  width: 560px;
 }
 .summary-main-wrapper {
-  display: inline-block;
-  width: 440px;
+  width: 100%;
+}
+.results-list.grid .item .thumbnail-wrapper {
+  margin-left: 0px;
 }
 .thumbnail-wrapper {
-  display: inline-block;
-  width: 130px;
+  margin-left: 470px;
 }
 .search-results .results-list .summary-main-wrapper .title a {
   font-size: 22px;

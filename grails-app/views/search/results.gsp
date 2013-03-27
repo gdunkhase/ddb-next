@@ -1,7 +1,7 @@
 <g:set var="facetsList" value="${['time_fct', 'place_fct', 'affiliate_fct', 'keywords_fct', 'language_fct', 'type_fct', 'sector_fct', 'provider_fct']}"></g:set>
 <html>
 <head>
-<title>${title} - <g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/></title>
+<title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 <meta name="layout" content="main" />
 
 </head>

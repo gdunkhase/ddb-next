@@ -199,6 +199,7 @@ class ItemService {
                 'preview' : ['title':'', 'uri':''],
                 'thumbnail' : ['title':'', 'uri':''],
                 'full' : ['title':'', 'uri':''],
+                'checkValue' : "",
             ]
             y.each { z ->
                 path = z.'@path'
@@ -216,19 +217,25 @@ class ItemService {
                         binaryMap.'orig'.'uri'.'video' = BINARY_SERVER_URI + z.'@path'
                         binaryMap.'orig'.'title' = z.'@name'
                     }
+                    binaryMap.'checkValue' = "1";
                 }
                 else if(path.contains(PREVIEW)) {
                     binaryMap.'preview'.'title' = z.'@name'
                     binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
+                    binaryMap.'checkValue' = "1";
                 } else if (path.contains(THUMBNAIL)) {
                     binaryMap.'thumbnail'.'title' = z.'@name'
                     binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
+                    binaryMap.'checkValue' = "1";
                 } else if (path.contains(FULL)) {
                     binaryMap.'full'.'title' = z.'@name'
                     binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
+                    binaryMap.'checkValue' = "1";
                 }
             }
-            binaryList.add(binaryMap)
+            if(binaryMap.'checkValue'){
+              binaryList.add(binaryMap)
+            }
         }
         return binaryList
     }

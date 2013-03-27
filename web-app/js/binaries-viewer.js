@@ -155,10 +155,6 @@ window.ddbAddOnloadListener(function() {
     $("div.binary-viewer-error").addClass("off");
     $("div.binary-viewer-flash-upgrade").addClass("off");
   }
-  function updatePagination() {
-    $("div.binary-viewer-error").addClass("off");
-    $("div.binary-viewer-flash-upgrade").addClass("off");
-  }
   $("p.all").click(function() {
     var tab = $("div.all");
     currentTab(this);
@@ -215,16 +211,19 @@ window.ddbAddOnloadListener(function() {
             'nextEffect'   : 'fade',
             'tpl' :{
                 wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-pagination"><span></span></div></div></div></div></div>',
-                prev     : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();"></span>',
-                next     : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();"></span>'
+                prev     : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();" ></span>',
+                next     : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();" ></span>'
             },
             'afterLoad': function() {
                 var title = $(this.element).attr('caption');
-                var position = $(this.element).attr('pos') + '/' +$("#previews-list li").size();
+                var position = $(this.element).attr('pos') + '/' + $("#previews-list li").size();
                 $("span.fancybox-toolbar-title").text(title);
                 $("div.fancybox-pagination span").text(position);
             }
         });
+        if($("#previews-list li").size()==1){
+            $(".fancybox-pagination").addClass("off");
+        }
         return false;
   });
   $("a.group").click(function(e) {
