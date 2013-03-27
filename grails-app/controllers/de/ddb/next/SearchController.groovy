@@ -82,12 +82,8 @@ class SearchController {
 
         if(params.reqType=="ajax"){
             def resultsHTML = ""
-            if(resultsItems.numberOfResults > 0){
-                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url,
-                    offset: params["offset"]]).replaceAll("\r\n", '')
-            }else{
-                resultsHTML = g.render(template:"/search/noResults").replaceAll("\r\n", '')
-            }
+            resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: grailsApplication.config.ddb.binary.url,
+                offset: params["offset"]]).replaceAll("\r\n", '')
             def jsonReturn = [results: resultsHTML,
                 resultsPaginatorOptions: resultsPaginatorOptions,
                 resultsOverallIndex:resultsOverallIndex,

@@ -1,4 +1,4 @@
-<div class="page-info-nav noresult-hidden <g:if test="${results.numberOfResults == 0}">off</g:if>">
+<div class="page-info-nav">
   <div class="page-info">
     <span class="results-overall-index">${navData.resultsOverallIndex}</span>
     <span><g:message code="ddbnext.Of" /></span>

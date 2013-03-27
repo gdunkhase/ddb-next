@@ -41,14 +41,17 @@
       <a href="${clearFilters}" class="clear-filters button" ><g:message code="ddbnext.Clear_filters"/></a>
     </div>
     
-    <div class="span9 search-results-content">
+    <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
+      <g:render template="noResults" />
+    </div>
+    <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
       <div class="off result-pages-count">${totalPages}</div>
     
       <g:resultsPaginatorOptionsRender paginatorData="${resultsPaginatorOptions}"></g:resultsPaginatorOptionsRender>
       
       <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"></g:pageInfoNavRender>
       
-      <div class="row noresult-hidden <g:if test="${results.numberOfResults == 0}">off</g:if>">
+      <div class="row">
         <div class="span9">
           <div class="results-paginator-view off">
             <div class="group-actions">
@@ -70,16 +73,10 @@
             <g:if test="${results}">
               <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
             </g:if>
-            <g:if test="${results.numberOfResults == 0}">
-              <g:render template="noResults" />
-            </g:if>
-            
           </div>
         </div>
-      </div>
-      
+      </div>        
       <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}"></g:pageInfoNavRender>
-      
     </div>
   </div>
 </body>

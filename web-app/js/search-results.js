@@ -297,9 +297,11 @@ function updateLanguageSwitch(params) {
         $('.search-results').fadeOut('fast', function(){
         var JSONresponse = jQuery.parseJSON(data.responseText);
     	if(JSONresponse.numberOfResults==0){
-    		$('.noresult-hidden').addClass("off");
+    		$('.search-noresults-content').removeClass("off");
+    		$('.search-results-content').addClass("off");
     	}else{
-    		$('.noresult-hidden').removeClass("off");
+    		$('.search-noresults-content').addClass("off");
+    		$('.search-results-content').removeClass("off");
     	}
         $('.search-results').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
