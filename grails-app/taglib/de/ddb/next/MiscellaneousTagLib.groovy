@@ -38,7 +38,7 @@ class MiscellaneousTagLib {
     /**
      * Gives you back a localized representation of the number
      */
-    def localizeNumbers = { attrs, body ->
+    def localizeNumber = { attrs, body ->
         def inputString = body()
         def outputString = ""
         if(inputString){
