@@ -5849,7 +5849,7 @@ MapWidget.prototype = {
 			}));
 		}
 		for (var i = 0; i < this.baseLayers.length; i++) {
-			this.openlayersMap.addLayers([this.baseLayers[i]]);
+			this.openlayersMap.addLayers([this.baseLayers[i]]); // this also sets openlayerMap.getNumZoomLevels()
 		}
 		if (this.options.alternativeMap) {
 			this.addBaseLayers([this.options.alternativeMap]);
@@ -9021,19 +9021,21 @@ function MapZoomSlider(parent, orientation) {
 
 	var zoomIn = document.createElement("img");
 
-  	zoomIn.src = GeoTemConfig.path + "ddb_zoom_in.png";
+  	zoomIn.src = GeoTemConfig.path + "ddb_zoom_in.png"; // "+"
 	zoomIn.setAttribute('class', 'zoomSliderIn-' + orientation);
 	zoomIn.onclick = function() {
         if (zs.parent.core.widget.popup) {
             zs.parent.core.widget.popup.reset();
         }
-		zs.parent.zoom(1);
+        if (zs.parent.getZoom() < 18) { // avoid zoom Level 19. 19 has no tiles / does not exists
+            zs.parent.zoom(1);  
+        }
 	}
 	this.div.appendChild(zoomIn);
 
 	var zoomOut = document.createElement("img");
 
-  	zoomOut.src = GeoTemConfig.path + "ddb_zoom_out.png";
+  	zoomOut.src = GeoTemConfig.path + "ddb_zoom_out.png"; // "-"
 	zoomOut.setAttribute('class', 'zoomSliderOut-' + orientation);
 	zoomOut.onclick = function() {
         if (zs.parent.core.widget.popup) {
@@ -9068,7 +9070,7 @@ function MapZoomSlider(parent, orientation) {
 
 	this.setMaxAndLevels = function(max, levels) {
 		this.max = max;
-		this.levels = levels;
+		this.levels = (levels==19)?18:levels;
 		this.slider.setMaximum(max);
 	}
 	//	this.setMaxAndLevels(1000,parent.openlayersMap.getNumZoomLevels());

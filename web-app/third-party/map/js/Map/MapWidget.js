@@ -647,7 +647,7 @@ MapWidget.prototype = {
 			}));
 		}
 		for (var i = 0; i < this.baseLayers.length; i++) {
-			this.openlayersMap.addLayers([this.baseLayers[i]]);
+			this.openlayersMap.addLayers([this.baseLayers[i]]); // this also sets openlayerMap.getNumZoomLevels()
 		}
 		if (this.options.alternativeMap) {
 			this.addBaseLayers([this.options.alternativeMap]);

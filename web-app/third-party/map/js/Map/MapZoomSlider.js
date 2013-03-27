@@ -47,7 +47,7 @@ function MapZoomSlider(parent, orientation) {
 
 	var zoomIn = document.createElement("img");
 
-  	zoomIn.src = GeoTemConfig.path + "ddb_zoom_in.png";
+  	zoomIn.src = GeoTemConfig.path + "ddb_zoom_in.png"; // "+"
 	zoomIn.setAttribute('class', 'zoomSliderIn-' + orientation);
 	zoomIn.onclick = function() {
         if (zs.parent.core.widget.popup) {
@@ -59,7 +59,7 @@ function MapZoomSlider(parent, orientation) {
 
 	var zoomOut = document.createElement("img");
 
-  	zoomOut.src = GeoTemConfig.path + "ddb_zoom_out.png";
+  	zoomOut.src = GeoTemConfig.path + "ddb_zoom_out.png"; // "-"
 	zoomOut.setAttribute('class', 'zoomSliderOut-' + orientation);
 	zoomOut.onclick = function() {
         if (zs.parent.core.widget.popup) {

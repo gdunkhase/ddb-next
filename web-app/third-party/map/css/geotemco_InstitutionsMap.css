@@ -853,6 +853,7 @@ filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	position: absolute;
 	top: 4px;
 	left: 4px;
+    margin: 0px;
 	cursor: pointer;
 }
 
@@ -860,6 +861,7 @@ filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	position: absolute;
 	bottom: 5px;
 	left: 4px;
+    margin: 0px;
 	cursor: pointer;
 }
 
