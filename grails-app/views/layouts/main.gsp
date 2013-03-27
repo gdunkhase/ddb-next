@@ -14,7 +14,10 @@
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
 
     <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
-    <script>var contextPath="${request.contextPath}"</script>
+    <script>
+        var contextPath="${request.contextPath}";
+        var lang="<g:message code="ddbnext.language"/>";
+    </script>
     <r:require module="ddbnext" />
     <r:require module="autocomplete" />
     <g:layoutHead />
