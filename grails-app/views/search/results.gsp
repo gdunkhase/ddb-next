@@ -41,8 +41,8 @@
           <g:message code="ddbnext.Keep_filters"/>
         </label>
       </div>
-      <div class="clear-filters">
-        <a href="${clearFilters}" class="clear-filters button" id="clear-filters-button"><g:message code="ddbnext.Clear_filters"/></a>
+      <div>
+        <a href="${clearFilters}" class="clear-filters button"><g:message code="ddbnext.Clear_filters"/></a>
       </div>
     </div>
     

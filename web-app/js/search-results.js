@@ -266,7 +266,7 @@ function searchResultsInitializer(){
     addParamToCurrentUrl(paramsArray);
     setSearchCookieParameter(paramsArray);
   });
-  $('#clear-filters-button').click(function(){
+  $('.clear-filters').click(function(){
     removeSearchCookieParameter('facetValues[]');
   });
   function fetchResultsList(url){
