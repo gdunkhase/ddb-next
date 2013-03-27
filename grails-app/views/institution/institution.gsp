@@ -15,12 +15,12 @@
                     <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
                     <g:link class="count" style="color: black; font-size: small;" controller="search" action="results" params="[query: '', offset: '0',
                                rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
-                        ${countObjcs}
-                        <g:if test="${(countObjcs = 1)}">
-                            <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
+                        <g:set var="flashArgs" value='["${String.format(Locale.default,'%,d', countObjcs)}"]' />
+                        <g:if test="${(countObjcs == 1)}">
+                            <g:message args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
                         </g:if>
                         <g:if test="${(countObjcs > 1)}">
-                            <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
+                            <g:message args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
                         </g:if>
                      </g:link>
                  </g:if>
