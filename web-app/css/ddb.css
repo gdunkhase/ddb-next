@@ -51,7 +51,6 @@ header ul li,.header ul li {
 }
 header ul li.active a,.header ul li.active a {
   color:#a5003b;
-  font-weight:bold;
 }
 header .navigation,.header .navigation {
   text-transform:uppercase;
@@ -64,6 +63,17 @@ header .navigation li,.header .navigation li {
 }
 header .navigation li.active ul,.header .navigation li.active ul {
   display:block;
+}
+header .navigation li.active-default ul,.header .navigation li.active-default ul {
+  display:block;
+}
+header ul li.active-default > a,.header ul li.active-default > a {
+  color:#a5003b !important;
+  font-weight:bold !important;
+}
+header ul li.active-closed > a,.header ul li.active-closed > a {
+  color:#a5003b;
+  font-weight:bold;
 }
 header .navigation li:last-child,.header .navigation li:last-child {
   padding-right:0;
