@@ -51,7 +51,9 @@
               });
               --%>
               window.ddbAddOnloadListener(function() {
-                drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
+                drawmap('divOSM','de',
+                        ${selectedOrgXML.locations.location.geocode.longitude},
+                        ${selectedOrgXML.locations.location.geocode.latitude}   );
               });
               //-->
             </script>

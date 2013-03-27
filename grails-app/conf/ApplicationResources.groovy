@@ -60,10 +60,14 @@ modules = {
     error { resource url:'/css/error.css' }
 
     institution {
+    /*
         resource url:'/css/institution.css'
         resource url:'http://www.openlayers.org/api/OpenLayers.js'
         resource url:'http://www.openstreetmap.org/openlayers/OpenStreetMap.js'
         resource url:'/js/ddb.osm.institutiondetailview.js'
+    */
+        resource url:'/third-party/map/css/geotemco_InstitutionItemMap.css'
+        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
     }
 
     institutionlist {
