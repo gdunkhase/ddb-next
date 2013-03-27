@@ -4,10 +4,10 @@
     <span><g:message code="ddbnext.Of" /></span>
     <span><b><span class="results-total" id="results-total">${numberOfResultsFormatted}</span></b></span>
     <g:if test="${numberOfResultsFormatted == '1'}">
-        <span><g:message code="ddbnext.Result_lowercase" /></span>
+        <span id="results-label"><g:message code="ddbnext.Result_lowercase" /></span>
     </g:if>
     <g:else>
-        <span><g:message code="ddbnext.Results_lowercase" /></span>
+        <span id="results-label"><g:message code="ddbnext.Results_lowercase" /></span>
     </g:else>
   </div>
   <div class="page-nav">
