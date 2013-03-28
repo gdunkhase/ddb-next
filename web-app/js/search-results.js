@@ -44,7 +44,6 @@ function historyManager(path){
     window.history.pushState({path:path},'',path);
     historyedited = true;
   }else{
-    console.log("before change: "+globalUrl);
     globalUrl = (path.indexOf('?')>-1)?path.split('?')[1]:path;
   }
 }
@@ -582,7 +581,7 @@ function updateLanguageSwitch(params) {
     
     getUrlVars: function(){
       var vars = {}, hash;
-      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+      var hashes = (historySupport)?window.location.href.slice(window.location.href.indexOf('?') + 1).split('&'):globalUrl.split('&');
       for(var i = 0; i < hashes.length; i++)
       {
         hash = hashes[i].split('=');
