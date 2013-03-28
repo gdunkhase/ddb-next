@@ -133,10 +133,6 @@
 .slide-viewer .btn-next:hover:not(.disabled) span {
   background-position:0px -32px;
 }
-.slide-viewer button:focus {
-  border:1px dotted #a5003b;
-  margin:0px;
-}
 .slide-viewer .tabs {
   position:relative;
   height:auto
@@ -172,6 +168,7 @@
   float:right;
   z-index: 1;
   position: relative;
+  font-size: 13px;
 }
 .slide-viewer .gallery-pagination:hover {
   text-decoration:none;
@@ -243,7 +240,10 @@ noscript .scroller {
   bottom: 0px;
   position: absolute;
   color: #FFF;
-  background: url("../images/icons/fancybox_overlay.png");
+  background-color: #e8eae9;
+  opacity: 0.8;
+  color: #3E3A37; 
+  font-size: 14px;
 }
 .fancybox-pagination span {
   font-size: 20px;

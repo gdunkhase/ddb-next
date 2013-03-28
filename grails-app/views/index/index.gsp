@@ -1,6 +1,6 @@
 <html>
 <head>
-<title><g:message code="ddbnext.Homepage"/> - <g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/></title>
+<title><g:message code="ddbnext.Homepage"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 <meta name="layout" content="main" />
 <r:require module="startpage"/>
 </head>
@@ -12,8 +12,8 @@
         <img src="${resource(dir: 'images', file: 'logo_big.png')}" class="bigLogo" alt="<g:message code="ddbnext.Logo_Description"/>" title="<g:message code="ddbnext.Logo_Title"/>" />
       </div>
       <div class="row">
-        <g:form method="get" role="search" id="form-search" url="[controller:'search', action:'results']">
-          <div class="span7">
+        <div class="span12">
+          <g:form method="get" role="search" id="form-search" url="[controller:'search', action:'results']">
             <label> 
               <span><g:message code="ddbnext.Search_text_field"/></span>
             </label>
@@ -28,11 +28,11 @@
                   default="ddbnext.Search_Hint"/>">
             </span>
             <div class="tooltip off"></div>
-          </div>
-          <div class="span3 link-adv-search"> 
-            <g:link class="fl" controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link>
-          </div>
-        </g:form>
+            <div class="link-adv-search"> 
+              <g:link class="fl" controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link>
+            </div>
+          </g:form>
+        </div>
       </div>
     </div>
   </div>

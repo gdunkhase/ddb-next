@@ -1,13 +1,18 @@
+<html>
+<head>
+<title>${selectedOrgXML.name} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 <meta name="layout" content="main" />
 <r:require module="openstreetmap" />
-<title>${selectedOrgXML.name} - Deutsche Digitale Bibliothek</title>
+</head>
+<body>
+  <div class="institution-item-page">
 
-    <div class="institution-item-page">
-    
-       <div class="row institution">
+    <div class="row">
+       <div class="span12 institution">
+         <div class="row">
            <div class="span10">
              <div>
-              <g:message code="ddbnext.${selectedOrgXML.sector}"/>
+               <g:message code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
              <div>
                  <h2>${selectedOrgXML.name}
@@ -33,10 +38,13 @@
            <div class="span2">
              <img class="logo" alt="${selectedOrgXML.name}" src="${selectedOrgXML.logo}">
            </div>
+         </div>
        </div>
-            
-       <div class="locations">
-       
+     </div>
+
+     <div class="row">
+       <div class="span12 locations">
+
             <div id="divOSM"></div>
             <script type="text/javascript">
               <!--
@@ -75,17 +83,18 @@
                               <b>${parentOrg[parentOrg.size() - 1].label}</b>
                           </g:if>
                           <g:else>
-                              <i class="icon-child-institution"></i>
-                              <a href="/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
+                            <i class="icon-child-institution"></i>
+                            <a href="/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                           </g:else>
                           <g:render template="subinstitutions" />
                         </li>
                       </ol>
                     </div>
-                </g:if>
-                
+                  </g:if>
+                </div>
+              </div>
             </div>
-      </div>
-      
-    </div>
-    
+  </div>
+</body>
+</html>
+

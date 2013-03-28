@@ -1,7 +1,7 @@
 <html>
 <!-- TODO i18n -->
 <head>
-  <title>${pageLabel} - Deutsche Digitale Bibliothek</title>
+  <title>${pageLabel} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
   <meta name="layout" content="main" />
 </head>
 <body>

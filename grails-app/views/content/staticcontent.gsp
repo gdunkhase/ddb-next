@@ -1,7 +1,7 @@
 <html>
 <!-- TODO my do write the head element again? -->
 <head>
-  <title>${title} - Deutsche Digitale Bibliothek</title>
+  <title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 <g:if test="${author}">
     <meta name="author" content="${author}" />
 </g:if>

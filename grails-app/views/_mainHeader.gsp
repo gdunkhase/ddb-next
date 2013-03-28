@@ -16,7 +16,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar" style="visibility:hidden;"></span>
       </button>
-      <g:link uri="/" class="brand" title="${message(code: 'ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml')}" tabindex="-1">
+      <g:link uri="/" class="brand" title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}" tabindex="-1">
         <r:img dir="images" file="logo_header.png" alt="Deutsche Digitale Bibliothek"/>
       </g:link>
       <div class="nav-collapse collapse">
@@ -54,7 +54,7 @@
         <nav class="widget span12" data-widget="NavigationWidget">
           <div class="row">
             <div class="span7">
-              <g:link uri="/" class="navigation-header-logo" title="${message(code: 'ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml')}" tabindex="-1">
+              <g:link uri="/" class="navigation-header-logo" title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}" tabindex="-1">
                 <r:img dir="images" file="logo_header.png" alt=""/>
               </g:link>
               <ul class="navigation inline" role="navigation">
