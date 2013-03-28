@@ -67,6 +67,7 @@ function openModalDialog(title,content){
   
   modalDialogCloseButton.click(function(){
     modalDialogOverlay.fadeOut('fast',function(){
+      body.css('overflow','auto');
       modalDialogOverlay.remove();
     });
   });
