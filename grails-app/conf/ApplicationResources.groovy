@@ -71,6 +71,8 @@ modules = {
     }
 
     institutionlist {
+        resource url:'/css/institution-map.css'
+
         resource url:'http://www.openlayers.org/api/OpenLayers.js'
         resource url:'/js/map-widget-test.js'
         resource url:'/js/institution-map.js'
