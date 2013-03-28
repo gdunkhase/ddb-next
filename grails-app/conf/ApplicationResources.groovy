@@ -91,9 +91,9 @@ modules = {
     }
 
     pdf {
-        resource url:'/css/bootstrap.css'//, exclude:'zip'
-        resource url:'/css/ddb.css'//, exclude:'zip'
-        resource url:'/css/item.css'//, exclude:'zip'
-        resource url:'/css/pdf.css'//, exclude:'zip'
+        resource url:'/css/bootstrap.css', exclude:'zip', attrs:[media:'print']
+        resource url:'/css/ddb.css', exclude:'zip', attrs:[media:'print']
+        resource url:'/css/item.css', exclude:'zip', attrs:[media:'print']
+        resource url:'/css/pdf.css', exclude:'zip', attrs:[media:'print']
     }
 }
