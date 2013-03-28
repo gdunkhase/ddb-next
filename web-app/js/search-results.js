@@ -17,11 +17,17 @@
 $(document).ready(function() {
   if (window.history && history.pushState) {
     historyedited = false;
+    historySupport = true;
     $(window).bind('popstate', function(e) {
      if (historyedited) {
       stateManager(location.pathname + location.search);
      }
     });
+  }else{
+      historySupport = false;
+      //Utilized for browser that doesn't supports pushState.
+      //It will be used as reference URL for all the ajax actions
+      globalUrl = location.search.substring(1);
   }
   
   searchResultsInitializer();
@@ -34,9 +40,12 @@ $(document).ready(function() {
 });
 
 function historyManager(path){
-if(window.history && history.pushState) {
-  window.history.pushState({path:path},'',path);
+  if(historySupport) {
+    window.history.pushState({path:path},'',path);
     historyedited = true;
+  }else{
+    console.log("before change: "+globalUrl);
+    globalUrl = (path.indexOf('?')>-1)?path.split('?')[1]:path;
   }
 }
 
@@ -77,7 +86,8 @@ function searchResultsInitializer(){
   //This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
   //IMPORTANT: remember to pass your arrayParamVal already URL decoded
   function addParamToUrl(arrayParamVal, path, urlString){
-    var queryParameters = {}, queryString = (urlString==null)?location.search.substring(1):urlString,
+    var currentUrl = (historySupport)?location.search.substring(1):globalUrl;
+    var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
         var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
@@ -100,7 +110,8 @@ function searchResultsInitializer(){
   }
   
   function removeParamFromUrl(arrayParamVal, path, urlString){
-    var queryParameters = {}, queryString = (urlString==null)?location.search.substring(1):urlString,
+    var currentUrl = (historySupport)?location.search.substring(1):globalUrl;
+    var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
         var keyParam = decodeURIComponent(m[1].replace(/\+/g,'%20'));
@@ -236,14 +247,14 @@ function updateLanguageSwitch(params) {
   });
   $('#thumbnail-filter').click(function(){
     var valueCheck = $(this);
-    if(valueCheck.is(':checked'))
+    if(valueCheck.is(':checked')){
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'true'));
-    else
+    }else{
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'false'));
+    }
     paramsArray.push(new Array('offset', 0));
     var newUrl = addParamToCurrentUrl(paramsArray);
     fetchResultsList(newUrl);
-    historyManager(newUrl);
   });
   $('#view-grid').click(function(){
     $('.summary-main .title a').each(function(index,value){
@@ -296,13 +307,13 @@ function updateLanguageSwitch(params) {
       complete: function(data){
         $('.search-results').fadeOut('fast', function(){
         var JSONresponse = jQuery.parseJSON(data.responseText);
-    	if(JSONresponse.numberOfResults==0){
-    		$('.search-noresults-content').removeClass("off");
-    		$('.search-results-content').addClass("off");
-    	}else{
-    		$('.search-noresults-content').addClass("off");
-    		$('.search-results-content').removeClass("off");
-    	}
+        if(JSONresponse.numberOfResults==0){
+            $('.search-noresults-content').removeClass("off");
+            $('.search-results-content').addClass("off");
+        }else{
+            $('.search-noresults-content').addClass("off");
+            $('.search-results-content').removeClass("off");
+        }
         $('.search-results').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
         $('.page-input').attr("value", JSONresponse.page);
@@ -357,32 +368,42 @@ function updateLanguageSwitch(params) {
     currentFacetValuesSelected: new Array(),
     currentFacetValuesNotSelected: new Array(),
     currentPage: 1,
+    searchFacetValuesTimeout: 0,
 
     init: function(){
     },
 
-    fetchFacetValues: function(flyoutWidget){
-        this.connectedflyoutWidget = flyoutWidget;
+    fetchFacetValues: function(flyoutWidget, query){
+        if(flyoutWidget!=null)
+          this.connectedflyoutWidget = flyoutWidget;
         var oldParams = this.getUrlVars();
         var currObjInstance = this;
-        var fctValues = "";
+        var fctValues = '';
+        var isThumbnailFIltered = '';
+        var queryParam = '';
         var resp = new Array();
         if(oldParams['facetValues%5B%5D']){
           $.each(oldParams['facetValues%5B%5D'], function(key, value){
             fctValues = (value.indexOf(currObjInstance.currentFacetField)>=0)?fctValues:fctValues+'&facetValues%5B%5D='+value;
           });
         }
+        if(oldParams['isThumbnailFiltered'] && oldParams['isThumbnailFiltered']=='true'){
+            isThumbnailFIltered = '&isThumbnailFiltered=true';
+        }
+        if(query){
+            queryParam='&query='+query;
+        }
         this.connectedflyoutWidget.renderFacetLoader();
         var request = $.ajax({
             type: 'GET',
             dataType: 'json',
             async: true,
-            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+fctValues+'&offset='+this.currentOffset+'&rows='+this.currentRows,
+            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+queryParam+fctValues+isThumbnailFIltered+'&offset='+this.currentOffset+'&rows='+this.currentRows,
             complete: function(data){
                 var parsedResponse = jQuery.parseJSON(data.responseText);
                 //Initialization of currentFacetValuesSelected / currentFacetValuesNotSelected
                 currObjInstance.initializeFacetValuesStructures(parsedResponse.values);
-                flyoutWidget.initializeFacetValues(parsedResponse.type, currObjInstance.currentFacetValuesNotSelected);
+                currObjInstance.connectedflyoutWidget.initializeFacetValues(parsedResponse.type, currObjInstance.currentFacetValuesNotSelected);
                 }
             });
     },
@@ -499,6 +520,66 @@ function updateLanguageSwitch(params) {
       element.remove();
     },
     
+    initializeFacetValuesDynamicSearch: function(inputSearchElement){
+      var currObjInstance = this;
+      inputSearchElement.keyup(function(e){
+        var code = (e.keyCode ? e.keyCode : e.which);
+        var inputValue = this.value;
+        if(code!=16 && code!=17 && code!=18 && code!=37 && code!=38 && code!=39 && code!=40 && code!=13){
+            var d = new Date();
+            currObjInstance.searchFacetValuesTimeout = d.getTime();
+            setTimeout(function(){
+                var currentD = new Date();
+              if(currObjInstance.searchFacetValuesTimeout+400<currentD.getTime()  && currObjInstance.connectedflyoutWidget.opened){
+                  currObjInstance.connectedflyoutWidget.parentMainElement.find('.flyout-right-container').remove();
+                  currObjInstance.connectedflyoutWidget.buildStructure();
+                  currObjInstance.fetchFacetValues(null,inputValue);
+              }
+              else{
+                return;
+              }
+            },500);
+          }
+      });
+    },
+    
+    initializeSelectedFacetOnLoad: function(connectedflyoutWidget){
+      var currObjInstance = this;
+      this.connectedflyoutWidget = connectedflyoutWidget;
+      var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
+      if(paramsFacetValues){
+        var selectedFacets = {};
+        $.each(paramsFacetValues, function(key,value){
+          var decodedElement = decodeURIComponent(value.replace(/\+/g,'%20')).split('=');
+          var fctField = decodedElement[0];
+          var fctValue = decodedElement[1];
+          if(!selectedFacets[fctField]){
+            selectedFacets[fctField] = new Array();
+          }
+          selectedFacets[fctField].push(fctValue);
+        });
+        $.each(selectedFacets, function(fctField, fctValues){
+            currObjInstance.connectedflyoutWidget.mainElement = $('.facets-list').find('a[data-fctname="'+fctField+'"]');
+            currObjInstance.connectedflyoutWidget.parentMainElement = currObjInstance.connectedflyoutWidget.mainElement.parent();
+            currObjInstance.currentFacetField = currObjInstance.connectedflyoutWidget.mainElement.attr('data-fctname');
+            currObjInstance.connectedflyoutWidget.buildLeftContainer();
+            currObjInstance.connectedflyoutWidget.parentMainElement.find('.input-search-fct-container').hide();
+            $.each(fctValues, function(){
+                var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, currObjInstance.getLocalizedValue(fctField, this));
+                
+                selectedFacetValue.find('.facet-remove').click(function(){
+                  currObjInstance.unselectFacetValue(selectedFacetValue);
+                });
+            });
+            
+            currObjInstance.connectedflyoutWidget.renderAddMoreFiltersButton(fctField);
+            currObjInstance.connectedflyoutWidget.addMoreFilters.click(function(event){
+                currObjInstance.connectedflyoutWidget.build($(this));
+            });
+        });
+      }
+    },
+    
     getUrlVars: function(){
       var vars = {}, hash;
       var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -514,6 +595,24 @@ function updateLanguageSwitch(params) {
     },
     getUrlVar: function(name){
       return this.getUrlVars()[name];
+    },
+    getLocalizedValue: function(facetField, facetValue){
+        if(facetField=='affiliate_fct' || facetField=='keywords_fct' || facetField=='place_fct' || facetField=='provider_fct'){
+            return facetValue.toString();
+        }
+        if(facetField=='type_fct'){
+            return messages.ddbnext['type_fct_'+facetValue];
+        }
+        if(facetField=='time_fct'){
+            return messages.ddbnext['time_fct_'+facetValue];
+        }
+        if(facetField=='language_fct'){
+            return messages.ddbnext['language_fct_'+facetValue];
+        }
+        if(facetField=='sector_fct'){
+            return messages.ddbnext['sector_fct_'+facetValue];
+        }
+        return '';
     }
   });
   
@@ -537,11 +636,13 @@ function updateLanguageSwitch(params) {
     paginationLiNext: null,
     paginationLiSeite: null,
     addMoreFilters: null,
+    inputSearch: null,
     
 
     //i18n variables
     
     field_MostRelevant: messages.ddbnext.Most_relevant,
+    field_NoAvailableValues: messages.ddbnext.No_Available_Values,
     field_AddMoreFiltersButtonTooltip: messages.ddbnext.Add_More_Filters_ButtonTooltip,
     field_SearchResultsFacetValueNext: messages.ddbnext.SearchResultsFacetValue_Next,
     field_SearchResultsFacetValuePrevious: messages.ddbnext.SearchResultsFacetValue_Previous,
@@ -551,6 +652,7 @@ function updateLanguageSwitch(params) {
     
     init: function(){
         this.cleanNonJsStructures();
+        this.fctManager.initializeSelectedFacetOnLoad(this);
     },
     
     build: function(element){
@@ -571,30 +673,14 @@ function updateLanguageSwitch(params) {
     },
     
     buildStructure: function(){
-      var inputSearchContainer;
-      var inputSearch;
       
       if(this.parentMainElement.find('.flyout-left-container').length>0){
         this.facetLeftContainer = this.parentMainElement.find('.flyout-left-container');
         this.selectedItems = this.parentMainElement.find('.selected-items');
-        inputSearchContainer = this.parentMainElement.find('.input-search-fct-container');
+        var inputSearchContainer = this.parentMainElement.find('.input-search-fct-container');
         this.inputSearch = this.parentMainElement.find('.input-search-fct');
       }else{
-        this.facetLeftContainer = $(document.createElement('div'));
-        this.selectedItems = $(document.createElement('ul'));
-        inputSearchContainer = $(document.createElement('div'));
-        inputSearch = $(document.createElement('input'));
-
-        this.facetLeftContainer.addClass('flyout-left-container');
-        this.selectedItems.addClass('selected-items unstyled');
-        inputSearchContainer.addClass('input-search-fct-container');
-        inputSearch.attr('type','text');
-        inputSearch.addClass('input-search-fct');
-        
-        this.facetLeftContainer.appendTo(this.mainElement.parent());
-        this.selectedItems.appendTo(this.facetLeftContainer);
-        inputSearch.appendTo(inputSearchContainer);
-        inputSearchContainer.appendTo(this.facetLeftContainer);
+        this.buildLeftContainer();
       }
       
       this.facetRightContainer = $(document.createElement('div'));
@@ -626,8 +712,6 @@ function updateLanguageSwitch(params) {
       rightHead.appendTo(this.facetRightContainer);
       this.rightBody.appendTo(this.facetRightContainer);
       
-      rightHead.html(this.field_MostRelevant);
-      
       paginationAPrev.html(this.field_SearchResultsFacetValuePrevious);
       paginationANext.html(this.field_SearchResultsFacetValueNext);
       this.paginationLiSeite.html(this.field_Page);
@@ -644,7 +728,25 @@ function updateLanguageSwitch(params) {
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
-      //this.parentMainElement.find('.input-search-fct-container').show('100');
+    },
+    
+    buildLeftContainer: function(){
+        this.facetLeftContainer = $(document.createElement('div'));
+        this.selectedItems = $(document.createElement('ul'));
+        var inputSearchContainer = $(document.createElement('div'));
+        this.inputSearch = $(document.createElement('input'));
+
+        this.facetLeftContainer.addClass('flyout-left-container');
+        this.selectedItems.addClass('selected-items unstyled');
+        inputSearchContainer.addClass('input-search-fct-container');
+        this.inputSearch.attr('type','text');
+        this.inputSearch.addClass('input-search-fct');
+        
+        this.facetLeftContainer.appendTo(this.mainElement.parent());
+        this.selectedItems.appendTo(this.facetLeftContainer);
+        this.inputSearch.appendTo(inputSearchContainer);
+        inputSearchContainer.appendTo(this.facetLeftContainer);
+        this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
     },
     
     initializeFacetValues: function(field, facetValues){
@@ -668,10 +770,14 @@ function updateLanguageSwitch(params) {
         
       var leftCol = this.rightBody.find('.left-col');
       var rightCol = this.rightBody.find('.right-col');
-      
-      if(field == this.fctManager.currentFacetField){
+      var flyoutRightHeadTitle = $(document.createElement('span'));
+      if(field == this.fctManager.currentFacetField && facetValues.length >0){
+        flyoutRightHeadTitle.html(this.field_MostRelevant);
         if(facetValues.length > 5){
           this.rightBody.addClass('body-extender');
+        }
+        else{
+          this.rightBody.removeClass('body-extender');
         }
         this.rightBody.fadeOut('fast', function(){
           leftCol.empty();
@@ -685,7 +791,7 @@ function updateLanguageSwitch(params) {
                 var localizedValue = this.localizedValue;
                 
                 facetValueContainer.click(function(){
-                  currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue);
+                  currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue.replace('<strong>','').replace('</strong>',''));
                   $(this).remove();
                 });
                 
@@ -698,13 +804,16 @@ function updateLanguageSwitch(params) {
                 else if(index<10){
                   facetValueContainer.appendTo(rightCol);
                 }
-                spanCount.appendTo(facetValueContainer);
-                $(document.createTextNode(localizedValue)).appendTo(facetValueContainer);
+                facetValueContainer.html(localizedValue);
+                spanCount.prependTo(facetValueContainer);
             }
           });
           currObjInstance.rightBody.fadeIn('fast');
         });
+      }else{
+        flyoutRightHeadTitle.html(this.field_NoAvailableValues);
       }
+      flyoutRightHeadTitle.prependTo(this.facetRightContainer.find('.flyout-right-head'));
     },
     
     renderSelectedFacetValue: function(facetValue, localizedValue){
@@ -787,6 +896,7 @@ function updateLanguageSwitch(params) {
       oldParentMainElement.find('.flyout-right-container').hide('100', function(){
         oldParentMainElement.find('.flyout-right-container').remove();
       });
+      this.inputSearch.attr('value','');
       this.fctManager.currentPage = 1;
       this.fctManager.currentOffset = 0;
       this.fctManager.currentFacetValuesSelected = new Array();
