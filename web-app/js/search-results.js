@@ -539,6 +539,9 @@ function updateLanguageSwitch(params) {
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
       var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+element.attr('data-fctvalue'))));
+      if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
+          removeSearchCookieParameter('facetValues[]');
+      }
       fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
       element.remove();
     },
