@@ -61,6 +61,7 @@ function searchResultsInitializer(){
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
   $('.page-input').removeClass('off');
+  $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
   
   setHovercardEvents();
@@ -170,6 +171,17 @@ function updateLanguageSwitch(params) {
           }
           json[value[0]] = value[1];
         });
+        document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
+    }
+  }
+  
+  function removeSearchCookieParameter(paramName){
+    var searchParameters = readCookie("searchParameters");
+    if (searchParameters != null && searchParameters.length > 0) {
+        searchParameters = searchParameters.substring(1, searchParameters.length -1);
+        searchParameters = searchParameters.replace(/\\"/g,'"');
+        var json = $.parseJSON(searchParameters);
+        json[paramName] = null;
         document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
     }
   }
@@ -292,6 +304,18 @@ function updateLanguageSwitch(params) {
     historyManager(newUrl);
     setSearchCookieParameter(paramsArray);
     historyedited= true;
+  });
+  $('#keep-filters').click(function(){
+    var valueCheck = $(this);
+    if(valueCheck.is(':checked'))
+      var paramsArray = new Array(new Array('keepFilters', 'true'));
+    else
+      var paramsArray = new Array(new Array('keepFilters', 'false'));
+    addParamToCurrentUrl(paramsArray);
+    setSearchCookieParameter(paramsArray);
+  });
+  $('.clear-filters').click(function(){
+    removeSearchCookieParameter('facetValues[]');
   });
   function fetchResultsList(url){
     $('.search-results').empty();

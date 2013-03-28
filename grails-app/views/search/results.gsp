@@ -38,7 +38,15 @@
           </g:each>
         </g:each>
       </div>
-      <a href="${clearFilters}" class="clear-filters button" ><g:message code="ddbnext.Clear_filters"/></a>
+      <div class="keep-filters off">
+        <label class="checkbox"> 
+          <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
+          <g:message code="ddbnext.Keep_filters"/>
+        </label>
+      </div>
+      <div>
+        <a href="${clearFilters}" class="clear-filters button"><g:message code="ddbnext.Clear_filters"/></a>
+      </div>
     </div>
     
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
