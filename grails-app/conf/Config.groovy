@@ -230,6 +230,3 @@ compress {
     production {  statsEnabled = false  }
 }
 
-grails.app.context = "/"
-
-
