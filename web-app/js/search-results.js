@@ -211,13 +211,13 @@ function searchResultsInitializer(){
   });
   $('#thumbnail-filter').click(function(){
     var valueCheck = $(this);
-    if(valueCheck.is(':checked'))
+    if(valueCheck.is(':checked')){
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'true'));
-    else
+    }else{
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'false'));
+    }
     var newUrl = addParamToCurrentUrl(paramsArray);
     fetchResultsList(newUrl);
-    historyManager(newUrl);
   });
   $('#view-grid').click(function(){
     $('.summary-main .title a').each(function(index,value){
