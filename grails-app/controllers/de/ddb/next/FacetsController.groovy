@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 
 /**
  * Invoked from ajax request during the selection of filters for the search results page
@@ -31,17 +33,17 @@ class FacetsController {
 
     def facetsList() {
         def resultsItems
-        
+
         def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params)
 
         resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery).facets
 
         def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
 
-        def facetValues = searchService.getSelectedFacetValues(resultsItems, params.name, numberOfElements, params.query)
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+        def facetValues = searchService.getSelectedFacetValues(resultsItems, params.name, numberOfElements, params.query, locale)
 
         render (contentType:"text/json"){facetValues}
-
-
     }
 }

@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 
 class SearchController {
 
@@ -78,7 +80,8 @@ class SearchController {
         def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
 
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-        def numberOfResultsFormatted = String.format("%,d", resultsItems.numberOfResults.toInteger())
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
 
         def queryString = request.getQueryString()
 

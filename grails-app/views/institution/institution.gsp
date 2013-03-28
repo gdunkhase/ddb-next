@@ -1,3 +1,5 @@
+<%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
+
 <html>
 <head>
 <title>${selectedOrgXML.name} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -20,7 +22,7 @@
                     <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
                     <g:link class="count" style="color: black; font-size: small;" controller="search" action="results" params="[query: '', offset: '0',
                                rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
-                        <g:set var="flashArgs" value='["${String.format(Locale.default,'%,d', countObjcs)}"]' />
+                        <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
                         <g:if test="${(countObjcs == 1)}">
                             <g:message args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
                         </g:if>

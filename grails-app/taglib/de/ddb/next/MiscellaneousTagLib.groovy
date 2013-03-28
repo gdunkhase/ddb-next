@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 /**
  * This taglib provides all the general functions that should be useful inside the whole application 
  * @author hla
@@ -22,9 +24,9 @@ package de.ddb.next
 class MiscellaneousTagLib {
 
     /**
-      * It parses the body of the tag for further tags and removes them. 
-      * This is particularly useful, if the body of the tag is dynamically rendered from backend data but you want to
-      * ensure there is no html code contained.
+     * It parses the body of the tag for further tags and removes them. 
+     * This is particularly useful, if the body of the tag is dynamically rendered from backend data but you want to
+     * ensure there is no html code contained.
      */
     def removeTags = { attrs, body ->
         def inputString = body()
@@ -34,15 +36,18 @@ class MiscellaneousTagLib {
         }
         out << outputString
     }
-    
+
     /**
      * Gives you back a localized representation of the number
      */
     def localizeNumber = { attrs, body ->
+
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
         def inputString = body()
         def outputString = ""
         if(inputString){
-            outputString = String.format("%,d", inputString.toInteger())
+            outputString = String.format(locale, "%,d", inputString.toInteger())
         }
         out << outputString
     }

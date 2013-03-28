@@ -30,13 +30,7 @@ class I18NHelperTagLib {
      * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
      */
     def currentLanguage = { attrs, body ->
-        def locale = RequestContextUtils.getLocale(request)
-        if(!locale){
-            locale = SupportedLocales.getDefaultLocale()
-        }
-        if(!SupportedLocales.supports(locale)){
-            locale = SupportedLocales.getDefaultLocale()
-        }
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
         def localeLanguage = locale.getLanguage()
         def i18nLanguageString = messageSource.getMessage("ddbnext.language_"+localeLanguage, null, locale)

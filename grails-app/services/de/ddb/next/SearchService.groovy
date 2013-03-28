@@ -404,7 +404,7 @@ class SearchService {
      * @param numberOfElements number of elements to return
      * @return List of Map
      */
-    def getSelectedFacetValues(List facets, String fctName, int numberOfElements, String matcher){
+    def getSelectedFacetValues(List facets, String fctName, int numberOfElements, String matcher, Locale locale){
         def res = [type: fctName, values: []]
         facets.each{
             if(it.field==fctName){
@@ -414,9 +414,9 @@ class SearchService {
                         def localizedValue = this.getI18nFacetValue(fctName, it.facetValues[i].value.toString())
                         def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
                         localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
-                        res.values.add([value: it.facetValues[i].value, localizedValue: localizedValue, count: String.format("%,d", it.facetValues[i].count.toInteger())])
+                        res.values.add([value: it.facetValues[i].value, localizedValue: localizedValue, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
                     }else if(!matcher)
-                        res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format("%,d", it.facetValues[i].count.toInteger())])
+                        res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
                 }
             }
         }

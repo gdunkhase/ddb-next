@@ -82,6 +82,17 @@ public enum SupportedLocales {
         return false;
     }
 
+    public static Locale getBestMatchingLocale(Locale input){
+        Locale locale = input
+        if(!locale){
+            locale = SupportedLocales.getDefaultLocale()
+        }
+        if(!SupportedLocales.supports(locale)){
+            locale = SupportedLocales.getDefaultLocale()
+        }
+        return locale
+    }
+
     public static Locale getDefinedLocale(Locale locale) {
         if (locale == null) {
             return null;
