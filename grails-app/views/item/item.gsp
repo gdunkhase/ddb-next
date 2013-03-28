@@ -7,17 +7,17 @@
   <g:render template="controls" />
   <g:render template="institution" />
   <div class="row">
-    <div class="span7 item-description">
+    <div class="<g:if test="${binaryList.size != 0}">span7</g:if><g:else>span12</g:else>item-description">
       <h2>${title}</h2>
       <g:render template="fields" />
       <g:render template="rights" />
       <g:render template="origin" />
     </div>
-    <div class="span5">
-      <g:if test="${binaryList.size != 0}">
+    <g:if test="${binaryList.size != 0}">
+      <div class="span5">
         <g:render template="binaries" />
-      </g:if>
-    </div>
+      </div>
+    </g:if>
   </div>
   <g:render template="hierarchy" />
 </body>
