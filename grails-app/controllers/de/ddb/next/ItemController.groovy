@@ -23,7 +23,7 @@ class ItemController {
     def itemService
     def searchService
     def grailsLinkGenerator
-    
+
 
     def children() {
         render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", ["rows":501]))

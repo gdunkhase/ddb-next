@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 $(document).ready(function() {
-	$(".widget").mouseenter(function() {
-	        $(".navigation > li").hover(function(){
-	          $(".navigation li").removeClass("active");
-	          $(this).addClass("active");
-	        });
-	      }).mouseleave(function(){
-	           $(".navigation li").removeClass("active");
-	         });
+	$(".navigation").mouseenter(function() {
+	    $(".navigation > li").hover(function(){
+	      $(".navigation li").removeClass("active");
+	      if(!$(this).hasClass('active-default')){
+	    	  $(".active-default ul").css('display','none');
+	      }else{
+	    	  $(".active-default ul").css('display','block');
+	      }
+	      $(this).addClass("active");
+	    });
+	  }).mouseleave(function(){
+	       $(".navigation li").removeClass("active");
+	       $(".active-default ul").css('display','block');
+	     });
 });

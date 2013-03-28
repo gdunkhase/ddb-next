@@ -234,7 +234,7 @@ class ItemService {
                 }
             }
             if(binaryMap.'checkValue'){
-              binaryList.add(binaryMap)
+                binaryList.add(binaryMap)
             }
         }
         return binaryList
