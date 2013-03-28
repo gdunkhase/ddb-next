@@ -63,7 +63,10 @@ div.sector-facet>label:hover {
 }
 
 .sector-facet .checkbox input[type="checkbox"] { 
-  float: initial; 
+  float: none; 
   margin-top: -3px; 
   margin-left: -10px; 
+}
+.sector-facet .checkbox {
+  min-height: 0;
 }

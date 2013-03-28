@@ -314,6 +314,9 @@ header .language-widget form, .header .language-widget form {
   width: 50%;
   margin: 0 auto;
 }
+#form-search label{
+  float: left;
+}
 #form-search input {
   font-size: 1.25em;
   width: 83%;
