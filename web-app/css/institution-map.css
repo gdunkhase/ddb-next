@@ -1,5 +1,8 @@
-#mapContainerDiv {
+#mapview {
     margin-top: 10px;
-    height: 670px;
-    background: lightgray;
+}
+
+#mapContainerDiv {
+    width: 700px;
+    height: 650px;
 }

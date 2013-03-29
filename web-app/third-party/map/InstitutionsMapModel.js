@@ -101,7 +101,7 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
             var sectorObject = {};
             for (var xel = 0; xel < selectorList.length; xel++) {
                 var el = selectorList[xel];
-                sectorObject[el.sector] = {count: 0, name: el.value};
+                sectorObject[el.sector] = {count: 0, name: el.name};
             };
             return sectorObject;
         };

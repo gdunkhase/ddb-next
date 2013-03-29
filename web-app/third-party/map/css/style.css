@@ -1532,12 +1532,12 @@ ul.ddb_plum-arrow li a, ul.ddb_grey-arrow li a, ul.ddb_lightgrey-arrow li a {
     text-decoration: none;
 }
 ul.ddb_plum-arrow li {
-    background: url("/Content/themes/base/icons/list_arrow_plum.png") no-repeat scroll 0 4px transparent;
+    background: url("/images/list_arrow_plum.png") no-repeat scroll 0 4px transparent;
 }
 ul.ddb_grey-arrow li {
-    background: url("/Content/themes/base/icons/list_arrow_grey.png") no-repeat scroll 0 4px transparent;
+    background: url("/images/list_arrow_grey.png") no-repeat scroll 0 4px transparent;
 }
 ul.ddb_lightgrey-arrow li {
-    background: url("/Content/themes/base/icons/list_arrow_lightgrey.png") no-repeat scroll 0 4px transparent;
+    background: url("/images/list_arrow_lightgrey.png") no-repeat scroll 0 4px transparent;
 }
 

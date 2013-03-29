@@ -27,7 +27,9 @@
     </ol>
   </div>
   <div id="institution-map" class="span9 off">
-    <div id="mapContainerDiv"></div>
+    <div id="mapview">
+      <div id="mapContainerDiv"></div>
+    </div>
   </div>
   <div class="span3">
     <g:render template="filter" />

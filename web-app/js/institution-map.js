@@ -18,16 +18,22 @@ var MapAdapter = (function ( $ ) {
 
         _setupDom4MapDisplay();
 
-        fetchAllInstitutions(_displayAllInstitutionsData);
+        InstitutionsMapController.startup(mapDiv,lang);
+
+        //fetchAllInstitutions(_displayAllInstitutionsData);
     };
 
     var fetchAllInstitutions = function ( successFn ) {
+        _fetchDataAjax(institutionsMapRef + '?clusterid=-1', successFn);
+    };
+
+    var _fetchDataAjax = function (a_url,a_successFn) {
         $.ajax({
             type : 'GET',
             dataType : 'json',
             async : true,
-            url : institutionsMapRef + '?clusterid=-1',
-            success : successFn
+            url : a_url,
+            success : a_successFn
         });
     };
 
@@ -51,8 +57,14 @@ var MapAdapter = (function ( $ ) {
         });
 
         $('input:checkbox').click(function () {
-            _displaySectorSelection();
+            //_displaySectorSelection();
+            selectSectors();
         });
+    };
+
+    var selectSectors = function () {
+        var sectors = getSectorSelection();
+        InstitutionsMapController.selectSectors(sectors);
     };
 
     var getSectorSelection = function () {
@@ -95,6 +107,7 @@ var MapAdapter = (function ( $ ) {
     return {
         startup: startup,
         fetchAllInstitutions: fetchAllInstitutions,
+        selectSectors: selectSectors,
         getSectorSelection: getSectorSelection
     }
 
