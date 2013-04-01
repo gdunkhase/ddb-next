@@ -75,6 +75,11 @@ class UrlMappings {
             action="show"
         }
 
+        "/blob/$name" {
+            controller="blob"
+            action="show"
+        }
+
         "500"(controller: "error", action: "serverError")
         "500"(controller: "error", action: "uncaughtException", exception: Throwable)
 
