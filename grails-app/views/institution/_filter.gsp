@@ -1,5 +1,5 @@
 <div class="filter">
-  <h3><g:message code="ddbnext.InstitutionPage_FilterBySector" /></h3>
+  <h3 id="filter-title"><g:message code="ddbnext.InstitutionPage_FilterBySector" /></h3>
   <hr>
   <!-- TODO collect the sector from the data-->
   <div class="sector-facet">

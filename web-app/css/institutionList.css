@@ -67,6 +67,18 @@ div.sector-facet>label:hover {
   margin-top: -3px; 
   margin-left: -10px; 
 }
+
 .sector-facet .checkbox {
   min-height: 0;
 }
+
+#filter-title {
+  margin-bottom: 40px;
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  #filter-title {
+    margin-bottom: 60px;
+  }
+}
+
