@@ -14,10 +14,6 @@
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
 
     <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
-    <script>
-        var contextPath="${request.contextPath}";
-        var lang="<g:message code="ddbnext.language"/>";
-    </script>
     <r:require module="ddbnext" />
     <r:require module="autocomplete" />
     <g:layoutHead />
@@ -38,6 +34,7 @@
       <g:layoutBody/>
     </div>
     <g:render template="/footer" />
+    <g:render template="/jsVariables" />
     <jawr:script src="/i18n/messages.js"/>
     <r:layoutResources />
     <g:piwik />
