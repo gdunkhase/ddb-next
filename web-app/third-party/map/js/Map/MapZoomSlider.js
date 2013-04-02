@@ -81,7 +81,7 @@ function MapZoomSlider(parent, orientation) {
         }
 		var oldValue = zs.slider.getValue();
 		document.onmouseup = function() {
-			if (!zs.parent.zoom((zs.slider.getValue() - oldValue) / zs.max * zs.levels)) {
+			if (!zs.parent.zoom((zs.slider.getValue() - oldValue) / zs.max * (zs.levels - 1))) {
 				zs.setValue(oldValue);
 			}
 			document.onmouseup = null;
@@ -89,7 +89,7 @@ function MapZoomSlider(parent, orientation) {
 	}
 
 	this.setValue = function(value) {
-		this.slider.setValue(value / this.levels * this.max);
+		this.slider.setValue(value / (this.levels-1) * this.max);
 	}
 
 	this.setMaxAndLevels = function(max, levels) {

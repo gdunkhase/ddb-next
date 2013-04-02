@@ -1,29 +1,9 @@
 
-if ( typeof InstitutionsMapController == 'undefined' ) {
+if ( typeof InstitutionsMapController === 'undefined' ) {
 
     InstitutionsMapController = (function () {
 
-        var _alertTimeStart = (new Date).getTime();
-        var _alertTimeSum = 0;
-        var _alertMessages = [];
-
-        var f_alert = function(msg,args) {
-            var stepTime = (new Date()).getTime() - _alertTimeStart;
-            var stepMsg = "  XXXXX " + _alertTimeSum + "ms + " + stepTime + "ms | " + msg;
-            _alertTimeSum+=stepTime;
-
-            if (typeof console != 'undefined') {
-                console.log((_alertMessages.length) + stepMsg + " -- args: " + args);
-            };
-
-            _alertMessages.push((_alertMessages.length) + stepMsg);
-              //alert(_alertMessages.join("\n"));
-
-            _alertTimeStart = (new Date()).getTime();
-        }
-
         var setupEventSubscriptions = function () {
-
             GeoPublisher.GeoSubscribe('GeoTemCoReady', this, function () {
                 f_alert("<<< GeoTemCoReady");
                 // Publisher.Publish(Events.InstitutionsMapReady, true);
@@ -62,21 +42,7 @@ if ( typeof InstitutionsMapController == 'undefined' ) {
             });
         }
 
-        var sectorsSelected = [
-            { sector : 'sec_01', name: 'Archiv'},
-            { sector : 'sec_02', name: 'Bibliothek'},
-            { sector : 'sec_03', name: 'Denkmalpflege'},
-            { sector : 'sec_04', name: 'Forschung'},
-            { sector : 'sec_05', name: 'Mediathek'},
-            { sector : 'sec_06', name: 'Museum'},
-            { sector : 'sec_07', name: 'Sonstige'},
-        ];
-
-        var sectorsDeselected = [
-        ];
-
         return {
-            logEvent: f_alert,
             startup: f_startup,
             selectSectors: f_selectSectors,
             deactivate: f_deactivate

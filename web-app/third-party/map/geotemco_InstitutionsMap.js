@@ -5366,6 +5366,9 @@ MapWidget.prototype = {
 		}
 
 		this.resolutions = [78271.516953125, 39135.7584765625, 19567.87923828125, 9783.939619140625, 4891.9698095703125, 2445.9849047851562, 1222.9924523925781, 611.4962261962891, 305.74811309814453, 152.87405654907226, 76.43702827453613, 38.218514137268066, 19.109257068634033, 9.554628534317017, 4.777314267158508, 2.388657133579254, 1.194328566789627, 0.5971642833948135, 0.29858214169740677];
+		if (this.options.osmMaps) {
+            this.resolutions = this.resolutions.slice(0,18); // OSM provides 18 zoom levels
+        }
 
 		var options = {
 			controls : [this.navigation],
@@ -9061,7 +9064,7 @@ function MapZoomSlider(parent, orientation) {
         }
 		var oldValue = zs.slider.getValue();
 		document.onmouseup = function() {
-			if (!zs.parent.zoom((zs.slider.getValue() - oldValue) / zs.max * zs.levels)) {
+			if (!zs.parent.zoom((zs.slider.getValue() - oldValue) / zs.max * (zs.levels - 1))) {
 				zs.setValue(oldValue);
 			}
 			document.onmouseup = null;
@@ -9069,7 +9072,7 @@ function MapZoomSlider(parent, orientation) {
 	}
 
 	this.setValue = function(value) {
-		this.slider.setValue(value / this.levels * this.max);
+		this.slider.setValue(value / (this.levels-1) * this.max);
 	}
 
 	this.setMaxAndLevels = function(max, levels) {
@@ -9982,31 +9985,11 @@ function WidgetWrapper() {
 
 };
 
-if ( typeof InstitutionsMapController == 'undefined' ) {
+if ( typeof InstitutionsMapController === 'undefined' ) {
 
     InstitutionsMapController = (function () {
 
-        var _alertTimeStart = (new Date).getTime();
-        var _alertTimeSum = 0;
-        var _alertMessages = [];
-
-        var f_alert = function(msg,args) {
-            var stepTime = (new Date()).getTime() - _alertTimeStart;
-            var stepMsg = "  XXXXX " + _alertTimeSum + "ms + " + stepTime + "ms | " + msg;
-            _alertTimeSum+=stepTime;
-
-            if (typeof console != 'undefined') {
-                console.log((_alertMessages.length) + stepMsg + " -- args: " + args);
-            };
-
-            _alertMessages.push((_alertMessages.length) + stepMsg);
-              //alert(_alertMessages.join("\n"));
-
-            _alertTimeStart = (new Date()).getTime();
-        }
-
         var setupEventSubscriptions = function () {
-
             GeoPublisher.GeoSubscribe('GeoTemCoReady', this, function () {
                 f_alert("<<< GeoTemCoReady");
                 // Publisher.Publish(Events.InstitutionsMapReady, true);
@@ -10045,21 +10028,7 @@ if ( typeof InstitutionsMapController == 'undefined' ) {
             });
         }
 
-        var sectorsSelected = [
-            { sector : 'sec_01', name: 'Archiv'},
-            { sector : 'sec_02', name: 'Bibliothek'},
-            { sector : 'sec_03', name: 'Denkmalpflege'},
-            { sector : 'sec_04', name: 'Forschung'},
-            { sector : 'sec_05', name: 'Mediathek'},
-            { sector : 'sec_06', name: 'Museum'},
-            { sector : 'sec_07', name: 'Sonstige'},
-        ];
-
-        var sectorsDeselected = [
-        ];
-
         return {
-            logEvent: f_alert,
             startup: f_startup,
             selectSectors: f_selectSectors,
             deactivate: f_deactivate

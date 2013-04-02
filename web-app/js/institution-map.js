@@ -1,30 +1,70 @@
-var institutionsMapRef = contextPath + '/apis/institutionsmap';
+/**
+ * built according to "Revealing Module Pattern (Public & Private)"
+ * http://enterprisejquery.com/2010/10/how-good-c-habits-can-encourage-bad-javascript-habits-part-1/
+ */
+var INSTITUTIONS_MAP_REF = contextPath + '/apis/institutionsmap';
 
-window.ddbAddOnloadListener(function () {
-    MapAdapter.startup("mapContainerDiv",'de');
-    return;
-});
+var InstitutionsMapAdapter = (function ( $, undefined ) {
 
-var MapAdapter = (function ( $ ) {
+    var MapOptions = {
+        mapHeight: false,
+        mapWidth: false,
+    
+    };
+
+    var Public = {}; // for public properties. avoid the reserved keyword "public"
 
     var mapDivId;
     var language;
 
-    var startup = function ( mapDiv, lang) {
-        console.log("startup");
+    Public.startup = function ( mapDiv, lang) {
+        if (typeof console != "undefined") {
+            console.log("startup");
+        }
 
         mapDivId = "#" + mapDiv;
         language = lang;
 
         _setupDom4MapDisplay();
 
+        var callbackInterface = {
+            getSectorSelection: getSectorSelection,
+            fetchAllInstitutions: fetchAllInstitutions
+        };
         InstitutionsMapController.startup(mapDiv,lang);
 
         //fetchAllInstitutions(_displayAllInstitutionsData);
     };
 
-    var fetchAllInstitutions = function ( successFn ) {
-        _fetchDataAjax(institutionsMapRef + '?clusterid=-1', successFn);
+    Public.selectSectors = function () {
+        var sectors = this.getSectorSelection();
+        InstitutionsMapController.selectSectors(sectors);
+    };
+
+    var _getSectorSelection = function () {
+        var sectors = {};
+        sectors["selected"] = [];
+        sectors["deselected"] = [];
+        $('.sector-facet').each(function () {
+            var sectorData = {};
+            sectorData["sector"] = $(this).find('input').data('sector');
+            sectorData["name"] = $(this).children('label').text().trim();
+            if ($(this).find('input').is(":checked")) {
+                sectors["selected"].push(sectorData);
+            } else {
+                sectors["deselected"].push(sectorData);
+            }
+        });
+        if (sectors["selected"].length == 0) {
+            sectors["selected"] = sectors["deselected"];
+            sectors["deselected"] = [];
+        }
+        return sectors;
+    }
+
+
+    var _fetchAllInstitutions = function ( successFn ) {
+        _fetchDataAjax(INSTITUTIONS_MAP_REF + '?clusterid=-1', successFn);
     };
 
     var _fetchDataAjax = function (a_url,a_successFn) {
@@ -62,32 +102,6 @@ var MapAdapter = (function ( $ ) {
         });
     };
 
-    var selectSectors = function () {
-        var sectors = getSectorSelection();
-        InstitutionsMapController.selectSectors(sectors);
-    };
-
-    var getSectorSelection = function () {
-        var sectors = {};
-        sectors["selected"] = [];
-        sectors["deselected"] = [];
-        $('.sector-facet').each(function () {
-            var sectorData = {};
-            sectorData["sector"] = $(this).find('input').data('sector');
-            sectorData["name"] = $(this).children('label').text().trim();
-            if ($(this).find('input').is(":checked")) {
-                sectors["selected"].push(sectorData);
-            } else {
-                sectors["deselected"].push(sectorData);
-            }
-        });
-        if (sectors["selected"].length == 0) {
-            sectors["selected"] = sectors["deselected"];
-            sectors["deselected"] = [];
-        }
-        return sectors;
-    }
-
 
 
     var _displaySectorSelection = function () {
@@ -103,13 +117,12 @@ var MapAdapter = (function ( $ ) {
         $(mapDivId).html(info_txt);
     };
 
-
-    return {
-        startup: startup,
-        fetchAllInstitutions: fetchAllInstitutions,
-        selectSectors: selectSectors,
-        getSectorSelection: getSectorSelection
-    }
+    return Public;
 
 })(jQuery);
+
+window.ddbAddOnloadListener(function () {
+    InstitutionsMapAdapter.startup("mapContainerDiv",'de');
+    return;
+});
 
