@@ -1,7 +1,10 @@
 <html>
 <head>
 <title>${pageLabel} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+
+<meta name="DC.identifier" content="item" />
 <meta name="layout" content="main" />
+
 </head>
 <body>
   <g:render template="controls" />

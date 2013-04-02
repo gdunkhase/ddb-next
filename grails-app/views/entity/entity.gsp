@@ -1,9 +1,11 @@
 <html>
-<!-- TODO i18n -->
 <head>
   <title>${pageLabel} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+
+  <meta name="DC.identifier" content="entity" />
   <meta name="layout" content="main" />
-</head>
+  
+</head> 
 <body>
   <g:render template="controls" />
   <div class="row">
