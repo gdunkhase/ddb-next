@@ -21,7 +21,7 @@
 /* Removing unwanted elements */
 header, .header,
 footer, .footer,
-.facets-container, .results-paginator-options, .page-info-nav .page-nav, .results-paginator-view, .information,
+.facets-container, .results-paginator-options, .page-info-nav .page-nav, .results-paginator-view, .information, #print-nav,
 .object-controls, .origin, .slide-viewer .tabs, .sibling-count,
 #first-letter-index li:not(.active),
 .group-operator, .add-group-button,
