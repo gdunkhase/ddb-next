@@ -2,7 +2,7 @@
 <head>
 <title><g:message code="ddbnext.Institutions" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
-<meta name="DC.identifier" content="institutionList" />
+<meta name="page" content="institutionList" />
 <meta name="layout" content="main" />
 
 </head>

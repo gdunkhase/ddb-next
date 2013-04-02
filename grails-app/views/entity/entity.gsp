@@ -2,7 +2,7 @@
 <head>
   <title>${pageLabel} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
-  <meta name="DC.identifier" content="entity" />
+  <meta name="page" content="entity" />
   <meta name="layout" content="main" />
   
 </head> 

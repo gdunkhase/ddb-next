@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<meta name="DC.identifier" content="advancedsearch" />
+<meta name="page" content="advancedsearch" />
 <meta name="layout" content="main" />
 
 </head>

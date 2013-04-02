@@ -2,7 +2,7 @@
 <!-- TODO my do write the head element again? -->
 <head>
   <title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-  <meta name="DC.identifier" content="staticcontent" />
+  <meta name="page" content="staticcontent" />
   <g:if test="${author}">
     <meta name="author" content="${author}" />
   </g:if>

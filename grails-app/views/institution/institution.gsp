@@ -4,7 +4,7 @@
 <head>
 <title>${selectedOrgXML.name} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
-<meta name="DC.identifier" content="institution" />
+<meta name="page" content="institution" />
 <meta name="layout" content="main" />
 
 <r:require module="openstreetmap" />
