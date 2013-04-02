@@ -110,8 +110,10 @@ grails.serverURL=ddb.apis.url
 grails.resources.mappers.zip.excludes = [
     '**/*.png',
     '**/*.gif',
+    '**/*.ico',
     '**/*.jpg',
     '**/*.jpeg',
+    '**/*.swf',
     '**/*.gz',
     '**/*.zip'
 ]
@@ -215,6 +217,7 @@ compress {
     // filter's url-patterns
     urlPatterns = ["/*"]
     includePathPatterns = []
+    // Important! CSS and JS must be handled by the ressource plugin
     excludePathPatterns = [
         ".*\\.png",
         ".*\\.gif",
@@ -223,7 +226,9 @@ compress {
         ".*\\.jpeg",
         ".*\\.swf",
         '.*\\.gz',
-        '.*\\.zip'
+        '.*\\.zip',
+        '.*\\.css',
+        '.*\\.js'
     ]
     includeContentTypes = ["application/json"]
     excludeContentTypes = [".*"]
