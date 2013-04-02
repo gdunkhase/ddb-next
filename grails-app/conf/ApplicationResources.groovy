@@ -28,7 +28,6 @@ modules = {
         resource url:'/css/item.css', bundle: 'screen'
         resource url:'/css/institutionList.css', bundle: 'screen'
         resource url:'/css/results.css', bundle: 'screen'
-        resource url:'/css/pdf.css', bundle: 'screen'
         resource url:'/css/staticcontent.css', bundle: 'screen'
         resource url:'/css/error.css', bundle: 'screen'
         resource url:'/css/institution.css', bundle: 'screen'
@@ -91,9 +90,12 @@ modules = {
     }
 
     pdf {
-        resource url:'/css/bootstrap.css'//, exclude:'zip'
-        resource url:'/css/ddb.css'//, exclude:'zip'
-        resource url:'/css/item.css'//, exclude:'zip'
-        resource url:'/css/pdf.css'//, exclude:'zip'
+        // This is the only working variant found! You must exclude 'zip,bundle' from the mappers list and
+        // the CSS attributed with the exclude statement must NOT be used anywhere else in normal pages
+        // or otherwise the resource plugin will produce invalid imports. It is best to provide a CSS exclusively used
+        // for the PDF generation. Remember to to make sure that no other compression tool like the compress-plugin
+        // is compressing the css after the resource-plugin, otherwise the PDF-export will fail, since
+        // the plugin can not handle zipped ressources (see Config.groovy for that).
+        resource url:'/css/itemPdf.css', exclude:'zip,bundle', attrs:[media:'print']
     }
 }
