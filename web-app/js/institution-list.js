@@ -63,7 +63,6 @@ var ddb = {
 
   getInstitutionsByFirstChar: function(onFilterSelect, onIndexClick, onPageLoad) {
     if (ddb.institutionsByFirstChar === null) {
-        alert(ddb.Config.ddbBackendUrl);
       $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
         ddb.institutionsByFirstChar = response.data;
 
