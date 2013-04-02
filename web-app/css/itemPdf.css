@@ -158,9 +158,6 @@ li {
   padding-bottom: 15px !important;
 }
 
-.print .institution {
-}
-
 .print .institution_text {
   float: left;
   width: 500px;
@@ -181,14 +178,10 @@ li {
   padding-left: 0px !important;
 }
 
-.print .item {
-}
-
 .print .item .previewrow {
   margin-top: 10px; 
   margin-bottom: 20px;
 }
-
 
 .print .item img {
   margin: 0px !important; 
@@ -208,14 +201,10 @@ li {
   font-size: 12px;
 }
 
-.print .hierarchy {
-}
-
 .print .hierarchy ul {
   margin: 0px 0px 10px 15px !important;  
   list-style-type: square !important;
 }
-
   
 .print .hierarchy .field-header {
   margin-bottom: 10px;
