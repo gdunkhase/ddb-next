@@ -1,7 +1,10 @@
 <html>
 <head>
 <title><g:message code="ddbnext.Institutions" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+
+<meta name="page" content="institutionList" />
 <meta name="layout" content="main" />
+
 </head>
 <body>
   <h1><g:message code="ddbnext.Institutions" /></h1>

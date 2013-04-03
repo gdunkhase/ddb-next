@@ -103,6 +103,8 @@ ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
 
+// The grails.serverURL is required for the PDF rendering plugin.
+grails.serverURL=ddb.apis.url
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation

@@ -25,6 +25,7 @@ modules = {
         resource url:'/css/bootstrap.css', bundle: 'screen'
         resource url:'/css/bootstrap-responsive.css', bundle: 'screen'
         resource url:'/css/ddb.css', bundle: 'screen'
+        resource url:'/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
         resource url:'/css/item.css', bundle: 'screen'
         resource url:'/css/institutionList.css', bundle: 'screen'
         resource url:'/css/results.css', bundle: 'screen'
@@ -55,6 +56,8 @@ modules = {
         resource url:'/js/vendor/bootstrap-collapse.js'
         resource url:'/js/jquery.fancybox.pack.js'
         resource url:'/js/underscore-min.js'
+        resource url:'/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
+        resource url:'/js/myautocomplete.js'
         resource url:'/jwplayer/jwplayer.js'
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/large-cookie.js'
@@ -71,11 +74,6 @@ modules = {
         resource url:'/js/search-results.js'
     }
 
-    autocomplete {
-        resource url: '/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
-        resource url: '/js/myautocomplete.js'
-        resource url: '/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
-    }
 
     // These are page specific bundles which should be merged back into ddbnext in the second step
 

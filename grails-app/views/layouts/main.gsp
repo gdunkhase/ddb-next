@@ -19,7 +19,6 @@
         var lang="<g:message code="ddbnext.language"/>";
     </script>
     <r:require module="ddbnext" />
-    <r:require module="autocomplete" />
     <g:layoutHead />
     <r:layoutResources />
   </head>

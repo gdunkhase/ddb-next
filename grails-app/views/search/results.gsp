@@ -2,6 +2,8 @@
 <html>
 <head>
 <title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+
+<meta name="page" content="results" />
 <meta name="layout" content="main" />
 
 </head>
