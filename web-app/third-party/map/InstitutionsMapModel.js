@@ -206,8 +206,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
 
             _institutionsById = {};
             for (var xel = 0; xel < _allMapData.length; xel++) {
-                el = _allMapData[xel];
+                var el = _allMapData[xel];
                 _institutionsById[el.description.node.id] = el;
+                el.description.node.detailViewUri = "institutions/item/" + el.description.node.id;
             };
 
             /*
