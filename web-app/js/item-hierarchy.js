@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 $(document).ready(function() {
-	
-  if($(".item-hierarchy").length > 0){
-	var imgLoader = document.createElement("img");
-	imgLoader.src = "../images/icons/loader_small.gif";
-	$(".item-hierarchy-result").prepend(imgLoader);
-	  
-	createHierarchy(parseUrl(location.href));
+
+  if ($(".item-hierarchy").length > 0) {
+    var imgLoader = document.createElement("img");
+    imgLoader.src = "../images/icons/loader_small.gif";
+    $(".item-hierarchy-result").prepend(imgLoader);
+
+    createHierarchy(parseUrl(location.href));
   }
 });
 
@@ -36,7 +36,8 @@ $(document).ready(function() {
  * 
  * @param {boolean} isLast true if the current node is the last node in the list
  * 
- * @param {boolean} moreHidden true if there are more children which are not displayed
+ * @param {boolean} moreHidden true if there are more children which are not
+ * displayed
  */
 function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   currentNode.empty();
@@ -103,11 +104,6 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
     currentNode.removeClass("last");
   }
 
-  // add sibling count
-  if (countSiblings) {
-    addSiblingCount(url, currentNode.parent(), parentId);
-  }
-
   var branchType = $("<span>", {
     class : "branch-type fl"
   });
@@ -120,10 +116,15 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   if (isRoot) {
     i.addClass("root");
   } else {
-    setNodeIcon(i, false);
+    setNodeIcon(i, isLast);
   }
 
   branchType.append(i);
+
+  // add sibling count
+  if (countSiblings) {
+    addSiblingCount(url, currentNode.parent(), parentId);
+  }
 
   i.click(function() {
     var isExpanded = $(this).hasClass("expanded");
@@ -195,13 +196,18 @@ function addSiblingCount(url, currentNode, parentId) {
 
   if (parentId != null) {
     getChildren(url, parentId, function(children) {
+      var li = currentNode.children("li");
+
       if (children.length > 1) {
         if (children.length > 500) {
           siblingCount.append(messages.ddbnext.Hierarchy_SiblingCountRestricted_Format(500));
         } else {
           siblingCount.append("+" + (children.length - 1));
         }
-        currentNode.children("li").addClass("more-hidden");
+        li.addClass("more-hidden");
+      } else {
+        li.addClass("last");
+        setNodeIcon(currentNode.parent().children("span").children("i"), true);
       }
     });
   }
@@ -253,7 +259,7 @@ function createHierarchy(url) {
 
         ul.append(li);
         currentNode.append(ul);
-        addParentNode(url, li, parentId, value, true, true, true);
+        addParentNode(url, li, parentId, value, true, index == parents.length - 2, true);
         currentNode = li;
       } else if (parents.length > 1) {
         // show children
