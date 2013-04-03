@@ -6,3 +6,7 @@
     width: 700px;
     height: 650px;
 }
+
+#mapContainerDiv img {
+	max-width: inherit;
+}
