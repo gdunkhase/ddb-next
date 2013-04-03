@@ -6,7 +6,7 @@ COMPRESSED_OUTPUT_FILE='geotemco-min_InstitutionItemMap.js'
 OUTPUT_FILE='geotemco_InstitutionItemMap.js'
 CSS_FILE='css/geotemco_InstitutionItemMap.css'
 
-task :default =>  [OUTPUT_FILE, CSS_FILE]
+task :default =>  [OUTPUT_FILE]
 
 task :all => [COMPRESSED_OUTPUT_FILE, OUTPUT_FILE, CSS_FILE]
 

@@ -66,7 +66,7 @@ modules = {
         resource url:'http://www.openstreetmap.org/openlayers/OpenStreetMap.js'
         resource url:'/js/ddb.osm.institutiondetailview.js'
     */
-        resource url:'/third-party/map/css/geotemco_InstitutionItemMap.css'
+        resource url:'/third-party/map/css/style.css'
         resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
         resource url:'/js/InstitutionItemMapAdapter.js'
     }
@@ -77,7 +77,7 @@ modules = {
         resource url:'http://www.openlayers.org/api/OpenLayers.js'
         resource url:'/js/map-widget-test.js'
     */
-        resource url:'/third-party/map/css/geotemco_InstitutionsMap.css'
+        resource url:'/third-party/map/css/style.css'
         resource url:'/third-party/map/geotemco_InstitutionsMap.js'
         resource url:'/js/InstitutionsMapAdapter.js'
     }

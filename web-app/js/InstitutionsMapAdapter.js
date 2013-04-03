@@ -21,18 +21,12 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
         osmTileset: osmTileset
     };
 
-    var mapDivId;
-    var language;
-
     var Public = {}; // for public properties. avoid the reserved keyword "public"
 
     Public.startup = function ( mapDiv, lang) {
         if (typeof console != "undefined") {
             console.log("startup");
         }
-
-        mapDivId = "#" + mapDiv;
-        language = lang;
 
         _setupDom4MapDisplay();
 
@@ -100,24 +94,8 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
         });
 
         $('input:checkbox').click(function () {
-            //_displaySectorSelection();
             Public.selectSectors();
         });
-    };
-
-
-
-    var _displaySectorSelection = function () {
-        console.log("XXX _displaySectorSelection");
-        var sectors = _getSectorSelection();
-        var info_html = "<pre>\n" + JSON.stringify(sectors,null,2) + "\n</pre>"; 
-        $(mapDivId).html(info_html);
-    };
-
-    var _displayAllInstitutionsData = function ( jsonData ) {
-        var info_txt = "XXX  map-widget-test.js: jsonData.size == " + jsonData.size;
-        console.log(info_txt);
-        $(mapDivId).html(info_txt);
     };
 
     return Public;

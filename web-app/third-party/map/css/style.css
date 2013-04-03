@@ -30,18 +30,6 @@
 	overflow:			hidden;
 }
 
-.dynamic-slider-control.vertical .handle {
-	width:				20px;
-	height:				30px;
-	background-image:	url("../images/sliderDot.png");
-}
-
-.dynamic-slider-control.horizontal .handle {
-	width:				30px;
-	height:				20px;
-	background-image:	url("../images/sliderDot-horizontal.png");
-}
-
 .dynamic-slider-control .line {
 	position:			absolute;
 	font-size:			0.01mm;
@@ -392,18 +380,6 @@ filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	right: 0px;	
 }
 
-.toolbarLeftLight {
-	background-image: url(../images/bg-left.png);
-	background-repeat: repeat-y;
-	border-right: 1px solid white;
-}
-
-.toolbarRightLight {
-	background-image: url(../images/bg-right.png);
-	background-repeat: repeat-y;
-	border-left: 1px solid white;
-}
-
 /*
   settings for zoom slider
 */
@@ -502,42 +478,6 @@ filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     background-image: url(../images/prev.png);
     background-repeat: no-repeat;
 	cursor: pointer;
-}
-
-.popupTriangleDown {
-	position: absolute;
-	height: 18px;
-    width: 31px;
-    background-image: url(../images/popupTriangleDown.png);
-    background-repeat: no-repeat;
-    z-index: 1000;
-}
-
-.popupTriangleUp {
-	position: absolute;
-	height: 18px;
-    width: 31px;
-    background-image: url(../images/popupTriangleUp.png);
-    background-repeat: no-repeat;
-    z-index: 1000;
-}
-
-.popupTriangleLeft {
-	position: absolute;
-	height: 31px;
-    width: 18px;
-    background-image: url(../images/popupTriangleLeft.png);
-    background-repeat: no-repeat;
-    z-index: 1000;
-}
-
-.popupTriangleRight {
-	position: absolute;
-	height: 31px;
-    width: 18px;
-    background-image: url(../images/popupTriangleRight.png);
-    background-repeat: no-repeat;
-    z-index: 1000;
 }
 
 .popupResultsLabel {
@@ -849,14 +789,12 @@ filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	top: 2px;
 	left: 22px;
 	height: 16px;	
-	background-image: url("../images/zoom_grid-horizontal.png");
 }
 
 .zoomSliderContainer-vertical {
 	position: absolute;
 	top: 24px;
 	width: 27px;
-/*	background-image: url("../images/zoom_grid-vertical.png");*/
 }
 
 .zoomSliderIn-horizontal {
@@ -976,14 +914,6 @@ ul.ddbPopupInnerUL {
 	font-size: 13px;
 }
 
-.viewResults {
-	width: 121px;
-	height: 18px;
-	background-image: url("../images/Viewresultsbutton.png");
-	cursor: pointer;
-	margin-top: 10px;
-}
-
 .popupRight {
 	position: absolute;
 	width: 10px;
@@ -1096,15 +1026,6 @@ ul.ddbPopupInnerUL {
 }
 
 
-.zoomPopup {
-    height: 20px;
-    width: 20px;
-    margin-left: 5px;
-    background-image: url(../images/zoom.png);
-    display: inline-block;
-    cursor: pointer;
-}
-
 .descriptions {	
     display: inline-block;
     height: 20px;
@@ -1139,38 +1060,6 @@ ul.ddbPopupInnerUL {
 	background-image: url("../images/GeoLocation2.png");
 	height: 27px;
 	width: 27px;
-}
-
-.aggregation {
-	display: inline-block;
-	cursor: pointer;
-	background-image: url("../images/aggregation.png");
-	height: 30px;
-	width: 31px;
-}
-
-.noAggregation {
-	display: inline-block;
-	cursor: pointer;
-	background-image: url("../images/no_aggregation.png");
-	height: 30px;
-	width: 31px;
-}
-
-.showBbox {
-	display: inline-block;
-	cursor: pointer;
-	background-image: url("../images/bbox_icon.png");
-	height: 30px;
-	width: 31px;
-}
-
-.hideBbox {
-	display: inline-block;
-	cursor: pointer;
-	background-image: url("../images/hidebbox_icon.png");
-	height: 30px;
-	width: 31px;
 }
 
 .nextItem {
@@ -1386,19 +1275,7 @@ ul.ddbPopupInnerUL {
 	cursor: pointer;
 }
 
-.dragDisabled {
-	background-image: url("../images/drag-disabled.png");
-}
-
-.dragActivated {
-	background-image: url("../images/drag-activated.png");
-}
-
-.dragDeactivated {
-	background-image: url("../images/drag-deactivated.png");
-}
-
-.selectAll {
+nselectAll {
 	background-image: url("../images/selectAll.png");
 }
 
