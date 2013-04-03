@@ -750,13 +750,19 @@ function updateLanguageSwitch(params) {
       paginationAPrev.appendTo(this.paginationLiPrev);
       paginationANext.appendTo(this.paginationLiNext);
       spanSeiteNumber.appendTo(this.paginationLiSeite);
-
+      
+      var currObjInstance = this;
+      
+      this.facetRightContainer.click(function(){
+          currObjInstance.close();
+      })
+      
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
     },
     
-    buildLeftContainer: function(){
+    buildLeftContainer: function(){        
         this.facetLeftContainer = $(document.createElement('div'));
         this.selectedItems = $(document.createElement('ul'));
         var inputSearchContainer = $(document.createElement('div'));
@@ -882,6 +888,10 @@ function updateLanguageSwitch(params) {
         icon.appendTo(this.addMoreFilters);
         this.addMoreFilters.appendTo(this.facetLeftContainer);
         this.facetLeftContainer.find('.input-search-fct-container').appendTo(this.facetLeftContainer);
+        
+        this.addMoreFilters.click(function(event){
+            $(this).hide();
+        })
     },
     
     removeAddMoreFiltersButton: function(FacetFieldFilter , addMoreFiltersElement){
