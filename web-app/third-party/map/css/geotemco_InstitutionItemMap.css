@@ -1487,6 +1487,7 @@ ul.ddbPopupInnerUL {
 	cursor: pointer;
 }
 
+/*
 .filter {
 	background-image: url("../images/filter.png");
 }
@@ -1510,6 +1511,7 @@ ul.ddbPopupInnerUL {
 .filterCancelDisabled {
 	background-image: url("../images/filterCancelDisabled.png");
 }
+*/
 
 ul.ddb_plum-arrow, ul.ddb_grey-arrow, ul.ddb_lightgrey-arrow {
     background: none repeat scroll 0 0 transparent;

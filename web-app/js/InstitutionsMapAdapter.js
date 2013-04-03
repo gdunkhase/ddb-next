@@ -37,12 +37,10 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
         _setupDom4MapDisplay();
 
         InstitutionsMapController.startup(mapDiv,lang,institutionsMapOptions);
-
-        //fetchAllInstitutions(_displayAllInstitutionsData);
     };
 
     Public.selectSectors = function () {
-        var sectors = this._getSectorSelection();
+        var sectors = _getSectorSelection();
         InstitutionsMapController.selectSectors(sectors);
     };
 
@@ -68,7 +66,7 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
     }
 
 
-    var _fetchAllInstitutions = function ( successFn ) {
+    Public.fetchAllInstitutions = function ( successFn ) {
         _fetchDataAjax(INSTITUTIONS_MAP_REF + '?clusterid=-1', successFn);
     };
 

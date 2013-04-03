@@ -9999,13 +9999,12 @@ if ( typeof InstitutionsMapController === 'undefined' ) {
 
         var f_startup = function( mapDiv, language, startupOptions ) {
             var map = InstitutionsMapModel.initialize(mapDiv,language,startupOptions);
-            MapAdapter.fetchAllInstitutions(f_startup2);
+            InstitutionsMapAdapter.fetchAllInstitutions(f_startup2);
         };
 
         var f_startup2 = function( mapData ) {
             InstitutionsMapModel.prepareInstitutionsData(mapData);
-            var sectorSelection = MapAdapter.getSectorSelection();
-            f_selectSectors(sectorSelection);
+            InstitutionsMapAdapter.selectSectors();
         };
 
         var f_selectSectors = function( sectorSelection ) {
