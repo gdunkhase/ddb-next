@@ -796,7 +796,12 @@ function updateLanguageSwitch(params) {
         
       var leftCol = this.rightBody.find('.left-col');
       var rightCol = this.rightBody.find('.right-col');
-      var flyoutRightHeadTitle = $(document.createElement('span'));
+      var flyoutRightHeadTitle;
+      if(this.facetRightContainer.find('.flyout-right-head span').length > 0){
+          flyoutRightHeadTitle = this.facetRightContainer.find('.flyout-right-head span');
+      }else{
+          flyoutRightHeadTitle = $(document.createElement('span'));
+      }
       if(field == this.fctManager.currentFacetField && facetValues.length >0){
         flyoutRightHeadTitle.html(this.field_MostRelevant);
         if(facetValues.length > 5){

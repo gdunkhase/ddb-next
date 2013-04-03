@@ -393,6 +393,10 @@ input[type="checkbox"],input[type="radio"] {
   display:none;
 }
 
+.results-list .thumbnail{
+  display: block;
+}
+
 .results-list.grid .thumbnail{
   height: 105px;
 }
