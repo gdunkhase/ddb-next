@@ -22,7 +22,7 @@
 var ddb = {
 
   Config: {
-    ddbBackendUrl: contextPath + '/apis/institutions'
+    ddbBackendUrl: jsContextPath + '/apis/institutions'
   },
 
   // TODO: does not work => cache for all institution, including children and their descendants
