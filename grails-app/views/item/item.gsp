@@ -10,7 +10,7 @@
   <g:render template="controls" />
   <g:render template="institution" />
   <div class="row">
-    <div class="<g:if test="${binaryList.size != 0}">span7</g:if><g:else>span12</g:else>item-description">
+    <div class="<g:if test="${binaryList.size != 0}">span7</g:if><g:else>span12</g:else> item-description">
       <h2>${title}</h2>
       <g:render template="fields" />
       <g:render template="rights" />
