@@ -42,7 +42,7 @@
   padding-bottom: 10px;
   border: 1px solid #e9e5e2;
   border-width: 0 0 5px;
-  font-size: 15px;
+  font-size: 0.938em;
 }
 .institution-name {
   padding-left: 22px;
@@ -50,7 +50,7 @@
   line-height: 20px;
   background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
   font-weight: bold;
-  font-size: 17px;
+  font-size: 1.133em;
 }
 .institution-link {
   display: block;
@@ -58,6 +58,7 @@
 .object-controls {
   line-height: 30px;
   background-color: #efebe8;
+  font-size: 0.938em;
 }
 .object-controls .span6{
   margin-left: 10px;
@@ -66,8 +67,15 @@
   margin-top: 20px;
 }
 .origin span {
-  padding-left: 3px;
+  background: url("../images/icons/objectviewer_actions.png") no-repeat;
+  display: inline-block;
+  padding-left: 23px;
   line-height: 20px;
+  background-position: -2px -120px;
+}
+.origin .show-origin span {
+  background: none;
+  padding-left: 3px;
 }
 .show-origin {
   padding-left: 17px;
@@ -115,4 +123,7 @@ background-position: right -41px;
 }
 .item-nav .items-overall-index {
   margin-right: 5px;
+}
+.fields, .rights {
+  font-size: 0.938em;
 }

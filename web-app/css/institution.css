@@ -66,6 +66,11 @@ position: relative;
   color: black; 
   font-size: small;
 }
+
+.pagination-small ul > li > a,
+.pagination-small ul > li > span {
+  font-size: 1em;
+}
  
 #header {
   font-family: Verdana, Arial;

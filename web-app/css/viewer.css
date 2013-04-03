@@ -80,7 +80,7 @@
   white-space:nowrap;
   margin-left:15px;
   width:100px;
-  font-size:13px;
+  font-size:0.813em;
 }
 .previews img {
   max-width: 445px;
@@ -144,7 +144,7 @@
   cursor:pointer;
   float:left;
   color:#3e3a37;
-  font-size:16px;
+  font-size:1em;
   margin-top:16px;
 }
 .slide-viewer .tab:hover {
@@ -168,7 +168,7 @@
   float:right;
   z-index: 1;
   position: relative;
-  font-size: 13px;
+  font-size: 0.813em;
 }
 .slide-viewer .gallery-pagination:hover {
   text-decoration:none;
@@ -243,10 +243,10 @@ noscript .scroller {
   background-color: #e8eae9;
   opacity: 0.8;
   color: #3E3A37; 
-  font-size: 14px;
+  font-size: 0.875em;
 }
 .fancybox-pagination span {
-  font-size: 20px;
+  font-size: 1.250em;
   padding: 5px;
   float: right;
 }
@@ -261,7 +261,7 @@ noscript .scroller {
   margin:0;
 }
 .binary-viewer-error .error-header, .binary-viewer-flash-upgrade .error-header{
-  font-size:16px;
+  font-size:1em;
   font-weight:bold;
   padding-bottom:0;
   font-style:italic;

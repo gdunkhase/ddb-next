@@ -21,6 +21,7 @@
   padding: 0;
   margin: 0;
   line-height: 42px;
+  font-size: 0.938em;
 }
 
 .facets-head .contextual-help {
@@ -42,12 +43,11 @@
 }
 
 .facets-item a.h3 {
-  font-size: 17px;
   color: #3e3a37;
+  font-size: 1.063em;
 }
 
 .facets-list a.h3 {
-  font-size: 17px;
   color: #3e3a37;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -91,6 +91,7 @@
 .page-info-nav{
   display: block;
   overflow: hidden;
+  font-size: 0.938em;
 }
 
 .page-info,.page-nav {
@@ -167,6 +168,7 @@
   background: #efebe8;
   padding: 12px;
   overflow: hidden;
+  font-size: 0.938em;
 }
 
 .results-paginator-view .group-actions {
@@ -264,6 +266,10 @@ input[type="checkbox"],input[type="radio"] {
   max-height: 2.2em;
 }
 
+.search-results .results-list.grid .title {
+  font-size: 1.063em;
+}
+
 .search-results .results-list .summary-main-wrapper .title{
   max-height: 3.2em;
 }
@@ -271,12 +277,11 @@ input[type="checkbox"],input[type="radio"] {
 .search-results .results-list .summary-main-wrapper .title a{
   font-weight: normal;
   word-wrap: break-word;
-  font-size: 17px;
 }
 
 .search-results .results-list .subtitle {
-  font-size: 17px;
   font-family: Calibri,Arial,sans-serif;
+  font-size: 1.063em;
   line-height: 1em;
   margin: 7px 0 0;
   color: #3e3a37;
@@ -370,6 +375,10 @@ input[type="checkbox"],input[type="radio"] {
   margin-bottom: 50px;
 }
 
+.results-paginator-options {
+  font-size: 0.938em;
+}
+
 .results-list .item .summary {
   padding-bottom: 5px;
 }
@@ -377,7 +386,7 @@ input[type="checkbox"],input[type="radio"] {
 .results-list.grid .item{
   display: inline-block;
   padding-right:10px;
-  width:205px;
+  width:202px;
   vertical-align: top;
 }
 
@@ -493,7 +502,7 @@ input[type="checkbox"],input[type="radio"] {
   background-color: #efebe8;
   margin: 0;
   padding: 6px 5px 5px 20px;
-  font-size: 14px;
+  font-size: 1em;
   font-weight: bold;
 }
 
@@ -540,6 +549,7 @@ input[type="checkbox"],input[type="radio"] {
   box-shadow: #999 -8px 18px 32px -11px;
   padding-left: 10px;
   padding-right: 10px;
+  font-size: 0.938em;
 }
 .flyout-right-head {
   font-weight: bold;
@@ -601,7 +611,7 @@ input[type="checkbox"],input[type="radio"] {
   position:relative;
   line-height: 28px;
   color: #4c4a48;
-  font-size: 15px;
+  font-size: 1.071em;
 }
 .selected-items .facet-value{
   display: block;
