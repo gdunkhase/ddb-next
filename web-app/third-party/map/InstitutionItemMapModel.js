@@ -18,15 +18,15 @@ if ( typeof InstitutionItemMapModel == 'undefined' ) {
             return _initialized;
         }
 
-        var f_initialize = function (mapDivId, language, position) {
+        var f_initialize = function (mapDivId, language, position, startupOptions) {
 
             GeoTemConfig.determineAndSetUrlPrefix("InstitutionItemMapModel.js");
 
             if (typeof console != 'undefined') {
-                console.log("f_initialize mapDivId=" + mapDivId + " language=" + language);
-                console.log("             position:");
-                console.dir(position);
-                console.log("             urlPrefix=" + GeoTemConfig.urlPrefix);
+             // console.log("f_initialize mapDivId=" + mapDivId + " language=" + language);
+             // console.dir(position);
+             // console.dir(startupOptions);
+             // console.log("GeoTemConfig.urlPrefix=" + GeoTemConfig.urlPrefix);
             }
 
             GeoTemConfig.language = language;
@@ -44,7 +44,7 @@ if ( typeof InstitutionItemMapModel == 'undefined' ) {
 
             var map = new WidgetWrapper();
 
-            _mapWidget = new MapWidget(map, mapDiv, {
+            _mapWidget = new MapWidget(map, mapDiv, $.extend( {
                 mapTitle: GeoTemConfig.getString('institutes'),
                 popups: false,
 		        mapHeight : false, // '240px', // false or desired height css definition for the map
@@ -59,7 +59,7 @@ if ( typeof InstitutionItemMapModel == 'undefined' ) {
                 maxPlaceLabels: 0, // unlimited
                 geoLocation: false,
                 detailedViewSpec: _detailedViewSpec
-            });
+            },startupOptions) );
 
             if (typeof console != 'undefined') {
                 console.log("MapWidget displayed");

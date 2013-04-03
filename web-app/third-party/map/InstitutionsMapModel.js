@@ -44,7 +44,12 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
             return _initialized;
         };
 
-        var f_initialize = function (mapDivId, language) {
+        /**
+         * @param {string} mapDivId the id if the div to display the map in.
+         * @param {language} "en" or "de".
+         * @param {object} optional. specific Map options
+         */
+        var f_initialize = function (mapDivId, language, startupOptions) {
 
             GeoTemConfig.determineAndSetUrlPrefix("InstitutionsMapModel.js");
 
@@ -70,7 +75,7 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
             if (_isIE8) {
                 _mapWidget = new MapWidget_IE8Gen(map, mapDiv);
             } else {
-                var mapWidget = new MapWidget(map, mapDiv, {
+                var mapWidget = new MapWidget(map, mapDiv, $.extend({
                     mapTitle: GeoTemConfig.getString('institutes'),
                     mapHeight: false, // '670px', // false or desired height css definition for the map
                     showDescriptions: false,
@@ -84,7 +89,7 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
                     maxPlaceLabels: 0, // unlimited
                     circleTransparency: true,
                     geoLocation: false
-                });
+                },startupOptions));
             }
 
             if (typeof console != 'undefined') {

@@ -46,6 +46,8 @@ function MapConfig(options) {
 		bingMaps : false, // enable/disable Bing maps (you need to set the Bing Maps API key below)
 		bingApiKey : 'none', // bing maps api key, see informations at http://bingmapsportal.com/
 		osmMaps : true, // enable/disable OSM maps
+        osmTileset: null, // null: use the official OSM tileset, or specify another tileset, see:
+                          // http://dev.openlayers.org/docs/files/OpenLayers/Layer/OSM-js.html;
 		baseLayer : 'Open Street Map', // initial layer to show (e.g. 'Google Streets')
 		resetMap : true, // show/hide map reset button
 		countrySelect : true, // show/hide map country selection control button

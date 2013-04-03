@@ -68,6 +68,7 @@ modules = {
     */
         resource url:'/third-party/map/css/geotemco_InstitutionItemMap.css'
         resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
+        resource url:'/js/InstitutionItemMapAdapter.js'
     }
 
     institutionlist {
@@ -78,7 +79,7 @@ modules = {
     */
         resource url:'/third-party/map/css/geotemco_InstitutionsMap.css'
         resource url:'/third-party/map/geotemco_InstitutionsMap.js'
-        resource url:'/js/institution-map.js'
+        resource url:'/js/InstitutionsMapAdapter.js'
     }
 
     item {

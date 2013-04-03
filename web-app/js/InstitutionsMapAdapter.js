@@ -6,16 +6,25 @@ var INSTITUTIONS_MAP_REF = contextPath + '/apis/institutionsmap';
 
 var InstitutionsMapAdapter = (function ( $, undefined ) {
 
-    var MapOptions = {
+    //var osmTileServer = "openstreetmap.org";
+    //var osmTileServer = "opencyclemap.org/cycle";
+
+    var osmTileServer = "maps.deutsche-digitale-bibliothek.de";
+    var osmTileset = [ "http://a.tile." + osmTileServer + "/${z}/${x}/${y}.png",
+                       "http://b.tile." + osmTileServer + "/${z}/${x}/${y}.png",
+                       "http://c.tile." + osmTileServer + "/${z}/${x}/${y}.png" ];
+
+    var institutionsMapOptions = {
+        resetMap: true,
         mapHeight: false,
         mapWidth: false,
-    
+        osmTileset: osmTileset
     };
-
-    var Public = {}; // for public properties. avoid the reserved keyword "public"
 
     var mapDivId;
     var language;
+
+    var Public = {}; // for public properties. avoid the reserved keyword "public"
 
     Public.startup = function ( mapDiv, lang) {
         if (typeof console != "undefined") {
@@ -27,17 +36,13 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
         _setupDom4MapDisplay();
 
-        var callbackInterface = {
-            getSectorSelection: getSectorSelection,
-            fetchAllInstitutions: fetchAllInstitutions
-        };
-        InstitutionsMapController.startup(mapDiv,lang);
+        InstitutionsMapController.startup(mapDiv,lang,institutionsMapOptions);
 
         //fetchAllInstitutions(_displayAllInstitutionsData);
     };
 
     Public.selectSectors = function () {
-        var sectors = this.getSectorSelection();
+        var sectors = this._getSectorSelection();
         InstitutionsMapController.selectSectors(sectors);
     };
 
@@ -98,7 +103,7 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
         $('input:checkbox').click(function () {
             //_displaySectorSelection();
-            selectSectors();
+            Public.selectSectors();
         });
     };
 
@@ -106,7 +111,7 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
     var _displaySectorSelection = function () {
         console.log("XXX _displaySectorSelection");
-        var sectors = getSectorSelection();
+        var sectors = _getSectorSelection();
         var info_html = "<pre>\n" + JSON.stringify(sectors,null,2) + "\n</pre>"; 
         $(mapDivId).html(info_html);
     };

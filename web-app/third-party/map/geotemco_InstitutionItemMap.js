@@ -4767,6 +4767,8 @@ function MapConfig(options) {
 		bingMaps : false, // enable/disable Bing maps (you need to set the Bing Maps API key below)
 		bingApiKey : 'none', // bing maps api key, see informations at http://bingmapsportal.com/
 		osmMaps : true, // enable/disable OSM maps
+        osmTileset: null, // null: use the official OSM tileset, or specify another tileset, see:
+                          // http://dev.openlayers.org/docs/files/OpenLayers/Layer/OSM-js.html;
 		baseLayer : 'Open Street Map', // initial layer to show (e.g. 'Google Streets')
 		resetMap : true, // show/hide map reset button
 		countrySelect : true, // show/hide map country selection control button
@@ -5840,18 +5842,14 @@ MapWidget.prototype = {
 			this.baseLayers.push(aerial);
 		}
 		if (this.options.osmMaps) {
-            //var osmTileServer = "openstreetmap.org";
-            //var osmTileServer = "opencyclemap.org/cycle";
-            //var osmTileServer = "ddbmap-p1";
-            var osmTileServer = "maps.deutsche-digitale-bibliothek.de";
-            var osmServer = ["http://a.tile." + osmTileServer + "/${z}/${x}/${y}.png",
-                             "http://b.tile." + osmTileServer + "/${z}/${x}/${y}.png",
-                             "http://c.tile." + osmTileServer + "/${z}/${x}/${y}.png"];
-            
-            if (typeof console != "undefined") {
-                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmServer + "', {..}");
+            var osmTileset = null; // use the official OSM tileset
+            if (this.options.osmTileset) {
+                osmTileset = this.options.osmTileset;
             };
-			this.baseLayers.push(new OpenLayers.Layer.OSM('Open Street Map', osmServer, {
+            if (typeof console != "undefined") {
+                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmTileset + "', {..}");
+            };
+			this.baseLayers.push(new OpenLayers.Layer.OSM('Open Street Map', osmTileset, {
 				sphericalMercator : true,
 				zoomOffset : 1,
 				resolutions : this.resolutions
@@ -9344,16 +9342,24 @@ function WidgetWrapper() {
 
 };
 
-var INSTITUTION_ITEM_MAP_DIV = 'divOSM';
+if ( typeof InstitutionItemMapController == 'undefined' ) {
 
-function drawmap(itemDiv,language,lon, lat, instName, street, houseIdentifier, postalCode, city) {
-    console.log("xxx called: drawmap('" + itemDiv + "','" + language + "') ");
+    InstitutionItemMapController = (function () {
 
-    var position =  { longitude: lon, latitude: lat };
-    InstitutionItemMapModel.initialize(itemDiv, language, position);
+        var drawMap = function ( itemDiv, language, lon, lat, mapOptions ) {
+        //  console.log("xxx mapOptions:");
+        //  console.dir(mapOptions);
+
+            var position =  { longitude: lon, latitude: lat };
+            InstitutionItemMapModel.initialize(itemDiv, language, position, mapOptions);
+        }
+
+        return {
+            drawMap: drawMap
+        };
+
+    })();
 }
-
-
 
 if ( typeof InstitutionItemMapModel == 'undefined' ) {
 
@@ -9374,15 +9380,15 @@ if ( typeof InstitutionItemMapModel == 'undefined' ) {
             return _initialized;
         }
 
-        var f_initialize = function (mapDivId, language, position) {
+        var f_initialize = function (mapDivId, language, position, startupOptions) {
 
             GeoTemConfig.determineAndSetUrlPrefix("InstitutionItemMapModel.js");
 
             if (typeof console != 'undefined') {
-                console.log("f_initialize mapDivId=" + mapDivId + " language=" + language);
-                console.log("             position:");
-                console.dir(position);
-                console.log("             urlPrefix=" + GeoTemConfig.urlPrefix);
+             // console.log("f_initialize mapDivId=" + mapDivId + " language=" + language);
+             // console.dir(position);
+             // console.dir(startupOptions);
+             // console.log("GeoTemConfig.urlPrefix=" + GeoTemConfig.urlPrefix);
             }
 
             GeoTemConfig.language = language;
@@ -9400,7 +9406,7 @@ if ( typeof InstitutionItemMapModel == 'undefined' ) {
 
             var map = new WidgetWrapper();
 
-            _mapWidget = new MapWidget(map, mapDiv, {
+            _mapWidget = new MapWidget(map, mapDiv, $.extend( {
                 mapTitle: GeoTemConfig.getString('institutes'),
                 popups: false,
 		        mapHeight : false, // '240px', // false or desired height css definition for the map
@@ -9415,7 +9421,7 @@ if ( typeof InstitutionItemMapModel == 'undefined' ) {
                 maxPlaceLabels: 0, // unlimited
                 geoLocation: false,
                 detailedViewSpec: _detailedViewSpec
-            });
+            },startupOptions) );
 
             if (typeof console != 'undefined') {
                 console.log("MapWidget displayed");

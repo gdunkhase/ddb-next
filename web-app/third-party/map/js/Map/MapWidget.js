@@ -638,18 +638,14 @@ MapWidget.prototype = {
 			this.baseLayers.push(aerial);
 		}
 		if (this.options.osmMaps) {
-            //var osmTileServer = "openstreetmap.org";
-            //var osmTileServer = "opencyclemap.org/cycle";
-            //var osmTileServer = "ddbmap-p1";
-            var osmTileServer = "maps.deutsche-digitale-bibliothek.de";
-            var osmServer = ["http://a.tile." + osmTileServer + "/${z}/${x}/${y}.png",
-                             "http://b.tile." + osmTileServer + "/${z}/${x}/${y}.png",
-                             "http://c.tile." + osmTileServer + "/${z}/${x}/${y}.png"];
-            
-            if (typeof console != "undefined") {
-                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmServer + "', {..}");
+            var osmTileset = null; // use the official OSM tileset
+            if (this.options.osmTileset) {
+                osmTileset = this.options.osmTileset;
             };
-			this.baseLayers.push(new OpenLayers.Layer.OSM('Open Street Map', osmServer, {
+            if (typeof console != "undefined") {
+                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmTileset + "', {..}");
+            };
+			this.baseLayers.push(new OpenLayers.Layer.OSM('Open Street Map', osmTileset, {
 				sphericalMercator : true,
 				zoomOffset : 1,
 				resolutions : this.resolutions

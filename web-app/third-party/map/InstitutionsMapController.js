@@ -5,26 +5,26 @@ if ( typeof InstitutionsMapController === 'undefined' ) {
 
         var setupEventSubscriptions = function () {
             GeoPublisher.GeoSubscribe('GeoTemCoReady', this, function () {
-                f_alert("<<< GeoTemCoReady");
+                if (typeof console == "undefined") {
+                    console.log("InstitutionsMapController <<< GeoTemCoReady");
+                }
                 // Publisher.Publish(Events.InstitutionsMapReady, true);
                 //var map = InstitutionsMapModel.initialize('mapContainerDiv', 'de');
             });
         };
 
-        var f_startup = function(mapDiv,language) {
-            if (!InstitutionsMapModel.isInitialized()) { };
-            var map = InstitutionsMapModel.initialize(mapDiv,language);
-
+        var f_startup = function( mapDiv, language, startupOptions ) {
+            var map = InstitutionsMapModel.initialize(mapDiv,language,startupOptions);
             MapAdapter.fetchAllInstitutions(f_startup2);
         };
 
-        var f_startup2 = function(mapData) {
+        var f_startup2 = function( mapData ) {
             InstitutionsMapModel.prepareInstitutionsData(mapData);
             var sectorSelection = MapAdapter.getSectorSelection();
             f_selectSectors(sectorSelection);
         };
 
-        var f_selectSectors = function(sectorSelection) {
+        var f_selectSectors = function( sectorSelection ) {
             InstitutionsMapModel.selectSectors(sectorSelection);
         };
 
@@ -33,7 +33,7 @@ if ( typeof InstitutionsMapController === 'undefined' ) {
         
         setupEventSubscriptions();
 
-        var getJson = function(url,callbackFn) {
+        var getJson = function( url, callbackFn ) {
             $.ajax({
                 url : url,
                 async : true,
