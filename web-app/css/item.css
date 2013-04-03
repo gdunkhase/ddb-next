@@ -116,3 +116,24 @@ background-position: right -41px;
 .item-nav .items-overall-index {
   margin-right: 5px;
 }
+
+@media ( max-width : 979px) {
+  .object-controls .inline .first-item, 
+  .object-controls .inline .last-item {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .object-controls .item-nav-left,
+  .institution img {
+    display: none;
+  }
+  
+  .object-controls .item-nav {
+    text-align: left;
+  }
+}
+
+@media (max-width: 489px) {
+}

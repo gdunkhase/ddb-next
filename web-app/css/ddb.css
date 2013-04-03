@@ -876,6 +876,26 @@ footer .legal ul li+li,.footer .legal ul li+li {
 }
 /* responsive footer - end */
 
+/* responsive startpage */
+@media ( max-width : 767px) {
+  
+  .search-widget {
+    padding-top: 0px;
+    height: auto;
+  }
+
+  .search-widget img {
+    height: auto;
+  }
+
+  #form-search {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+}
+/* responsive sartpage - end */
+
 /* genaral rules */
 h1,h2,h3,h4 {
   font-family: KarbidWeb, Calibri, Arial, sans-serif;
