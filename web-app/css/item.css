@@ -17,19 +17,19 @@
   color: #878380;
   padding-left: 16px;
   margin-right: 10px;
-  background: url(../images/icons/list_backarrows.png) no-repeat 0px -43px
+  background: url(../images/icons/list_backarrows.png) no-repeat 0px -40px
 }
 .rights {
   margin: 30px 0px 30px 0px;
 }
 .back-to-list {
   padding-left: 16px;
-  background: url(../images/icons/list_backarrows.png) no-repeat 0px -3px;
+  background: url(../images/icons/list_backarrows.png) no-repeat 0px 0px;
   margin-right: 10px
 }
 .page-link {
   padding-left: 22px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -2px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat 0px 0px;
 }
 
 .viewer.dfg {
@@ -48,7 +48,7 @@
   padding-left: 22px;
   height: 25px;
   line-height: 20px;
-  background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
+  background: url(../images/icons/list_arrows.png) no-repeat 0px 0px;
   font-weight: bold;
   font-size: 1.133em;
 }
@@ -79,7 +79,7 @@
 }
 .show-origin {
   padding-left: 17px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -82px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
   margin-right: 10px;
 }
 .item-nav {
@@ -99,7 +99,7 @@
 }
 .item-nav .first-item a {
   padding-left: 14px;
-  background-position: left -21px;
+  background-position: left -20px;
 }
 .item-nav .prev-item {
   margin-right: 5px;
@@ -107,19 +107,19 @@
 .item-nav .prev-item a {
   padding-left: 14px;
   padding-right: 5px;
-  background-position: left -61px;
+  background-position: left -60px;
 }
 .item-nav .next-item a {
   padding-right: 14px;
   padding-left: 5px;
-background-position: right -41px;
+background-position: right -40px;
 }
 .item-nav .next-item {
   margin-left: 5px;
 }
 .item-nav .last-item a {
   padding-right: 14px;
-  background-position: right -1px;
+  background-position: right 0px;
 }
 .item-nav .items-overall-index {
   margin-right: 5px;
