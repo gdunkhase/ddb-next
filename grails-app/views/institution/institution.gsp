@@ -1,33 +1,38 @@
-<meta name="layout" content="main" />
-<r:require module="institution" />
-<%-- 
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'institution.css')}" />
-<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-<script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-<script src="${resource(dir: 'js', file: 'ddb.osm.institutiondetailview.js')}"></script>
---%>
-<title>${selectedOrgXML.name} - Deutsche Digitale Bibliothek</title>
+<%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 
-    <div class="institution-item-page">
-    
-       <div class="row institution">
+<html>
+<head>
+<title>${selectedOrgXML.name} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+
+<meta name="page" content="institution" />
+<meta name="layout" content="main" />
+
+<r:require module="openstreetmap" />
+</head>
+<body>
+  <div class="institution-item-page">
+
+    <div class="row">
+       <div class="span12 institution">
+         <div class="row">
            <div class="span10">
              <div>
-              <g:message code="ddbnext.${selectedOrgXML.sector}"/>
+               <g:message code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
              <div>
                  <h2>${selectedOrgXML.name}
                  <g:if test="${(countObjcs > 0)}">
-                     <a class="count" href="/searchresults?query=&amp;offset=0&amp;rows=20&amp;facetValues[]=provider_fct=${selectedOrgXML.name}" 
-                        title="<g:message code="ddbnext.InstitutionItem_IngestedObjectCountTitleText" />">
-                        ${countObjcs}
-                        <g:if test="${(countObjcs = 1)}">
-                            <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
+                    <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
+                    <g:link class="count" style="color: black; font-size: small;" controller="search" action="results" params="[query: '', offset: '0',
+                               rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
+                        <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
+                        <g:if test="${(countObjcs == 1)}">
+                            <g:message args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
                         </g:if>
                         <g:if test="${(countObjcs > 1)}">
-                            <g:message code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
+                            <g:message args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
                         </g:if>
-                     </a>
+                     </g:link>
                  </g:if>
                  </h2>
              </div>
@@ -38,18 +43,16 @@
            <div class="span2">
              <img class="logo" alt="${selectedOrgXML.name}" src="${selectedOrgXML.logo}">
            </div>
+         </div>
        </div>
-            
-       <div class="locations">
-       
+     </div>
+
+     <div class="row">
+       <div class="span12 locations">
+
             <div id="divOSM"></div>
             <script type="text/javascript">
               <!--
-              <%--
-              $("#divOSM").onload(function(){
-                drawmap(${selectedOrgXML.locations.location.geocode.longitude},${selectedOrgXML.locations.location.geocode.latitude}, "${selectedOrgXML.name}", "${selectedOrgXML.locations.location.address.street}", "${selectedOrgXML.locations.location.address.houseIdentifier}", "${selectedOrgXML.locations.location.address.postalCode}", "${selectedOrgXML.locations.location.address.city}");
-              });
-              --%>
               window.ddbAddOnloadListener(function() {
                 drawmap('divOSM','de',
                         ${selectedOrgXML.locations.location.geocode.longitude},
@@ -82,17 +85,18 @@
                               <b>${parentOrg[parentOrg.size() - 1].label}</b>
                           </g:if>
                           <g:else>
-                              <i class="icon-child-institution"></i>
-                              <a href="/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
+                            <i class="icon-child-institution"></i>
+                            <a href="/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                           </g:else>
                           <g:render template="subinstitutions" />
                         </li>
                       </ol>
                     </div>
-                </g:if>
-                
+                  </g:if>
+                </div>
+              </div>
             </div>
-      </div>
-      
-    </div>
-    
+  </div>
+</body>
+</html>
+

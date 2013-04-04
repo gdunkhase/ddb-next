@@ -17,6 +17,7 @@ package de.ddb.next
 
 import groovy.json.JsonSlurper
 
+import java.util.Map;
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -246,12 +247,12 @@ class SearchService {
         def tmpTitle = (cleanTitle.length()>length)?cleanTitle.substring(0,cleanTitle.substring(0,length).lastIndexOf(" "))+"...":cleanTitle
         if(matchesMatch.size()>0){
             matchesMatch.each{
-                tmpTitle = tmpTitle.replaceAll(it[1], "<strong>"+it[1]+"</strong>")
+                tmpTitle = tmpTitle.replaceAll(Pattern.quote(it[1]), "<strong>"+it[1]+"</strong>")
             }
         }
         return tmpTitle
     }
-    
+
     /**
      *
      * Gives you back the string trimmed to desired length
@@ -262,7 +263,7 @@ class SearchService {
      */
     def trimString(String text, int length){
         if(text.length()>length)
-          return text.substring(0, text.substring(0,length).lastIndexOf(" "))+"..."
+            return text.substring(0, text.substring(0,length).lastIndexOf(" "))+"..."
         return text
     }
 
@@ -310,12 +311,12 @@ class SearchService {
 
         if(reqParameters.minDocs)
             urlQuery["minDocs"] = reqParameters.minDocs
-            
+
         if(reqParameters["sort"] != null){
             urlQuery["sort"] = reqParameters.sort
         }else{
             if(urlQuery["query"]!="*"){
-              urlQuery["sort"] = "RELEVANCE"
+                urlQuery["sort"] = "RELEVANCE"
             }
         }
 
@@ -383,7 +384,8 @@ class SearchService {
             "facetValues[]",
             "facets[]",
             "firstHit",
-            "lastHit"
+            "lastHit",
+            "keepFilters"
         ]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
@@ -402,13 +404,19 @@ class SearchService {
      * @param numberOfElements number of elements to return
      * @return List of Map
      */
-    def getSelectedFacetValues(List facets, String fctName, int numberOfElements){
+    def getSelectedFacetValues(List facets, String fctName, int numberOfElements, String matcher, Locale locale){
         def res = [type: fctName, values: []]
         facets.each{
             if(it.field==fctName){
                 int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
                 for(int i=0;i<max;i++){
-                    res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format("%,d", it.facetValues[i].count.toInteger())])
+                    if(matcher && this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()).toLowerCase().contains(matcher.toLowerCase())){
+                        def localizedValue = this.getI18nFacetValue(fctName, it.facetValues[i].value.toString())
+                        def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
+                        localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
+                        res.values.add([value: it.facetValues[i].value, localizedValue: localizedValue, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
+                    }else if(!matcher)
+                        res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
                 }
             }
         }
@@ -454,9 +462,14 @@ class SearchService {
      * @param reqParameters request-parameters
      * @return Cookie with search-parameters
      */
-    def createSearchCookie(Map reqParameters) {
+    def createSearchCookie(Map reqParameters, Map additionalParams) {
         //Create Cookie with search-parameters for use on other pages
         //convert HashMap containing parameters to JSON
+        if (additionalParams) {
+            for (entry in additionalParams) {
+                reqParameters[entry.key] = entry.value
+            }
+        }
         Map paramMap = getSearchCookieParameters(reqParameters);
         def jSonObject = new JSONObject()
         for (entry in paramMap) {
@@ -476,7 +489,7 @@ class SearchService {
         cookie.maxAge = -1
         return cookie
     }
-    
+
     /**
      * Reads the cookie containing the search-Parameters and fills the values in Map.
      * 
@@ -513,6 +526,78 @@ class SearchService {
             }
         }
         return searchParamsMap
+    }
+
+    /**
+     * Converts the params list received from the frontend during a request to get all the facets to be displayed in the flyout widget.
+     * 
+     * @param reqParameters the params variable containing all the req parameters
+     * @return a map containing all the converted request parameters ready to be submitted to the related service to fetch the right facets values
+     */
+    def convertFacetQueryParametersToFacetSearchParameters(Map reqParameters) {
+        def urlQuery = [:]
+
+        if (reqParameters.searchQuery == null)
+            urlQuery["query"] = '*'
+        else urlQuery["query"] = reqParameters.searchQuery
+
+        if (reqParameters.rows == null || reqParameters.rows == -1)
+            urlQuery["rows"] = 1
+        else urlQuery["rows"] = reqParameters.rows
+
+        if (reqParameters.offset == null)
+            urlQuery["offset"] = 0
+        else urlQuery["offset"] = reqParameters.offset
+
+        //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
+        //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
+        if(reqParameters["facetValues[]"]){
+            urlQuery = getFacets(reqParameters, urlQuery,"facet", 0)
+        }
+
+        if(reqParameters.get("name")){
+            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+            if(!urlQuery["facet"].contains(reqParameters.get("name")))
+                urlQuery["facet"].add(reqParameters.get("name"))
+        }
+
+        if(reqParameters.isThumbnailFiltered){
+            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+            if(!urlQuery["facet"].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+                urlQuery["facet"].add("grid_preview")
+                urlQuery["grid_preview"] = "true"
+            }
+        }
+
+        //We ask for a maximum of 310 facets
+        urlQuery["facet.limit"] = 310
+
+        return urlQuery
+    }
+
+    /**
+     * Check if searchCookie contains keepFilters=true.
+     * If yes, expand requestParameters with facets and return true.
+     * Otherwise return false
+     * 
+     * @param cookieMap
+     * @param requestParameters
+     * @return boolean
+     */
+    def checkPersistentFacets(Map cookieMap, Map requestParameters, Map additionalParams) {
+        if (cookieMap["keepFilters"] && cookieMap["keepFilters"] == "true") {
+            additionalParams["keepFilters"] = "true"
+            if (!requestParameters["facetValues[]"] && cookieMap["facetValues[]"]) {
+                requestParameters["facetValues[]"] = cookieMap["facetValues[]"]
+                return true
+            }
+            else {
+                return false
+            }
+        }
+        else {
+            return false
+        }
     }
 
 }

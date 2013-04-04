@@ -1,13 +1,11 @@
 <g:set var="facetsList" value="${['time_fct', 'place_fct', 'affiliate_fct', 'keywords_fct', 'language_fct', 'type_fct', 'sector_fct', 'provider_fct']}"></g:set>
 <html>
 <head>
-<title>${title} - <g:message code="ddbnext.OpenSearch_Plugin_ShortName_Max16CharsNoHtml"/></title>
+<title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+
+<meta name="page" content="results" />
 <meta name="layout" content="main" />
-<r:require module="results"/> 
-<%-- 
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'results.css')}" />
-<script src="${resource(dir: 'js', file: 'search-results.js')}"></script>
---%>
+
 </head>
 
 <body>
@@ -16,7 +14,14 @@
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <span class="contextual-help hidden-phone hidden-tablet" title='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />' data-content='<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" />'></span>
+        <span class="contextual-help hidden-phone hidden-tablet" 
+              title="<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" 
+              args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-filters']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+              default="ddbnext.SearchResultsFacetHeading_TooltipContent"/>" 
+              data-content="<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" 
+              args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-filters']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+              default="ddbnext.SearchResultsFacetHeading_TooltipContent"/>">
+        </span> 
         <div class="tooltip off"></div>
       </div>
       <div class="facets-list bt bb">
@@ -35,10 +40,21 @@
           </g:each>
         </g:each>
       </div>
-      <a href="${clearFilters}" class="clear-filters button" ><g:message code="ddbnext.Clear_filters"/></a>
+      <div class="keep-filters off">
+        <label class="checkbox"> 
+          <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
+          <g:message code="ddbnext.Keep_filters"/>
+        </label>
+      </div>
+      <div>
+        <a href="${clearFilters}" class="clear-filters button"><g:message code="ddbnext.Clear_filters"/></a>
+      </div>
     </div>
     
-    <div class="span9 search-results-content">
+    <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
+      <g:render template="noResults" />
+    </div>
+    <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
       <div class="off result-pages-count">${totalPages}</div>
     
       <g:resultsPaginatorOptionsRender paginatorData="${resultsPaginatorOptions}"></g:resultsPaginatorOptionsRender>
@@ -70,9 +86,9 @@
           </div>
         </div>
       </div>
-      
-      <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}"></g:pageInfoNavRender>
-      
+      <div id="print-nav">
+        <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}"></g:pageInfoNavRender>
+      </div>
     </div>
   </div>
 </body>

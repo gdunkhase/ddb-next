@@ -31,6 +31,8 @@ class AdvancedsearchController {
     private static final String facetNameSuffix = "_fct"
     private static final String labelSortType = "ALPHA_LABEL"
 
+    static defaultAction = "fillValues"
+
     def messageSource
 
 

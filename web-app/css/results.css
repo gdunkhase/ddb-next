@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2013 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 .facets-head {
   position: relative;
 }
@@ -133,6 +148,19 @@
   width: 60px;
   text-align:center;
   margin-bottom:3px;
+}
+
+.keep-filters {
+    margin-bottom: 10px;
+}
+
+.keep-filters .checkbox {
+    display: block;
+}
+
+.keep-filters .checkbox input {
+    position: relative;
+    top: -2px;
 }
 
 .results-paginator-view {
@@ -337,6 +365,11 @@ input[type="checkbox"],input[type="radio"] {
   background-position: 0px -20px;
 }
 
+.search-noresults-content .noresults {
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
 .results-list .item .summary {
   padding-bottom: 5px;
 }
@@ -358,6 +391,10 @@ input[type="checkbox"],input[type="radio"] {
 
 .results-list.grid .summary-main-wrapper .summary-main .subtitle, .results-list.grid .summary-main-wrapper .summary-main .matches, .results-list.grid .summary-main-wrapper .extra{
   display:none;
+}
+
+.results-list .thumbnail{
+  display: block;
 }
 
 .results-list.grid .thumbnail{
@@ -512,6 +549,7 @@ input[type="checkbox"],input[type="radio"] {
   font-weight: bold;
   border-bottom: #ddd 1px solid;
   width: 100%;
+  overflow: hidden;
 }
 .selected-items{
   margin: 0 10px!important;
@@ -633,5 +671,25 @@ input[type="checkbox"],input[type="radio"] {
     margin-left: -2px;
     padding-left: 0px;
    }
+}
+
+@media (max-width: 489px) {
+   
+  .results-paginator-view {
+     display: none;
+   }
+   
+  .page-info-nav #results-label {
+     display: none;
+  }
+
+  .page-info-nav .results-overall-index + span {
+    display: none;
+  }
+
+  .page-info-nav .results-overall-index:after {
+    content: " /";
+  }
+
 }
 /* responsive - end */

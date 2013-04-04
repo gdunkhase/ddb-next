@@ -49,7 +49,8 @@ grails.mime.types = [
     text:          'text/plain',
     xml:           [
         'text/xml',
-        'application/xml']
+        'application/xml'
+    ]
 ]
 
 // URL Mapping Cache Max Size, defaults to 5000
@@ -94,6 +95,7 @@ ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de"
 ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
 ddb.apis.url="http://localhost:8080"
 ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+ddb.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
 ddb.logging.folder="target/logs"
 ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
 ddb.advancedSearch.searchGroupCount=3
@@ -101,12 +103,16 @@ ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
 
+// The grails.serverURL is required for the PDF rendering plugin.
+//grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
 
 grails.resources.mappers.zip.excludes = [
     '**/*.png',
     '**/*.gif',
+    '**/*.ico',
     '**/*.jpg',
     '**/*.jpeg',
+    '**/*.swf',
     '**/*.gz',
     '**/*.zip'
 ]
@@ -128,6 +134,7 @@ environments {
         grails.config.locations = [
             "file:${userHome}/.grails/${appName}.properties"
         ]
+
     }
     production {
         grails.logging.jul.usebridge = false
@@ -198,6 +205,36 @@ jawr {
     locale { // Define resolver so ?lang= Grails functionality works with controllers.
         resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
 }
-grails.app.context = "/"
 
+
+compress {
+    enabled = true
+
+    debug = false
+    statsEnabled = true
+    compressionThreshold = 1024
+    // filter's url-patterns
+    urlPatterns = ["/*"]
+    includePathPatterns = []
+    // Important! CSS and JS must be handled by the ressource plugin
+    excludePathPatterns = [
+        ".*\\.png",
+        ".*\\.gif",
+        ".*\\.ico",
+        ".*\\.jpg",
+        ".*\\.jpeg",
+        ".*\\.swf",
+        '.*\\.gz',
+        '.*\\.zip',
+        '.*\\.css',
+        '.*\\.js'
+    ]
+    includeContentTypes = ["application/json"]
+    excludeContentTypes = [".*"]
+    includeUserAgentPatterns = []
+    excludeUserAgentPatterns = []
+    development { debug = true }
+
+    production {  statsEnabled = false  }
+}
 

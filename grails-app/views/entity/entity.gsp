@@ -1,10 +1,11 @@
 <html>
-<!-- TODO i18n -->
 <head>
-  <title>${pageLabel} - Deutsche Digitale Bibliothek</title>
-  <link rel="stylesheet" href="${resource(dir: 'css', file: 'entity.css')}" />
+  <title>${pageLabel} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+
+  <meta name="page" content="entity" />
   <meta name="layout" content="main" />
-</head>
+  
+</head> 
 <body>
   <g:render template="controls" />
   <div class="row">

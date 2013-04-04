@@ -9,7 +9,7 @@
                               </g:if>
                               <g:else>
                                   <i class="icon-child-institution"></i>
-                                  <a href="/about-us/institutions/item/${it.id}">${it.label}</a>
+                                  <g:link controller="institution" action="showInstitutionsTreeByItemId" params="[id: it.id]">${it.label}</g:link>
                               </g:else>
                               <g:if test="${!(it.aggregationEntity)}">
                                   <g:set var="itemId" value="${it.id}" />

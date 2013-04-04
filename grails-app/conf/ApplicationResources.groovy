@@ -16,93 +16,87 @@
 modules = {
     ddbnext {
         defaultBundle 'ddbnext'
-
-        // Images
-        resource url:'/images/favicon.ico'
-
-        // CSS
-        resource url:'/css/bootstrap.css'
-        resource url:'/css/bootstrap-responsive.css'
-        resource url:'/css/ddb.css'
-        resource url:'/css/item.css'
-        resource url:'/css/institutionList.css'
-        resource url:'/css/results.css'
-        resource url:'/css/pdf.css'
-
-        // General Javascripts
-        resource url:'/js/onloadManager.js', disposition: 'head'
-        resource url:'/js/jquery-1.8.2.min.js', disposition: 'head'
-        resource url:'/js/jquery.cookies.2.2.0.min.js', disposition: 'head'
-        resource url:'/js/jquery.dotdotdot-1.5.1.js', disposition: 'head'
-        resource url:'/js/jquery.carouFredSel-6.2.0-packed.js', disposition: 'head'
-        resource url:'/js/vendor/bootstrap-collapse.js', disposition: 'head'
-        resource url:'/js/jquery.fancybox.pack.js', disposition: 'head'
-        resource url:'/js/underscore-min.js', disposition: 'head'
-        resource url:'/jwplayer/jwplayer.js', disposition: 'head'
-        resource url:'/js/large-cookie.js', disposition: 'head'
-        resource url:'/js/header.js', disposition: 'head'
-        resource url:'/js/tooltip.js', disposition: 'head'
-        resource url:'/js/json2.js', disposition: 'head' // This file was removed in GIT but still present in dev.escidoc.org: check!
-        resource url:'/js/StringBuilder.js', disposition: 'head'
-        resource url:'/js/institution-list.js', disposition: 'head'
-        resource url:'/js/apis-wrapper.js', disposition: 'head'
+        dependsOn "images, cssscreen, cssprint, javascript"
     }
+
+    images {  resource url:'/images/favicon.ico' }
+
+    cssscreen {
+        resource url:'/css/bootstrap.css', bundle: 'screen'
+        resource url:'/css/bootstrap-responsive.css', bundle: 'screen'
+        resource url:'/css/ddb.css', bundle: 'screen'
+        resource url:'/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
+        resource url:'/css/item.css', bundle: 'screen'
+        resource url:'/css/institutionList.css', bundle: 'screen'
+        resource url:'/css/institution.css', bundle: 'screen'
+        resource url:'/css/institution-map.css', bundle: 'screen'
+        resource url:'/css/results.css', bundle: 'screen'
+        resource url:'/css/staticcontent.css', bundle: 'screen'
+        resource url:'/css/error.css', bundle: 'screen'
+        resource url:'/css/institution.css', bundle: 'screen'
+        resource url:'/css/jquery.fancybox.css', bundle: 'screen'
+        resource url:'/css/viewer.css', bundle: 'screen'
+        resource url:'/css/item-hierarchy.css', bundle: 'screen'
+        resource url:'/css/modalDialog.css', bundle: 'screen'
+        resource url:'/css/advancedsearch.css', bundle: 'screen'
+        resource url:'/css/entity.css', bundle: 'screen'
+        resource url:'/third-party/map/css/style.css', bundle: 'screen'
+    }
+
+    cssprint {
+        resource url:'/css/ddb.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/item.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/institutionList.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/results.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/print.css', attrs:[media:'print'], bundle: 'print'
+    }
+
+    javascript {
+        resource url:'/js/jquery-1.8.2.min.js'
+        resource url:'/js/jquery.cookies.2.2.0.min.js'
+        resource url:'/js/jquery.dotdotdot-1.5.1.js'
+        resource url:'/js/jquery.carouFredSel-6.2.0-packed.js'
+        resource url:'/js/vendor/bootstrap-collapse.js'
+        resource url:'/js/jquery.fancybox.pack.js'
+        resource url:'/js/underscore-min.js'
+        resource url:'/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
+        resource url:'/js/myautocomplete.js'
+        resource url:'/jwplayer/jwplayer.js'
+        resource url:'/js/jwplayer-key.js'
+        resource url:'/js/large-cookie.js'
+        resource url:'/js/header.js'
+        resource url:'/js/tooltip.js'
+        resource url:'/js/json2.js'
+        resource url:'/js/global-variables.js'
+        resource url:'/js/institution-list.js'
+        resource url:'/js/start-page.js'
+        resource url:'/js/ddb.osm.institutiondetailview.js'
+        resource url:'/js/item-hierarchy.js'
+        resource url:'/js/binaries-viewer.js'
+        resource url:'/js/persistent-links-modal-dialog.js'
+        resource url:'/js/advanced-search-page.js'
+        resource url:'/js/search-results.js'
+        resource url:'/js/InstitutionItemMapAdapter.js'
+        resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
+        resource url:'/third-party/map/geotemco_InstitutionsMap.js'
+    }
+
 
     // These are page specific bundles which should be merged back into ddbnext in the second step
 
     startpage {
-        resource url:'/css/start-page.css'
-        resource url:'/js/start-page.js'
+        resource url:'/css/start-page.css', bundle: 'startpage'
+        resource url:'/css/start-page.css', attrs:[media:'print'], bundle: 'startpageprint'
     }
-
-    staticcontent { resource url:'/css/staticcontent.css' }
-
-    error { resource url:'/css/error.css' }
-
-    institution {
-        resource url:'/css/institution.css'
-    /*
-        resource url:'http://www.openlayers.org/api/OpenLayers.js'
-        resource url:'http://www.openstreetmap.org/openlayers/OpenStreetMap.js'
-        resource url:'/js/ddb.osm.institutiondetailview.js'
-    */
-        resource url:'/third-party/map/css/style.css'
-        resource url:'/js/InstitutionItemMapAdapter.js'
-        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
-    }
-
-    institutionlist {
-        resource url:'/css/institution-map.css'
-    /*
-        resource url:'http://www.openlayers.org/api/OpenLayers.js'
-        resource url:'/js/map-widget-test.js'
-    */
-        resource url:'/third-party/map/css/style.css'
-        resource url:'/js/InstitutionsMapAdapter.js'
-        resource url:'/third-party/map/geotemco_InstitutionsMap.js'
-    }
-
-    item {
-        resource url:'/css/jquery.fancybox.css'
-        resource url:'/css/viewer.css'
-        resource url:'/css/item-hierarchy.css'
-        resource url:'/css/modalDialog.css'
-        resource url:'/js/item-hierarchy.js'
-        resource url:'/js/binaries-viewer.js'
-        resource url:'/js/persistent-links-modal-dialog.js'
-    }
-
-    advancedsearch {
-        resource url:'/css/advancedsearch.css'
-        resource url:'/js/advanced-search-page.js'
-    }
-
-    results { resource url:'/js/search-results.js' }
 
     pdf {
-        resource url:'/css/bootstrap.css'//, exclude:'zip'
-        resource url:'/css/ddb.css'//, exclude:'zip'
-        resource url:'/css/item.css'//, exclude:'zip'
-        resource url:'/css/pdf.css'//, exclude:'zip'
+        // This is the only working variant found! You must exclude 'zip,bundle' from the mappers list and
+        // the CSS attributed with the exclude statement must NOT be used anywhere else in normal pages
+        // or otherwise the resource plugin will produce invalid imports. It is best to provide a CSS exclusively used
+        // for the PDF generation. Remember to to make sure that no other compression tool like the compress-plugin
+        // is compressing the css after the resource-plugin, otherwise the PDF-export will fail, since
+        // the plugin can not handle zipped ressources (see Config.groovy for that).
+        resource url:'/css/itemPdf.css', exclude:'zip,bundle', attrs:[media:'print']
     }
 }

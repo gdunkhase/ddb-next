@@ -31,7 +31,7 @@ class ContentController {
             if (params.dir!=null){
                 firstLvl=getFirstLvl();
             }
-            def browserUrl = request.forwardURI
+            def browserUrl = request.forwardURI.substring(request.contextPath.size())
 
             //Check if the called url ends with "/content/help" (invalid) or "/content/help/" (valid).
             //If the url does not end with "/", make a redirect, otherwise the relative linking
@@ -106,9 +106,9 @@ class ContentController {
     }
 
     private def fetchAuthor(content) {
-        def authorMatch = content =~ /(?s)<meta name="author" content="(.*?)" \/>/
+        def authorMatch = content =~ /(?s)<meta (.*?)name="author" (.*?)content="(.*?)"(.*?)\/>/
         if (authorMatch)
-            return authorMatch[0][1]
+            return authorMatch[0][3]
     }
 
     private def fetchTitle(content) {
@@ -118,14 +118,14 @@ class ContentController {
     }
 
     private def fetchKeywords(content) {
-        def keywordMatch = content =~ /(?s)<meta name="keywords" content="(.*?)" \/>/
+        def keywordMatch = content =~ /(?s)<meta (.*?)name="keywords" (.*?)content="(.*?)"(.*?)\/>/
         if (keywordMatch)
-            return keywordMatch[0][1]
+            return keywordMatch[0][3]
     }
 
     private def fetchRobots(content) {
-        def robotMatch = content =~ /(?s)<meta name="robots" content="(.*?)" \/>/
+        def robotMatch = content =~ /(?s)<meta (.*?)name="robots" (.*?)content="(.*?)"(.*?)\/>/
         if (robotMatch)
-            return robotMatch[0][1]
+            return robotMatch[0][3]
     }
 }

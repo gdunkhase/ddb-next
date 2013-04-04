@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Deutsche Digitale Bibliothek</title>
+    <title><g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
     <meta charset="utf-8" />
     <meta name="description" content="Deutsche Digitale Bibliothek"/>

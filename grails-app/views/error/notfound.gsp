@@ -1,12 +1,9 @@
 <html>
 <head>
-<title><g:message code="error.notfound.title"/> - Deutsche Digitale Bibliothek</title>
+<title><g:message code="error.notfound.title"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
+<meta name="page" content="error400" />
 <meta name="layout" content="main" />
-<r:require module="error"/>
-<%-- 
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'error.css')}" type="text/css" />
---%> 
 
 </head>
 <body>

@@ -17,12 +17,26 @@ package de.ddb.next
 
 import de.ddb.next.beans.Item;
 
+/**
+ * This taglib renders the hierarchy tree of an item in the form of nested ul/li tags. 
+ * The taglib code itself only ensures a correct model und calls to the embedded gsp templates.
+ * @author hla
+ */
 class HierarchyOutputTagLib {
 
+    /**
+     * Maximum number of hierarchy-entries to display
+     */
     public static final int MAX_HIERARCHY_SIZE = 501
 
     def itemService
 
+    /**
+     * This tag renders the hierarchy of a given item-id. The hierarchy of the given item-id is 
+     * dynamically created via two calls to the backend.
+     * 
+     * @attr item The item-ID (e.g. AYKQ6FKHP6A7KFKCK2K3DP6HCVNZQEQC).
+     */
     def renderHierarchy = { attrs, body ->
         def itemId = attrs.item
 
@@ -30,7 +44,7 @@ class HierarchyOutputTagLib {
         def parentList = itemService.getParent(itemId)
 
         // No parentList -> No hierarchy
-        if(!parentList || parentList.size() == 0) {
+        if(!Item.doesParentListContainHierarchy(itemId, parentList)) {
             out << ""
             return
         }
@@ -52,40 +66,78 @@ class HierarchyOutputTagLib {
         // Get the mainItem
         Item mainItem = rootItem.getItemFromHierarchy(itemId)
 
+        Item emptyStartItem = new Item()
+        emptyStartItem.getChildren().add(rootItem)
+
+        attrs["item"] = emptyStartItem
+        attrs["mainItem"] = mainItem
+
         // Start building the html code
-        def renderString = "<ul>\n"
-        renderString += renderItem(mainItem, rootItem)
-        renderString += "</ul>\n"
-
-        out << renderString
+        out << renderItemChilds(attrs, body)
     }
 
-    private def renderItem(Item mainItem, Item item){
-        def out = "<li>\n"
-        if(item.id == mainItem.id){
-            out += "<strong>" + item.label + "</strong>\n"
-        }else{
-            out += item.label + "\n"
-        }
+
+    /**
+     * This tag should only be used by the taglib itself! 
+     * It renders a single item entry and triggers the recursive render call to its childs (if it has any).
+     * 
+     * @attr item The current Item object (of type de.ddb.next.beans.Item) of the recursive call hierarchy
+     * @attr mainItem The main Item (of type de.ddb.next.beans.Item), meaning the Item that was initially 
+     *      given to render the whole hierarchy
+     * 
+     */
+    def renderItem = { attrs, body ->
+        def itemMap = [:]
+        def item = attrs.item
+        def mainItem = attrs.mainItem
+
+        itemMap["label"] = item.label
+        itemMap["isMainItem"] = (item.id == mainItem.id)
+        itemMap["item"] = item
+        itemMap["mainItem"] = mainItem
         if(item.hasChildren()){
-            out += "<ul>\n"
-            for(int i=0; i<item.getChildren().size(); i++){
-                Item child = item.getChildren().get(i)
-                out += renderItem(mainItem, child)
-            }
-            out += "</ul>\n"
+            itemMap["hasChildren"] = true
+        }else{
+            itemMap["hasChildren"] = false
         }
-        out += "</li>\n"
-        return out;
+
+        out << render(template:"/item/hierarchyItem", model:[item: itemMap])
     }
 
+    /**
+     * This tag should only be used by the taglib itself! 
+     * It triggers the rendering of the childs of the current item.
+     * 
+     * @attr item The current child Item object (of type de.ddb.next.beans.Item) of the recursive call hierarchy
+     * @attr mainItem The main Item (of type de.ddb.next.beans.Item), meaning the Item that was initially 
+     *      given to render the whole hierarchy
+     */
+    def renderItemChilds = { attrs, body ->
+        def itemMap = [:]
+        def item = attrs.item
+        def mainItem = attrs.mainItem
+
+        itemMap["item"] = item
+        itemMap["mainItem"] = mainItem
+        itemMap["childs"] = item.getChildren()
+
+        out << render(template:"/item/hierarchyItemChilds", model:[item: itemMap])
+
+    }
+
+    /**
+     * Checks if a given item-id has a hierarchy. If it has, the body of the tag is rendered. If it has no 
+     * hierarchy the body of the tag is ignored.
+     * 
+     * @attr item The item-ID (e.g. AYKQ6FKHP6A7KFKCK2K3DP6HCVNZQEQC)
+     */
     def hasHierarchy = { attrs, body ->
         def itemId = attrs.item
 
         // Check if the item has parents
         def parentList = itemService.getParent(itemId)
 
-        if(parentList && parentList.size() > 0){
+        if(Item.doesParentListContainHierarchy(itemId, parentList)){
             out << body()
         }else{
             out << ""

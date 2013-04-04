@@ -1,12 +1,33 @@
+/*
+ * Copyright (C) 2013 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
-window.ddbAddOnloadListener(function() {
+$(document).ready(function() {
   if (window.history && history.pushState) {
     historyedited = false;
+    historySupport = true;
     $(window).bind('popstate', function(e) {
      if (historyedited) {
       stateManager(location.pathname + location.search);
      }
     });
+  }else{
+      historySupport = false;
+      //Utilized for browser that doesn't supports pushState.
+      //It will be used as reference URL for all the ajax actions
+      globalUrl = location.search.substring(1);
   }
   
   searchResultsInitializer();
@@ -19,9 +40,11 @@ window.ddbAddOnloadListener(function() {
 });
 
 function historyManager(path){
-if(window.history && history.pushState) {
-  window.history.pushState({path:path},'',path);
+  if(historySupport) {
+    window.history.pushState({path:path},'',path);
     historyedited = true;
+  }else{
+    globalUrl = (path.indexOf('?')>-1)?path.split('?')[1]:path;
   }
 }
 
@@ -38,6 +61,7 @@ function searchResultsInitializer(){
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
   $('.page-input').removeClass('off');
+  $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
   
   setHovercardEvents();
@@ -62,15 +86,21 @@ function searchResultsInitializer(){
   //This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
   //IMPORTANT: remember to pass your arrayParamVal already URL decoded
   function addParamToUrl(arrayParamVal, path, urlString){
-    var queryParameters = {}, queryString = (urlString==null)?location.search.substring(1):urlString,
+    var currentUrl = (historySupport)?location.search.substring(1):globalUrl;
+    var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
-        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))] = decodeURIComponent(m[2].replace(/\+/g,'%20'));
+        var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+        if (queryParameters[decodedKey] == null) {
+            queryParameters[decodedKey] = new Array();
+        }
+        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
     }
     $.each(arrayParamVal, function(key, value){
       queryParameters[value[0]] = value[1];
     });
     var tmp = jQuery.param(queryParameters, true);
+    updateLanguageSwitch(tmp);
     if (path == null) {
       return window.location.pathname+'?'+tmp;
     }
@@ -80,7 +110,8 @@ function searchResultsInitializer(){
   }
   
   function removeParamFromUrl(arrayParamVal, path, urlString){
-    var queryParameters = {}, queryString = (urlString==null)?location.search.substring(1):urlString,
+    var currentUrl = (historySupport)?location.search.substring(1):globalUrl;
+    var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
         var keyParam = decodeURIComponent(m[1].replace(/\+/g,'%20'));
@@ -97,6 +128,7 @@ function searchResultsInitializer(){
       }
     });
     var tmp = jQuery.param(queryParameters, true);
+    updateLanguageSwitch(tmp);
     if (path == null) {
       return window.location.pathname+'?'+tmp;
     }
@@ -105,6 +137,21 @@ function searchResultsInitializer(){
     }
   }
   
+function updateLanguageSwitch(params) {
+    params = params.replace(/\&?lang=[^\&]*/g, '');
+    if (params.length > 0) {
+        params += '&'
+    }
+    if (params.indexOf('&') == 0) {
+        params = params.substring(1);
+    }
+    var pattern = /(.*?\?).*?(lang=\w*)/;
+    $('.language-wrapper').find('a[href]').each(function(){
+      var matches = pattern.exec($(this).attr('href'));
+      $(this).attr('href', matches[1] + params + matches[2]);
+    }); 
+}
+
   function setSearchCookieParameter(arrayParamVal){
     var searchParameters = readCookie("searchParameters");
     if (searchParameters != null && searchParameters.length > 0) {
@@ -124,6 +171,17 @@ function searchResultsInitializer(){
           }
           json[value[0]] = value[1];
         });
+        document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
+    }
+  }
+  
+  function removeSearchCookieParameter(paramName){
+    var searchParameters = readCookie("searchParameters");
+    if (searchParameters != null && searchParameters.length > 0) {
+        searchParameters = searchParameters.substring(1, searchParameters.length -1);
+        searchParameters = searchParameters.replace(/\\"/g,'"');
+        var json = $.parseJSON(searchParameters);
+        json[paramName] = null;
         document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
     }
   }
@@ -192,6 +250,7 @@ function searchResultsInitializer(){
       else {
         this.value = 1;
       }
+      $('.page-input').attr('value', this.value);
       var paramsArray = new Array(new Array('offset', (this.value - 1) * $('.page-filter').find("select").val()));
       var newUrl = addParamToCurrentUrl(paramsArray);
       fetchResultsList(newUrl);
@@ -199,13 +258,14 @@ function searchResultsInitializer(){
   });
   $('#thumbnail-filter').click(function(){
     var valueCheck = $(this);
-    if(valueCheck.is(':checked'))
+    if(valueCheck.is(':checked')){
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'true'));
-    else
+    }else{
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'false'));
+    }
+    paramsArray.push(new Array('offset', 0));
     var newUrl = addParamToCurrentUrl(paramsArray);
     fetchResultsList(newUrl);
-    historyManager(newUrl);
   });
   $('#view-grid').click(function(){
     $('.summary-main .title a').each(function(index,value){
@@ -245,6 +305,18 @@ function searchResultsInitializer(){
     setSearchCookieParameter(paramsArray);
     historyedited= true;
   });
+  $('#keep-filters').click(function(){
+    var valueCheck = $(this);
+    if(valueCheck.is(':checked'))
+      var paramsArray = new Array(new Array('keepFilters', 'true'));
+    else
+      var paramsArray = new Array(new Array('keepFilters', 'false'));
+    addParamToCurrentUrl(paramsArray);
+    setSearchCookieParameter(paramsArray);
+  });
+  $('.clear-filters').click(function(){
+    removeSearchCookieParameter('facetValues[]');
+  });
   function fetchResultsList(url){
     $('.search-results').empty();
     var imgLoader = document.createElement('img');
@@ -258,6 +330,13 @@ function searchResultsInitializer(){
       complete: function(data){
         $('.search-results').fadeOut('fast', function(){
         var JSONresponse = jQuery.parseJSON(data.responseText);
+        if(JSONresponse.numberOfResults==0){
+            $('.search-noresults-content').removeClass("off");
+            $('.search-results-content').addClass("off");
+        }else{
+            $('.search-noresults-content').addClass("off");
+            $('.search-results-content').removeClass("off");
+        }
         $('.search-results').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
         $('.page-input').attr("value", JSONresponse.page);
@@ -265,6 +344,12 @@ function searchResultsInitializer(){
         $('.total-pages').html(JSONresponse.totalPages);
         $('.result-pages-count').html(JSONresponse.totalPages);
         $('.results-total').html(JSONresponse.numberOfResults);
+        if (JSONresponse.numberOfResults == "1") {
+            $('#results-label').html(messages.ddbnext.Result_lowercase);
+        }
+        else {
+            $('#results-label').html(messages.ddbnext.Results_lowercase);
+        }
         if(JSONresponse.paginationURL.nextPg){
           $(".page-nav .next-page").removeClass("off");
           $(".page-nav .last-page").removeClass("off");
@@ -299,39 +384,49 @@ function searchResultsInitializer(){
   $.extend(FacetsManager.prototype, {
       
     connectedflyoutWidget: null,
-    facetsEndPoint: '/facets',
+    facetsEndPoint: jsContextPath +'/facets',
     currentOffset: 0, 
     currentRows: -1, //all facets
     currentFacetField: null,
     currentFacetValuesSelected: new Array(),
     currentFacetValuesNotSelected: new Array(),
     currentPage: 1,
+    searchFacetValuesTimeout: 0,
 
     init: function(){
     },
 
-    fetchFacetValues: function(flyoutWidget){
-        this.connectedflyoutWidget = flyoutWidget;
+    fetchFacetValues: function(flyoutWidget, query){
+        if(flyoutWidget!=null)
+          this.connectedflyoutWidget = flyoutWidget;
         var oldParams = this.getUrlVars();
         var currObjInstance = this;
-        var fctValues = "";
+        var fctValues = '';
+        var isThumbnailFIltered = '';
+        var queryParam = '';
         var resp = new Array();
         if(oldParams['facetValues%5B%5D']){
           $.each(oldParams['facetValues%5B%5D'], function(key, value){
             fctValues = (value.indexOf(currObjInstance.currentFacetField)>=0)?fctValues:fctValues+'&facetValues%5B%5D='+value;
           });
         }
+        if(oldParams['isThumbnailFiltered'] && oldParams['isThumbnailFiltered']=='true'){
+            isThumbnailFIltered = '&isThumbnailFiltered=true';
+        }
+        if(query){
+            queryParam='&query='+query;
+        }
         this.connectedflyoutWidget.renderFacetLoader();
         var request = $.ajax({
             type: 'GET',
             dataType: 'json',
             async: true,
-            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+fctValues+'&offset='+this.currentOffset+'&rows='+this.currentRows,
+            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+queryParam+fctValues+isThumbnailFIltered+'&offset='+this.currentOffset+'&rows='+this.currentRows,
             complete: function(data){
                 var parsedResponse = jQuery.parseJSON(data.responseText);
                 //Initialization of currentFacetValuesSelected / currentFacetValuesNotSelected
                 currObjInstance.initializeFacetValuesStructures(parsedResponse.values);
-                flyoutWidget.initializeFacetValues(parsedResponse.type, currObjInstance.currentFacetValuesNotSelected);
+                currObjInstance.connectedflyoutWidget.initializeFacetValues(parsedResponse.type, currObjInstance.currentFacetValuesNotSelected);
                 }
             });
     },
@@ -426,6 +521,7 @@ function searchResultsInitializer(){
         }else{
           var paramsArray = new Array(new Array('facetValues[]', this.currentFacetField+'='+facetValue));
         }
+        paramsArray.push(new Array('offset', 0));
         fetchResultsList(addParamToCurrentUrl(paramsArray));
     },
     
@@ -443,13 +539,76 @@ function searchResultsInitializer(){
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
       var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+element.attr('data-fctvalue'))));
-      fetchResultsList(newUrl);
+      if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
+          removeSearchCookieParameter('facetValues[]');
+      }
+      fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
       element.remove();
+    },
+    
+    initializeFacetValuesDynamicSearch: function(inputSearchElement){
+      var currObjInstance = this;
+      inputSearchElement.keyup(function(e){
+        var code = (e.keyCode ? e.keyCode : e.which);
+        var inputValue = this.value;
+        if(code!=16 && code!=17 && code!=18 && code!=37 && code!=38 && code!=39 && code!=40 && code!=13){
+            var d = new Date();
+            currObjInstance.searchFacetValuesTimeout = d.getTime();
+            setTimeout(function(){
+                var currentD = new Date();
+              if(currObjInstance.searchFacetValuesTimeout+400<currentD.getTime()  && currObjInstance.connectedflyoutWidget.opened){
+                  currObjInstance.connectedflyoutWidget.parentMainElement.find('.flyout-right-container').remove();
+                  currObjInstance.connectedflyoutWidget.buildStructure();
+                  currObjInstance.fetchFacetValues(null,inputValue);
+              }
+              else{
+                return;
+              }
+            },500);
+          }
+      });
+    },
+    
+    initializeSelectedFacetOnLoad: function(connectedflyoutWidget){
+      var currObjInstance = this;
+      this.connectedflyoutWidget = connectedflyoutWidget;
+      var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
+      if(paramsFacetValues){
+        var selectedFacets = {};
+        $.each(paramsFacetValues, function(key,value){
+          var decodedElement = decodeURIComponent(value.replace(/\+/g,'%20')).split('=');
+          var fctField = decodedElement[0];
+          var fctValue = decodedElement[1];
+          if(!selectedFacets[fctField]){
+            selectedFacets[fctField] = new Array();
+          }
+          selectedFacets[fctField].push(fctValue);
+        });
+        $.each(selectedFacets, function(fctField, fctValues){
+            currObjInstance.connectedflyoutWidget.mainElement = $('.facets-list').find('a[data-fctname="'+fctField+'"]');
+            currObjInstance.connectedflyoutWidget.parentMainElement = currObjInstance.connectedflyoutWidget.mainElement.parent();
+            currObjInstance.currentFacetField = currObjInstance.connectedflyoutWidget.mainElement.attr('data-fctname');
+            currObjInstance.connectedflyoutWidget.buildLeftContainer();
+            currObjInstance.connectedflyoutWidget.parentMainElement.find('.input-search-fct-container').hide();
+            $.each(fctValues, function(){
+                var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, currObjInstance.getLocalizedValue(fctField, this));
+                
+                selectedFacetValue.find('.facet-remove').click(function(){
+                  currObjInstance.unselectFacetValue(selectedFacetValue);
+                });
+            });
+            
+            currObjInstance.connectedflyoutWidget.renderAddMoreFiltersButton(fctField);
+            currObjInstance.connectedflyoutWidget.addMoreFilters.click(function(event){
+                currObjInstance.connectedflyoutWidget.build($(this));
+            });
+        });
+      }
     },
     
     getUrlVars: function(){
       var vars = {}, hash;
-      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+      var hashes = (historySupport)?window.location.href.slice(window.location.href.indexOf('?') + 1).split('&'):globalUrl.split('&');
       for(var i = 0; i < hashes.length; i++)
       {
         hash = hashes[i].split('=');
@@ -462,6 +621,24 @@ function searchResultsInitializer(){
     },
     getUrlVar: function(name){
       return this.getUrlVars()[name];
+    },
+    getLocalizedValue: function(facetField, facetValue){
+        if(facetField=='affiliate_fct' || facetField=='keywords_fct' || facetField=='place_fct' || facetField=='provider_fct'){
+            return facetValue.toString();
+        }
+        if(facetField=='type_fct'){
+            return messages.ddbnext['type_fct_'+facetValue];
+        }
+        if(facetField=='time_fct'){
+            return messages.ddbnext['time_fct_'+facetValue];
+        }
+        if(facetField=='language_fct'){
+            return messages.ddbnext['language_fct_'+facetValue];
+        }
+        if(facetField=='sector_fct'){
+            return messages.ddbnext['sector_fct_'+facetValue];
+        }
+        return '';
     }
   });
   
@@ -485,11 +662,13 @@ function searchResultsInitializer(){
     paginationLiNext: null,
     paginationLiSeite: null,
     addMoreFilters: null,
+    inputSearch: null,
     
 
     //i18n variables
     
     field_MostRelevant: messages.ddbnext.Most_relevant,
+    field_NoAvailableValues: messages.ddbnext.No_Available_Values,
     field_AddMoreFiltersButtonTooltip: messages.ddbnext.Add_More_Filters_ButtonTooltip,
     field_SearchResultsFacetValueNext: messages.ddbnext.SearchResultsFacetValue_Next,
     field_SearchResultsFacetValuePrevious: messages.ddbnext.SearchResultsFacetValue_Previous,
@@ -499,6 +678,7 @@ function searchResultsInitializer(){
     
     init: function(){
         this.cleanNonJsStructures();
+        this.fctManager.initializeSelectedFacetOnLoad(this);
     },
     
     build: function(element){
@@ -519,30 +699,14 @@ function searchResultsInitializer(){
     },
     
     buildStructure: function(){
-      var inputSearchContainer;
-      var inputSearch;
       
       if(this.parentMainElement.find('.flyout-left-container').length>0){
         this.facetLeftContainer = this.parentMainElement.find('.flyout-left-container');
         this.selectedItems = this.parentMainElement.find('.selected-items');
-        inputSearchContainer = this.parentMainElement.find('.input-search-fct-container');
+        var inputSearchContainer = this.parentMainElement.find('.input-search-fct-container');
         this.inputSearch = this.parentMainElement.find('.input-search-fct');
       }else{
-        this.facetLeftContainer = $(document.createElement('div'));
-        this.selectedItems = $(document.createElement('ul'));
-        inputSearchContainer = $(document.createElement('div'));
-        inputSearch = $(document.createElement('input'));
-
-        this.facetLeftContainer.addClass('flyout-left-container');
-        this.selectedItems.addClass('selected-items unstyled');
-        inputSearchContainer.addClass('input-search-fct-container');
-        inputSearch.attr('type','text');
-        inputSearch.addClass('input-search-fct');
-        
-        this.facetLeftContainer.appendTo(this.mainElement.parent());
-        this.selectedItems.appendTo(this.facetLeftContainer);
-        inputSearch.appendTo(inputSearchContainer);
-        inputSearchContainer.appendTo(this.facetLeftContainer);
+        this.buildLeftContainer();
       }
       
       this.facetRightContainer = $(document.createElement('div'));
@@ -574,8 +738,6 @@ function searchResultsInitializer(){
       rightHead.appendTo(this.facetRightContainer);
       this.rightBody.appendTo(this.facetRightContainer);
       
-      rightHead.html(this.field_MostRelevant);
-      
       paginationAPrev.html(this.field_SearchResultsFacetValuePrevious);
       paginationANext.html(this.field_SearchResultsFacetValueNext);
       this.paginationLiSeite.html(this.field_Page);
@@ -588,11 +750,35 @@ function searchResultsInitializer(){
       paginationAPrev.appendTo(this.paginationLiPrev);
       paginationANext.appendTo(this.paginationLiNext);
       spanSeiteNumber.appendTo(this.paginationLiSeite);
-
+      
+      var currObjInstance = this;
+      
+      this.facetRightContainer.click(function(){
+          currObjInstance.close();
+      })
+      
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
-      //this.parentMainElement.find('.input-search-fct-container').show('100');
+    },
+    
+    buildLeftContainer: function(){        
+        this.facetLeftContainer = $(document.createElement('div'));
+        this.selectedItems = $(document.createElement('ul'));
+        var inputSearchContainer = $(document.createElement('div'));
+        this.inputSearch = $(document.createElement('input'));
+
+        this.facetLeftContainer.addClass('flyout-left-container');
+        this.selectedItems.addClass('selected-items unstyled');
+        inputSearchContainer.addClass('input-search-fct-container');
+        this.inputSearch.attr('type','text');
+        this.inputSearch.addClass('input-search-fct');
+        
+        this.facetLeftContainer.appendTo(this.mainElement.parent());
+        this.selectedItems.appendTo(this.facetLeftContainer);
+        this.inputSearch.appendTo(inputSearchContainer);
+        inputSearchContainer.appendTo(this.facetLeftContainer);
+        this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
     },
     
     initializeFacetValues: function(field, facetValues){
@@ -616,10 +802,19 @@ function searchResultsInitializer(){
         
       var leftCol = this.rightBody.find('.left-col');
       var rightCol = this.rightBody.find('.right-col');
-      
-      if(field == this.fctManager.currentFacetField){
+      var flyoutRightHeadTitle;
+      if(this.facetRightContainer.find('.flyout-right-head span').length > 0){
+          flyoutRightHeadTitle = this.facetRightContainer.find('.flyout-right-head span');
+      }else{
+          flyoutRightHeadTitle = $(document.createElement('span'));
+      }
+      if(field == this.fctManager.currentFacetField && facetValues.length >0){
+        flyoutRightHeadTitle.html(this.field_MostRelevant);
         if(facetValues.length > 5){
           this.rightBody.addClass('body-extender');
+        }
+        else{
+          this.rightBody.removeClass('body-extender');
         }
         this.rightBody.fadeOut('fast', function(){
           leftCol.empty();
@@ -633,7 +828,7 @@ function searchResultsInitializer(){
                 var localizedValue = this.localizedValue;
                 
                 facetValueContainer.click(function(){
-                  currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue);
+                  currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue.replace('<strong>','').replace('</strong>',''));
                   $(this).remove();
                 });
                 
@@ -646,13 +841,16 @@ function searchResultsInitializer(){
                 else if(index<10){
                   facetValueContainer.appendTo(rightCol);
                 }
-                spanCount.appendTo(facetValueContainer);
-                $(document.createTextNode(localizedValue)).appendTo(facetValueContainer);
+                facetValueContainer.html(localizedValue);
+                spanCount.prependTo(facetValueContainer);
             }
           });
           currObjInstance.rightBody.fadeIn('fast');
         });
+      }else{
+        flyoutRightHeadTitle.html(this.field_NoAvailableValues);
       }
+      flyoutRightHeadTitle.prependTo(this.facetRightContainer.find('.flyout-right-head'));
     },
     
     renderSelectedFacetValue: function(facetValue, localizedValue){
@@ -690,6 +888,10 @@ function searchResultsInitializer(){
         icon.appendTo(this.addMoreFilters);
         this.addMoreFilters.appendTo(this.facetLeftContainer);
         this.facetLeftContainer.find('.input-search-fct-container').appendTo(this.facetLeftContainer);
+        
+        this.addMoreFilters.click(function(event){
+            $(this).hide();
+        })
     },
     
     removeAddMoreFiltersButton: function(FacetFieldFilter , addMoreFiltersElement){
@@ -735,6 +937,7 @@ function searchResultsInitializer(){
       oldParentMainElement.find('.flyout-right-container').hide('100', function(){
         oldParentMainElement.find('.flyout-right-container').remove();
       });
+      this.inputSearch.attr('value','');
       this.fctManager.currentPage = 1;
       this.fctManager.currentOffset = 0;
       this.fctManager.currentFacetValuesSelected = new Array();

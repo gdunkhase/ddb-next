@@ -102,6 +102,19 @@ class Item {
         }
     }
 
+    static boolean doesParentListContainHierarchy(String id, List allItemsJson){
+        if(allItemsJson == null){
+            return false
+        }
+        if(allItemsJson.size() <= 1){
+            return false
+        }
+        if(allItemsJson.size()>1){
+            return true
+        }
+        return false;
+    }
+
     static Item buildHierarchy(List allItemsJson){
         List<Item> allItemList = []
         allItemsJson.each {

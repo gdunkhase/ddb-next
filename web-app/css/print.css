@@ -1,0 +1,97 @@
+/*
+ * Copyright (C) 2013 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/* Displaying only the logo as header*/
+.print-logo {
+  display: block !important;
+}
+
+/* Removing unwanted elements */
+header, .header,
+footer, .footer,
+.facets-container, .results-paginator-options, .page-info-nav .page-nav, .results-paginator-view, .information, #print-nav,
+.object-controls, .origin, .slide-viewer .tabs, .sibling-count,
+#first-letter-index li:not(.active),
+.group-operator, .add-group-button,
+#articles-prev, #articles-next, .link-adv-search, .contextual-help {
+  display: none;
+}
+
+.fl {
+  float: none !important;
+}
+
+/* Search page*/
+.results-list, .matches, #previews-list {
+  list-style: none;
+}
+.results-list .item, .results-list.grid .item {
+  display: block;
+  width: 560px;
+}
+.summary-main-wrapper {
+  width: 100%;
+}
+.results-list.grid .item .thumbnail-wrapper {
+  margin-left: 0px;
+}
+.thumbnail-wrapper {
+  margin-left: 470px;
+}
+.search-results .results-list .summary-main-wrapper .title a {
+  font-size: 22px;
+}
+.search-results .results-list .matches {
+  font-size: 14px;
+  line-height: 16px;
+}
+.page-info-nav .page-info{
+  margin-left: 40px;
+}
+/* Search page - end*/
+
+/* Item detail-view page*/
+.institution-name {
+  padding-left: 0px;
+}
+.institution .span10 {
+  display: inline-block;
+  width: 480px;
+}
+.institution .span2 {
+  display: inline-block;
+  width: 130px;
+}
+.item-description .span2{
+  display: inline-table;
+  width: 200px;
+}
+.item-description .value{
+  display: inline-table;
+  width: 400px;
+}
+.item-hierarchy-result ul {
+  margin-left: -20px;
+}
+.item-hierarchy-result li {
+  min-height: 20px;
+}
+/* Item detail-view - end*/
+
+/* Advanced search */
+.search-group {
+  display: block !important;
+}
+/* Advanced search - end */

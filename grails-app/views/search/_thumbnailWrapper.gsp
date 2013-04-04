@@ -1,9 +1,9 @@
 <%@page import="java.awt.event.ItemEvent"%>
 <div class="thumbnail-wrapper <g:if test="${viewType != 'grid'}">span2</g:if>">
   <div class="thumbnail">
-    <a class="persist" href="/item/${item.id}?hitNumber=${hitNumber}">
-      <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="${item.preview.title.encodeAsHTML()}" />
-    </a>
+    <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: item.id, hitNumber: hitNumber]">
+      <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<g:removeTags>${item.preview.title}</g:removeTags>" />
+    </g:link>
   </div>
   <div class="information">
     <div class="hovercard-info-item">

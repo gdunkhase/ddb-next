@@ -1,13 +1,45 @@
-// --- Deutschlands- Zonen 32 und 33:
-// EPSG:25832 = ETRS89, UTM, Zone 32
-// EPSG:25833 = ETRS89, UTM, Zone 33
-//var fromProjection = new OpenLayers.Projection("EPSG:25832"); // Transform from WGS 1984
-var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
-var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-//var toProjection = new OpenLayers.Projection("EPSG:25833"); // to Spherical Mercator Projection
-var extent = new OpenLayers.Bounds(-1.32,51.71,-1.18,51.80).transform(fromProjection,toProjection);
-//-- Zoomstufe der Karte
-var zoom = 16;
+/*
+ * Copyright (C) 2013 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+$(document).ready(function(){
+
+	if (typeof ddbInstitution != "undefined"){ // Only start if we have information on this page
+
+		//--- Deutschlands- Zonen 32 und 33:
+		// EPSG:25832 = ETRS89, UTM, Zone 32
+		// EPSG:25833 = ETRS89, UTM, Zone 33
+		//var fromProjection = new OpenLayers.Projection("EPSG:25832"); // Transform from WGS 1984
+		var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
+		var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+		//var toProjection = new OpenLayers.Projection("EPSG:25833"); // to Spherical Mercator Projection
+		var extent = new OpenLayers.Bounds(-1.32,51.71,-1.18,51.80).transform(fromProjection,toProjection);
+		//-- Zoomstufe der Karte
+		var zoom = 16;
+	
+		//http://wiki.openstreetmap.org/wiki/Die_JavaScript_Dateien
+		var map;
+		var layer_mapnik;
+		var layer_tah;
+		var layer_markers;
+
+		drawmap(ddbInstitution["longitude"], ddbInstitution["latitude"], zoom, ddbInstitution["name"], ddbInstitution["street"], ddbInstitution["housenumber"], ddbInstitution["postalcode"], ddbInstitution["city"]);
+	}
+	
+});
+
+
 function mapLoading(lon, lat) {
     var options = {
           restrictedExtent: extent,
@@ -43,13 +75,8 @@ function mapLoading(lon, lat) {
       
     }
     
-// http://wiki.openstreetmap.org/wiki/Die_JavaScript_Dateien
-var map;
-var layer_mapnik;
-var layer_tah;
-var layer_markers;
 
-function drawmap(lon, lat, instName, street, houseIdentifier, postalCode, city) {
+function drawmap(lon, lat, zoom, instName, street, houseIdentifier, postalCode, city) {
     // -- Popup und Popuptext mit evtl. Grafik
     var popuptext = "<font color=\"black\"><b>" + instName + 
                     "</br>" + street + "&nbsp;" + houseIdentifier + 
@@ -147,3 +174,4 @@ function getCycleTileURL(bounds) {
      return this.url + z + "/" + x + "/" + y + "." + this.type;
    }
 }
+

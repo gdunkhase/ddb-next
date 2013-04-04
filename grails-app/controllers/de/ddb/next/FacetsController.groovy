@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 
 /**
  * Invoked from ajax request during the selection of filters for the search results page
@@ -30,40 +32,18 @@ class FacetsController {
 
 
     def facetsList() {
-        def urlQuery = [:]
-        if (params.searchQuery == null)
-            urlQuery["query"] = '*'
-        else urlQuery["query"] = params.searchQuery
+        def resultsItems
 
-        if (params.rows == null || params.rows == -1)
-            urlQuery["rows"] = 1
-        else urlQuery["rows"] = params.rows
+        def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params)
 
-        if (params.offset == null)
-            urlQuery["offset"] = 0
-        else urlQuery["offset"] = params.offset
+        resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery).facets
 
-        //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
-        //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
-        if(params["facetValues[]"]){
-            urlQuery = searchService.getFacets(params, urlQuery,"facet", 0)
-        }
+        def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
 
-        if(params.get("name")){
-            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
-            if(!urlQuery["facet"].contains(params.get("name")))
-                urlQuery["facet"].add(params.get("name"))
-        }
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
-        //We ask for a maximum of 310 facets
-        urlQuery["facet.limit"] = 310
-
-        def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
-
-        def facetValues = searchService.getSelectedFacetValues(resultsItems.facets, params.name, urlQuery["rows"].toInteger())
+        def facetValues = searchService.getSelectedFacetValues(resultsItems, params.name, numberOfElements, params.query, locale)
 
         render (contentType:"text/json"){facetValues}
-
-
     }
 }

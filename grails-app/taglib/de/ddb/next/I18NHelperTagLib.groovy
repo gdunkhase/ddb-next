@@ -30,13 +30,7 @@ class I18NHelperTagLib {
      * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
      */
     def currentLanguage = { attrs, body ->
-        def locale = RequestContextUtils.getLocale(request)
-        if(!locale){
-            locale = SupportedLocales.getDefaultLocale()
-        }
-        if(!SupportedLocales.supports(locale)){
-            locale = SupportedLocales.getDefaultLocale()
-        }
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
         def localeLanguage = locale.getLanguage()
         def i18nLanguageString = messageSource.getMessage("ddbnext.language_"+localeLanguage, null, locale)
@@ -47,7 +41,7 @@ class I18NHelperTagLib {
     /**
      * Renders a language switching link dependend on the current url params, the given locale and the internationalized name.
      */
-    def languageLink = {attrs, body ->
+   def languageLink = {attrs, body ->
         def checkLocaleString = attrs.locale
         def localeclass = attrs.islocaleclass
         def locale = RequestContextUtils.getLocale(request)
@@ -67,9 +61,12 @@ class I18NHelperTagLib {
         if(isLocale){
             out << "<a class=\""+localeclass+"\">"+currentLanguage(attrs)+"</a>"
         }else{
-            //TODO check this code after update to Grails 2.2.1 or higher! the createLink method has known bugs!
             def linkUrl = createLink("url": attrs.params)
             def cleanedParams = attrs.params.clone()
+            if(linkUrl.contains("staticcontent")){
+                linkUrl = linkUrl.replaceAll("staticcontent", attrs.params?.dir)
+                cleanedParams.remove("dir")
+            }
             cleanedParams.remove("controller")
             cleanedParams.remove("action")
             cleanedParams.remove("id")

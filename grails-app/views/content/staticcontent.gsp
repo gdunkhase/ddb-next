@@ -1,21 +1,18 @@
 <html>
 <!-- TODO my do write the head element again? -->
 <head>
-  <title>${title} - Deutsche Digitale Bibliothek</title>
-<g:if test="${author}">
+  <title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+  <meta name="page" content="staticcontent" />
+  <g:if test="${author}">
     <meta name="author" content="${author}" />
-</g:if>
-<g:if test="${keywords}">
-  <meta name="keywords" content="${keywords}" />
-</g:if>
-<g:if test="${robots}">
-  <meta name="robots" content="${robots}" />
-</g:if>
-  <meta name="layout" content="main" />
-  <r:require module="staticcontent"/>
-  <%-- 
-  <link rel="stylesheet" href="${resource(dir: 'css', file: 'staticcontent.css')}" />
-  --%>
-</head>
-<body>${content}</body>
+  </g:if>
+  <g:if test="${keywords}">
+    <meta name="keywords" content="${keywords}" />
+  </g:if>
+  <g:if test="${robots}">
+    <meta name="robots" content="${robots}" />
+  </g:if>
+    <meta name="layout" content="main" />
+  </head>
+  <body>${content}</body>
 </html>
