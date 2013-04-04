@@ -201,6 +201,29 @@ function updateLanguageSwitch(params) {
     fetchResultsList(this.href);
     return false;
   });
+  $('#form-search-header button').click(function(){
+    var searchParameters = readCookie("searchParameters");
+    if (searchParameters != null && searchParameters.length > 0) {
+        searchParameters = searchParameters.substring(1, searchParameters.length -1);
+        searchParameters = searchParameters.replace(/\\"/g,'"');
+        var json = $.parseJSON(searchParameters);
+        if (json["rows"]) {
+            $(this).append('<input type="hidden" name="rows" value="' + json["rows"] + '"/>')
+        }
+        if (json["clustered"]) {
+            $(this).append('<input type="hidden" name="clustered" value="' + json["clustered"] + '"/>')
+        }
+        if (json["isThumbnailFiltered"]) {
+            $(this).append('<input type="hidden" name="isThumbnailFiltered" value="' + json["isThumbnailFiltered"] + '"/>')
+        }
+        if (json["viewType"]) {
+            $(this).append('<input type="hidden" name="viewType" value="' + json["viewType"] + '"/>')
+        }
+        if (json["sort"]) {
+            $(this).append('<input type="hidden" name="sort" value="' + json["sort"] + '"/>')
+        }
+    }
+  });
   $('#view-list').click(function(){
     $('.summary-main .title a').each(function(index,value){
       var newTitle = value.title.toString();
