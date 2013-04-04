@@ -51,10 +51,10 @@ footer, .footer,
   margin-left: 470px;
 }
 .search-results .results-list .summary-main-wrapper .title a {
-  font-size: 22px;
+  font-size: 1.571em;
 }
 .search-results .results-list .matches {
-  font-size: 14px;
+  font-size: 1em;
   line-height: 16px;
 }
 .page-info-nav .page-info{

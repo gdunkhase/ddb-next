@@ -23,7 +23,7 @@ body {
   color: #3E3A37;
   font-family: Calibri,Arial,sans-serif;
   background-color: #FFFFFF;
-  font-size: 14px;
+  font-size: 1em;
   line-height: 20px;
   margin: 0;
 }
@@ -90,7 +90,7 @@ li {
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
   border-image: none;
-  font-size: 15px;
+  font-size: 1.071em;
   margin-bottom: 1em;
   margin-top: 1em;
   padding-bottom: 10px;  
@@ -98,7 +98,7 @@ li {
 
 .institution-name {
   background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
-  font-size: 17px;
+  font-size: 1.214em;
   font-weight: bold;
   height: 25px;
   line-height: 20px;
@@ -198,7 +198,7 @@ li {
 }
 
 .print .deeplink {
-  font-size: 12px;
+  font-size: 0.857em;
 }
 
 .print .hierarchy ul {
