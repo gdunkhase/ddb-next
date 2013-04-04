@@ -7,6 +7,7 @@
 <meta name="page" content="institution" />
 <meta name="layout" content="main" />
 
+<r:require module="institution"/>
 </head>
 <body>
   <div class="institution-item-page">

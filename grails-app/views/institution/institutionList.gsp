@@ -5,6 +5,7 @@
 <meta name="page" content="institutionList" />
 <meta name="layout" content="main" />
 
+<r:require module="institutionlist"/>
 </head>
 <body>
   <h1><g:message code="ddbnext.Institutions" /></h1>
