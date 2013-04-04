@@ -28,6 +28,8 @@ modules = {
         resource url:'/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
         resource url:'/css/item.css', bundle: 'screen'
         resource url:'/css/institutionList.css', bundle: 'screen'
+        resource url:'/css/institution.css', bundle: 'screen'
+        resource url:'/css/institution-map.css', bundle: 'screen'
         resource url:'/css/results.css', bundle: 'screen'
         resource url:'/css/staticcontent.css', bundle: 'screen'
         resource url:'/css/error.css', bundle: 'screen'
@@ -38,6 +40,7 @@ modules = {
         resource url:'/css/modalDialog.css', bundle: 'screen'
         resource url:'/css/advancedsearch.css', bundle: 'screen'
         resource url:'/css/entity.css', bundle: 'screen'
+        resource url:'/third-party/map/css/style.css', bundle: 'screen'
     }
 
     cssprint {
@@ -67,7 +70,6 @@ modules = {
         resource url:'/js/global-variables.js'
         resource url:'/js/institution-list.js'
         resource url:'/js/start-page.js'
-        resource url:'/js/ddb.osm.institutiondetailview.js'
         resource url:'/js/item-hierarchy.js'
         resource url:'/js/binaries-viewer.js'
         resource url:'/js/persistent-links-modal-dialog.js'
@@ -82,6 +84,18 @@ modules = {
         resource url:'/css/start-page.css', bundle: 'startpage'
         resource url:'/css/start-page.css', attrs:[media:'print'], bundle: 'startpageprint'
     }
+    
+    //These are pages that include third party components
+    institution {
+        resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
+    }
+    
+    institutionlist {
+        resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/third-party/map/geotemco_InstitutionsMap.js'
+    }
+    
 
     pdf {
         // This is the only working variant found! You must exclude 'zip,bundle' from the mappers list and

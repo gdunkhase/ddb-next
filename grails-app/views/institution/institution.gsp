@@ -7,12 +7,7 @@
 <meta name="page" content="institution" />
 <meta name="layout" content="main" />
 
-<%-- HLA: since the openstreetmap includion is currently refactored we might need this code again
-<r:require module="openstreetmap" />
---%>
-<r:external uri="http://www.openlayers.org/api/OpenLayers.js"/>
-<r:external uri="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"/>
-
+<r:require module="institution"/>
 </head>
 <body>
   <div class="institution-item-page">
@@ -56,18 +51,6 @@
        <div class="span12 locations">
 
             <div id="divOSM"></div>
-            <script type="text/javascript">
-              <!--
-                var ddbInstitution = {};
-                ddbInstitution["longitude"] = ${selectedOrgXML.locations.location.geocode.longitude};
-                ddbInstitution["latitude"] = ${selectedOrgXML.locations.location.geocode.latitude};
-                ddbInstitution["name"] = "${selectedOrgXML.name}";
-                ddbInstitution["street"] = "${selectedOrgXML.locations.location.address.street}";
-                ddbInstitution["housenumber"] = "${selectedOrgXML.locations.location.address.houseIdentifier}";
-                ddbInstitution["postalcode"] = "${selectedOrgXML.locations.location.address.postalCode}";
-                ddbInstitution["city"] = "${selectedOrgXML.locations.location.address.city}";
-              //-->
-            </script>
             
             <div class="location-container">
                 
