@@ -74,6 +74,11 @@ class UrlMappings {
             controller="entity"
             action="show"
         }
+		
+		"/binary/$filename**" {
+			controller="apis"
+			action="binary"
+		}
 
         "500"(controller: "error", action: "serverError")
         "500"(controller: "error", action: "uncaughtException", exception: Throwable)
