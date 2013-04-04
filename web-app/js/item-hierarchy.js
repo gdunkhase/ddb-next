@@ -27,7 +27,7 @@ $(document).ready(function() {
 /*
  * Add a leaf node to the current node.
  * 
- * @param {Element} currentNode current node (LI element)
+ * @param {Element} currentNode current node (li element)
  * 
  * @param {JSON} value data object
  * 
@@ -83,7 +83,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
  * 
  * @param {String} url URL to the item service
  * 
- * @param {Element} currentNode current node (LI element)
+ * @param {Element} currentNode current node (li element)
  * 
  * @param {String} parentId id of the parent node in the hierarchy
  * 
@@ -95,13 +95,20 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
  * @param {boolean} isLast true if the current node is the last node in the list
  * 
  * @param {boolean} countSiblings true if the number of siblings must be counted
+ * 
+ * @param {boolean} drawBorder draw a border around the plus sign if true
  */
-function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, countSiblings) {
+function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, countSiblings, drawBorder) {
   currentNode.empty();
   if (isLast) {
     currentNode.addClass("last");
   } else {
     currentNode.removeClass("last");
+  }
+
+  // draw a border around the plus sign
+  if (isCurrent && drawBorder) {
+    currentNode.addClass("lastExited");
   }
 
   // add sibling count
@@ -149,9 +156,9 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
           }
         });
       }
-      showChildren(url, currentNode.parent().parent(), parentId, id);
+      showChildren(url, currentNode.parent().parent(), parentId, id, true);
     } else {
-      showChildren(url, currentNode, value.id, parentId);
+      showChildren(url, currentNode, value.id, parentId, false);
     }
   });
 
@@ -254,7 +261,7 @@ function createHierarchy(url) {
 
         ul.append(li);
         currentNode.append(ul);
-        addParentNode(url, li, parentId, value, true, true, true);
+        addParentNode(url, li, parentId, value, true, true, true, false);
         currentNode = li;
       } else if (parents.length > 1) {
         // show children
@@ -335,13 +342,15 @@ function setNodeIcon(currentNode, setExpanded) {
  * 
  * @param {String} url URL to the item service
  * 
- * @param {Element} currentNode current node
+ * @param {Element} currentNode current node (li element)
  * 
  * @param {String} currentId id of the current node in the hierarchy
  * 
  * @param {String} parentId id of the parent node in the hierarchy
+ * 
+ * @param {boolean} drawBorder draw a border around the plus sign if true
  */
-function showChildren(url, currentNode, currentId, parentId) {
+function showChildren(url, currentNode, currentId, parentId, drawBorder) {
   // remove other nodes on the current level and below
   currentNode.siblings().remove();
   currentNode.children("ul").remove();
@@ -351,6 +360,8 @@ function showChildren(url, currentNode, currentId, parentId) {
 
   if (isLeaf) {
     setNodeIcon(currentNode.parent().parent().children("span.branch-type").children("i"), false);
+  } else {
+    currentNode.removeClass("lastExited");
   }
 
   // get the id of the child which is on the current path
@@ -392,7 +403,7 @@ function showChildren(url, currentNode, currentId, parentId) {
       addWaitSymbol(li);
       getChildren(url, value.id, function(children) {
         if (children.length > 0) {
-          addParentNode(url, li, currentId, value, isCurrent, isLast, false);
+          addParentNode(url, li, currentId, value, isCurrent, isLast, false, drawBorder);
         } else {
           addLeafNode(li, value, isCurrent, isLast, length == 501);
         }
