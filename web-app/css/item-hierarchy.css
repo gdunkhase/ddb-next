@@ -89,9 +89,8 @@
 }
 
 .item-hierarchy-result li.more-available {
-  background:
-    url("../images/bg/advanced_search_dotted_end.png")
-    no-repeat scroll 7px 0px transparent;
+  background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
+    scroll 7px 0px transparent;
 }
 
 .item-hierarchy-result li.leaf {
@@ -118,9 +117,18 @@
   padding: 0;
 }
 
-.item-hierarchy-result .label {
+.item-hierarchy-result a:hover {
+  color: #a5003b;
+  text-decoration: underline;
+}
+
+.item-hierarchy-result a.label {
   display: block;
   margin-left: 50px;
+}
+
+.item-hierarchy-result span.label {
+  margin-left: 10px;
 }
 
 /* highlight the current path */
