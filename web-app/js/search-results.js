@@ -384,7 +384,7 @@ function updateLanguageSwitch(params) {
   $.extend(FacetsManager.prototype, {
       
     connectedflyoutWidget: null,
-    facetsEndPoint: contextPath +'/facets',
+    facetsEndPoint: jsContextPath +'/facets',
     currentOffset: 0, 
     currentRows: -1, //all facets
     currentFacetField: null,

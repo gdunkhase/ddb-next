@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 $(document).ready(function() {
+
+  var currentPage = $('meta[name=page]').attr("content");
+  if(currentPage == "item"){
+	
   $(function() {
     currentTab($("p.all"));
     $("div.all").show();
@@ -85,7 +89,7 @@ $(document).ready(function() {
           width: 445,
           height: 320,
           image: poster,
-          skin: "/jwplayer/skins/five.xml", 
+          skin: "../jwplayer/skins/five.xml", 
           modes: [{
               type: "html5"
           }, {
@@ -269,4 +273,5 @@ $(document).ready(function() {
       $("div.binary-title span").text(title);
       return false;
   });
+  }
 });

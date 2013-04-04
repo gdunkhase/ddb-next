@@ -2,7 +2,7 @@
 <div class="row">
   <div class="span12 object-controls">
     <!-- buttons -->
-    <div class="span6">
+    <div class="span6 item-nav-left">
       <g:if test="${searchResultUri != null}">
           <a class="back-to-list" href="${searchResultUri}" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
               <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
@@ -17,7 +17,7 @@
     </div>
     <!-- search results navigation -->
     <g:if test="${hitNumber != null}">
-      <div class="span5 item-nav fr">
+      <div class="span6 item-nav fr">
           <g:itemDetailInfoNavRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavRender>
       </div>
     </g:if>

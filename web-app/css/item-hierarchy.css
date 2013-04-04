@@ -165,3 +165,10 @@
   font-size: 0.938em;
   color: #3e3a37;
 }
+
+/* TODO just for mobile views not to scroll horizontally. find a better solution! */
+@media ( max-width : 767px) {
+  .item-hierarchy {
+    overflow: hidden;
+  }
+}

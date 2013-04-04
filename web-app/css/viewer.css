@@ -18,17 +18,6 @@
   padding:10px;
   background:#efebe8;
 }
-@media (max-width: 767px) {
-  .slide-viewer {
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-@media (max-width: 529px) {
-  .slide-viewer {
-    width: 340px;
-  }
-}
 .slide-viewer ul {
   list-style: none;
   margin: 0;
@@ -191,6 +180,7 @@ noscript .scroller {
   display: block !important;
   overflow: auto !important;
 }
+
 .fancybox-toolbar {
   background-color: #efebe8;
   padding: 5px;
@@ -278,18 +268,39 @@ noscript .scroller {
   width: 445px;
   height: 323px;
 }
-@media (max-width: 529px) {
-  #binary-viewer {
-    width: 340px;
-    height: 243px;
-  }
-  .previews img {
-    max-width: 340px;
-    max-height: 243px;
-  }
-}
 #binary-viewer img {
   cursor: pointer;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
+}
+
+@media (max-width: 767px) {
+  .slide-viewer {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+  }
+}
+@media (max-width: 529px) {
+  .slide-viewer {
+    width: 280px;
+  }
+  .slide-viewer .scroller {
+    width: 280px;
+  }
+  #binary-viewer {
+    width: 280px;
+    height: 200px;
+  }
+  .previews img {
+    max-width: 280px;
+    max-height: 200px;
+  }
+  #jwplayer-container_wrapper {
+    width: 280px !important;
+    height: 200px !important;
+  }
+}
+
+@media (max-width: 489px) {
 }

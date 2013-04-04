@@ -97,3 +97,23 @@ position: relative;
   border: none !important;
   margin: 0 !important;
 }
+
+@media (max-width: 767px) {
+  .locations #divOSM {
+    width: 260px;
+    height: 164px;
+  }
+}
+
+@media (max-width: 529px) {
+  .locations #divOSM {
+    width: 200px;
+    height: 126px;
+  }
+}
+
+@media (max-width: 489px) {
+  #divOSM {
+    display: none;
+  }
+}

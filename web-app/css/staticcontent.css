@@ -25,11 +25,6 @@
   float: right;
   clear: right;
 }
-@media (max-width: 767px) {
-  .static_marginal {
-    display: none;
-  }
-}
 .static_content a, .static_marginal a {
   text-decoration: underline;
 }
@@ -91,4 +86,18 @@ img.floatLeft, .inlineBox.floatLeft {
 
 img.floatRight, .inlineBox.floatRight {
     margin: 5px 0 10px 15px;
+}
+@media (max-width: 767px) {
+  .static_content {
+    width: 100%;
+    float: auto;
+    clear: auto;
+  }
+  
+  .static_marginal {
+    width: 100%;
+    float: auto;
+    clear: auto;
+    border-top: 1px solid rgb(233, 229, 226);
+  }
 }

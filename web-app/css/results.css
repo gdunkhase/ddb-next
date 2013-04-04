@@ -672,4 +672,24 @@ input[type="checkbox"],input[type="radio"] {
     padding-left: 0px;
    }
 }
+
+@media (max-width: 489px) {
+   
+  .results-paginator-view {
+     display: none;
+   }
+   
+  .page-info-nav #results-label {
+     display: none;
+  }
+
+  .page-info-nav .results-overall-index + span {
+    display: none;
+  }
+
+  .page-info-nav .results-overall-index:after {
+    content: " /";
+  }
+
+}
 /* responsive - end */
