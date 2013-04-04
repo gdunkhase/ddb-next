@@ -319,8 +319,8 @@ function updateLanguageSwitch(params) {
   });
   function fetchResultsList(url){
     $('.search-results').empty();
-    var imgLoader = document.createElement('img');
-    imgLoader.src = "../images/icons/loader_small.gif";
+    var imgLoader = $(document.createElement('div'));
+    imgLoader.addClass('small-loader');
     $('.search-results').prepend(imgLoader);
     var request = $.ajax({
       type: 'GET',
@@ -397,6 +397,7 @@ function updateLanguageSwitch(params) {
     },
 
     fetchFacetValues: function(flyoutWidget, query){
+        console.log(this.facetsEndPoint);
         if(flyoutWidget!=null)
           this.connectedflyoutWidget = flyoutWidget;
         var oldParams = this.getUrlVars();
@@ -523,6 +524,8 @@ function updateLanguageSwitch(params) {
         }
         paramsArray.push(new Array('offset', 0));
         fetchResultsList(addParamToCurrentUrl(paramsArray));
+        
+        $('.clear-filters').removeClass('off');
     },
     
     unselectFacetValue: function(element){
@@ -544,6 +547,9 @@ function updateLanguageSwitch(params) {
       }
       fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
       element.remove();
+      
+      if($('.facets-list').find('li[data-fctvalue]').length==0) $('.clear-filters').addClass('off');
+          
     },
     
     initializeFacetValuesDynamicSearch: function(inputSearchElement){
@@ -603,6 +609,7 @@ function updateLanguageSwitch(params) {
                 currObjInstance.connectedflyoutWidget.build($(this));
             });
         });
+        $('.clear-filters').removeClass('off');
       }
     },
     
@@ -750,12 +757,6 @@ function updateLanguageSwitch(params) {
       paginationAPrev.appendTo(this.paginationLiPrev);
       paginationANext.appendTo(this.paginationLiNext);
       spanSeiteNumber.appendTo(this.paginationLiSeite);
-      
-      var currObjInstance = this;
-      
-      this.facetRightContainer.click(function(){
-          currObjInstance.close();
-      })
       
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
@@ -905,8 +906,8 @@ function updateLanguageSwitch(params) {
     
     renderFacetLoader: function(){
       this.rightBody.empty();
-      var imgLoader = document.createElement('img');
-      imgLoader.src = "/static/images/icons/loader_small.gif";
+      var imgLoader = $(document.createElement('div'));
+      imgLoader.addClass('small-loader');
       this.rightBody.prepend(imgLoader);
     },
     
@@ -921,6 +922,7 @@ function updateLanguageSwitch(params) {
     
     cleanNonJsStructures: function(){
       $('.facets-item >ul').remove();
+      $('.clear-filters').addClass('off');
     },
     
     close: function(){

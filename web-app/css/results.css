@@ -637,8 +637,11 @@ input[type="checkbox"],input[type="radio"] {
 .add-more-filters:hover .icon{
   background-position-y:5px -100px;
 }
-.force-loader{
-  background: url("../images/icons/loader_small.gif") no-repeat 5px -40px;
+.small-loader{
+  height:24px;
+  width:24px;
+  background: url("../images/icons/loader_small.gif") no-repeat 0 0;
+  margin:10px;
 }
 /*Flyout end*/
 /* responsive */
