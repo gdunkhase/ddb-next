@@ -133,7 +133,7 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 $(document).ready(function () {
     INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
     MAP_DIR = jsContextPath + MAP_DIR;
-
+    GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + MAP_DIR;
     if (jsPageName == INSTITUTION_PAGE_NAME) {
         InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
     }

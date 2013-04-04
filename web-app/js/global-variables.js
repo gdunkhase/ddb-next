@@ -19,23 +19,25 @@ var jsPageName = "";
 var jsLatitude = "";
 var jsLongitude = "";
 
-var jsVariablesDiv = $('#globalJsVariables');
-var jsPageMeta= $('meta[name=page]').attr("content");
-if (jsVariablesDiv) {
-    if (jsVariablesDiv.attr('data-js-context-path')) {
-        jsContextPath = jsVariablesDiv.attr('data-js-context-path');
+$(document).ready(function () {
+    var jsVariablesDiv = $('#globalJsVariables');
+    var jsPageMeta= $('meta[name=page]').attr("content");
+    if (jsVariablesDiv) {
+        if (jsVariablesDiv.attr('data-js-context-path')) {
+            jsContextPath = jsVariablesDiv.attr('data-js-context-path');
+        }
+        if (jsVariablesDiv.attr('data-js-language')) {
+            jsLanguage = jsVariablesDiv.attr('data-js-language');
+        }
+        if (jsVariablesDiv.attr('data-js-longitude')) {
+            jsLongitude = jsVariablesDiv.attr('data-js-longitude');
+        }
+        if (jsVariablesDiv.attr('data-js-latitude')) {
+            jsLatitude = jsVariablesDiv.attr('data-js-latitude');
+        }
     }
-    if (jsVariablesDiv.attr('data-js-language')) {
-        jsLanguage = jsVariablesDiv.attr('data-js-language');
+    if (jsPageMeta) {
+        jsPageName = jsPageMeta;
     }
-    if (jsVariablesDiv.attr('data-js-longitude')) {
-        jsLongitude = jsVariablesDiv.attr('data-js-longitude');
-    }
-    if (jsVariablesDiv.attr('data-js-latitude')) {
-        jsLatitude = jsVariablesDiv.attr('data-js-latitude');
-    }
-}
-if (jsPageMeta) {
-    jsPageName = jsPageMeta;
-}
+});
 
