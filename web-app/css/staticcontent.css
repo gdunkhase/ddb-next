@@ -113,7 +113,7 @@ a.help-link:link, a.help-bc-link:link {
 .link_down {
     padding-left: 17px;
     text-decoration: none !important;
-    background: url("../images/icons/list_arrow_plum_down.png") no-repeat -3px 4px;
+    background: url("../images/icons/list_arrow_plum_down.png") no-repeat -3px 6px;
 }
 
 a.help-kw-link:link, a.help-kw-link-first:link {
