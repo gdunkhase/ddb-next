@@ -220,11 +220,11 @@ class ApiConsumer {
 				uri.path = path
 				uri.query = query
 				response.success = { resp, inputstream ->
-					log.info "Success getBinaryContent(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
-					log.info "response status: ${resp.statusLine}"
-					log.info 'Headers: -----------'
+					log.debug "Success getBinaryContent(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+					log.debug "response status: ${resp.statusLine}"
+					log.debug 'Headers: -----------'
 					
-					resp.headers.each { h -> log.info " ${h.name} : ${h.value}" }
+					resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
 					return [bytes:inputstream.getBytes(),"Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
 				}
 				response.'404' = {resp, reader ->
