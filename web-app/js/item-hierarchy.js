@@ -111,11 +111,6 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
     currentNode.addClass("lastExited");
   }
 
-  // add sibling count
-  if (countSiblings) {
-    addSiblingCount(url, currentNode.parent(), parentId);
-  }
-
   var branchType = $("<span>", {
     class : "branch-type fl"
   });
@@ -128,10 +123,15 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   if (isRoot) {
     i.addClass("root");
   } else {
-    setNodeIcon(i, false);
+    setNodeIcon(i, isLast);
   }
 
   branchType.append(i);
+
+  // add sibling count
+  if (countSiblings) {
+    addSiblingCount(url, currentNode.parent(), parentId);
+  }
 
   i.click(function() {
     var isExpanded = $(this).hasClass("expanded");
@@ -203,13 +203,18 @@ function addSiblingCount(url, currentNode, parentId) {
 
   if (parentId != null) {
     getChildren(url, parentId, function(children) {
+      var li = currentNode.children("li");
+
       if (children.length > 1) {
         if (children.length > 500) {
           siblingCount.append(messages.ddbnext.Hierarchy_SiblingCountRestricted_Format(500));
         } else {
           siblingCount.append("+" + (children.length - 1));
         }
-        currentNode.children("li").addClass("more-hidden");
+        li.addClass("more-hidden");
+      } else {
+        li.addClass("last");
+        setNodeIcon(currentNode.parent().children("span").children("i"), true);
       }
     });
   }
@@ -261,7 +266,7 @@ function createHierarchy(url) {
 
         ul.append(li);
         currentNode.append(ul);
-        addParentNode(url, li, parentId, value, true, true, true, false);
+        addParentNode(url, li, parentId, value, true, index == parents.length - 2, true, false);
         currentNode = li;
       } else if (parents.length > 1) {
         // show children
