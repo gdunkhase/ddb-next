@@ -30,7 +30,7 @@
             <input type="text" class="page-input off" maxlength="10" value="${navData.page}"/>
             <span class="page-nonjs">${navData.page}</span> 
             <g:message code="ddbnext.Of" /> 
-            <span class="total-pages">${navData.totalPages}</span>
+            <span class="total-pages"><g:localizeNumber>${navData.totalPages}</g:localizeNumber></span>
         </span>
       </li>
       <li class="next-page bl ${displayRightPagination}">
