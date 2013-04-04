@@ -94,6 +94,89 @@ img.floatLeft, .inlineBox.floatLeft {
 img.floatRight, .inlineBox.floatRight {
     margin: 5px 0 10px 15px;
 }
+
+span.help-bc-active {
+    color: #A5003B;
+}
+
+a.help-link:link, a.help-bc-link:link {
+    color: #3E3A37;
+    text-decoration: none;
+}
+
+.link_up {
+    padding-left: 17px;
+    text-decoration: none !important;
+    background: url("../images/icons/list_arrow_plum_up.png") no-repeat -3px 4px;
+}
+
+.link_down {
+    padding-left: 17px;
+    text-decoration: none !important;
+    background: url("../images/icons/list_arrow_plum_down.png") no-repeat -3px 6px;
+}
+
+a.help-kw-link:link, a.help-kw-link-first:link {
+    text-decoration: none;
+}
+
+a.help-kw-link:hover, a.help-kw-link-first:hover, a.help-link:hover, a.help-bc-link:hover {
+    color: #A5003B;
+    text-decoration: underline;
+}
+
+a.help-kw-link-first {
+    color: #3E3A37;
+    float: left;
+    padding: 0;
+    text-align: center;
+    width: 24px;
+}
+
+a.help-kw-link {
+    border-left: 1px solid #CCCCCC;
+    color: #3E3A37;
+    float: left;
+    padding: 0;
+    text-align: center;
+    width: 24px;
+}
+
+span.help-kw-nolink {
+    border-left: 1px solid #CCCCCC;
+    color: #878380;
+    float: left;
+    padding: 0;
+    text-align: center;
+    width: 24px;
+}
+
+.help-breadcrumbs {
+    border-bottom: 2px solid #EFEBE8;
+    font-size: 14px;
+    padding-bottom: 10px;
+}
+
+.help-keywords {
+    border-bottom: 2px solid #EFEBE8;
+    margin-top: 0;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    height: 20px;
+}
+
+div#help-toc-left {
+    left: auto;
+    position: absolute;
+    width: 350px;
+}
+
+div#help-toc-right {
+    margin-left: 378px;
+    position: absolute;
+    width: 350px;
+}
+
 @media (max-width: 767px) {
   .static_content {
     width: 100%;
