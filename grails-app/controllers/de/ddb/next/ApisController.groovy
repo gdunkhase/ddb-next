@@ -114,7 +114,7 @@ class ApisController {
 		byte[] bytes=urlResponse.get("bytes");
 		response.setContentType(urlResponse.get("Content-Type"))
 		response.setContentLength(urlResponse.get("Content-Length").toInteger())
-		response.setHeader("Content-Disposition", "attachment; filename="+getFileNamePath().tokenize('/')[-1])
+		response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
 		response.outputStream << bytes
 	}
 	
