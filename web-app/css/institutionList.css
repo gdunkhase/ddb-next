@@ -21,17 +21,17 @@
   text-align: right;
 }
 
-#view-list, #view-map {
+#view-institution-list, #view-institution-map {
  margin-right: 10px;
 }
 
-.view-type-switch #view-list {
+.view-type-switch #view-institution-list {
   width: 24px;
   height: 24px;
   background: url("../images/icons/viewSelector.png");
 }
 
-.view-type-switch #view-list,.view-type-switch #view-map {
+.view-type-switch #view-institution-list,.view-type-switch #view-institution-map {
   width: 24px;
   height: 24px;
   box-shadow: none;
@@ -44,28 +44,28 @@
   content: url("../images/icons/viewSelector.png");
 }
 
-.view-type-switch #view-list::before {
+.view-type-switch #view-institution-list::before {
   margin: -24px 0 0 0;
 }
 
-.view-type-switch #view-list:hover::before{
+.view-type-switch #view-institution-list:hover::before{
   margin: -24px 0 0 -24px;
 }
 
-.view-type-switch #view-list.selected::before,.view-type-switch #view-list.selected:hover::before,.view-type-switch #view-list.selected:focus::before
+.view-type-switch #view-institution-list.selected::before,.view-type-switch #view-institution-list.selected:hover::before,.view-type-switch #view-institution-list.selected:focus::before
   {
   margin: -24px 0 0 -48px;
 }
 
-.view-type-switch #view-map::before {
+.view-type-switch #view-institution-map::before {
   margin: -48px 0 0 0;
 }
 
-.view-type-switch #view-map:hover::before{
+.view-type-switch #view-institution-map:hover::before{
   margin: -48px 0 0 -24px;
 }
 
-.view-type-switch #view-map.selected::before,.view-type-switch #view-map.selected:hover::before,.view-type-switch #view-map.selected:focus::before{
+.view-type-switch #view-institution-map.selected::before,.view-type-switch #view-institution-map.selected:hover::before,.view-type-switch #view-institution-map.selected:focus::before{
   margin: -48px 0 0 -48px;
 }
 .institution-listitem {
