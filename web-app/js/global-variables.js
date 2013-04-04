@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var jsContextPath, jsLanguage, jsLatitude, jsLongitude = "";
+var jsContextPath = "";
+var jsLanguage = "";
+var jsLatitude = "";
+var jsLongitude = "";
 
 var jsVariablesDiv = $('#globalJsVariables');
 if (jsVariablesDiv) {
