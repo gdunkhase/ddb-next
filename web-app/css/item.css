@@ -45,10 +45,10 @@
   font-size: 0.938em;
 }
 .institution-name {
-  padding-left: 22px;
+  padding-left: 17px;
   height: 25px;
   line-height: 20px;
-  background: url(../images/icons/list_arrows.png) no-repeat 0px 0px;
+  background: url(../images/icons/list_arrows.png) no-repeat 0px 1px;
   font-weight: bold;
   font-size: 1.133em;
 }
@@ -117,12 +117,15 @@ background-position: right -40px;
 .item-nav .next-item {
   margin-left: 5px;
 }
+.item-nav .last-item  {
+  padding-right: 5px;
+}
 .item-nav .last-item a {
   padding-right: 14px;
   background-position: right 0px;
 }
 .item-nav .items-overall-index {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 .fields, .rights {
   font-size: 0.938em;
