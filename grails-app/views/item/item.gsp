@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>${pageLabel} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="item" />
 <meta name="layout" content="main" />
