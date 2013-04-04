@@ -7,7 +7,6 @@
 <meta name="page" content="institution" />
 <meta name="layout" content="main" />
 
-<r:require module="openstreetmap" />
 </head>
 <body>
   <div class="institution-item-page">
@@ -51,15 +50,6 @@
        <div class="span12 locations">
 
             <div id="divOSM"></div>
-            <script type="text/javascript">
-              <!--
-              window.ddbAddOnloadListener(function() {
-                drawmap('divOSM','de',
-                        ${selectedOrgXML.locations.location.geocode.longitude},
-                        ${selectedOrgXML.locations.location.geocode.latitude}   );
-              });
-              //-->
-            </script>
             
             <div class="location-container">
                 

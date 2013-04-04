@@ -1,7 +1,7 @@
 var apisWrapper = {
 
   Config: {
-    ddbBackendUrl: contextPath + '/apis/'
+    ddbBackendUrl: jsContextPath + '/apis/'
   },
 
   /*

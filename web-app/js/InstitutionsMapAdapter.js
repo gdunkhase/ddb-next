@@ -2,8 +2,23 @@
  * built according to "Revealing Module Pattern (Public & Private)"
  * http://enterprisejquery.com/2010/10/how-good-c-habits-can-encourage-bad-javascript-habits-part-1/
  */
-var INSTITUTIONS_MAP_REF = contextPath + '/apis/institutionsmap';
+//URI to institutions-data
+var INSTITUTIONS_MAP_REF = '/apis/institutionsmap';
+
+//Directory where map-application is located
 var MAP_DIR = '/third-party/map/';
+
+//name of page where map with all institutions is written in
+var INSTITUTIONLIST_PAGE_NAME = 'institutionList';
+
+//name of page where map for 1 institution is written in
+var INSTITUTION_PAGE_NAME = 'institution';
+
+//div where map with all institutions is written in
+var INSTITUTIONLIST_DIV = 'mapContainerDiv';
+
+//div where map for 1 institution is written in
+var INSTITUTION_DIV = 'divOSM';
 
 var InstitutionsMapAdapter = (function ( $, undefined ) {
 
@@ -22,9 +37,13 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
         osmTileset: osmTileset
     };
 
+    var institutionMapOptions = {
+        osmTileset: osmTileset
+    };
+
     var Public = {}; // for public properties. avoid the reserved keyword "public"
 
-    Public.startup = function ( mapDiv, lang) {
+    Public.drawInstitutions = function ( mapDiv, lang) {
         if (typeof console != "undefined") {
             console.log("startup");
         }
@@ -32,6 +51,14 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
         _setupDom4MapDisplay();
 
         InstitutionsMapController.startup(mapDiv,lang,institutionsMapOptions);
+    };
+
+    Public.drawInstitution = function ( mapDiv, lang, lon, lat) {
+        if (typeof console != "undefined") {
+            console.log("startup");
+        }
+
+        InstitutionItemMapController.drawMap( mapDiv, lang, lon, lat, institutionMapOptions );
     };
 
     Public.selectSectors = function () {
@@ -103,8 +130,16 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
 })(jQuery);
 
-window.ddbAddOnloadListener(function () {
-    InstitutionsMapAdapter.startup("mapContainerDiv",'de');
+$(document).ready(function () {
+    INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
+    MAP_DIR = jsContextPath + MAP_DIR;
+
+    if (jsPageName == INSTITUTION_PAGE_NAME) {
+        InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
+    }
+    else if (jsPageName == INSTITUTIONLIST_PAGE_NAME) {
+        InstitutionsMapAdapter.drawInstitutions(INSTITUTIONLIST_DIV, jsLanguage);
+    }
     return;
 });
 

@@ -13,9 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var jsContextPath, jsLanguage, jsLatitude, jsLongitude = "";
+var jsContextPath = "";
+var jsLanguage = "";
+var jsPageName = "";
+var jsLatitude = "";
+var jsLongitude = "";
 
 var jsVariablesDiv = $('#globalJsVariables');
+var jsPageMeta= $('meta[name=page]').attr("content");
 if (jsVariablesDiv) {
     if (jsVariablesDiv.attr('data-js-context-path')) {
         jsContextPath = jsVariablesDiv.attr('data-js-context-path');
@@ -30,3 +35,7 @@ if (jsVariablesDiv) {
         jsLatitude = jsVariablesDiv.attr('data-js-latitude');
     }
 }
+if (jsPageMeta) {
+    jsPageName = jsPageMeta;
+}
+

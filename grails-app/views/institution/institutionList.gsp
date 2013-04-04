@@ -4,7 +4,6 @@
 
 <meta name="page" content="institutionList" />
 <meta name="layout" content="main" />
-<r:require module="institutionlist" />
 
 </head>
 <body>
