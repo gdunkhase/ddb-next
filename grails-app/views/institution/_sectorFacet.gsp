@@ -1,4 +1,3 @@
-<div class="filter">
   <h3 id="filter-title"><g:message code="ddbnext.InstitutionPage_FilterBySector" /></h3>
   <hr>
   <!-- TODO collect the sector from the data-->
@@ -37,7 +36,3 @@
       <g:message code="ddbnext.sec_07" />
     </label>
   </div>
-</div>
-<aside>
-<g:message code="ddbnext.InstitutionsPage_SummaryText" args="${ [ total ] }" />
-</aside>

@@ -8,9 +8,9 @@
 </head>
 <body>
   <h1><g:message code="ddbnext.Institutions" /></h1>
-  
   <div class="row">
     <div class="span9">
+    <g:render template="filterPhone" />
     <g:render template="pagination" />
       <div id="no-match-message">
         <g:message code="ddbnext.InstitutionPage_NoMatches" />
@@ -27,7 +27,7 @@
       </ol>
     </div>
     <div class="span3">
-      <g:render template="filter" />
+      <g:render template="filterNotPhone" />
     </div>
   </div>
 </body>
