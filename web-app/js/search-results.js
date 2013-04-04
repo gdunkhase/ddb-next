@@ -397,7 +397,6 @@ function updateLanguageSwitch(params) {
     },
 
     fetchFacetValues: function(flyoutWidget, query){
-        console.log(this.facetsEndPoint);
         if(flyoutWidget!=null)
           this.connectedflyoutWidget = flyoutWidget;
         var oldParams = this.getUrlVars();
