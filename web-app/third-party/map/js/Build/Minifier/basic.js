@@ -67,21 +67,7 @@ for (var i = 0; i < document.getElementsByTagName("script").length; i++) {
 */
 
 /* for ddb-next */
-var GeoTemCo_scripts = document.getElementsByTagName("script");
-//console.log("GeoTemCo_all_scripts.length == " + GeoTemCo_scripts.length);
-for (var i = 0; i < GeoTemCo_scripts.length; i++) {
-	var scriptName = GeoTemCo_scripts[i].src.replace(/\?.*$/,'');
-    //console.log("scriptName: " + scriptName);
-	var index = scriptName.search(/geotemco[^\/]*\.js$/);
-	if (index == -1) {
-		index = scriptName.indexOf("geotemco-min.js");
-	}
-	if (index != -1) {
-		GeoTemCoMinifier_urlPrefix = scriptName.substring(0, index);
-		break;
-	}
-}
-
+GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + contextPath + MAP_DIR;
 
 if (typeof console != "undefined") {
     if (typeof GeoTemCoMinifier_urlPrefix != "undefined") {

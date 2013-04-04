@@ -3,6 +3,7 @@
  * http://enterprisejquery.com/2010/10/how-good-c-habits-can-encourage-bad-javascript-habits-part-1/
  */
 var INSTITUTIONS_MAP_REF = contextPath + '/apis/institutionsmap';
+var MAP_DIR = '/third-party/map/';
 
 var InstitutionsMapAdapter = (function ( $, undefined ) {
 

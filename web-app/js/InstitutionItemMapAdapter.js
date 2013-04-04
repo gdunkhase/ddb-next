@@ -1,3 +1,4 @@
+var MAP_DIR = '/third-party/map/';
 
 function drawmap( itemDiv, language, lon, lat ) {
     if (typeof console != 'undefined') {

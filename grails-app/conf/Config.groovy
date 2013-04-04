@@ -124,7 +124,6 @@ ddb {
 
 environments {
     development {
-        grails.resources.debug = true
         grails.logging.jul.usebridge = true
         grails.config.locations = [
             "file:${userHome}/.grails/${appName}.properties"

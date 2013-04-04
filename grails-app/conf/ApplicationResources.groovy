@@ -67,8 +67,8 @@ modules = {
         resource url:'/js/ddb.osm.institutiondetailview.js'
     */
         resource url:'/third-party/map/css/style.css'
-        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
         resource url:'/js/InstitutionItemMapAdapter.js'
+        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
     }
 
     institutionlist {
@@ -78,8 +78,8 @@ modules = {
         resource url:'/js/map-widget-test.js'
     */
         resource url:'/third-party/map/css/style.css'
-        resource url:'/third-party/map/geotemco_InstitutionsMap.js'
         resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/third-party/map/geotemco_InstitutionsMap.js'
     }
 
     item {
