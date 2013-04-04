@@ -76,6 +76,13 @@
 .grey-arrow li {
   background: url("../images/icons/list_arrow_grey.png") no-repeat 0 4px;
 }
+.link_up, .link_down {
+  padding-left: 17px;
+  text-decoration: none !important;
+}
+.link_up {
+  background: url("../images/icons/arrow_up_plum.png") no-repeat 0 1px;
+}
 /*TODO find a solution for the conflict with fl and fr classes*/
 .floatLeft {
     float: left;

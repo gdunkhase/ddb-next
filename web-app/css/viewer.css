@@ -18,6 +18,11 @@
   padding:10px;
   background:#efebe8;
 }
+@media (min-width: 1200px) {
+  .slide-viewer {
+    float: right;
+  }
+}
 @media (max-width: 767px) {
   .slide-viewer {
     margin-left: auto;

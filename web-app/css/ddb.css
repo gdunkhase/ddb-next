@@ -24,16 +24,7 @@ font-weight:bold}
 /* header */
 header, .header {
   background:transparent url("../images/bg/back_header.png") no-repeat center bottom;
-  /*height:160px;*/
   margin-bottom:20px;
-  /* TODO: what is this for? (FRS)
-  min-height: 85px;
-  */
-}
-header .container, .header .container{
-  /* TODO: what is this for? (FRS)
-  margin-bottom: 10px;
-  */
 }
 header .navigation-header-logo, .header .navigation-header-logo {
   float:left;
@@ -293,7 +284,7 @@ header .language-widget form, .header .language-widget form {
 }
 .search-widget img {
   margin-left: 0;
-  margin-bottom: 20px;
+  margin: 0px 0px 23px 0px;
   height: 178px;
 }
 .search-widget label span {
