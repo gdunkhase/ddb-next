@@ -83,11 +83,6 @@ modules = {
         resource url:'/css/start-page.css', attrs:[media:'print'], bundle: 'startpageprint'
     }
 
-    openstreetmap {
-        resource url:'http://www.openlayers.org/api/OpenLayers.js'
-        resource url:'http://www.openstreetmap.org/openlayers/OpenStreetMap.js'
-    }
-
     pdf {
         // This is the only working variant found! You must exclude 'zip,bundle' from the mappers list and
         // the CSS attributed with the exclude statement must NOT be used anywhere else in normal pages

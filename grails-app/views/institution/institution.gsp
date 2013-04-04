@@ -7,7 +7,12 @@
 <meta name="page" content="institution" />
 <meta name="layout" content="main" />
 
+<%-- HLA: since the openstreetmap includion is currently refactored we might need this code again
 <r:require module="openstreetmap" />
+--%>
+<r:external uri="http://www.openlayers.org/api/OpenLayers.js"/>
+<r:external uri="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"/>
+
 </head>
 <body>
   <div class="institution-item-page">
@@ -99,7 +104,7 @@
                 </div>
               </div>
             </div>
-  </div>
+  </div>  
 </body>
 </html>
 
