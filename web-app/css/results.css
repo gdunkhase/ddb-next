@@ -166,14 +166,14 @@
 
 .results-paginator-view {
   background: #efebe8;
-  padding: 12px;
+  padding: 0px 12px 0px 12px;
   overflow: hidden;
   font-size: 0.938em;
 }
 
 .results-paginator-view .group-actions {
   float: left;
-  padding-top: 3px;
+  padding-top: 13px;
 }
 
 .results-paginator-view .view-type-switch {

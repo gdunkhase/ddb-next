@@ -67,8 +67,10 @@
             <div class="group-actions">
               <input id="thumbnail-filter" type="checkbox" <g:if test='${isThumbnailFiltered == 'true'}'>checked</g:if>>
               <label for="thumbnail-filter" title="<g:message code="ddbnext.Show_items_with_thumbnails" />"><g:message code="ddbnext.Show_items_with_thumbnails" /></label>
+              <%-- HLA: deactivated until there is the possibility to cluster results (See DDBNEXT-328) 
               <input class="disabled" id="toggle-cluster" type="checkbox" disabled="disabled">
               <label class="disabled" for="toggle-cluster" title="<g:message code="ddbnext.View_as_Cluster" />"><g:message code="ddbnext.View_as_Cluster" /></label>
+              --%>
             </div>
             <div class="view-type-switch">
               <button id="view-list" type="button" class="<g:if test='${viewType != 'grid'}'>selected</g:if>" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
