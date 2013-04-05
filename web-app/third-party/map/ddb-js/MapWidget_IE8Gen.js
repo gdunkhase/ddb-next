@@ -120,7 +120,9 @@ MapWidget_IE8Gen.prototype = {
 	initWidget : function(mapClusterSet) {
         if (typeof console != "undefined") {
             console.log("initWidget -" + mapClusterSet + '-' + (typeof mapClusterSet) + '+');
-            console.dir(mapClusterSet);
+            if (!$.browser.msie || ($.browser.msie && parseFloat($.browser.version) > 8.0)) {
+      			console.dir(mapClusterSet);
+    		}                                
         }
 
 		this.clearMap();
