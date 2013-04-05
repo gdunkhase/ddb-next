@@ -98,12 +98,18 @@ $(document).ready(function() {
   function jwPlayerSetup(content,poster){
     $(".previews").parent().addClass("off");
     $("#binary-viewer").append('<div id="jwplayer-container"></div>');
+    var w = 445;
+    var h = 320;
+    if (!mediaQuery.matches) {
+      w = 260;
+      h = 200;
+    }
     jwplayer("jwplayer-container").setup({
           file: content,
           controlbar: "bottom",
           stretching: "uniform",
-          width: 445,
-          height: 320,
+          width: w,
+          height: h,
           image: poster,
           skin: "../jwplayer/skins/five.xml", 
           modes: [{
