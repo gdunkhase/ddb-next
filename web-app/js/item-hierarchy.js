@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 $(document).ready(function() {
-	
-  if($(".item-hierarchy").length > 0){
-	var imgLoader = document.createElement("img");
-	imgLoader.src = "../images/icons/loader_small.gif";
-	$(".item-hierarchy-result").prepend(imgLoader);
-	  
-	createHierarchy(parseUrl(location.href));
+
+  if ($(".item-hierarchy").length > 0) {
+    var imgLoader = document.createElement("img");
+    imgLoader.src = "../images/icons/loader_small.gif";
+    $(".item-hierarchy-result").prepend(imgLoader);
+
+    createHierarchy(parseUrl(location.href));
   }
 });
 
 /*
  * Add a leaf node to the current node.
  * 
- * @param {Element} currentNode current node (LI element)
+ * @param {Element} currentNode current node (li element)
  * 
  * @param {JSON} value data object
  * 
@@ -36,7 +36,8 @@ $(document).ready(function() {
  * 
  * @param {boolean} isLast true if the current node is the last node in the list
  * 
- * @param {boolean} moreHidden true if there are more children which are not displayed
+ * @param {boolean} moreHidden true if there are more children which are not
+ * displayed
  */
 function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   currentNode.empty();
@@ -44,7 +45,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   if (isLast) {
     if (moreHidden) {
       currentNode.parent().append($("<li>", {
-        class : "more-available"
+        "class": "more-available"
       }));
     } else {
       currentNode.addClass("last");
@@ -54,14 +55,14 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   }
 
   var branchType = $("<span>", {
-    class : "branch-type fl"
+    "class": "branch-type fl"
   });
   var i = $("<i>");
   var leafIndicator = $("<div>", {
-    class : "leaf-indicator"
+    "class" : "leaf-indicator"
   });
   var a = $("<a>", {
-    class : "label",
+    "class" : "label",
     href : value.id,
     title : truncateTitle(value.label, 350)
   });
@@ -82,7 +83,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
  * 
  * @param {String} url URL to the item service
  * 
- * @param {Element} currentNode current node (LI element)
+ * @param {Element} currentNode current node (li element)
  * 
  * @param {String} parentId id of the parent node in the hierarchy
  * 
@@ -94,8 +95,10 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
  * @param {boolean} isLast true if the current node is the last node in the list
  * 
  * @param {boolean} countSiblings true if the number of siblings must be counted
+ * 
+ * @param {boolean} drawBorder draw a border around the plus sign if true
  */
-function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, countSiblings) {
+function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, countSiblings, drawBorder) {
   currentNode.empty();
   if (isLast) {
     currentNode.addClass("last");
@@ -103,13 +106,13 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
     currentNode.removeClass("last");
   }
 
-  // add sibling count
-  if (countSiblings) {
-    addSiblingCount(url, currentNode.parent(), parentId);
+  // draw a border around the plus sign
+  if (isCurrent && drawBorder) {
+    currentNode.addClass("lastExited");
   }
 
   var branchType = $("<span>", {
-    class : "branch-type fl"
+    "class" : "branch-type fl"
   });
 
   currentNode.append(branchType);
@@ -120,10 +123,15 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   if (isRoot) {
     i.addClass("root");
   } else {
-    setNodeIcon(i, false);
+    setNodeIcon(i, isLast);
   }
 
   branchType.append(i);
+
+  // add sibling count
+  if (countSiblings) {
+    addSiblingCount(url, currentNode.parent(), parentId);
+  }
 
   i.click(function() {
     var isExpanded = $(this).hasClass("expanded");
@@ -148,30 +156,30 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
           }
         });
       }
-      showChildren(url, currentNode.parent().parent(), parentId, id);
+      showChildren(url, currentNode.parent().parent(), parentId, id, true);
     } else {
-      showChildren(url, currentNode, value.id, parentId);
+      showChildren(url, currentNode, value.id, parentId, false);
     }
   });
 
   if (value.aggregationEntity) {
     var label = $("<span>", {
-      class : "label" + (isCurrent ? " current-path" : "")
+      "class" : "label" + (isCurrent ? " current-path" : "")
     });
 
     label.append(truncateTitle(value.label, 350));
     currentNode.append(label);
   } else {
     var leafIndicator = $("<div>", {
-      class : "leaf-indicator"
+      "class" : "leaf-indicator"
     });
     var a = $("<a>", {
+      "class" : "label" + (isCurrent ? " current-path" : ""),
       href : value.id
     });
 
     if (isCurrent) {
       leafIndicator.addClass("current-node");
-      a.addClass("current-node");
     }
     a.append(value.label);
     currentNode.append(leafIndicator);
@@ -190,18 +198,23 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
  */
 function addSiblingCount(url, currentNode, parentId) {
   var siblingCount = $("<span>", {
-    class : "sibling-count"
+    "class" : "sibling-count"
   });
 
   if (parentId != null) {
     getChildren(url, parentId, function(children) {
+      var li = currentNode.children("li");
+
       if (children.length > 1) {
         if (children.length > 500) {
           siblingCount.append(messages.ddbnext.Hierarchy_SiblingCountRestricted_Format(500));
         } else {
           siblingCount.append("+" + (children.length - 1));
         }
-        currentNode.children("li").addClass("more-hidden");
+        li.addClass("more-hidden");
+      } else {
+        li.addClass("last");
+        setNodeIcon(currentNode.parent().children("span").children("i"), true);
       }
     });
   }
@@ -247,13 +260,13 @@ function createHierarchy(url) {
 
         var ul = $("<ul>");
         var li = $("<li>", {
-          class : (parentId == null ? "root" : "node"),
+          "class" : (parentId == null ? "root" : "node"),
           "data-bind" : JSON.stringify(parents)
         });
 
         ul.append(li);
         currentNode.append(ul);
-        addParentNode(url, li, parentId, value, true, true, true);
+        addParentNode(url, li, parentId, value, true, index == parents.length - 2, true, false);
         currentNode = li;
       } else if (parents.length > 1) {
         // show children
@@ -334,13 +347,15 @@ function setNodeIcon(currentNode, setExpanded) {
  * 
  * @param {String} url URL to the item service
  * 
- * @param {Element} currentNode current node
+ * @param {Element} currentNode current node (li element)
  * 
  * @param {String} currentId id of the current node in the hierarchy
  * 
  * @param {String} parentId id of the parent node in the hierarchy
+ * 
+ * @param {boolean} drawBorder draw a border around the plus sign if true
  */
-function showChildren(url, currentNode, currentId, parentId) {
+function showChildren(url, currentNode, currentId, parentId, drawBorder) {
   // remove other nodes on the current level and below
   currentNode.siblings().remove();
   currentNode.children("ul").remove();
@@ -350,6 +365,8 @@ function showChildren(url, currentNode, currentId, parentId) {
 
   if (isLeaf) {
     setNodeIcon(currentNode.parent().parent().children("span.branch-type").children("i"), false);
+  } else {
+    currentNode.removeClass("lastExited");
   }
 
   // get the id of the child which is on the current path
@@ -383,7 +400,7 @@ function showChildren(url, currentNode, currentId, parentId) {
       var isCurrent = value.id == id;
       var isLast = index == length - 1;
       var li = $("<li>", {
-        class : "node last"
+        "class" : "node last"
       });
 
       li.attr("data-bind", dataBind);
@@ -391,7 +408,7 @@ function showChildren(url, currentNode, currentId, parentId) {
       addWaitSymbol(li);
       getChildren(url, value.id, function(children) {
         if (children.length > 0) {
-          addParentNode(url, li, currentId, value, isCurrent, isLast, false);
+          addParentNode(url, li, currentId, value, isCurrent, isLast, false, drawBorder);
         } else {
           addLeafNode(li, value, isCurrent, isLast, length == 501);
         }

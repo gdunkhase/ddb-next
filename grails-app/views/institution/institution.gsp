@@ -7,7 +7,7 @@
 <meta name="page" content="institution" />
 <meta name="layout" content="main" />
 
-<r:require module="openstreetmap" />
+<r:require module="institution"/>
 </head>
 <body>
   <div class="institution-item-page">
@@ -51,18 +51,6 @@
        <div class="span12 locations">
 
             <div id="divOSM"></div>
-            <script type="text/javascript">
-              <!--
-                var ddbInstitution = {};
-                ddbInstitution["longitude"] = ${selectedOrgXML.locations.location.geocode.longitude};
-                ddbInstitution["latitude"] = ${selectedOrgXML.locations.location.geocode.latitude};
-                ddbInstitution["name"] = "${selectedOrgXML.name}";
-                ddbInstitution["street"] = "${selectedOrgXML.locations.location.address.street}";
-                ddbInstitution["housenumber"] = "${selectedOrgXML.locations.location.address.houseIdentifier}";
-                ddbInstitution["postalcode"] = "${selectedOrgXML.locations.location.address.postalCode}";
-                ddbInstitution["city"] = "${selectedOrgXML.locations.location.address.city}";
-              //-->
-            </script>
             
             <div class="location-container">
                 
@@ -99,7 +87,7 @@
                 </div>
               </div>
             </div>
-  </div>
+  </div>  
 </body>
 </html>
 

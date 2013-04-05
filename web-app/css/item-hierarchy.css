@@ -34,6 +34,16 @@
   font-weight: bolder;
 }
 
+/* draw a border around plus sign */
+.item-hierarchy-result .lastExited>.branch-type {
+  border: 1px solid #ccc;
+  padding: 3px;
+  left: -3px;
+  position: relative;
+  top: -3px;
+  position: relative;
+}
+
 /* draw a text page symbol in front of the label */
 .item-hierarchy-result div.leaf-indicator {
   background: url("../images/bg/hierarchy_leaf.png") no-repeat;
@@ -89,9 +99,8 @@
 }
 
 .item-hierarchy-result li.more-available {
-  background:
-    url("../images/bg/advanced_search_dotted_end.png")
-    no-repeat scroll 7px 0px transparent;
+  background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
+    scroll 7px 0px transparent;
 }
 
 .item-hierarchy-result li.leaf {
@@ -118,9 +127,22 @@
   padding: 0;
 }
 
-.item-hierarchy-result .label {
+.item-hierarchy-result a:hover {
+  color: #a5003b;
+  text-decoration: underline;
+}
+
+.item-hierarchy-result a.label {
   display: block;
   margin-left: 50px;
+}
+
+.item-hierarchy-result span.label {
+  margin-left: 10px;
+}
+
+.item-hierarchy-result .lastExited .label.current-path {
+  margin-left: 2px;
 }
 
 /* highlight the current path */

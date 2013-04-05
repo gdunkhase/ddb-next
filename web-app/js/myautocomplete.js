@@ -20,7 +20,7 @@ $(function() {
 		$.ajax(
 		  {
 			url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/",
-			url : "apis/autocomplete/",
+			url : jsContextPath+"/apis/autocomplete/",
 			dataType : "jsonp",
 			data : {
 			  query : request.term

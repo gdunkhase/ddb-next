@@ -41,7 +41,7 @@
 }
 .modal-dialog-title {
   font-weight: bold;
-  font-size: 14px;
+  font-size: 0.875em;
   padding-bottom: 10px;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -73,7 +73,7 @@
 .modal-dialog-content input[type="text"] {
   width: 100%;
   padding: 5px 10px 5px 10px;
-  font-size: 17px;
+  font-size: 1.063em;
   font-style: italic;
   border: none;
   box-shadow: none;

@@ -1,0 +1,16 @@
+﻿{
+  "clusterId": -1,
+  "offset": 0,
+  "institutions": [
+    {
+      "name": "Stiftung Preußischer Kulturbesitz",
+      "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/FB2OLEOR7CKRPB23WLCIUIIJMJOGN3UH",
+      "children": [],
+      "id": "FB2OLEOR7CKRPB23WLCIUIIJMJOGN3UH",
+      "latitude": "52.5068718",
+      "longitude": "13.3554346",
+      "sector": "sec_07"
+    }
+  ],
+  "size": 1
+}

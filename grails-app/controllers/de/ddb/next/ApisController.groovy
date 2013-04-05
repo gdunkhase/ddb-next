@@ -82,10 +82,13 @@ class ApisController {
         resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
         resultList["numberOfResults"] = jsonResp.numberOfResults
         resultList["randomSeed"] = jsonResp.randomSeed
-
-		render (contentType:"text/json"){resultList}
+        render (contentType:"text/json"){resultList}
     }
-
+    
+    def institutionsmap(){
+        def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/institutions/map', params)
+        render (contentType:"text/json"){jsonResp}
+    }
 	
 	/**
 	 * This function should be obsolete once the 
