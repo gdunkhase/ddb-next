@@ -262,7 +262,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
                         } else {
                             if (typeof console !== "undefined") {
                                 console.log("out of germanys bounding box:");
-                                console.dir(treeNode);
+                                if (!$.browser.msie || ($.browser.msie && parseFloat($.browser.version) > 8.0)) {
+      								console.dir(treeNode);
+    							}                                
                             }
                         }
                         var children = treeNode.children;

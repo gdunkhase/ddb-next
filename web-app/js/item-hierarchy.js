@@ -253,7 +253,6 @@ function createHierarchy(url) {
         }
 
         var ul = $("<ul>");
-        
         var li = $('li');
         li.addClass(parentId == null ? "root" : "node");
         li.attr('data-bind', JSON.stringify(parents));
@@ -393,7 +392,6 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
     $.each(children, function(index, value) {
       var isCurrent = value.id == id;
       var isLast = index == length - 1;
-      
       var li = $(document.createElement('li'));
       li.addClass('node last');
 
