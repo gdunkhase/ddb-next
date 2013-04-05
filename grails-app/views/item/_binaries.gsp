@@ -1,4 +1,4 @@
-<div class="slide-viewer">
+<div class="span6 slide-viewer">
   <div class="binary-viewer-container">
     <div id="binary-viewer">
       <ul id="previews-list">

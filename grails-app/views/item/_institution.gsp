@@ -1,14 +1,14 @@
 <div class="row">
   <div class="span12 institution">
     <div class="row">
-        <div class="span10">
+        <div class="span9">
             <div><g:message code="ddbnext.Institution" /></div>
             <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
             ${institution.name}
             </g:link>
             <a class="institution-link" href="${institution.uri}">${institution.uri}</a>
         </div>
-        <div class="span2">
+        <div class="span3">
             <img alt="${institution.name}" src="${institution.logo.a}" />
         </div>
     </div>
