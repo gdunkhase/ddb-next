@@ -27,7 +27,8 @@ $(function() {
         opened: false,
         lock:false,
         
-        hoverTimeout: 0,
+        hoverTime: 0,
+        hoverTimeout:2000,
     
         init: function(element){
             var currObjInstance = this;
@@ -39,7 +40,7 @@ $(function() {
             this.tooltip.removeClass("off");
             element.hover(function(){
                 var d = new Date();
-                currObjInstance.hoverTimeout = d.getTime();
+                currObjInstance.hoverTime = d.getTime();
                 currObjInstance.open();
             });
             this.tooltip.mouseenter(function(){
@@ -57,9 +58,9 @@ $(function() {
             }
             setTimeout(function(){
                 var currentD = new Date();
-                if(!currObjInstance.lock && currObjInstance.hoverTimeout+1900<currentD.getTime())
+                if(!currObjInstance.lock && currObjInstance.hoverTime+currObjInstance.hoverTimeout-100<currentD.getTime())
                     currObjInstance.close();
-            },2000);
+            },currObjInstance.hoverTimeout);
         },
         close: function(){
             this.tooltip.fadeOut('fast');
