@@ -57,7 +57,7 @@ $(document).ready(function() {
     var type = $(a).attr("data-type");
     var title = $(a).find("span").text();
     if (title.toString().length>270){
-        title = title.toString().trim().substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
+        title = $.trim(title.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
     }
     hideErrors();
     if(type=="image"){
