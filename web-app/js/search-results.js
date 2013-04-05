@@ -226,7 +226,9 @@ function updateLanguageSwitch(params) {
   });
   $('#form-search-header input').keyup(function(e){
     if(e.keyCode == 13) {
-      $('#form-search-header button').click();
+      if ($.browser.msie && parseFloat($.browser.version) <= 8.0) {
+        $('#form-search-header button').click();
+      }
     } 
     return false;
   });
