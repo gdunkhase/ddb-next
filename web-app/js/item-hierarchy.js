@@ -44,7 +44,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   currentNode.addClass("leaf");
   if (isLast) {
     if (moreHidden) {
-      var moreAvailable = $(document.createElement('div'));
+      var moreAvailable = $(document.createElement('li'));
       moreAvailable.addClass('more-available');
       currentNode.parent().append(moreAvailable);
     } else {
