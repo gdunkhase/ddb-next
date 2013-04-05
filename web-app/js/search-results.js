@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
-$(document).ready(function() {
+$(function() {
   if (window.history && history.pushState) {
     historyedited = false;
     historySupport = true;
@@ -685,7 +685,7 @@ function updateLanguageSwitch(params) {
   }
 
   $.extend(FlyoutFacetsWidget.prototype, {
-  mainElement: null,
+    mainElement: null,
     parentMainElement: null,
     opened: false,
     fctManager: new FacetsManager(),

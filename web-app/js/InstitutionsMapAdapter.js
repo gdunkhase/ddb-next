@@ -101,27 +101,53 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
             success : a_successFn
         });
     };
+    
+    var _enableListView = function() {
+        $('.view-type-switch').removeClass('off');
+        $('#first-letter-index').removeClass('off');
+
+        $('#view-institution-list').addClass('selected');
+        $('#view-institution-map').removeClass('selected');
+
+        $('#institution-map').addClass('off');
+        $('#institution-list').removeClass('off');
+
+        $('#main-container').removeClass('map');
+        $('#main-container').addClass('list');
+    }
+
+    var _enableMapView = function() {
+        $('.view-type-switch').removeClass('off');
+        $('#first-letter-index').addClass('off');
+        
+        $('#view-institution-map').addClass('selected');
+        $('#view-institution-list').removeClass('selected');
+        
+        $('#institution-map').removeClass('off');
+        $('#institution-list').addClass('off');
+
+        $('#main-container').addClass('map');
+        $('#main-container').removeClass('list');
+    }
 
     var _setupDom4MapDisplay = function () {
-        $('#institution-list').addClass('off');
-        $('#first-letter-index').addClass('off');
-        $('#institution-map').removeClass('off');
-        $('.view-type-switch').removeClass('off');
+    	
+    	var hash = window.location.hash.substring(1);
+        if (typeof console != "undefined") {
+            console.log("Anchor-tag: '"+hash+"'");
+        }
+    	if(hash === "list"){
+    		_enableListView();
+    	}else{
+    		_enableMapView();
+    	}    	
 
         $('#view-institution-list').click(function () {
-            $('#view-institution-list').addClass('selected');
-            $('#view-institution-map').removeClass('selected');
-            $('#institution-map').addClass('off');
-            $('#first-letter-index').removeClass('off');
-            $('#institution-list').removeClass('off');
+    		_enableListView();
         });
 
         $('#view-institution-map').click(function () {
-            $('#view-institution-map').addClass('selected');
-            $('#view-institution-list').removeClass('selected');
-            $('#first-letter-index').addClass('off');
-            $('#institution-list').addClass('off');
-            $('#institution-map').removeClass('off');
+    		_enableMapView();
         });
 
         $('input:checkbox').click(function () {

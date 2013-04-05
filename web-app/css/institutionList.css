@@ -127,12 +127,34 @@ div.sector-facet>label:hover {
   min-height: 0;
 }
 
-#filter-title {
-  margin-bottom: 40px;
+.institutionlist #institution-map {
+  border-top: 2px solid #EFEBE8;
+  margin-top: 40px;
+}
+
+.institutionlist #filter-title {
+  margin-bottom: 10px;
+  border-bottom: 2px solid #EFEBE8;
+  height: 30px;
+}
+
+.list .institutionlist #filter-title {
+  padding-top: 26px;
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
-  #filter-title {
-    margin-bottom: 60px;
+  .list .institutionlist #filter-title {
+    padding-top: 52px !important;
   }
+}
+
+.institutionlist #first-letter-index {
+  padding-bottom: 15px;
+  border-bottom: 2px solid #EFEBE8;
+}
+
+.institutionlist .filter {
+  border-bottom: 2px solid #EFEBE8;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
 }

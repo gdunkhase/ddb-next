@@ -44,7 +44,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   currentNode.addClass("leaf");
   if (isLast) {
     if (moreHidden) {
-      var moreAvailable = $(document.createElement('div'));
+      var moreAvailable = $(document.createElement('li'));
       moreAvailable.addClass('more-available');
       currentNode.parent().append(moreAvailable);
     } else {
@@ -53,17 +53,17 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   } else {
     currentNode.removeClass("last");
   }
-  
-  var branchType = $('span');
+
+  var branchType = $(document.createElement('span'));
   branchType.addClass('branch-type fl');
   var i = $("<i>");
   var leafIndicator = $(document.createElement('div'));
   leafIndicator.addClass('leaf-indicator');
-  
+
   var a = $(document.createElement('a'));
   a.addClass('label');
-  a.attr('href',value.id);
-  a.attr('title',truncateTitle(value.label, 350));
+  a.attr('href', value.id);
+  a.attr('title', truncateTitle(value.label, 350));
 
   if (isCurrent) {
     leafIndicator.addClass("current-node");
@@ -108,7 +108,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   if (isCurrent && drawBorder) {
     currentNode.addClass("lastExited");
   }
-  
+
   var branchType = $(document.createElement('span'));
   branchType.addClass('branch-type fl');
 
@@ -160,18 +160,18 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   });
 
   if (value.aggregationEntity) {
-    var label = $('span');
-    branchType.addClass("label" + (isCurrent ? " current-path" : ""));
+    var label = $(document.createElement('span'));
 
+    label.addClass("label" + (isCurrent ? " current-path" : ""));
     label.append(truncateTitle(value.label, 350));
     currentNode.append(label);
   } else {
-    var leafIndicator = $('div');
+    var leafIndicator = $(document.createElement('div'));
     leafIndicator.addClass('leaf-indicator');
 
-    var a = $('a');
+    var a = $(document.createElement('a'));
     a.addClass("label" + (isCurrent ? " current-path" : ""));
-    a.attr('href',value.id);
+    a.attr('href', value.id);
 
     if (isCurrent) {
       leafIndicator.addClass("current-node");
@@ -187,12 +187,12 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
  * 
  * @param {String} url URL to the item service
  * 
- * @param {Element} currentNode current node
+ * @param {Element} currentNode current node (ul element)
  * 
  * @param {String} parentId id of the parent node in the hierarchy
  */
 function addSiblingCount(url, currentNode, parentId) {
-  var siblingCount = $('span');
+  var siblingCount = $(document.createElement('span'));
   siblingCount.addClass('sibling-count');
 
   if (parentId != null) {
@@ -208,7 +208,9 @@ function addSiblingCount(url, currentNode, parentId) {
         li.addClass("more-hidden");
       } else {
         li.addClass("last");
-        setNodeIcon(currentNode.parent().children("span").children("i"), true);
+        if (!currentNode.parent().hasClass("root")) {
+          setNodeIcon(currentNode.parent().children("span").children("i"), true);
+        }
       }
     });
   }
@@ -253,7 +255,7 @@ function createHierarchy(url) {
         }
 
         var ul = $("<ul>");
-        var li = $('li');
+        var li = $(document.createElement('li'));
         li.addClass(parentId == null ? "root" : "node");
         li.attr('data-bind', JSON.stringify(parents));
 

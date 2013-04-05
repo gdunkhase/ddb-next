@@ -58,11 +58,10 @@
                     <p class="address">
                         <b>${selectedOrgXML.name}</b><br>
                         <span class="space">${selectedOrgXML.locations.location.address.street }</span>${selectedOrgXML.locations.location.address.houseIdentifier }<br>
-                        <g:if test="${(selectedOrgXML.addressSupplement)&&(selectedOrgXML.addressSupplement.text().length() > 0)}">
-                            (${(selectedOrgXML.addressSupplement)})<br>
+                        <g:if test="${(selectedOrgXML.locations.location.address.addressSupplement)&&(selectedOrgXML.locations.location.address.addressSupplement.text().length() > 0)}">
+                            (${selectedOrgXML.locations.location.address.addressSupplement})<br>
                         </g:if>
                         <span class="space">${selectedOrgXML.locations.location.address.postalCode }</span>${selectedOrgXML.locations.location.address.city }
-                        ${selectedOrgXML.locations.location.address.addressSupplement }
                     </p>
                 </div>
                 
@@ -77,7 +76,7 @@
                           </g:if>
                           <g:else>
                             <i class="icon-child-institution"></i>
-                            <a href="/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
+                            <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                           </g:else>
                           <g:render template="subinstitutions" />
                         </li>

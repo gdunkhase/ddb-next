@@ -16,13 +16,15 @@
       <button id="view-institution-list" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsListButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsListButton_Label" /></button>
     </div>
   </div>
-  <div class="row">
+  <div class="row institutionlist">
     <div class="span9">
     <g:render template="filterPhone" />
     <g:render template="pagination" />
+      <%-- 
       <div id="no-match-message">
         <g:message code="ddbnext.InstitutionPage_NoMatches" />
       </div>
+      --%>
       <ol id="institution-list">
         <g:each in="${ all }">
         <li class="institution-listitem" data-sector="${ it?.sector }" 

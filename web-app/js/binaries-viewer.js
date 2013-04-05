@@ -17,7 +17,8 @@ $(document).ready(function() {
 
   var currentPage = $('meta[name=page]').attr("content");
   if(currentPage == "item"){
-	
+  var mediaQuery = window.matchMedia( "(min-width: 530px)" );
+
   $(function() {
     currentTab($("p.all"));
     $("div.all").show();
@@ -30,19 +31,34 @@ $(document).ready(function() {
   function updateGalleryPagination(pag,list) {
     var pos;
     var tot=$(list).size();
-    if(tot>1){
-      if(tot==2){
-        pos="1-2";
-      } else {
-          a= 1 + pag*3;
-          b=3 + pag*3;
-          while (b > tot) {
-            a--;
-            b--;
-          }
-          pos=a+"-"+b;
+    if (mediaQuery.matches) {
+      // window width is at least 530px
+      if(tot>1){
+            if(tot==2){
+              pos="1-2";
+            } else {
+                a= 1 + pag*3;
+                b=3 + pag*3;
+                while (b > tot) {
+                  a--;
+                  b--;
+                }
+                pos=a+"-"+b;
+              }
+          } else pos="1";
+    }
+    else {
+      // window width is less than 530px
+      if(tot>1){
+        a= 1 + pag*2;
+        b= 2 + pag*2;
+        while (b > tot) {
+          a--;
+          b--;
         }
-    } else pos="1";
+        pos=a+"-"+b;
+      } else pos="1";
+    }
     $("p.gallery-pagination").text(pos+"/"+tot)
   };
   function currentTab(el) {
@@ -82,12 +98,18 @@ $(document).ready(function() {
   function jwPlayerSetup(content,poster){
     $(".previews").parent().addClass("off");
     $("#binary-viewer").append('<div id="jwplayer-container"></div>');
+    var w = 445;
+    var h = 320;
+    if (!mediaQuery.matches) {
+      w = 260;
+      h = 200;
+    }
     jwplayer("jwplayer-container").setup({
           file: content,
           controlbar: "bottom",
           stretching: "uniform",
-          width: 445,
-          height: 320,
+          width: w,
+          height: h,
           image: poster,
           skin: "../jwplayer/skins/five.xml", 
           modes: [{
@@ -107,7 +129,7 @@ $(document).ready(function() {
                   if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
                     $("binary-viewer-flash-upgrade").removeClass("off");
                   }else{ 
-                	$("div.binary-viewer-error").removeClass("off");
+                    $("div.binary-viewer-error").removeClass("off");
                   }
               },
               onReady: function () {
@@ -121,6 +143,10 @@ $(document).ready(function() {
     })
   };
   function createGallery(el) {
+    var img = 3;
+    if (!mediaQuery.matches) {
+      img = 2;
+    }
     el.carouFredSel({
       circular: false,
       infinite: false,
@@ -128,11 +154,11 @@ $(document).ready(function() {
       align: false,
       height: 116,
       items: {
-        visible: 3,
+        visible: img,
         minimum: 1
       },
       scroll: {
-        items: 3,
+        items: img,
         fx: "fade"
       },
       auto: false,
