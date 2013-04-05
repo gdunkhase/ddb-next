@@ -44,6 +44,11 @@
   border-width: 0 0 5px;
   font-size: 0.938em;
 }
+@media (min-width: 980px) {
+  .institution .span3 img {
+    float: right;
+  }
+}
 .institution-name {
   padding-left: 17px;
   height: 25px;
