@@ -53,17 +53,17 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   } else {
     currentNode.removeClass("last");
   }
-  
+
   var branchType = $(document.createElement('span'));
   branchType.addClass('branch-type fl');
   var i = $("<i>");
   var leafIndicator = $(document.createElement('div'));
   leafIndicator.addClass('leaf-indicator');
-  
+
   var a = $(document.createElement('a'));
   a.addClass('label');
-  a.attr('href',value.id);
-  a.attr('title',truncateTitle(value.label, 350));
+  a.attr('href', value.id);
+  a.attr('title', truncateTitle(value.label, 350));
 
   if (isCurrent) {
     leafIndicator.addClass("current-node");
@@ -108,7 +108,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   if (isCurrent && drawBorder) {
     currentNode.addClass("lastExited");
   }
-  
+
   var branchType = $(document.createElement('span'));
   branchType.addClass('branch-type fl');
 
@@ -171,7 +171,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
 
     var a = $(document.createElement('a'));
     a.addClass("label" + (isCurrent ? " current-path" : ""));
-    a.attr('href',value.id);
+    a.attr('href', value.id);
 
     if (isCurrent) {
       leafIndicator.addClass("current-node");
@@ -208,7 +208,9 @@ function addSiblingCount(url, currentNode, parentId) {
         li.addClass("more-hidden");
       } else {
         li.addClass("last");
-        setNodeIcon(currentNode.parent().children("span").children("i"), true);
+        if (!currentNode.parent().hasClass("root")) {
+          setNodeIcon(currentNode.parent().children("span").children("i"), true);
+        }
       }
     });
   }
