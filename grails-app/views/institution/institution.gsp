@@ -77,7 +77,7 @@
                           </g:if>
                           <g:else>
                             <i class="icon-child-institution"></i>
-                            <a href="/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
+                            <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                           </g:else>
                           <g:render template="subinstitutions" />
                         </li>
