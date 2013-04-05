@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="span7 origin">
+  <div class="span6 origin">
     <g:if test="${!item.origin?.toString().isEmpty()}">
         <a target="_blank" class="show-origin" href="${item.origin.a}" title="<g:message code="ddbnext.stat_008" />">
           <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>

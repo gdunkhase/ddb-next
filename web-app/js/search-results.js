@@ -224,11 +224,19 @@ function updateLanguageSwitch(params) {
         }
     }
   });
+  $('#form-search-header input').keyup(function(e){
+    if(e.keyCode == 13) {
+      if ($.browser.msie && parseFloat($.browser.version) <= 8.0) {
+        $('#form-search-header button').click();
+      }
+    } 
+    return false;
+  });
   $('#view-list').click(function(){
     $('.summary-main .title a').each(function(index,value){
       var newTitle = value.title.toString();
       if(newTitle.length>100){
-          newTitle = newTitle.trim().substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
+          newTitle = $.trim(newTitle).substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
       }
       $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
         newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
@@ -294,7 +302,7 @@ function updateLanguageSwitch(params) {
     $('.summary-main .title a').each(function(index,value){
       var newTitle = value.title.toString();
       if(newTitle.length>53){
-          newTitle = newTitle.trim().substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
+          newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
       }
       $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
         newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 

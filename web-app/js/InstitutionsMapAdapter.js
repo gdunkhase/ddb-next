@@ -73,7 +73,7 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
         $('.sector-facet').each(function () {
             var sectorData = {};
             sectorData["sector"] = $(this).find('input').data('sector');
-            sectorData["name"] = $(this).children('label').text().trim();
+            sectorData["name"] = $.trim($(this).children('label').text());
             if ($(this).find('input').is(":checked")) {
                 sectors["selected"].push(sectorData);
             } else {
