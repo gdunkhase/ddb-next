@@ -54,7 +54,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
     currentNode.removeClass("last");
   }
   
-  var branchType = $('span');
+  var branchType = $(document.createElement('span'));
   branchType.addClass('branch-type fl');
   var i = $("<i>");
   var leafIndicator = $(document.createElement('div'));
@@ -160,16 +160,16 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   });
 
   if (value.aggregationEntity) {
-    var label = $('span');
+    var label = $(document.createElement('span'));
     branchType.addClass("label" + (isCurrent ? " current-path" : ""));
 
     label.append(truncateTitle(value.label, 350));
     currentNode.append(label);
   } else {
-    var leafIndicator = $('div');
+    var leafIndicator = $(document.createElement('div'));
     leafIndicator.addClass('leaf-indicator');
 
-    var a = $('a');
+    var a = $(document.createElement('a'));
     a.addClass("label" + (isCurrent ? " current-path" : ""));
     a.attr('href',value.id);
 
@@ -192,7 +192,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
  * @param {String} parentId id of the parent node in the hierarchy
  */
 function addSiblingCount(url, currentNode, parentId) {
-  var siblingCount = $('span');
+  var siblingCount = $(document.createElement('span'));
   siblingCount.addClass('sibling-count');
 
   if (parentId != null) {
@@ -253,7 +253,7 @@ function createHierarchy(url) {
         }
 
         var ul = $("<ul>");
-        var li = $('li');
+        var li = $(document.createElement('li'));
         li.addClass(parentId == null ? "root" : "node");
         li.attr('data-bind', JSON.stringify(parents));
 
