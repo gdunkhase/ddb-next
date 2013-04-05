@@ -161,8 +161,8 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
 
   if (value.aggregationEntity) {
     var label = $(document.createElement('span'));
-    branchType.addClass("label" + (isCurrent ? " current-path" : ""));
 
+    label.addClass("label" + (isCurrent ? " current-path" : ""));
     label.append(truncateTitle(value.label, 350));
     currentNode.append(label);
   } else {
