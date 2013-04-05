@@ -10,5 +10,4 @@
     </g:else>
   </g:each>
   </ul>
-<hr>
 </div>
