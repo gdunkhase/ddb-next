@@ -224,6 +224,12 @@ function updateLanguageSwitch(params) {
         }
     }
   });
+  $('#form-search-header input').keyup(function(e){
+    if(e.keyCode == 13) {
+      $('#form-search-header button').click();
+    } 
+    return false;
+  });
   $('#view-list').click(function(){
     $('.summary-main .title a').each(function(index,value){
       var newTitle = value.title.toString();
