@@ -45,7 +45,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   if (isLast) {
     if (moreHidden) {
       currentNode.parent().append($("<li>", {
-        class : "more-available"
+        "class": "more-available"
       }));
     } else {
       currentNode.addClass("last");
@@ -55,14 +55,14 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   }
 
   var branchType = $("<span>", {
-    class : "branch-type fl"
+    "class": "branch-type fl"
   });
   var i = $("<i>");
   var leafIndicator = $("<div>", {
-    class : "leaf-indicator"
+    "class" : "leaf-indicator"
   });
   var a = $("<a>", {
-    class : "label",
+    "class" : "label",
     href : value.id,
     title : truncateTitle(value.label, 350)
   });
@@ -112,7 +112,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   }
 
   var branchType = $("<span>", {
-    class : "branch-type fl"
+    "class" : "branch-type fl"
   });
 
   currentNode.append(branchType);
@@ -164,17 +164,17 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
 
   if (value.aggregationEntity) {
     var label = $("<span>", {
-      class : "label" + (isCurrent ? " current-path" : "")
+      "class" : "label" + (isCurrent ? " current-path" : "")
     });
 
     label.append(truncateTitle(value.label, 350));
     currentNode.append(label);
   } else {
     var leafIndicator = $("<div>", {
-      class : "leaf-indicator"
+      "class" : "leaf-indicator"
     });
     var a = $("<a>", {
-      class : "label" + (isCurrent ? " current-path" : ""),
+      "class" : "label" + (isCurrent ? " current-path" : ""),
       href : value.id
     });
 
@@ -198,7 +198,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
  */
 function addSiblingCount(url, currentNode, parentId) {
   var siblingCount = $("<span>", {
-    class : "sibling-count"
+    "class" : "sibling-count"
   });
 
   if (parentId != null) {
@@ -260,7 +260,7 @@ function createHierarchy(url) {
 
         var ul = $("<ul>");
         var li = $("<li>", {
-          class : (parentId == null ? "root" : "node"),
+          "class" : (parentId == null ? "root" : "node"),
           "data-bind" : JSON.stringify(parents)
         });
 
@@ -400,7 +400,7 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
       var isCurrent = value.id == id;
       var isLast = index == length - 1;
       var li = $("<li>", {
-        class : "node last"
+        "class" : "node last"
       });
 
       li.attr("data-bind", dataBind);
