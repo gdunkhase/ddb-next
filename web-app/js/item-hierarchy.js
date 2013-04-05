@@ -187,7 +187,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
  * 
  * @param {String} url URL to the item service
  * 
- * @param {Element} currentNode current node
+ * @param {Element} currentNode current node (ul element)
  * 
  * @param {String} parentId id of the parent node in the hierarchy
  */
