@@ -39,33 +39,33 @@
   background: none;
 }
 
-.view-type-switch button::before {
+.view-type-switch button:before {
   display: inline-block;
   content: url("../images/icons/viewSelector.png");
 }
 
-.view-type-switch #view-institution-list::before {
+.view-type-switch #view-institution-list:before {
   margin: -24px 0 0 0;
 }
 
-.view-type-switch #view-institution-list:hover::before{
+.view-type-switch #view-institution-list:hover:before{
   margin: -24px 0 0 -24px;
 }
 
-.view-type-switch #view-institution-list.selected::before,.view-type-switch #view-institution-list.selected:hover::before,.view-type-switch #view-institution-list.selected:focus::before
+.view-type-switch #view-institution-list.selected:before,.view-type-switch #view-institution-list.selected:hover:before,.view-type-switch #view-institution-list.selected:focus:before
   {
   margin: -24px 0 0 -48px;
 }
 
-.view-type-switch #view-institution-map::before {
+.view-type-switch #view-institution-map:before {
   margin: -48px 0 0 0;
 }
 
-.view-type-switch #view-institution-map:hover::before{
+.view-type-switch #view-institution-map:hover:before{
   margin: -48px 0 0 -24px;
 }
 
-.view-type-switch #view-institution-map.selected::before,.view-type-switch #view-institution-map.selected:hover::before,.view-type-switch #view-institution-map.selected:focus::before{
+.view-type-switch #view-institution-map.selected:before,.view-type-switch #view-institution-map.selected:hover:before,.view-type-switch #view-institution-map.selected:focus:before{
   margin: -48px 0 0 -48px;
 }
 .institution-listitem {
