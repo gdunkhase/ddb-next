@@ -183,6 +183,15 @@ div#help-toc-right {
     clear: auto;
     border-top: 1px solid rgb(233, 229, 226);
   }
+  div#help-toc-left {
+    position: static;
+    width: 100%;
+  }
+  div#help-toc-right {
+      margin-left: auto;
+      position: static;
+      width: 100%;
+  }
 }
 
 .static_content hr {

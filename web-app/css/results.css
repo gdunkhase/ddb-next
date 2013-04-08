@@ -389,6 +389,10 @@ input[type="checkbox"],input[type="radio"] {
   font-size: 0.938em;
 }
 
+.results-paginator-options label{
+  cursor: default;
+}
+
 .results-list .item .summary {
   padding-bottom: 5px;
 }
