@@ -719,19 +719,23 @@ function updateLanguageSwitch(params) {
     },
     
     build: function(element){
-        if((element.attr('data-fctname') != this.fctManager.currentFacetField 
-                || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))){
-          this.mainElement = element.parents('.facets-item').find('.h3');
-          this.parentMainElement = this.mainElement.parent();
-          this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
-          if(!this.parentMainElement.hasClass('active')){
-            this.parentMainElement.hide();
-            this.parentMainElement.addClass('active');
-          }
-          this.buildStructure();
-          this.fctManager.fetchFacetValues(this);
-          this.opened = true;
-        }else if(this.opened) this.close();
+        if((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length == 0) || element.attr('class') == 'add-more-filters'){
+            if((element.attr('data-fctname') != this.fctManager.currentFacetField 
+                    || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))){
+              this.mainElement = element.parents('.facets-item').find('.h3');
+              this.parentMainElement = this.mainElement.parent();
+              this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
+              if(!this.parentMainElement.hasClass('active')){
+                this.parentMainElement.hide();
+                this.parentMainElement.addClass('active');
+              }
+              this.buildStructure();
+              this.fctManager.fetchFacetValues(this);
+              this.opened = true;
+            }else if(this.opened) this.close();
+        }else{
+            return false;
+        }
     },
     
     buildStructure: function(){
@@ -992,11 +996,7 @@ function updateLanguageSwitch(params) {
     $('.facets-item a').each(function(){
         $(this).click(function(event){
             event.preventDefault();
-            if($(this).find('.selected-items li').length >0){
-                fctWidget.build($(this));
-            }else{
-                return false;
-            }
+            fctWidget.build($(this));
         });
     });
     fctWidget.manageOutsideClicks(fctWidget);
