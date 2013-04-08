@@ -181,6 +181,11 @@
   padding-top: 13px;
 }
 
+.results-paginator-view .group-actions label:hover{
+  text-decoration: underline;
+  color: #a5003b;
+}
+
 .results-paginator-view .view-type-switch {
   float: right;
 }
