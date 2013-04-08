@@ -48,9 +48,11 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
             console.log("startup");
         }
 
-        _setupDom4MapDisplay();
-
+        $('#institution-map').removeClass('off');
         InstitutionsMapController.startup(mapDiv,lang,institutionsMapOptions);
+        $('#institution-map').addClass('off');
+
+        _setupDom4MapDisplay();
     };
 
     Public.drawInstitution = function ( mapDiv, lang, lon, lat) {
