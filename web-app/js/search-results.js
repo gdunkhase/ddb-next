@@ -721,7 +721,6 @@ function updateLanguageSwitch(params) {
     build: function(element){
         if((element.attr('data-fctname') != this.fctManager.currentFacetField 
                 || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))){
-          if(this.opened) this.close();
           this.mainElement = element.parents('.facets-item').find('.h3');
           this.parentMainElement = this.mainElement.parent();
           this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
@@ -732,7 +731,7 @@ function updateLanguageSwitch(params) {
           this.buildStructure();
           this.fctManager.fetchFacetValues(this);
           this.opened = true;
-        }
+        }else if(this.opened) this.close();
     },
     
     buildStructure: function(){
@@ -781,12 +780,12 @@ function updateLanguageSwitch(params) {
       
       paginationContainer.appendTo(rightHead);
       paginationUl.appendTo(paginationContainer);
-      this.paginationLiPrev.appendTo(paginationUl);
-      this.paginationLiSeite.appendTo(paginationUl);
-      this.paginationLiNext.appendTo(paginationUl);
       paginationAPrev.appendTo(this.paginationLiPrev);
       paginationANext.appendTo(this.paginationLiNext);
       spanSeiteNumber.appendTo(this.paginationLiSeite);
+      this.paginationLiPrev.appendTo(paginationUl);
+      this.paginationLiSeite.appendTo(paginationUl);
+      this.paginationLiNext.appendTo(paginationUl);
       
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
@@ -835,7 +834,7 @@ function updateLanguageSwitch(params) {
       var rightCol = this.rightBody.find('.right-col');
       var flyoutRightHeadTitle;
       if(this.facetRightContainer.find('.flyout-right-head span').length > 0){
-          flyoutRightHeadTitle = this.facetRightContainer.find('.flyout-right-head span');
+          flyoutRightHeadTitle = $(this.facetRightContainer.find('.flyout-right-head span')[0]);
       }else{
           flyoutRightHeadTitle = $(document.createElement('span'));
       }
@@ -931,7 +930,11 @@ function updateLanguageSwitch(params) {
     },
     
     setFacetValuesPage: function(pageNumber){
-      this.paginationLiSeite.find('span').html(pageNumber);
+      var spanPGNumber = this.paginationLiSeite.find('span');
+      if(spanPGNumber.length == 0){
+          ($(document.createElement('span')).html(pageNumber)).appendTo(this.paginationLiSeite)
+      }
+      $(spanPGNumber[0]).html(pageNumber);
     },
     
     renderFacetLoader: function(){
