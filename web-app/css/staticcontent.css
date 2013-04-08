@@ -184,3 +184,23 @@ div#help-toc-right {
     border-top: 1px solid rgb(233, 229, 226);
   }
 }
+
+.static_content hr {
+  height: 2px;
+  color: #efebe8;
+  background: #efebe8;
+  clear: both;
+}
+
+.help-image-left {
+  border: 0;
+  margin: 0 30px 0 0;
+}
+
+.static_content p {
+  margin: 15px 0 15px;
+}
+
+.static_content h3 {
+  clear: both;
+}
