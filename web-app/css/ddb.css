@@ -443,7 +443,7 @@ header .link-adv-search, div.header .link-adv-search {
   display: inline-block;
   float: left;
   text-align: left;
-  margin-left: 128px;
+  margin-left: 130px;
 }
 
 .search-header {
@@ -613,12 +613,12 @@ header .language-widget form,.header .language-widget form {
     width: 240px;
   }
   header .link-adv-search, div.header .link-adv-search {
-    margin-left: 18px;
+    margin-left: 20px;
   }
 }
 @media (min-width: 980px) and (max-width: 1199px) {
   header .link-adv-search, div.header .link-adv-search {
-    margin-left: 38px;
+    margin-left: 40px;
   }
 }
 /* mobile view header - end */
