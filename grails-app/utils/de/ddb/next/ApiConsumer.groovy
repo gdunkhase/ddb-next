@@ -224,7 +224,7 @@ class ApiConsumer {
 					log.debug "response status: ${resp.statusLine}"
 					log.debug 'Headers: -----------'
 					
-					resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
+					resp.headers.each { h -> log.info " ${h.name} : ${h.value}" }
 					return [bytes:inputstream.getBytes(),"Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
 				}
 				response.'404' = {resp, reader ->

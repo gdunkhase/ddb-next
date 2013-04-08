@@ -88,24 +88,6 @@ grails.exceptionresolver.params.exclude = ['password']
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
 
-//DDB SPECIFIC Configuration variables
-//The variables can be overwritten by defining local configurations, see below environments
-ddb.binary.url=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()
-ddb.binary.backend.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
-ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
-ddb.apis.url="http://localhost:8080"
-ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
-ddb.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
-ddb.logging.folder="target/logs"
-ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
-ddb.advancedSearch.searchGroupCount=3
-ddb.advancedSearch.searchFieldCount=10
-ddb.advancedSearch.defaultOffset=0
-ddb.advancedSearch.defaultRows=20
-
-
-// The grails.serverURL is required for the PDF rendering plugin.
-//grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
 
 grails.resources.mappers.zip.excludes = [
     '**/*.png',
@@ -131,6 +113,7 @@ ddb {
 
 environments {
     development {
+		grails.serverURL="http://localhost:8080/ddb-next"
         grails.logging.jul.usebridge = true
         grails.config.locations = [
             "file:${userHome}/.grails/${appName}.properties"
@@ -138,12 +121,32 @@ environments {
 
     }
     production {
+		grails.serverURL="http://dev.escidoc.org"
         grails.logging.jul.usebridge = false
         grails.config.locations = [
             "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties"
         ]
     }
 }
+
+//DDB SPECIFIC Configuration variables
+//The variables can be overwritten by defining local configurations, see below environments
+ddb.binary.url=grails.serverURL
+ddb.binary.backend.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
+ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
+ddb.apis.url="http://localhost:8080"
+ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+ddb.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
+ddb.logging.folder="target/logs"
+ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
+ddb.advancedSearch.searchGroupCount=3
+ddb.advancedSearch.searchFieldCount=10
+ddb.advancedSearch.defaultOffset=0
+ddb.advancedSearch.defaultRows=20
+
+
+// The grails.serverURL is required for the PDF rendering plugin.
+//grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
 
 // log4j configuration
 log4j = {

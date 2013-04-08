@@ -110,6 +110,7 @@ class ApisController {
 	 */
 	def binary(){
 		def query = [ client: "DDB-NEXT" ]
+		println "############################this is the binary url" + grailsApplication.config.ddb.binary.url
 		def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query );
 		byte[] bytes=urlResponse.get("bytes");
 		response.setContentType(urlResponse.get("Content-Type"))
