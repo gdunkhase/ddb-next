@@ -7,10 +7,10 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         var _urlPrefix;
 
         var _deBoundaries = {
-            minLat: 46.69258,
-            minLon: 2.48328,
-            maxLat: 55.86127,
-            maxLon: 18.5233
+            minLat: 47.2703, // 46.69258,
+            minLon:  5.8667, //  2.48328,
+            maxLat: 55.0556, // 55.86127,
+            maxLon: 15.0419  // 18.5233
         };
 
         var _mapWidget;         // 
@@ -81,10 +81,11 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
                     showDescriptions: false,
                     olNavigation: false, // show/hide OpenLayers navigation panel
                     mapSelectionTools: false, // show/hide map selector tools
-                    labelGrid: false, // enables, disables hove
+                    mapSelection: false, // disable background map selection
+                    labelGrid: false, // enables, disables hover
+                    dataInformation: false,
                     countrySelect: false,
                     resetMap: true,
-                    mapSelection: false, // disable background map selection
                     boundaries: _deBoundaries,
                     maxPlaceLabels: 0, // unlimited
                     circleTransparency: true,
