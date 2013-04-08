@@ -92,34 +92,34 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
     };
     
     var _enableListView = function() {
+        $('#institution-map').addClass('off');
+        $('#institution-list').removeClass('off');
+
         $('.view-type-switch').removeClass('off');
         $('#first-letter-index').removeClass('off');
 
         $('#view-institution-list').addClass('selected');
         $('#view-institution-map').removeClass('selected');
 
-        $('#institution-map').addClass('off');
-        $('#institution-list').removeClass('off');
-
         $('#main-container').removeClass('map');
         $('#main-container').addClass('list');
     }
 
     var _enableMapView = function() {
+        $('#institution-list').addClass('off');
+        $('#institution-map').removeClass('off');
+
         $('.view-type-switch').removeClass('off');
         $('#first-letter-index').addClass('off');
         
         $('#view-institution-map').addClass('selected');
         $('#view-institution-list').removeClass('selected');
-        
-        $('#institution-map').removeClass('off');
-        $('#institution-list').addClass('off');
 
         $('#main-container').addClass('map');
         $('#main-container').removeClass('list');
         if (!mapInitialized) {
-            mapInitialized = true;
             InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
+            mapInitialized = true;
         }
     }
 
