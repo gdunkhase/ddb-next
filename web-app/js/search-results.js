@@ -992,7 +992,11 @@ function updateLanguageSwitch(params) {
     $('.facets-item a').each(function(){
         $(this).click(function(event){
             event.preventDefault();
-            fctWidget.build($(this));
+            if($(this).find('.selected-items li').length >0){
+                fctWidget.build($(this));
+            }else{
+                return false;
+            }
         });
     });
     fctWidget.manageOutsideClicks(fctWidget);
