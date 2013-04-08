@@ -151,3 +151,6 @@ background-position: right -40px;
     text-align: left;
   }
 }
+.fields .row {
+  padding-bottom: 0.5em;
+}

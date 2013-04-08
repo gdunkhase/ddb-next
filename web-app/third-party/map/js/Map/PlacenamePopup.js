@@ -1,7 +1,7 @@
 /*
 * PlacenamePopup.js
 *
-* Copyright (c) 2012, Stefan Jänicke. All rights reserved.
+* Copyright (c) 2012, Stefan Jï¿½nicke. All rights reserved.
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 /**
  * @class PlacenamePopup
  * specific map popup for showing and interacting on placename labels
- * @author Stefan Jänicke (stjaenicke@informatik.uni-leipzig.de)
+ * @author Stefan Jï¿½nicke (stjaenicke@informatik.uni-leipzig.de)
  * @release 1.0
  * @release date: 2012-07-27
  * @version date: 2012-07-27
@@ -81,15 +81,6 @@ function PlacenamePopup(parent) {
         
     this.showLabelsDdb = function(elementInfos) {
 
-        var nb = elementInfos.length;
-        var instText = "";
-        if (nb == 1) {
-            instText = GeoTemConfig.getString('institution');
-        } else {
-            instText = GeoTemConfig.getString('institutions');
-        }
-        this.title.innerHTML = nb + " " + instText;
-
 
         function pushElement_r(elInfo,resultList) {
             var superNodeRef = InstitutionsMapModel.getNode(elInfo.description.superNode);
@@ -138,8 +129,9 @@ function PlacenamePopup(parent) {
         };
 
         /* build html ul list/tree according to indentLevel */
-        function makeLi(el) {
+        function makeLi(el,countHolder) {
             var li = document.createElement('li');
+            countHolder.push(1);
             li.setAttribute('class', 'ddbPopupLine');
             var elNode =  el.description.node;
             var elText =  elNode.name + " (" + InstitutionsMapModel.sectorName(elNode.sector) + ")";
@@ -150,46 +142,59 @@ function PlacenamePopup(parent) {
                         '>' + elText +
                         '</a>' +
                         ((isSelected)?'</strong>':'');
-            li.innerHTML = text; // XXX + " # " +  el.description.number;
+            li.innerHTML = text; // "test: #" +  el.description.number;
             return li;
         };
 
-        function buildGroup(iStart, elList, groupIndent, holder) {
+        function buildGroup(iStart, elList, groupIndent, holder, countHolder) {
             for (var i = iStart; i < elList.length ; i++) {
                 var elIndentLevel = elList[i].description.indentLevel;
                 if (elIndentLevel < groupIndent) {
                     return i; // leave the group
                 } else if (elIndentLevel > groupIndent) {
                     var innerGroup = document.createElement('ul'); // a new group
-                    innerGroup.setAttribute('class', 'ddb_grey-arrow ddbPopupInnerUL');
+                    innerGroup.setAttribute('class', 'ddbPopupInnerUL');
                     // innerGroup.style is inherited from rootGroup
-                    i = buildGroup(i,elList,elIndentLevel,innerGroup);
+                    i = buildGroup(i,elList,elIndentLevel,innerGroup,countHolder);
                     holder.appendChild(innerGroup); // add the inner group
                     if (i < elList.length) {  // not yet at end
                         var el = elList[i];   // add element to the current group
-                        holder.appendChild(makeLi(el));
+                        holder.appendChild(makeLi(el,countHolder));
                     }
                 } else {
                     var el = elList[i];  // add to the current group
-                    holder.appendChild(makeLi(el));
+                    holder.appendChild(makeLi(el,countHolder));
                 };
             }
             return i;
         }
 
         var rootGroup = document.createElement('ul');
-		rootGroup.setAttribute('class', 'ddb_plum-arrow ddbPopupList ddbPopupRootUL');
+      	rootGroup.setAttribute('class', 'ddbPopupRootUL');
 
         // groups are adjacent members of the same indent level 
+        var countHolder = [];
         if (distinctList.length > 0) {
-            buildGroup(0, distinctList, distinctList[0].description.indentLevel,rootGroup);
+            buildGroup(0, distinctList,
+                          distinctList[0].description.indentLevel,
+                          rootGroup,
+                          countHolder
+                       );
         };
 
+        var nb = countHolder.length; // >= elementInfos.length;
+        var instText = "";
+        if (nb == 1) {
+            instText = GeoTemConfig.getString('institution');
+        } else {
+            instText = GeoTemConfig.getString('institutions');
+        }
+        this.title.innerHTML = nb + " " + instText;
 
         /* display the html structure */
 		$(this.inner).empty();
 
-		this.inner.style.width = "0px"; // this.labelsWidth + "px";
+	//	this.inner.style.width = "0px"; // this.labelsWidth + "px";
         this.inner.appendChild(rootGroup);
 
 	  	this.setContent(this.content);
