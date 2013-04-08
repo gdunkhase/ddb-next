@@ -73,10 +73,6 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
                 sectors["deselected"].push(sectorData);
             }
         });
-        if (sectors["selected"].length == 0) {
-            sectors["selected"] = sectors["deselected"];
-            sectors["deselected"] = [];
-        }
         return sectors;
     }
 

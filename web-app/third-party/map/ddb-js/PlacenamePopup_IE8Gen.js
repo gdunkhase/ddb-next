@@ -1,7 +1,7 @@
 /*
 * PlacenamePopup.js
 *
-* Copyright (c) 2012, Stefan Jänicke. All rights reserved.
+* Copyright (c) 2012, Stefan Jï¿½nicke. All rights reserved.
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 /**
  * @class PlacenamePopup
  * specific map popup for showing and interacting on placename labels
- * @author Stefan Jänicke (stjaenicke@informatik.uni-leipzig.de)
+ * @author Stefan Jï¿½nicke (stjaenicke@informatik.uni-leipzig.de)
  * @release 1.0
  * @release date: 2012-07-27
  * @version date: 2012-07-27
@@ -78,7 +78,6 @@ function PlacenamePopup_IE8Gen(parent) {
 
 
         function pushElement_r(elInfo,resultList) {
-//          var superNodeRef = elInfo.description.superNode;
             var superNodeRef = InstitutionsMapModel.getNode(elInfo.description.superNode);
             if (superNodeRef) {
                 var superNodeInfo={ member: false,
@@ -133,12 +132,12 @@ function PlacenamePopup_IE8Gen(parent) {
             var elText =  elNode.name + " (" + InstitutionsMapModel.sectorName(elNode.sector) + ")";
             var isSelected = InstitutionsMapModel.isSelected(elNode.sector);
             var text = ((isSelected)?'<strong>':'') +
-                        '<a href="' + elNode.detailViewUri + '"' +
-                            // ' target="_blank"' +  // open a new tab/window for this page
-                        '>' + elText +
-                        '</a>' +
-                        ((isSelected)?'</strong>':'');
-            li.innerHTML = text; // + " # " +  el.description.number;
+                '<a href="' + elNode.detailViewUri + '"' +
+             // ' target="_blank"' +  // open a new tab/window for this page
+                '>' + elText +
+                '</a>' +
+                ((isSelected)?'</strong>':'');
+            li.innerHTML = text; // "test: #" +  el.description.number;
             return li;
         };
 
@@ -149,7 +148,7 @@ function PlacenamePopup_IE8Gen(parent) {
                     return i; // leave the group
                 } else if (elIndentLevel > groupIndent) {
                     var innerGroup = document.createElement('ul'); // a new group
-                    innerGroup.setAttribute('class', 'ddb_grey-arrow ddbPopupInnerUL');
+                    innerGroup.setAttribute('class', 'ddbPopupInnerUL');
                     // innerGroup.style is inherited from rootGroup
                     i = buildGroup(i,elList,elIndentLevel,innerGroup,countHolder);
                     holder.appendChild(innerGroup); // add the inner group
@@ -167,7 +166,7 @@ function PlacenamePopup_IE8Gen(parent) {
 
 
         var rootGroup = document.createElement('ul');
-		rootGroup.setAttribute('class', 'ddb_plum-arrow ddbPopupList ddbPopupRootUL');
+      	rootGroup.setAttribute('class', 'ddbPopupRootUL');
 
         // groups are adjacent members of the same indent level 
         var countHolder = [];

@@ -31,9 +31,10 @@ function MapPopup(parent) {
 
 	this.parentDiv = parent.gui.mapWindow;
 
+	var popup = this;
+
 	this.initialize = function(x, y, onclose) {
 
-		var popup = this;
 		this.x = x;
 		this.y = y;
 

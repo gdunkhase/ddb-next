@@ -874,42 +874,6 @@ filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	z-index: 1003;
 }
 
-.ddbPopupInner {
-    min-width: 300px;
-    max-width: 350px;
-    max-height: 250px;
-	font-size: 15px;
-	z-index: 1003;
-}
-
-.ddbPopupList {
-    padding-left: 22px;
-    padding-right: 23px;
-    color: rgb(62,58,55);
-	z-index: 1003;
-}
-
-.ddbPopupLine {
-    background-color: red;
-    padding-top: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-	z-index: 1003;
-}
-
-ul.ddbPopupRootUL {
-    padding-top: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-ul.ddbPopupInnerUL {
-    padding-top: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: -17px;
-}
-
 .ddbPopupInput tr, th, td {
 	font-size: 13px;
 }
@@ -1389,34 +1353,3 @@ nselectAll {
 	background-image: url("../images/filterCancelDisabled.png");
 }
 */
-
-ul.ddb_plum-arrow, ul.ddb_grey-arrow, ul.ddb_lightgrey-arrow {
-    background: none repeat scroll 0 0 transparent;
-    height: auto;
-    line-height: normal;
-    overflow: hidden;
-	z-index: 1003;
-}
-ul.ddb_plum-arrow li, ul.ddb_grey-arrow li, ul.ddb_lightgrey-arrow li {
-    list-style: none outside none;
-    margin-bottom: 0;
-    margin-left: -17px;
-    margin-top: 0;
-    padding-bottom: 0px;
-    padding-left: 17px;
-    padding-top: 3px;
-	z-index: 1003;
-}
-ul.ddb_plum-arrow li a, ul.ddb_grey-arrow li a, ul.ddb_lightgrey-arrow li a {
-    text-decoration: none;
-}
-ul.ddb_plum-arrow li {
-    background: url("/images/icons/list_arrow_plum.png") no-repeat scroll 0 4px transparent;
-}
-ul.ddb_grey-arrow li {
-    background: url("/images/icons/list_arrow_grey.png") no-repeat scroll 0 4px transparent;
-}
-ul.ddb_lightgrey-arrow li {
-    background: url("/images/icons/list_arrow_lightgrey.png") no-repeat scroll 0 4px transparent;
-}
-
