@@ -20,6 +20,9 @@ var INSTITUTIONLIST_DIV = 'mapContainerDiv';
 //div where map for 1 institution is written in
 var INSTITUTION_DIV = 'divOSM';
 
+//only initialize map once, then remember in this variable
+var mapInitialized = false;
+
 var InstitutionsMapAdapter = (function ( $, undefined ) {
 
     //var osmTileServer = "openstreetmap.org";
@@ -42,18 +45,6 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
     };
 
     var Public = {}; // for public properties. avoid the reserved keyword "public"
-
-    Public.drawInstitutions = function ( mapDiv, lang) {
-        if (typeof console != "undefined") {
-            console.log("startup");
-        }
-
-        $('#institution-map').removeClass('off');
-        InstitutionsMapController.startup(mapDiv,lang,institutionsMapOptions);
-        $('#institution-map').addClass('off');
-
-        _setupDom4MapDisplay();
-    };
 
     Public.drawInstitution = function ( mapDiv, lang, lon, lat) {
         if (typeof console != "undefined") {
@@ -130,9 +121,13 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
         $('#main-container').addClass('map');
         $('#main-container').removeClass('list');
+        if (!mapInitialized) {
+            mapInitialized = true;
+            InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
+        }
     }
 
-    var _setupDom4MapDisplay = function () {
+    Public.setupDom4MapDisplay = function () {
     	
     	var hash = window.location.hash.substring(1);
         if (typeof console != "undefined") {
@@ -169,7 +164,7 @@ $(document).ready(function () {
         InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
     }
     else if (jsPageName == INSTITUTIONLIST_PAGE_NAME) {
-        InstitutionsMapAdapter.drawInstitutions(INSTITUTIONLIST_DIV, jsLanguage);
+    	InstitutionsMapAdapter.setupDom4MapDisplay();
     }
     return;
 });
