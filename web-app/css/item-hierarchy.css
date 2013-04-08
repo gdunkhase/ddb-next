@@ -178,8 +178,7 @@
   background: url("../images/icons/tooltips.png") no-repeat 0px -120px;
 }
 
-.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus
-  {
+.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus {
   background-position: 0px -150px;
 }
 
@@ -191,6 +190,13 @@
 /* TODO just for mobile views not to scroll horizontally. find a better solution! */
 @media ( max-width : 767px) {
   .item-hierarchy {
+    overflow: hidden;
+  }
+}
+
+@media ( max-width : 767px) {
+  .item-hierarchy-result {
+    width: 767px;
     overflow: hidden;
   }
 }
