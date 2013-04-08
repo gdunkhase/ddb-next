@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
-    <meta http-equiv="X-UA-Compatible" content="IE=8,9,10">
+
+    <meta charset="utf-8" />
     <meta name="description" content="Deutsche Digitale Bibliothek" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
