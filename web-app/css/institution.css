@@ -60,6 +60,15 @@
   font-size: small;
 }
 
+.institution-list {
+  list-style: none;
+  margin-bottom: 6px;
+}
+.institution-listitem {
+  list-style: none;
+  margin-top: 6px;
+}
+
 .pagination-small ul > li > a,
 .pagination-small ul > li > span {
   font-size: 1em;
