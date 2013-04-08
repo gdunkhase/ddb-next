@@ -17,7 +17,10 @@ $(document).ready(function() {
 
   var currentPage = $('meta[name=page]').attr("content");
   if(currentPage == "item"){
-  var mediaQuery = window.matchMedia( "(min-width: 530px)" );
+
+    if(navigator.appName.indexOf("Internet Explorer")==-1){
+      var mediaQuery = window.matchMedia( "(min-width: 530px)" );
+    }
 
   $(function() {
     currentTab($("p.all"));
@@ -31,7 +34,11 @@ $(document).ready(function() {
   function updateGalleryPagination(pag,list) {
     var pos;
     var tot=$(list).size();
-    if (mediaQuery.matches) {
+    var mediaQueryMatches = 1;
+    if(navigator.appName.indexOf("Internet Explorer")==-1){
+      mediaQueryMatches = mediaQuery.matches;
+    }
+    if (mediaQueryMatches) {
       // window width is at least 530px
       if(tot>1){
             if(tot==2){
@@ -100,7 +107,11 @@ $(document).ready(function() {
     $("#binary-viewer").append('<div id="jwplayer-container"></div>');
     var w = 445;
     var h = 320;
-    if (!mediaQuery.matches) {
+    var mediaQueryMatches = 1;
+    if(navigator.appName.indexOf("Internet Explorer")==-1){
+      mediaQueryMatches = mediaQuery.matches;
+    }
+    if (!mediaQueryMatches) {
       w = 260;
       h = 200;
     }
@@ -144,7 +155,11 @@ $(document).ready(function() {
   };
   function createGallery(el) {
     var img = 3;
-    if (!mediaQuery.matches) {
+    var mediaQueryMatches = 1;
+    if(navigator.appName.indexOf("Internet Explorer")==-1){
+      mediaQueryMatches = mediaQuery.matches;
+    }
+    if (!mediaQueryMatches) {
       img = 2;
     }
     el.carouFredSel({
