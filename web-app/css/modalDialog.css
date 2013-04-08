@@ -32,6 +32,14 @@
   height: 25px;
 }
 
+.popup-dialog-title a {
+  color: #3E3A37 !important;
+  text-decoration: none !important;
+}
+
+.popup-dialog-title a:hover {
+  color: #3E3A37 !important;
+}
 
 .popup-dialog-content {
   padding: 30px 15px 30px 15px;
