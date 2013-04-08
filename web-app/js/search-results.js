@@ -721,7 +721,6 @@ function updateLanguageSwitch(params) {
     build: function(element){
         if((element.attr('data-fctname') != this.fctManager.currentFacetField 
                 || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))){
-          if(this.opened) this.close();
           this.mainElement = element.parents('.facets-item').find('.h3');
           this.parentMainElement = this.mainElement.parent();
           this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
@@ -732,7 +731,7 @@ function updateLanguageSwitch(params) {
           this.buildStructure();
           this.fctManager.fetchFacetValues(this);
           this.opened = true;
-        }
+        }else if(this.opened) this.close();
     },
     
     buildStructure: function(){
