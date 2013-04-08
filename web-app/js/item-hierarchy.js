@@ -219,9 +219,34 @@ function addSiblingCount(url, currentNode, parentId) {
 }
 
 /*
+ * Add the hierarchy type name to the current node.
+ * 
+ * @param {Element} currentNode current node (li element)
+ * 
+ * @param {String} type hierarchy type name
+ * 
+ * @return {Element} replacement for the "ul" child
+ */
+function addTypeName(currentNode, type) {
+  var li = $("<li>");
+  var groupName = $("<span>");
+
+  groupName.addClass("groupName");
+  groupName.append(messages.ddbnext["HierarchyType_" + type]);
+  li.append(groupName);
+  currentNode.append(li);
+
+  var ul = $("<ul>");
+
+  ul.addClass("has-name");
+  li.append(ul);
+  return ul;
+}
+
+/*
  * Add a wait image to the current node.
  * 
- * @param {Element} currentNode current node
+ * @param {Element} currentNode current node (li element)
  */
 function addWaitSymbol(currentNode) {
   var waitSymbol = document.createElement("img");
@@ -247,20 +272,29 @@ function createHierarchy(url) {
 
     $.each(parents.reverse(), function(index, value) {
       if (index < parents.length - 1) {
-        // show parents
+        // show parent nodes
+        var ul = $("<ul>");
+        var hasName = value.type != null;
+        var isRoot = index == 0;
         var parentId = null;
 
-        if (index > 0) {
+        if (!isRoot) {
           parentId = parents[index - 1].id;
+
+          if (hasName) {
+            currentNode.append(ul);
+            ul = addTypeName(ul, value.type);
+          }
         }
 
-        var ul = $("<ul>");
         var li = $(document.createElement('li'));
-        li.addClass(parentId == null ? "root" : "node");
+        li.addClass(isRoot ? "root" : "node");
         li.attr('data-bind', JSON.stringify(parents));
 
         ul.append(li);
-        currentNode.append(ul);
+        if (isRoot || !hasName) {
+          currentNode.append(ul);
+        }
         addParentNode(url, li, parentId, value, true, index == parents.length - 2, true, false);
         currentNode = li;
       } else if (parents.length > 1) {
