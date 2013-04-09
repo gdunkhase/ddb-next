@@ -1,0 +1,51 @@
+/*
+ * ddbPlacenamePopupList.css
+ *
+ * Within the popup-window  the list holds clickable items for the institutes in
+ * a cluster. For better information this list is extended by corresponding
+ * parent-institutes which are not member of the cluster. 
+ *
+ * Items that are member of the selected sectors are shown in bold face.
+ */
+
+.ddbPopupInner {
+    min-width: 300px;
+    max-width: 350px;
+    max-height: 250px;
+	font-size: 15px;
+	z-index: 1003;
+}
+
+.ddbPopupLine {
+    padding-right: 23px;
+    padding-top: 0px;
+    margin-top: 0px;
+    margin-bottom: 3px;
+    color: rgb(62,58,55);
+    line-height: 17px;
+	z-index: 1003;
+}
+
+ul.ddbPopupRootUL {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+ul.ddbPopupInnerUL {
+    list-style-type: none;
+    padding: 0px;
+    margin-left: 25px;
+}
+
+ul.ddbPopupRootUL li {
+    background: url("../images/list_arrow_plum.png") no-repeat scroll 0 -1px transparent;
+    padding-left: 17px;
+}
+
+ul.ddbPopupInnerUL li {
+    background: url("../images/list_arrow_grey.png") no-repeat scroll 0 -1px transparent;
+    padding-left: 17px;
+}
+
+

@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import org.apache.commons.logging.LogFactory
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
@@ -40,8 +41,9 @@ class ItemService {
 
     def transactional = false
     def grailsApplication
+	LinkGenerator grailsLinkGenerator
 
-    def findItemById(id) {
+	def findItemById(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
         ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
@@ -137,7 +139,7 @@ class ItemService {
             return ''
         }
 
-        def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.url.toString()
+        def BINARY_SERVER_URI = grailsLinkGenerator.getContextPath()
         def viewerPrefix = item.viewers.viewer.uri.toString()
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
@@ -178,7 +180,7 @@ class ItemService {
     }
 
     private def parse(binaries) {
-        def BINARY_SERVER_URI = grailsApplication.config.ddb.binary.url.toString()
+        def BINARY_SERVER_URI = grailsLinkGenerator.getContextPath()
         def binaryList = []
         def bidimensionalList = []
         String position

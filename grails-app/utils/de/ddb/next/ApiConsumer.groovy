@@ -17,17 +17,18 @@ package de.ddb.next
 
 import java.util.regex.Pattern
 
+import org.apache.commons.logging.LogFactory
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
+
+import java.util.regex.Pattern
+
 import static groovyx.net.http.ContentType.*
+
 import grails.util.Holders
 import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
-
-import java.util.regex.Pattern
-
-import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 
 class ApiConsumer {
@@ -40,7 +41,7 @@ class ApiConsumer {
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
-            def timestampStart = System.currentTimeMillis();
+            def timestampStart = System.currentTimeMillis()
             http.request(method, ContentType.TEXT) {
                 uri.path = path
                 uri.query = query
@@ -84,7 +85,7 @@ class ApiConsumer {
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
-            def timestampStart = System.currentTimeMillis();
+            def timestampStart = System.currentTimeMillis()
             http.request(method, JSON) {
                 uri.path = path
                 uri.query = query
@@ -128,7 +129,7 @@ class ApiConsumer {
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
-            def timestampStart = System.currentTimeMillis();
+            def timestampStart = System.currentTimeMillis()
             http.request(method, XML) {
                 uri.path = path
                 uri.query = query
@@ -172,7 +173,7 @@ class ApiConsumer {
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
 
-            def timestampStart = System.currentTimeMillis();
+            def timestampStart = System.currentTimeMillis()
             http.request(method, ContentType.ANY) {
                 uri.path = path
                 uri.query = query
@@ -205,6 +206,49 @@ class ApiConsumer {
             return null
         } catch (java.lang.Exception ex) {
             log.error "getAnyText(): An unexpected exception occured", ex
+            return null
+        }
+    }
+
+    static def getBinaryContent(String baseUrl, String path, query, method = Method.GET) {
+        try {
+            path = checkContext(baseUrl, path)
+            def http = new HTTPBuilder(baseUrl)
+            setProxy(http, baseUrl)
+
+            def timestampStart = System.currentTimeMillis()
+            http.request(method, ContentType.BINARY) {
+                uri.path = path
+                uri.query = query
+                response.success = { resp, inputstream ->
+                    log.debug "Success getBinaryContent(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.debug "response status: ${resp.statusLine}"
+                    log.debug 'Headers: -----------'
+
+                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
+                    return [bytes:inputstream.getBytes(),"Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
+                }
+                response.'404' = {resp, reader ->
+                    log.error "404 getBinaryContent(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.debug 'Headers: -----------'
+                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
+                    return 'Not found'
+                }
+                response.failure = { resp ->
+                    log.error "Failure getBinaryContent(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+                    log.debug 'Headers: -----------'
+                    resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
+                    return null
+                }
+            }
+        } catch (groovyx.net.http.HttpResponseException ex) {
+            log.error "getBinaryContent(): A HttpResponseException occured", ex
+            return null
+        } catch (java.net.ConnectException ex) {
+            log.error "getBinaryContent(): A ConnectException occured", ex
+            return null
+        } catch (java.lang.Exception ex) {
+            log.error "getBinaryContent(): An unexpected exception occured", ex
             return null
         }
     }

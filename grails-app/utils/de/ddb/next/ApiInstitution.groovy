@@ -54,8 +54,10 @@ class ApiInstitution {
     def getFacetValues(String provName, String url) {
         log.debug("get facets values for: ${provName}")
         def jsonResult;
+        int shortLength = 50;
+        String shortQuery = (provName.length() > shortLength ? provName.substring(0, shortLength) : provName);
         def uriPath = "/search/facets/provider_fct"
-        def query = ['query':"${provName}" ]
+        def query = ['query':"${shortQuery}" ]
         jsonResult = ApiConsumer.getTextAsJson(url, uriPath, query)
         return jsonResult;
     }

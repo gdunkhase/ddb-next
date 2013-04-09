@@ -1,6 +1,9 @@
 <html>
 <head>
+
+<meta name="page" content="advancedsearch" />
 <meta name="layout" content="main" />
+
 </head>
 <body>
   <div class="row advanced-search">

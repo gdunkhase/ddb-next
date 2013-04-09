@@ -25,8 +25,11 @@ modules = {
         resource url:'/css/bootstrap.css', bundle: 'screen'
         resource url:'/css/bootstrap-responsive.css', bundle: 'screen'
         resource url:'/css/ddb.css', bundle: 'screen'
+        resource url:'/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
         resource url:'/css/item.css', bundle: 'screen'
         resource url:'/css/institutionList.css', bundle: 'screen'
+        resource url:'/css/institution.css', bundle: 'screen'
+        resource url:'/css/institution-map.css', bundle: 'screen'
         resource url:'/css/results.css', bundle: 'screen'
         resource url:'/css/staticcontent.css', bundle: 'screen'
         resource url:'/css/error.css', bundle: 'screen'
@@ -37,6 +40,8 @@ modules = {
         resource url:'/css/modalDialog.css', bundle: 'screen'
         resource url:'/css/advancedsearch.css', bundle: 'screen'
         resource url:'/css/entity.css', bundle: 'screen'
+        resource url:'/third-party/map/css/style.css', bundle: 'screen'
+        resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
     }
 
     cssprint {
@@ -55,27 +60,24 @@ modules = {
         resource url:'/js/vendor/bootstrap-collapse.js'
         resource url:'/js/jquery.fancybox.pack.js'
         resource url:'/js/underscore-min.js'
+        resource url:'/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
+        resource url:'/js/myautocomplete.js'
         resource url:'/jwplayer/jwplayer.js'
         resource url:'/js/jwplayer-key.js'
         resource url:'/js/large-cookie.js'
         resource url:'/js/header.js'
         resource url:'/js/tooltip.js'
         resource url:'/js/json2.js'
+        resource url:'/js/global-variables.js'
         resource url:'/js/institution-list.js'
         resource url:'/js/start-page.js'
-        resource url:'/js/ddb.osm.institutiondetailview.js'
         resource url:'/js/item-hierarchy.js'
-        resource url:'/js/binaries-viewer.js'
         resource url:'/js/persistent-links-modal-dialog.js'
+        resource url:'/js/binaries-viewer.js'
         resource url:'/js/advanced-search-page.js'
         resource url:'/js/search-results.js'
     }
 
-    autocomplete {
-        resource url: '/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
-        resource url: '/js/myautocomplete.js'
-        resource url: '/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
-    }
 
     // These are page specific bundles which should be merged back into ddbnext in the second step
 
@@ -84,10 +86,17 @@ modules = {
         resource url:'/css/start-page.css', attrs:[media:'print'], bundle: 'startpageprint'
     }
 
-    openstreetmap {
-        resource url:'http://www.openlayers.org/api/OpenLayers.js'
-        resource url:'http://www.openstreetmap.org/openlayers/OpenStreetMap.js'
+    //These are pages that include third party components
+    institution {
+        resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
     }
+
+    institutionlist {
+        resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/third-party/map/geotemco_InstitutionsMap.js'
+    }
+
 
     pdf {
         // This is the only working variant found! You must exclude 'zip,bundle' from the mappers list and

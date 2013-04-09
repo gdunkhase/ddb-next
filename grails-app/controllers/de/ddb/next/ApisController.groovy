@@ -15,11 +15,10 @@
  */
 package de.ddb.next
 
-import java.util.regex.Pattern;
-
 import net.sf.json.JSONNull
+
 import grails.converters.JSON
-import groovy.json.JsonSlurper
+import java.text.SimpleDateFormat
 
 class ApisController {
 
@@ -72,9 +71,8 @@ class ApisController {
             docs.add(tmpResult)
         }
         if(jsonResp.results["docs"].get(0).size()>0){
-            apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() {
-              obj, i ->
-              docs[i].properties = obj
+            apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() { obj, i ->
+                docs[i].properties = obj
             }
         }
         resultList["facets"] = jsonResp.facets
@@ -82,25 +80,79 @@ class ApisController {
         resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
         resultList["numberOfResults"] = jsonResp.numberOfResults
         resultList["randomSeed"] = jsonResp.randomSeed
-
-		render (contentType:"text/json"){resultList}
+        render (contentType:"text/json"){resultList}
     }
 
-	
-	/**
-	 * This function should be obsolete once the 
-	 * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
-	 * If that happens, the "myautocomplete.js" script should refer to the backend URL and not to this URL.
-	 * @return
-	 */
-	def autocomplete (){
-		def query = apisService.getQueryParameters(params)
-		def callback = apisService.getQueryParameters(params)
-		def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.search.autocomplete.url.toString(),'/search/suggest', query)	
-		if (callback) {
-			render "${params.callback}(${result as JSON})"
-		} else {
-			render (contentType:"text/json"){result}
-		}
-	}
+    def institutionsmap(){
+        def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/institutions/map', params)
+        render (contentType:"text/json"){jsonResp}
+    }
+
+    /**
+     * This function should be obsolete once the
+     * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
+     * If that happens, the "myautocomplete.js" script should refer to the backend URL and not to this URL.
+     * @return
+     */
+    def autocomplete (){
+        def query = apisService.getQueryParameters(params)
+        def callback = apisService.getQueryParameters(params)
+        def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.search.autocomplete.url.toString(),'/search/suggest', query)
+        if (callback) {
+            render "${params.callback}(${result as JSON})"
+        } else {
+            render (contentType:"text/json"){result}
+        }
+    }
+
+    /**
+     * Wrapper to support streaming of files from the backend
+     * @return OutPutStream
+     */
+    def binary(){
+        def cacheExpiryInDays =1 // example 1 for 1 day
+        def query = [ client: "DDB-NEXT" ]
+        def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query )
+        byte[] bytes=urlResponse.get("bytes")
+        response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
+        response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+        response.setContentType(urlResponse.get("Content-Type"))
+        response.setContentLength(urlResponse.get("Content-Length").toInteger())
+        response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
+        response.outputStream << bytes
+    }
+
+    private def getBinaryServerUrl(){
+        def url = grailsApplication.config.ddb.binary.backend.url
+        assert url instanceof String, "This is not a string"
+        return url
+    }
+
+    def staticFiles() {
+        def query = [ client: "DDB-NEXT" ]
+        def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
+                '/static/' + getFileNamePath(), query )
+        if(urlResponse && urlResponse != 'Not found') {
+            byte[] bytes = urlResponse.get("bytes")
+            response.setContentType(urlResponse.get("Content-Type"))
+            response.setContentLength(urlResponse.get("Content-Length").toInteger())
+            response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
+            response.outputStream << bytes
+        }
+    }
+    /**
+     *  Format RFC 2822 date
+     *  @parameters daysfromtoday, how many days from today do you want the date to be shifted
+     *  @return date
+     */
+    private def formatDateForExpiresHeader(daysfromtoday=4){
+        def tomorrow= new Date()+daysfromtoday
+        String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
+        Date date = format.parse(String.format('%ta, %<te %<tb %<tY %<tT CET', tomorrow));
+        return date
+    }
+    private def getFileNamePath() {
+        return cleanHtml(params.filename, 'none')
+    }
 }

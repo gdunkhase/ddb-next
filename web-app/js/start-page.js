@@ -18,7 +18,9 @@
 $(document).ready(function() {
 	$(function() {
 		$('div.carousel').show();
-		$(".article .caption").dotdotdot({});
+		if($(".article .caption").length > 0){
+			$(".article .caption").dotdotdot({});
+		}
 		var carouselItems = $("#articles");
 		if (carouselItems.length) {
 			carouselItems.carouFredSel({

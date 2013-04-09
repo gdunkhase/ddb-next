@@ -2,8 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <meta name="description" content="Deutsche Digitale Bibliothek" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -14,12 +15,7 @@
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
 
     <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
-    <script>
-        var contextPath="${request.contextPath}";
-        var lang="<g:message code="ddbnext.language"/>";
-    </script>
     <r:require module="ddbnext" />
-    <r:require module="autocomplete" />
     <g:layoutHead />
     <r:layoutResources />
   </head>
@@ -38,6 +34,7 @@
       <g:layoutBody/>
     </div>
     <g:render template="/footer" />
+    <g:render template="/jsVariables" />
     <jawr:script src="/i18n/messages.js"/>
     <r:layoutResources />
     <g:piwik />

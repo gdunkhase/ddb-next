@@ -55,10 +55,11 @@
   font-weight:normal;
   text-shadow:none;
   color:#000000;
-  background-position:185px 2px;
+  background-position:187px 2px;
+  line-height: 0px;
 }
 .advanced-search .add-group-button:hover {
-  background-position:185px -18px;
+  background-position:187px -18px;
   color: #990000;
 }
 .advanced-search .remove-button,.remove-group-button {

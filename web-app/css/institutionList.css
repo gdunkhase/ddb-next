@@ -13,7 +13,62 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- .institution-listitem {
+.view-type-switch {
+  background: #efebe8;
+  overflow: hidden;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: right;
+}
+
+#view-institution-list, #view-institution-map {
+ margin-right: 10px;
+}
+
+.view-type-switch #view-institution-list {
+  width: 24px;
+  height: 24px;
+  background: url("../images/icons/viewSelector.png");
+}
+
+.view-type-switch #view-institution-list,.view-type-switch #view-institution-map {
+  width: 24px;
+  height: 24px;
+  box-shadow: none;
+  overflow: hidden;
+  background: none;
+}
+
+.view-type-switch button:before {
+  display: inline-block;
+  content: url("../images/icons/viewSelector.png");
+}
+
+.view-type-switch #view-institution-list:before {
+  margin: -24px 0 0 0;
+}
+
+.view-type-switch #view-institution-list:hover:before{
+  margin: -24px 0 0 -24px;
+}
+
+.view-type-switch #view-institution-list.selected:before,.view-type-switch #view-institution-list.selected:hover:before,.view-type-switch #view-institution-list.selected:focus:before
+  {
+  margin: -24px 0 0 -48px;
+}
+
+.view-type-switch #view-institution-map:before {
+  margin: -48px 0 0 0;
+}
+
+.view-type-switch #view-institution-map:hover:before{
+  margin: -48px 0 0 -24px;
+}
+
+.view-type-switch #view-institution-map.selected:before,.view-type-switch #view-institution-map.selected:hover:before,.view-type-switch #view-institution-map.selected:focus:before{
+  margin: -48px 0 0 -48px;
+}
+.institution-listitem {
   list-style: none;
 }
 
@@ -72,13 +127,34 @@ div.sector-facet>label:hover {
   min-height: 0;
 }
 
-#filter-title {
-  margin-bottom: 40px;
+.institutionlist #institution-map {
+  border-top: 2px solid #EFEBE8;
+  margin-top: 40px;
+}
+
+.institutionlist #filter-title {
+  margin-bottom: 10px;
+  border-bottom: 2px solid #EFEBE8;
+  height: 30px;
+}
+
+.list .institutionlist #filter-title {
+  padding-top: 26px;
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
-  #filter-title {
-    margin-bottom: 60px;
+  .list .institutionlist #filter-title {
+    padding-top: 52px !important;
   }
 }
 
+.institutionlist #first-letter-index {
+  padding-bottom: 15px;
+  border-bottom: 2px solid #EFEBE8;
+}
+
+.institutionlist .filter {
+  border-bottom: 2px solid #EFEBE8;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}

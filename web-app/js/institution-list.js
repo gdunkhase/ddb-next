@@ -22,7 +22,7 @@
 var ddb = {
 
   Config: {
-    ddbBackendUrl: contextPath + '/apis/institutions'
+    ddbBackendUrl: '/apis/institutions'
   },
 
   // TODO: does not work => cache for all institution, including children and their descendants
@@ -63,7 +63,7 @@ var ddb = {
 
   getInstitutionsByFirstChar: function(onFilterSelect, onIndexClick, onPageLoad) {
     if (ddb.institutionsByFirstChar === null) {
-      $.getJSON(ddb.Config.ddbBackendUrl, function(response) {
+      $.getJSON(jsContextPath + ddb.Config.ddbBackendUrl, function(response) {
         ddb.institutionsByFirstChar = response.data;
 
         $('.filter').show();

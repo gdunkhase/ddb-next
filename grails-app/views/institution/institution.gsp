@@ -3,8 +3,11 @@
 <html>
 <head>
 <title>${selectedOrgXML.name} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+
+<meta name="page" content="institution" />
 <meta name="layout" content="main" />
-<r:require module="openstreetmap" />
+
+<r:require module="institution"/>
 </head>
 <body>
   <div class="institution-item-page">
@@ -20,7 +23,7 @@
                  <h2>${selectedOrgXML.name}
                  <g:if test="${(countObjcs > 0)}">
                     <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
-                    <g:link class="count" style="color: black; font-size: small;" controller="search" action="results" params="[query: '', offset: '0',
+                    <g:link class="count" controller="search" action="results" params="[query: '', offset: '0',
                                rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
                         <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
                         <g:if test="${(countObjcs == 1)}">
@@ -48,18 +51,6 @@
        <div class="span12 locations">
 
             <div id="divOSM"></div>
-            <script type="text/javascript">
-              <!--
-                var ddbInstitution = {};
-                ddbInstitution["longitude"] = ${selectedOrgXML.locations.location.geocode.longitude};
-                ddbInstitution["latitude"] = ${selectedOrgXML.locations.location.geocode.latitude};
-                ddbInstitution["name"] = "${selectedOrgXML.name}";
-                ddbInstitution["street"] = "${selectedOrgXML.locations.location.address.street}";
-                ddbInstitution["housenumber"] = "${selectedOrgXML.locations.location.address.houseIdentifier}";
-                ddbInstitution["postalcode"] = "${selectedOrgXML.locations.location.address.postalCode}";
-                ddbInstitution["city"] = "${selectedOrgXML.locations.location.address.city}";
-              //-->
-            </script>
             
             <div class="location-container">
                 
@@ -67,11 +58,10 @@
                     <p class="address">
                         <b>${selectedOrgXML.name}</b><br>
                         <span class="space">${selectedOrgXML.locations.location.address.street }</span>${selectedOrgXML.locations.location.address.houseIdentifier }<br>
-                        <g:if test="${(selectedOrgXML.addressSupplement)&&(selectedOrgXML.addressSupplement.text().length() > 0)}">
-                            (${(selectedOrgXML.addressSupplement)})<br>
+                        <g:if test="${(selectedOrgXML.locations.location.address.addressSupplement)&&(selectedOrgXML.locations.location.address.addressSupplement.text().length() > 0)}">
+                            ${selectedOrgXML.locations.location.address.addressSupplement}<br>
                         </g:if>
                         <span class="space">${selectedOrgXML.locations.location.address.postalCode }</span>${selectedOrgXML.locations.location.address.city }
-                        ${selectedOrgXML.locations.location.address.addressSupplement }
                     </p>
                 </div>
                 
@@ -86,7 +76,7 @@
                           </g:if>
                           <g:else>
                             <i class="icon-child-institution"></i>
-                            <a href="/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
+                            <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                           </g:else>
                           <g:render template="subinstitutions" />
                         </li>
@@ -96,7 +86,7 @@
                 </div>
               </div>
             </div>
-  </div>
+  </div>  
 </body>
 </html>
 

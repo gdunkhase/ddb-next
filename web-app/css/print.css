@@ -37,26 +37,57 @@ footer, .footer,
 .results-list, .matches, #previews-list {
   list-style: none;
 }
-.results-list .item, .results-list.grid .item {
+.results-list .item {
   display: block;
-  width: 560px;
+  margin-left: -40px;
+  min-height: 120px;
+  width: 650px !important;
+  page-break-inside: avoid;
 }
+.results-list.grid .item {
+  display: block;
+  margin-left: -40px;
+  min-height: 110px;
+  width: 650px !important;
+  page-break-inside: avoid;
+}
+
 .summary-main-wrapper {
-  width: 100%;
+  width: 490px;
+  position: absolute;
 }
 .results-list.grid .item .thumbnail-wrapper {
   margin-left: 0px;
 }
 .thumbnail-wrapper {
-  margin-left: 470px;
+  width: 160px;
+  position: absolute;
+  margin-left: 490px !important;
+}
+.results-list h2 {
+  font-size: 1em;
 }
 .search-results .results-list .summary-main-wrapper .title a {
-  font-size: 22px;
+  font-size: 1.3em;
 }
 .search-results .results-list .matches {
-  font-size: 14px;
+  font-size: 1em;
   line-height: 16px;
 }
+
+.results-list .summary {
+  position: relative;
+}
+.results-list .extra {
+  display: block !important;
+  min-height: 20px;
+}
+
+.results-list .extra ul {
+  list-style: none outside none;
+  margin-left: -40px; 
+}
+
 .page-info-nav .page-info{
   margin-left: 40px;
 }

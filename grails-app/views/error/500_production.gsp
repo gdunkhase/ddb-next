@@ -2,6 +2,7 @@
 <head>
 <title><g:message code="error.500.title"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
+<meta name="page" content="error500" />
 <meta name="layout" content="main" />
 
 </head>

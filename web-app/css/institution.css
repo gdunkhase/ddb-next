@@ -13,25 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- .locations #divOSM { 
-float: right;
-clear: right;
-width: 476px;
-height: 300px;
-
-padding: 0; 
-padding-left:10px;
-padding-right:8px;
-margin: 0;
-
-line-height:30px;
-background-color:#efebe8;
-
-overflow: hidden;
-font-size:0.938em;
-font-style: italic;
-position: relative;
-
+.locations #divOSM { 
+  position: relative;
+  float: right;
+  clear: right;
+  width: 476px;
+  height: 300px;
+  line-height: 0px;
+  margin-left: 8px;
+  background-color:#efebe8;
+  overflow: hidden;
+  font-size:0.938em;
+  font-style: italic;
 }
 
 .location-container .location {
@@ -50,8 +43,8 @@ position: relative;
   margin-left: 6px;
 }
 .institution .count {
-  font-size: small; 
-  color: black;
+  font-size: 13pt; 
+  color: #3e3a37;
 }
 
 .institution-item-page .institution {
@@ -66,7 +59,25 @@ position: relative;
   color: black; 
   font-size: small;
 }
- 
+
+.institution-list {
+  list-style: none;
+  margin-bottom: 6px;
+}
+.institution-listitem {
+  list-style: none;
+  margin-top: 6px;
+}
+
+.pagination-small ul > li > a,
+.pagination-small ul > li > span {
+  font-size: 1em;
+}
+
+h2 a.count:hover {
+  color: #A5003B;
+}
+
 #header {
   font-family: Verdana, Arial;
   font-size: 1em;
@@ -96,4 +107,24 @@ position: relative;
   vertical-align: initial !important;
   border: none !important;
   margin: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .locations #divOSM {
+    width: 260px;
+    height: 164px;
+  }
+}
+
+@media (max-width: 529px) {
+  .locations #divOSM {
+    width: 200px;
+    height: 126px;
+  }
+}
+
+@media (max-width: 489px) {
+  #divOSM {
+    display: none;
+  }
 }

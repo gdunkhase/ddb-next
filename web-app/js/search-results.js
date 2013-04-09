@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
-$(document).ready(function() {
+$(function() {
   if (window.history && history.pushState) {
     historyedited = false;
     historySupport = true;
@@ -201,11 +201,42 @@ function updateLanguageSwitch(params) {
     fetchResultsList(this.href);
     return false;
   });
+  $('#form-search-header button').click(function(){
+    var searchParameters = readCookie("searchParameters");
+    if (searchParameters != null && searchParameters.length > 0) {
+        searchParameters = searchParameters.substring(1, searchParameters.length -1);
+        searchParameters = searchParameters.replace(/\\"/g,'"');
+        var json = $.parseJSON(searchParameters);
+        if (json["rows"]) {
+            $(this).append('<input type="hidden" name="rows" value="' + json["rows"] + '"/>')
+        }
+        if (json["clustered"]) {
+            $(this).append('<input type="hidden" name="clustered" value="' + json["clustered"] + '"/>')
+        }
+        if (json["isThumbnailFiltered"]) {
+            $(this).append('<input type="hidden" name="isThumbnailFiltered" value="' + json["isThumbnailFiltered"] + '"/>')
+        }
+        if (json["viewType"]) {
+            $(this).append('<input type="hidden" name="viewType" value="' + json["viewType"] + '"/>')
+        }
+        if (json["sort"]) {
+            $(this).append('<input type="hidden" name="sort" value="' + json["sort"] + '"/>')
+        }
+    }
+  });
+  $('#form-search-header input').keyup(function(e){
+    if(e.keyCode == 13) {
+      if ($.browser.msie && parseFloat($.browser.version) <= 8.0) {
+        $('#form-search-header button').click();
+      }
+    } 
+    return false;
+  });
   $('#view-list').click(function(){
     $('.summary-main .title a').each(function(index,value){
       var newTitle = value.title.toString();
       if(newTitle.length>100){
-          newTitle = newTitle.trim().substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
+          newTitle = $.trim(newTitle).substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
       }
       $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
         newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
@@ -271,7 +302,7 @@ function updateLanguageSwitch(params) {
     $('.summary-main .title a').each(function(index,value){
       var newTitle = value.title.toString();
       if(newTitle.length>53){
-          newTitle = newTitle.trim().substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
+          newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
       }
       $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
         newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
@@ -319,8 +350,8 @@ function updateLanguageSwitch(params) {
   });
   function fetchResultsList(url){
     $('.search-results').empty();
-    var imgLoader = document.createElement('img');
-    imgLoader.src = "../images/icons/loader_small.gif";
+    var imgLoader = $(document.createElement('div'));
+    imgLoader.addClass('small-loader');
     $('.search-results').prepend(imgLoader);
     var request = $.ajax({
       type: 'GET',
@@ -384,7 +415,7 @@ function updateLanguageSwitch(params) {
   $.extend(FacetsManager.prototype, {
       
     connectedflyoutWidget: null,
-    facetsEndPoint: contextPath +'/facets',
+    facetsEndPoint: jsContextPath +'/facets',
     currentOffset: 0, 
     currentRows: -1, //all facets
     currentFacetField: null,
@@ -523,6 +554,8 @@ function updateLanguageSwitch(params) {
         }
         paramsArray.push(new Array('offset', 0));
         fetchResultsList(addParamToCurrentUrl(paramsArray));
+        
+        $('.clear-filters').removeClass('off');
     },
     
     unselectFacetValue: function(element){
@@ -544,6 +577,9 @@ function updateLanguageSwitch(params) {
       }
       fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
       element.remove();
+      
+      if($('.facets-list').find('li[data-fctvalue]').length==0) $('.clear-filters').addClass('off');
+          
     },
     
     initializeFacetValuesDynamicSearch: function(inputSearchElement){
@@ -603,6 +639,7 @@ function updateLanguageSwitch(params) {
                 currObjInstance.connectedflyoutWidget.build($(this));
             });
         });
+        $('.clear-filters').removeClass('off');
       }
     },
     
@@ -648,7 +685,7 @@ function updateLanguageSwitch(params) {
   }
 
   $.extend(FlyoutFacetsWidget.prototype, {
-  mainElement: null,
+    mainElement: null,
     parentMainElement: null,
     opened: false,
     fctManager: new FacetsManager(),
@@ -682,19 +719,23 @@ function updateLanguageSwitch(params) {
     },
     
     build: function(element){
-        if((element.attr('data-fctname') != this.fctManager.currentFacetField 
-                || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))){
-          if(this.opened) this.close();
-          this.mainElement = element.parents('.facets-item').find('.h3');
-          this.parentMainElement = this.mainElement.parent();
-          this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
-          if(!this.parentMainElement.hasClass('active')){
-            this.parentMainElement.hide();
-            this.parentMainElement.addClass('active');
-          }
-          this.buildStructure();
-          this.fctManager.fetchFacetValues(this);
-          this.opened = true;
+        if((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length == 0) || element.attr('class') == 'add-more-filters'){
+            if((element.attr('data-fctname') != this.fctManager.currentFacetField 
+                    || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))){
+              if(this.opened) this.close();
+              this.mainElement = element.parents('.facets-item').find('.h3');
+              this.parentMainElement = this.mainElement.parent();
+              this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
+              if(!this.parentMainElement.hasClass('active')){
+                this.parentMainElement.hide();
+                this.parentMainElement.addClass('active');
+              }
+              this.buildStructure();
+              this.fctManager.fetchFacetValues(this);
+              this.opened = true;
+            }else if(this.opened) this.close();
+        }else{
+            return false;
         }
     },
     
@@ -744,19 +785,19 @@ function updateLanguageSwitch(params) {
       
       paginationContainer.appendTo(rightHead);
       paginationUl.appendTo(paginationContainer);
-      this.paginationLiPrev.appendTo(paginationUl);
-      this.paginationLiSeite.appendTo(paginationUl);
-      this.paginationLiNext.appendTo(paginationUl);
       paginationAPrev.appendTo(this.paginationLiPrev);
       paginationANext.appendTo(this.paginationLiNext);
       spanSeiteNumber.appendTo(this.paginationLiSeite);
-
+      this.paginationLiPrev.appendTo(paginationUl);
+      this.paginationLiSeite.appendTo(paginationUl);
+      this.paginationLiNext.appendTo(paginationUl);
+      
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
     },
     
-    buildLeftContainer: function(){
+    buildLeftContainer: function(){        
         this.facetLeftContainer = $(document.createElement('div'));
         this.selectedItems = $(document.createElement('ul'));
         var inputSearchContainer = $(document.createElement('div'));
@@ -796,7 +837,12 @@ function updateLanguageSwitch(params) {
         
       var leftCol = this.rightBody.find('.left-col');
       var rightCol = this.rightBody.find('.right-col');
-      var flyoutRightHeadTitle = $(document.createElement('span'));
+      var flyoutRightHeadTitle;
+      if(this.facetRightContainer.find('.flyout-right-head span').length > 0){
+          flyoutRightHeadTitle = $(this.facetRightContainer.find('.flyout-right-head span')[0]);
+      }else{
+          flyoutRightHeadTitle = $(document.createElement('span'));
+      }
       if(field == this.fctManager.currentFacetField && facetValues.length >0){
         flyoutRightHeadTitle.html(this.field_MostRelevant);
         if(facetValues.length > 5){
@@ -877,6 +923,10 @@ function updateLanguageSwitch(params) {
         icon.appendTo(this.addMoreFilters);
         this.addMoreFilters.appendTo(this.facetLeftContainer);
         this.facetLeftContainer.find('.input-search-fct-container').appendTo(this.facetLeftContainer);
+        
+        this.addMoreFilters.click(function(event){
+            $(this).hide();
+        })
     },
     
     removeAddMoreFiltersButton: function(FacetFieldFilter , addMoreFiltersElement){
@@ -885,13 +935,17 @@ function updateLanguageSwitch(params) {
     },
     
     setFacetValuesPage: function(pageNumber){
-      this.paginationLiSeite.find('span').html(pageNumber);
+      var spanPGNumber = this.paginationLiSeite.find('span');
+      if(spanPGNumber.length == 0){
+          ($(document.createElement('span')).html(pageNumber)).appendTo(this.paginationLiSeite)
+      }
+      $(spanPGNumber[0]).html(pageNumber);
     },
     
     renderFacetLoader: function(){
       this.rightBody.empty();
-      var imgLoader = document.createElement('img');
-      imgLoader.src = "/static/images/icons/loader_small.gif";
+      var imgLoader = $(document.createElement('div'));
+      imgLoader.addClass('small-loader');
       this.rightBody.prepend(imgLoader);
     },
     
@@ -906,6 +960,7 @@ function updateLanguageSwitch(params) {
     
     cleanNonJsStructures: function(){
       $('.facets-item >ul').remove();
+      $('.clear-filters').addClass('off');
     },
     
     close: function(){

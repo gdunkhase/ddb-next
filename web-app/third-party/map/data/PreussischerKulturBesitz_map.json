@@ -1,0 +1,166 @@
+﻿{
+  "clusterId": -1,
+  "offset": 0,
+  "institutions": [
+    {
+      "name": "Stiftung Preußischer Kulturbesitz",
+      "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/FB2OLEOR7CKRPB23WLCIUIIJMJOGN3UH",
+      "children": [
+        {
+          "name": "Geheimes Staatsarchiv Preußischer Kulturbesitz",
+          "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/EREXRWXUSYFMJYZHUHHSRQX5SFXG7UJJ",
+          "children": [],
+          "id": "EREXRWXUSYFMJYZHUHHSRQX5SFXG7UJJ",
+          "latitude": "52.46068",
+          "longitude": "13.29215",
+          "sector": "sec_01"
+        },
+        {
+          "name": "Ibero-Amerikanisches Institut Preußischer Kulturbesitz",
+          "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/Q4WM7C6ULIWTIO2BED54SMXXN7YNKQRL",
+          "children": [],
+          "id": "Q4WM7C6ULIWTIO2BED54SMXXN7YNKQRL",
+          "latitude": "52.5069852",
+          "longitude": "13.3692056",
+          "sector": "sec_02"
+        },
+        {
+          "name": "Staatliche Museen zu Berlin",
+          "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/VH3B3BVEVLGX2XZA5SRAL2CYJOW6YV76",
+          "children": [
+            {
+              "name": "Ägyptisches Museum und Papyrussammlung",
+              "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/4GPBA4AQV5TMM5VUM7SLABKLJCMJE6IA",
+              "children": [],
+              "id": "4GPBA4AQV5TMM5VUM7SLABKLJCMJE6IA",
+              "latitude": "52.520086",
+              "longitude": "13.39993",
+              "sector": "sec_06"
+            },
+            {
+              "name": "Antikensammlung",
+              "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/BVHG7TDOPHHYDMCBOXXVHQYGTZPYGDOD",
+              "children": [],
+              "id": "BVHG7TDOPHHYDMCBOXXVHQYGTZPYGDOD",
+              "latitude": "52.520086",
+              "longitude": "13.39993",
+              "sector": "sec_06"
+            },
+            {
+              "name": "Zentralarchiv",
+              "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/BRPHRY3NTVVLQ4OBUNERGUCMIR3UQO2W",
+              "children": [],
+              "id": "BRPHRY3NTVVLQ4OBUNERGUCMIR3UQO2W",
+              "latitude": "52.520086",
+              "longitude": "13.39993",
+              "sector": "sec_01"
+            }
+          ],
+          "id": "VH3B3BVEVLGX2XZA5SRAL2CYJOW6YV76",
+          "latitude": "52.5078",
+          "longitude": "13.3634",
+          "sector": "sec_06"
+        },
+        {
+          "name": "Staatliches Institut für Musikforschung PK",
+          "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/ZZXTNUHH5WCU72IYEM7KKV7BCBIND43G",
+          "children": [
+            {
+              "name": "Musikinstrumenten-Museum",
+              "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/JZJ55HNBNHZNYBQE3KIFQL6QBMDXNMBT",
+              "children": [],
+              "id": "JZJ55HNBNHZNYBQE3KIFQL6QBMDXNMBT",
+              "latitude": "52.51001",
+              "longitude": "13.3711",
+              "sector": "sec_06"
+            }
+          ],
+          "id": "ZZXTNUHH5WCU72IYEM7KKV7BCBIND43G",
+          "latitude": "52.51001",
+          "longitude": "13.3711",
+          "sector": "sec_04"
+        },
+        {
+          "name": "Staatsbibliothek zu Berlin - Preußischer Kulturbesitz",
+          "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/6GFV3I4ELFEEFQIN2WECOXMTI5FUWHCK",
+          "children": [
+            {
+              "name": "Haus Potsdamer Straße",
+              "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/ZQZAJZYZKO5ZXP3EWCA6ZS6T6I227GIZ",
+              "children": [],
+              "id": "ZQZAJZYZKO5ZXP3EWCA6ZS6T6I227GIZ",
+              "latitude": "52.5089536",
+              "longitude": "13.3710152",
+              "sector": "sec_02"
+            },
+            {
+              "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/372TJNSG2CQPXVLSNRMQM7COVWP3XHOR",
+              "children": [],
+              "id": "372TJNSG2CQPXVLSNRMQM7COVWP3XHOR",
+              "latitude": "52.5174421",
+              "longitude": "13.3924306",
+              "name": "Haus Unter den Linden",
+              "sector": "sec_02"
+            }
+          ],
+          "id": "6GFV3I4ELFEEFQIN2WECOXMTI5FUWHCK",
+          "latitude": "52.5174421",
+          "longitude": "13.3924306",
+          "sector": "sec_02"
+        }
+      ],
+      "id": "FB2OLEOR7CKRPB23WLCIUIIJMJOGN3UH",
+      "latitude": "52.5068718",
+      "longitude": "13.3554346",
+      "sector": "sec_07"
+    },
+    {
+      "name": "Stiftung Preußische Schlösser und Gärten Berlin-Brandenburg",
+      "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/NUG5GCDLWNVOFO3CPGR5PZOGTCWPSHAJ",
+      "children": [
+        {
+          "name": "Stiftung Preußische Schlösser und Gärten Berlin-Brandenburg. Abt. II Schlösser und Sammlungen",
+          "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/IGKLAYWDXIBAUC4CERIJBBYOXIU34W5A",
+          "children": [],
+          "id": "IGKLAYWDXIBAUC4CERIJBBYOXIU34W5A",
+          "latitude": "52.4046387",
+          "longitude": "13.0442546",
+          "sector": "sec_06"
+        },
+        {
+          "name": "Stiftung Preußische Schlösser und Gärten Berlin-Brandenburg. Archiv der Königlichen Porzellan-Manufaktur Berlin",
+          "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/IYTOQ35MPR2UBUAFSJ7SYPFXWEHVQTYJ",
+          "children": [],
+          "id": "IYTOQ35MPR2UBUAFSJ7SYPFXWEHVQTYJ",
+          "latitude": "52.51993",
+          "longitude": "13.29268",
+          "sector": "sec_01"
+        }
+      ],
+      "id": "NUG5GCDLWNVOFO3CPGR5PZOGTCWPSHAJ",
+      "latitude": "52.40037",
+      "longitude": "13.04465",
+      "sector": "sec_07"
+    },
+    {
+      "name": "Stiftung Schleswig-Holsteinische Landesmuseen Schloss Gottorf",
+      "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/33RP3KVXFFKGCGO2GEWWRRSHOWRC4NHY",
+      "children": [
+        {
+          "name": "Archäologischles Landesmuseum",
+          "detailViewUri": "http://staging01.red-badger.com/about-us/institutions/item/N7ODURE4F5APF65VVBP5NIPPDLWWKQZN",
+          "children": [],
+          "id": "N7ODURE4F5APF65VVBP5NIPPDLWWKQZN",
+          "latitude": "54.51178",
+          "longitude": "9.54101",
+          "sector": "sec_02"
+        }
+      ],
+      "id": "33RP3KVXFFKGCGO2GEWWRRSHOWRC4NHY",
+      "latitude": "54.51178",
+      "longitude": "9.54101",
+      "sector": "sec_06"
+    }
+  ],
+  "size": 1245
+}

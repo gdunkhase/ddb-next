@@ -13,64 +13,91 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function() {
-  $('.object-controls .page-link').click(function(event){
-    if(event.which==1){
-      event.preventDefault();
-      var linkForContent = $(document.createElement('input'));
-      linkForContent.attr('value',window.location.protocol + "//" + window.location.host+$(this).attr('href'));
-      linkForContent.attr('type', 'text');
-      var title = $(document.createElement('div'));
-      title.addClass('page-link');
-      title.html(messages.ddbnext.CulturalItem_LinkToThisPage_Label);
-      openModalDialog(title,linkForContent);
-      $('.modal-dialog-content').find('input')[0].select();
-    }
-  });
+
+$(document).ready(function(){
+	var popupAnchor = $('.page-link-popup-anchor');
+	
+	var content = $(document.createElement('input'));
+	content.attr('value',window.location.protocol + "//" + window.location.host+popupAnchor.attr('href'));
+	content.attr('type', 'text');
+	var title = $(document.createElement('a'));
+	title.addClass('page-link');
+	var titleString = $(document.createElement('span'));
+	titleString.html(messages.ddbnext.CulturalItem_LinkToThisPage_Label);
+	titleString.appendTo(title);
+	var popupManager = new PopupManager();
+	popupManager.registerPopup(popupAnchor[0], title, content, 162, -31);
 });
 
-function openModalDialog(title,content){
-  var body = $('body');
-  var modalDialogOverlay = $(document.createElement('div'));
-  var modalDialogWrapper = $(document.createElement('div'));
-  var modalDialogFooter = $(document.createElement('div'));
-  var modalDialogCloseButton = $(document.createElement('a'));
-  
-  modalDialogOverlay.addClass('modal-dialog-overlay');
-  modalDialogWrapper.addClass('modal-dialog-wrapper');
-  modalDialogFooter.addClass('modal-dialog-footer');
-  modalDialogCloseButton.addClass('button');
-  
-  if(title){
-    var modalDialogTitle = $(document.createElement('div'));
-    modalDialogTitle.addClass('modal-dialog-title bb');
-    modalDialogTitle.html(title);
-    modalDialogTitle.appendTo(modalDialogWrapper);
-  }
-  
-  if(content){
-    var modalDialogContent = $(document.createElement('div'));
-    modalDialogContent.addClass('modal-dialog-content');
-    content.appendTo(modalDialogContent);
-    modalDialogContent.appendTo(modalDialogWrapper);
-  }
-  
-  modalDialogCloseButton.attr('href','#');
-  modalDialogCloseButton.html(messages.ddbnext.BinaryViewer_Lightbox_CloseButton_Title);
-  
-  modalDialogCloseButton.appendTo(modalDialogFooter);
-  modalDialogFooter.appendTo(modalDialogWrapper);
-  modalDialogWrapper.appendTo(modalDialogOverlay);
-  modalDialogOverlay.appendTo(body);
-  
-  body.css('overflow','hidden');
-  
-  modalDialogCloseButton.click(function(){
-    modalDialogOverlay.fadeOut('fast',function(){
-      body.css('overflow','auto');
-      modalDialogOverlay.remove();
-    });
-  });
-  
-  return false;
+
+//Popup Manager --
+PopupManager = function(){
+  this.init();
 }
+
+$.extend(PopupManager.prototype, {
+
+	init: function(){
+    },
+    
+    registerPopup: function(anchorTag, title, content, offsetX, offsetY){
+    	
+		var popupDialogWrapper = $(document.createElement('div'));
+		var popupDialogTitle = $(document.createElement('div'));
+		var popupDialogFooter = $(document.createElement('div'));
+		var popupDialogCloseImage = $(document.createElement('div'));
+		var popupDialogCloseButton = $(document.createElement('a'));
+		var popupDialogContent = $(document.createElement('div'));
+
+		popupDialogWrapper.addClass('popup-dialog-wrapper');
+		popupDialogFooter.addClass('popup-dialog-footer');
+		popupDialogCloseImage.addClass('popup-dialog-close-image');
+		popupDialogCloseButton.addClass('popup-dialog-button');
+		popupDialogTitle.addClass('popup-dialog-title bb');
+		popupDialogContent.addClass('popup-dialog-content');
+    
+	    if(title){
+	    	popupDialogTitle.html(title);
+        }
+	    if(content){
+		    content.appendTo(popupDialogContent);
+        }
+	    popupDialogCloseButton.attr('href','#');
+	    
+	    popupDialogCloseImage.appendTo(popupDialogCloseButton);
+	    popupDialogTitle.appendTo(popupDialogWrapper);
+	    popupDialogContent.appendTo(popupDialogWrapper);
+	    popupDialogCloseButton.appendTo(popupDialogWrapper);
+	    popupDialogFooter.appendTo(popupDialogWrapper);
+	    
+	    popupDialogWrapper.css('margin-left', offsetX+'px');
+	    popupDialogWrapper.css('margin-top', offsetY+'px');
+
+	    popupDialogWrapper.insertAfter(anchorTag);	
+	    popupDialogWrapper.hide();
+	 
+	    popupDialogCloseButton.click(function(){
+	    	popupDialogWrapper.fadeOut('fast',function(){});
+		});
+	    
+	    $(anchorTag).click(function(event){
+	    	if(event.which==1){
+	    		event.preventDefault();
+				popupDialogWrapper.fadeIn('fast',function(){
+		    		popupDialogWrapper.find('input')[0].select();
+				});	    		
+	    	}
+	    });
+
+        $(document).mouseup(function (event){
+        	if (popupDialogWrapper.has(event.target).length === 0){
+    	    	popupDialogWrapper.fadeOut('fast',function(){});
+        	}else{
+	    		popupDialogWrapper.find('input')[0].select();
+        	}
+        });
+	    
+    }
+});
+
+	

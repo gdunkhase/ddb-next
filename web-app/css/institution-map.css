@@ -1,0 +1,12 @@
+#mapview {
+    margin-top: 10px;
+}
+
+#mapContainerDiv {
+    width: 100%;
+    height: 650px;
+}
+
+#mapContainerDiv img {
+	max-width: inherit;
+}
