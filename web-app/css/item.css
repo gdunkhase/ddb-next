@@ -73,7 +73,6 @@
 }
 .origin span {
   background: url("../images/icons/objectviewer_actions.png") no-repeat;
-  display: inline-block;
   padding-left: 23px;
   line-height: 20px;
   background-position: -2px -120px;
