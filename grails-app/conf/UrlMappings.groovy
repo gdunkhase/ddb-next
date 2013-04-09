@@ -80,6 +80,11 @@ class UrlMappings {
 			action="binary"
 		}
 
+        "/static/$filename**" {
+            controller="apis"
+            action="staticFiles"
+        }
+
         "500"(controller: "error", action: "serverError")
         "500"(controller: "error", action: "uncaughtException", exception: Throwable)
 

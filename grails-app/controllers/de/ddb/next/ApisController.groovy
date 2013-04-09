@@ -15,11 +15,9 @@
  */
 package de.ddb.next
 
-import java.util.regex.Pattern;
-
 import net.sf.json.JSONNull
+
 import grails.converters.JSON
-import groovy.json.JsonSlurper
 
 class ApisController {
 
@@ -72,9 +70,8 @@ class ApisController {
             docs.add(tmpResult)
         }
         if(jsonResp.results["docs"].get(0).size()>0){
-            apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() {
-              obj, i ->
-              docs[i].properties = obj
+            apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() { obj, i ->
+                docs[i].properties = obj
             }
         }
         resultList["facets"] = jsonResp.facets
@@ -84,51 +81,63 @@ class ApisController {
         resultList["randomSeed"] = jsonResp.randomSeed
         render (contentType:"text/json"){resultList}
     }
-    
+
     def institutionsmap(){
         def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/institutions/map', params)
         render (contentType:"text/json"){jsonResp}
     }
-	
-	/**
-	 * This function should be obsolete once the 
-	 * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
-	 * If that happens, the "myautocomplete.js" script should refer to the backend URL and not to this URL.
-	 * @return
-	 */
-	def autocomplete (){
-		def query = apisService.getQueryParameters(params)
-		def callback = apisService.getQueryParameters(params)
-		def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.search.autocomplete.url.toString(),'/search/suggest', query)	
-		if (callback) {
-			render "${params.callback}(${result as JSON})"
-		} else {
-			render (contentType:"text/json"){result}
-		}
-	}
 
-	/**
-	 * Wrapper to support streaming of files from the backend	
-	 * @return OutPutStream
-	 */
-	def binary(){
-		def query = [ client: "DDB-NEXT" ]
-		def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query );
-		byte[] bytes=urlResponse.get("bytes");
-		response.setContentType(urlResponse.get("Content-Type"))
-		response.setContentLength(urlResponse.get("Content-Length").toInteger())
-		response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
-		response.outputStream << bytes
-	}
-	
-	private def getBinaryServerUrl(){
-		def url = grailsApplication.config.ddb.binary.backend.url
-		assert url instanceof String, "This is not a string"
-		return url;
-	}
-	
-	private def getFileNamePath(){
-		String flNamePath = cleanHtml(params.filename, 'none')
-		return flNamePath
-	}
+    /**
+     * This function should be obsolete once the
+     * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
+     * If that happens, the "myautocomplete.js" script should refer to the backend URL and not to this URL.
+     * @return
+     */
+    def autocomplete (){
+        def query = apisService.getQueryParameters(params)
+        def callback = apisService.getQueryParameters(params)
+        def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.search.autocomplete.url.toString(),'/search/suggest', query)
+        if (callback) {
+            render "${params.callback}(${result as JSON})"
+        } else {
+            render (contentType:"text/json"){result}
+        }
+    }
+
+    /**
+     * Wrapper to support streaming of files from the backend
+     * @return OutPutStream
+     */
+    def binary(){
+        def query = [ client: "DDB-NEXT" ]
+        def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query )
+        byte[] bytes=urlResponse.get("bytes")
+        response.setContentType(urlResponse.get("Content-Type"))
+        response.setContentLength(urlResponse.get("Content-Length").toInteger())
+        response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
+        response.outputStream << bytes
+    }
+
+    private def getBinaryServerUrl(){
+        def url = grailsApplication.config.ddb.binary.backend.url
+        assert url instanceof String, "This is not a string"
+        return url
+    }
+
+    def staticFiles() {
+        def query = [ client: "DDB-NEXT" ]
+        def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
+                '/static/' + getFileNamePath(), query )
+        if(urlResponse && urlResponse != 'Not found') {
+            byte[] bytes = urlResponse.get("bytes")
+            response.setContentType(urlResponse.get("Content-Type"))
+            response.setContentLength(urlResponse.get("Content-Length").toInteger())
+            response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
+            response.outputStream << bytes
+        }
+    }
+
+    private def getFileNamePath() {
+        return cleanHtml(params.filename, 'none')
+    }
 }
