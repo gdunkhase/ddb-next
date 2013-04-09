@@ -97,10 +97,7 @@ $.extend(PopupManager.prototype, {
         	}
         });
 	    
-    },
-    
-    
-    
+    }
 });
 
 	
