@@ -113,7 +113,6 @@ ddb {
 
 environments {
     development {
-		grails.serverURL="http://localhost:8080/ddb-next"
         grails.logging.jul.usebridge = true
         grails.config.locations = [
             "file:${userHome}/.grails/${appName}.properties"
@@ -121,7 +120,6 @@ environments {
 
     }
     production {
-		grails.serverURL="http://dev.escidoc.org"
         grails.logging.jul.usebridge = false
         grails.config.locations = [
             "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties"
@@ -131,7 +129,6 @@ environments {
 
 //DDB SPECIFIC Configuration variables
 //The variables can be overwritten by defining local configurations, see below environments
-ddb.binary.url=grails.serverURL
 ddb.binary.backend.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
 ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
 ddb.apis.url="http://localhost:8080"
