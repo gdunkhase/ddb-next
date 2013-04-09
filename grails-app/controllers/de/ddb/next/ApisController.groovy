@@ -106,4 +106,29 @@ class ApisController {
 			render (contentType:"text/json"){result}
 		}
 	}
+
+	/**
+	 * Wrapper to support streaming of files from the backend	
+	 * @return OutPutStream
+	 */
+	def binary(){
+		def query = [ client: "DDB-NEXT" ]
+		def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query );
+		byte[] bytes=urlResponse.get("bytes");
+		response.setContentType(urlResponse.get("Content-Type"))
+		response.setContentLength(urlResponse.get("Content-Length").toInteger())
+		response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
+		response.outputStream << bytes
+	}
+	
+	private def getBinaryServerUrl(){
+		def url = grailsApplication.config.ddb.binary.backend.url
+		assert url instanceof String, "This is not a string"
+		return url;
+	}
+	
+	private def getFileNamePath(){
+		String flNamePath = cleanHtml(params.filename, 'none')
+		return flNamePath
+	}
 }

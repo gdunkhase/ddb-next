@@ -72,8 +72,8 @@ modules = {
         resource url:'/js/institution-list.js'
         resource url:'/js/start-page.js'
         resource url:'/js/item-hierarchy.js'
-        resource url:'/js/binaries-viewer.js'
         resource url:'/js/persistent-links-modal-dialog.js'
+        resource url:'/js/binaries-viewer.js'
         resource url:'/js/advanced-search-page.js'
         resource url:'/js/search-results.js'
     }
@@ -85,18 +85,18 @@ modules = {
         resource url:'/css/start-page.css', bundle: 'startpage'
         resource url:'/css/start-page.css', attrs:[media:'print'], bundle: 'startpageprint'
     }
-    
+
     //These are pages that include third party components
     institution {
         resource url:'/js/InstitutionsMapAdapter.js'
         resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
     }
-    
+
     institutionlist {
         resource url:'/js/InstitutionsMapAdapter.js'
         resource url:'/third-party/map/geotemco_InstitutionsMap.js'
     }
-    
+
 
     pdf {
         // This is the only working variant found! You must exclude 'zip,bundle' from the mappers list and

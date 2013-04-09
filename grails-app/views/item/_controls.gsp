@@ -11,7 +11,7 @@
       <g:else>
           <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
       </g:else>
-        <a class="page-link" href="${itemUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+        <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
       </a>
     </div>

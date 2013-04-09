@@ -88,24 +88,6 @@ grails.exceptionresolver.params.exclude = ['password']
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
 
-//DDB SPECIFIC Configuration variables
-//The variables can be overwritten by defining local configurations, see below environments
-
-ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de"
-ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
-ddb.apis.url="http://localhost:8080"
-ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
-ddb.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
-ddb.logging.folder="target/logs"
-ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
-ddb.advancedSearch.searchGroupCount=3
-ddb.advancedSearch.searchFieldCount=10
-ddb.advancedSearch.defaultOffset=0
-ddb.advancedSearch.defaultRows=20
-
-
-// The grails.serverURL is required for the PDF rendering plugin.
-//grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
 
 grails.resources.mappers.zip.excludes = [
     '**/*.png',
@@ -144,6 +126,24 @@ environments {
         ]
     }
 }
+
+//DDB SPECIFIC Configuration variables
+//The variables can be overwritten by defining local configurations, see below environments
+ddb.binary.backend.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
+ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
+ddb.apis.url="http://localhost:8080"
+ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+ddb.backend.search.autocomplete.url="http://backend.deutsche-digitale-bibliothek.de:9998"
+ddb.logging.folder="target/logs"
+ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
+ddb.advancedSearch.searchGroupCount=3
+ddb.advancedSearch.searchFieldCount=10
+ddb.advancedSearch.defaultOffset=0
+ddb.advancedSearch.defaultRows=20
+
+
+// The grails.serverURL is required for the PDF rendering plugin.
+//grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
 
 // log4j configuration
 log4j = {
