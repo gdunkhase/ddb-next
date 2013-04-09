@@ -15,19 +15,23 @@
  */
 package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 class IndexController {
 
+    LinkGenerator grailsLinkGenerator
+
     def index() {
         def path
+
         def staticUrl = grailsApplication.config.ddb.static.url
         def locale = RCU.getLocale(request)
 
-        if(locale.toString().substring(0, 2)=="de") {
-            path = "/static/"+SupportedLocales.DE.getISO2()+"/homepage.xml"
-        }
-        else {
-            path = "/static/"+SupportedLocales.EN.getISO2()+"/homepage.xml"
+        // fetch the DDB news from static server.
+        if(locale.toString().substring(0, 2)== "de") {
+            path = "/static/" + SupportedLocales.DE.getISO2() + "/homepage.xml"
+        } else {
+            path = "/static/" + SupportedLocales.EN.getISO2() + "/homepage.xml"
         }
 
         def query = [ client: "DDB-NEXT" ]
@@ -36,13 +40,12 @@ class IndexController {
 
         if (response == "Not found"){
             forward controller: "error", action: "notfound"
-            return;
+            return
         }
 
-        def articles=retrieveArguments(response)
+        def articles = retrieveArguments(response)
 
-        render(view: "index", model: [articles: articles, staticUrl: staticUrl])
-
+        render(view: "index", model: [articles: articles, staticUrl: grailsLinkGenerator.serverBaseURL])
     }
 
     private def retrieveArguments(def content){
