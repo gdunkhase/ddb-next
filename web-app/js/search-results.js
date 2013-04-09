@@ -722,6 +722,7 @@ function updateLanguageSwitch(params) {
         if((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length == 0) || element.attr('class') == 'add-more-filters'){
             if((element.attr('data-fctname') != this.fctManager.currentFacetField 
                     || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))){
+              if(this.opened) this.close();
               this.mainElement = element.parents('.facets-item').find('.h3');
               this.parentMainElement = this.mainElement.parent();
               this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');

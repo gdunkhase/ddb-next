@@ -28,7 +28,7 @@ $(function() {
         lock:false,
         
         hoverTime: 0,
-        hoverTimeout:2000,
+        hoverTimeout:300,
     
         init: function(element){
             var currObjInstance = this;
@@ -49,6 +49,13 @@ $(function() {
             this.tooltip.mouseleave(function(){
                 currObjInstance.close();
             });
+            element.mouseleave(function(){
+                setTimeout(function(){
+                    var currentD = new Date();
+                    if(!currObjInstance.lock && currObjInstance.hoverTime+currObjInstance.hoverTimeout-100<currentD.getTime())
+                        currObjInstance.close();
+                },currObjInstance.hoverTimeout);
+            });
         },
         open: function(){
             var currObjInstance = this;
@@ -56,11 +63,6 @@ $(function() {
                 this.opened = true;
                 this.tooltip.fadeIn('fast');
             }
-            setTimeout(function(){
-                var currentD = new Date();
-                if(!currObjInstance.lock && currObjInstance.hoverTime+currObjInstance.hoverTimeout-100<currentD.getTime())
-                    currObjInstance.close();
-            },currObjInstance.hoverTimeout);
         },
         close: function(){
             this.tooltip.fadeOut('fast');
