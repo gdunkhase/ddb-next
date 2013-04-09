@@ -208,6 +208,49 @@ class ApiConsumer {
             return null
         }
     }
+	
+	static def getBinaryContent(String baseUrl, String path, query, method = Method.GET) {
+		try {
+			path = checkContext(baseUrl, path)
+			def http = new HTTPBuilder(baseUrl)
+			setProxy(http, baseUrl)
+
+			def timestampStart = System.currentTimeMillis();
+			http.request(method, ContentType.BINARY) {
+				uri.path = path
+				uri.query = query
+				response.success = { resp, inputstream ->
+					log.debug "Success getBinaryContent(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+					log.debug "response status: ${resp.statusLine}"
+					log.debug 'Headers: -----------'
+					
+					resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
+					return [bytes:inputstream.getBytes(),"Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
+				}
+				response.'404' = {resp, reader ->
+					log.error "404 getBinaryContent(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+					log.debug 'Headers: -----------'
+					resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
+					return 'Not found'
+				}
+				response.failure = { resp ->
+					log.error "Failure getBinaryContent(): Current request uri: 500, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri+", Unexpected error: ${resp.statusLine} : ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}"
+					log.debug 'Headers: -----------'
+					resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
+					return null
+				}
+			}
+		} catch (groovyx.net.http.HttpResponseException ex) {
+			log.error "getBinaryContent(): A HttpResponseException occured", ex
+			return null
+		} catch (java.net.ConnectException ex) {
+			log.error "getBinaryContent(): A ConnectException occured", ex
+			return null
+		} catch (java.lang.Exception ex) {
+			log.error "getBinaryContent(): An unexpected exception occured", ex
+			return null
+		}
+	}
 
     static def setProxy(http, String baseUrl) {
         def proxyHost = System.getProperty("http.proxyHost")
