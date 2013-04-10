@@ -89,7 +89,7 @@
   background: url("../images/bg/advanced_search_empty_node.png") no-repeat;
 }
 
-.item-hierarchy-result li {
+.item-hierarchy-result li.node {
   background:
     url("../images/bg/advanced_search_solid_joint_standard_top.png")
     no-repeat 7px 0px;
@@ -107,6 +107,9 @@
   background:
     url("../images/bg/advanced_search_solid_joint_standard_top.png" )
     no-repeat 7px 0px;
+  min-height: 26px;
+  padding: 17px 0 0 56px;
+  position: relative;
 }
 
 /* last node in the tree */
@@ -122,9 +125,16 @@
     no-repeat 7px 0px;
 }
 
+.item-hierarchy-result ul.has-name>li.node.more-hidden {
+  background: url("../images/bg/advanced_search_dotted_joint_first.png")
+    no-repeat 7px -30px;
+}
+
 .item-hierarchy-result li.root {
   background: none;
+  min-height: 26px;
   padding: 0;
+  position: relative;
 }
 
 .item-hierarchy-result a:hover {
@@ -139,6 +149,14 @@
 
 .item-hierarchy-result span.label {
   margin-left: 10px;
+}
+
+.item-hierarchy-result .group-name {
+  font-style: italic;
+  padding-left: 60px;
+  padding-top: 8px;
+  position: absolute;
+  color: #3e3a37;
 }
 
 .item-hierarchy-result .lastExited .label.current-path {
@@ -158,15 +176,34 @@
   width: 93px;
 }
 
+.item-hierarchy-result ul.has-name>span.sibling-count {
+  left: -45px;
+  top: 85px;
+}
+
 .item-hierarchy-result li.root>ul>span.sibling-count {
   left: -45px;
   top: 65px;
 }
 
 .item-hierarchy-result ul {
+  clear: both;
   list-style: none outside none;
   margin: 0;
   padding: 0;
+}
+
+.item-hierarchy-result ul.has-name>li:first-child {
+  background:
+    url("../images/bg/advanced_search_solid_joint_standard_top_first.png")
+    no-repeat 7px -38px;
+  padding-top: 36px;
+}
+
+.item-hierarchy-result ul.has-name>li.last.leaf:first-child {
+  background:
+    url("../images/bg/advanced_search_solid_joint_last_item_first.png")
+    no-repeat 7px -30px;
 }
 
 .field-header .contextual-help {

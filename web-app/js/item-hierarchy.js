@@ -138,6 +138,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
       setNodeIcon($(this), !isExpanded);
     }
     if (isExpanded) {
+      // collapse node
       var dataBind = currentNode.attr("data-bind");
       var id = null;
 
@@ -155,6 +156,12 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
       }
       showChildren(url, currentNode.parent().parent(), parentId, id, true);
     } else {
+      // expand node
+      if (!isRoot) {
+        // remove siblings
+        currentNode.parent().parent().siblings().remove();
+        currentNode.addClass("last");
+      }
       showChildren(url, currentNode, value.id, parentId, false);
     }
   });
@@ -219,9 +226,36 @@ function addSiblingCount(url, currentNode, parentId) {
 }
 
 /*
+ * Add the hierarchy type name to the current node.
+ * 
+ * @param {Element} currentNode current node (ul element)
+ * 
+ * @param {String} type hierarchy type name
+ * 
+ * @return {Element} replacement for the "ul" child
+ */
+function addTypeName(currentNode, type) {
+  var groupName = $("<span>");
+
+  groupName.addClass("group-name");
+  groupName.append(messages.ddbnext["HierarchyType_" + type]);
+
+  var li = $("<li>");
+
+  li.append(groupName);
+  currentNode.append(li);
+
+  var hasName = $("<ul>");
+
+  hasName.addClass("has-name");
+  li.append(hasName);
+  return hasName;
+}
+
+/*
  * Add a wait image to the current node.
  * 
- * @param {Element} currentNode current node
+ * @param {Element} currentNode current node (li element)
  */
 function addWaitSymbol(currentNode) {
   var waitSymbol = document.createElement("img");
@@ -247,20 +281,30 @@ function createHierarchy(url) {
 
     $.each(parents.reverse(), function(index, value) {
       if (index < parents.length - 1) {
-        // show parents
+        // show parent nodes
+        var ul = $("<ul>");
+        var hasName = value.type != null;
+        var isRoot = index == 0;
         var parentId = null;
 
-        if (index > 0) {
+        if (!isRoot) {
           parentId = parents[index - 1].id;
+
+          // show hierarchy type
+          if (hasName) {
+            currentNode.append(ul);
+            ul = addTypeName(ul, value.type);
+          }
         }
 
-        var ul = $("<ul>");
         var li = $(document.createElement('li'));
-        li.addClass(parentId == null ? "root" : "node");
+        li.addClass(isRoot ? "root" : "node");
         li.attr('data-bind', JSON.stringify(parents));
 
         ul.append(li);
-        currentNode.append(ul);
+        if (isRoot || !hasName) {
+          currentNode.append(ul);
+        }
         addParentNode(url, li, parentId, value, true, index == parents.length - 2, true, false);
         currentNode = li;
       } else if (parents.length > 1) {
@@ -268,14 +312,29 @@ function createHierarchy(url) {
         getChildren(url, parents[parents.length - 2].id, function(children) {
           var ul = $("<ul>");
           var length = children.length;
+          var type = null;
 
-          $.each(children, function(index, value) {
-            var currentNode = $("<li>");
+          $.each(children,
+              function(index, value) {
+                var hasName = value.type != null;
+                var leafNode = $("<li>");
+                var showName = false;
 
-            ul.append(currentNode);
-            addLeafNode(currentNode, value, value.id == parents[parents.length - 1].id, index == length - 1,
-                length == 501);
-          });
+                // show hierarchy type
+                if (value.type != type) {
+                  if (hasName) {
+                    addTypeName(ul, value.type).append(leafNode);
+                    showName = true;
+                  }
+                  type = value.type;
+                }
+
+                if (!showName) {
+                  ul.append(leafNode);
+                }
+                addLeafNode(leafNode, value, value.id == parents[parents.length - 1].id, index == length - 1,
+                    length == 501);
+              });
           currentNode.append(ul);
         });
       }
@@ -353,6 +412,7 @@ function setNodeIcon(currentNode, setExpanded) {
 function showChildren(url, currentNode, currentId, parentId, drawBorder) {
   // remove other nodes on the current level and below
   currentNode.siblings().remove();
+  currentNode.children("span.group-name").remove();
   currentNode.children("ul").remove();
 
   // show plus sign on parent node if this is a leaf node
@@ -362,6 +422,16 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
     setNodeIcon(currentNode.parent().parent().children("span.branch-type").children("i"), false);
   } else {
     currentNode.removeClass("lastExited");
+  }
+
+  // show hierarchy type if not already visible
+  var dataType = currentNode.attr("data-type");
+
+  if (!currentNode.parent().hasClass("has-name") && dataType != null) {
+    var parent = currentNode.parent();
+
+    currentNode.detach();
+    addTypeName(parent, dataType).append(currentNode);
   }
 
   // get the id of the child which is on the current path
@@ -390,15 +460,29 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
   // add children
   getChildren(url, currentId, function(children) {
     var length = children.length;
+    var type = null;
 
     $.each(children, function(index, value) {
       var isCurrent = value.id == id;
       var isLast = index == length - 1;
       var li = $(document.createElement('li'));
-      li.addClass('node last');
 
+      currentNode = ul;
+      li.addClass('node last');
       li.attr("data-bind", dataBind);
-      ul.append(li);
+      if (value.type != null) {
+        li.attr("data-type", value.type);
+      }
+
+      // show hierarchy type
+      if (value.type != type) {
+        if (value.type != null) {
+          currentNode = addTypeName(currentNode, value.type);
+        }
+        type = value.type;
+      }
+
+      currentNode.append(li);
       addWaitSymbol(li);
       getChildren(url, value.id, function(children) {
         if (children.length > 0) {
