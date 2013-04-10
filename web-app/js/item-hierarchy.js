@@ -231,16 +231,16 @@ function addTypeName(currentNode, type) {
   var li = $("<li>");
   var groupName = $("<span>");
 
-  groupName.addClass("groupName");
+  groupName.addClass("group-name");
   groupName.append(messages.ddbnext["HierarchyType_" + type]);
   li.append(groupName);
   currentNode.append(li);
 
-  var ul = $("<ul>");
+  var hasName = $("<ul>");
 
-  ul.addClass("has-name");
-  li.append(ul);
-  return ul;
+  hasName.addClass("has-name");
+  li.append(hasName);
+  return hasName;
 }
 
 /*
@@ -281,6 +281,7 @@ function createHierarchy(url) {
         if (!isRoot) {
           parentId = parents[index - 1].id;
 
+          // show hierarchy type
           if (hasName) {
             currentNode.append(ul);
             ul = addTypeName(ul, value.type);
@@ -302,14 +303,29 @@ function createHierarchy(url) {
         getChildren(url, parents[parents.length - 2].id, function(children) {
           var ul = $("<ul>");
           var length = children.length;
+          var type = null;
 
-          $.each(children, function(index, value) {
-            var currentNode = $("<li>");
+          $.each(children,
+              function(index, value) {
+                var hasName = value.type != null;
+                var leafNode = $("<li>");
+                var showName = false;
 
-            ul.append(currentNode);
-            addLeafNode(currentNode, value, value.id == parents[parents.length - 1].id, index == length - 1,
-                length == 501);
-          });
+                // show hierarchy type
+                if (value.type != type) {
+                  if (hasName) {
+                    addTypeName(ul, value.type).append(leafNode);
+                    showName = true;
+                  }
+                  type = value.type;
+                }
+
+                if (!showName) {
+                  ul.append(leafNode);
+                }
+                addLeafNode(leafNode, value, value.id == parents[parents.length - 1].id, index == length - 1,
+                    length == 501);
+              });
           currentNode.append(ul);
         });
       }
@@ -424,6 +440,7 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
   // add children
   getChildren(url, currentId, function(children) {
     var length = children.length;
+    var type = null;
 
     $.each(children, function(index, value) {
       var isCurrent = value.id == id;
@@ -432,6 +449,16 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
       li.addClass('node last');
 
       li.attr("data-bind", dataBind);
+
+      // show hierarchy type
+      if (value.type != type) {
+        if (value.type != null) {
+          currentNode.append(ul);
+          ul = addTypeName(ul, value.type);
+        }
+        type = value.type;
+      }
+
       ul.append(li);
       addWaitSymbol(li);
       getChildren(url, value.id, function(children) {
