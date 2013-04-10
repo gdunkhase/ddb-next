@@ -200,6 +200,12 @@
   padding-top: 36px;
 }
 
+.item-hierarchy-result ul.has-name>li.last:first-child {
+  background:
+    url("../images/bg/advanced_search_solid_joint_last_item_first.png")
+    no-repeat 7px -30px;
+}
+
 .field-header .contextual-help {
   display: inline-block;
   vertical-align: middle;
