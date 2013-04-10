@@ -138,6 +138,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
       setNodeIcon($(this), !isExpanded);
     }
     if (isExpanded) {
+      // collapse node
       var dataBind = currentNode.attr("data-bind");
       var id = null;
 
@@ -155,6 +156,12 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
       }
       showChildren(url, currentNode.parent().parent(), parentId, id, true);
     } else {
+      // expand node
+      if (!isRoot) {
+        // remove siblings
+        currentNode.parent().parent().siblings().remove();
+        currentNode.addClass("last");
+      }
       showChildren(url, currentNode, value.id, parentId, false);
     }
   });
@@ -221,18 +228,20 @@ function addSiblingCount(url, currentNode, parentId) {
 /*
  * Add the hierarchy type name to the current node.
  * 
- * @param {Element} currentNode current node (li element)
+ * @param {Element} currentNode current node (ul element)
  * 
  * @param {String} type hierarchy type name
  * 
  * @return {Element} replacement for the "ul" child
  */
 function addTypeName(currentNode, type) {
-  var li = $("<li>");
   var groupName = $("<span>");
 
   groupName.addClass("group-name");
   groupName.append(messages.ddbnext["HierarchyType_" + type]);
+
+  var li = $("<li>");
+
   li.append(groupName);
   currentNode.append(li);
 
@@ -403,6 +412,7 @@ function setNodeIcon(currentNode, setExpanded) {
 function showChildren(url, currentNode, currentId, parentId, drawBorder) {
   // remove other nodes on the current level and below
   currentNode.siblings().remove();
+  currentNode.children("span.group-name").remove();
   currentNode.children("ul").remove();
 
   // show plus sign on parent node if this is a leaf node
@@ -412,6 +422,16 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
     setNodeIcon(currentNode.parent().parent().children("span.branch-type").children("i"), false);
   } else {
     currentNode.removeClass("lastExited");
+  }
+
+  // show hierarchy type if not already visible
+  var dataType = currentNode.attr("data-type");
+
+  if (!currentNode.parent().hasClass("has-name") && dataType != null) {
+    var parent = currentNode.parent();
+
+    currentNode.detach();
+    addTypeName(parent, dataType).append(currentNode);
   }
 
   // get the id of the child which is on the current path
@@ -446,20 +466,23 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
       var isCurrent = value.id == id;
       var isLast = index == length - 1;
       var li = $(document.createElement('li'));
-      li.addClass('node last');
 
+      currentNode = ul;
+      li.addClass('node last');
       li.attr("data-bind", dataBind);
+      if (value.type != null) {
+        li.attr("data-type", value.type);
+      }
 
       // show hierarchy type
       if (value.type != type) {
         if (value.type != null) {
-          currentNode.append(ul);
-          ul = addTypeName(ul, value.type);
+          currentNode = addTypeName(currentNode, value.type);
         }
         type = value.type;
       }
 
-      ul.append(li);
+      currentNode.append(li);
       addWaitSymbol(li);
       getChildren(url, value.id, function(children) {
         if (children.length > 0) {

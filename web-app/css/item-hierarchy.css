@@ -200,7 +200,7 @@
   padding-top: 36px;
 }
 
-.item-hierarchy-result ul.has-name>li.last:first-child {
+.item-hierarchy-result ul.has-name>li.last.leaf:first-child {
   background:
     url("../images/bg/advanced_search_solid_joint_last_item_first.png")
     no-repeat 7px -30px;
