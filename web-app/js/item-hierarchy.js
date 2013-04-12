@@ -95,8 +95,10 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
  * @param {boolean} countSiblings true if the number of siblings must be counted
  * 
  * @param {boolean} drawBorder draw a border around the plus sign if true
+ * 
+ * @param {boolean} isExpanded show a minus sign if true
  */
-function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, countSiblings, drawBorder) {
+function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, countSiblings, drawBorder, isExpanded) {
   currentNode.empty();
   if (isLast) {
     currentNode.addClass("last");
@@ -120,7 +122,12 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   if (isRoot) {
     i.addClass("root");
   } else {
-    setNodeIcon(i, isLast);
+    i.addClass("collapsed");
+  }
+
+  // show plus or minus sign
+  if (value.aggregationEntity) {
+    setNodeIcon(i, isExpanded);
   }
 
   branchType.append(i);
@@ -134,9 +141,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
     var isExpanded = $(this).hasClass("expanded");
     var isRoot = currentNode.hasClass("root");
 
-    if (!isRoot) {
-      setNodeIcon($(this), !isExpanded);
-    }
+    setNodeIcon($(this), !isExpanded);
     if (isExpanded) {
       // collapse node
       var dataBind = currentNode.attr("data-bind");
@@ -154,14 +159,22 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
           }
         });
       }
+
+      // show minus sign on parent node
+      setNodeIcon(currentNode.parent().parent().children("span").children("i"), true);
+
       showChildren(url, currentNode.parent().parent(), parentId, id, true);
     } else {
       // expand node
       if (!isRoot) {
         // remove siblings
-        currentNode.parent().parent().siblings().remove();
+        currentNode.parent().parent().siblings("li").remove();
         currentNode.addClass("last");
       }
+
+      // show plus sign on parent node
+      setNodeIcon(currentNode.parent().parent().children("span").children("i"), false);
+
       showChildren(url, currentNode, value.id, parentId, false);
     }
   });
@@ -215,9 +228,7 @@ function addSiblingCount(url, currentNode, parentId) {
         li.addClass("more-hidden");
       } else {
         li.addClass("last");
-        if (!currentNode.parent().hasClass("root")) {
-          setNodeIcon(currentNode.parent().children("span").children("i"), true);
-        }
+        setNodeIcon(currentNode.parent().children("span").children("i"), true);
       }
     });
   }
@@ -305,7 +316,8 @@ function createHierarchy(url) {
         if (isRoot || !hasName) {
           currentNode.append(ul);
         }
-        addParentNode(url, li, parentId, value, true, index == parents.length - 2, true, false);
+        addParentNode(url, li, parentId, value, true, index == parents.length - 2, true, false,
+            index == parents.length - 2);
         currentNode = li;
       } else if (parents.length > 1) {
         // show children
@@ -387,12 +399,14 @@ function parseUrl(url) {
  * plus symbol
  */
 function setNodeIcon(currentNode, setExpanded) {
-  if (setExpanded) {
-    currentNode.removeClass("collapsed");
-    currentNode.addClass("expanded");
-  } else {
-    currentNode.removeClass("expanded");
-    currentNode.addClass("collapsed");
+  if (!currentNode.hasClass("root")) {
+    if (setExpanded) {
+      currentNode.removeClass("collapsed");
+      currentNode.addClass("expanded");
+    } else {
+      currentNode.removeClass("expanded");
+      currentNode.addClass("collapsed");
+    }
   }
 }
 
@@ -486,7 +500,7 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
       addWaitSymbol(li);
       getChildren(url, value.id, function(children) {
         if (children.length > 0) {
-          addParentNode(url, li, currentId, value, isCurrent, isLast, false, drawBorder);
+          addParentNode(url, li, currentId, value, isCurrent, isLast, false, drawBorder, false);
         } else {
           addLeafNode(li, value, isCurrent, isLast, length == 501);
         }
