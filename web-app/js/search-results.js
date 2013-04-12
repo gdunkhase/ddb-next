@@ -734,6 +734,8 @@ function updateLanguageSwitch(params) {
               this.fctManager.fetchFacetValues(this);
               this.opened = true;
             }else if(this.opened) this.close();
+        }else if(element.attr('class') == 'h3' && this.opened){
+            this.close();
         }else{
             return false;
         }

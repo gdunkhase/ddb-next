@@ -18,6 +18,7 @@ package de.ddb.next
 import net.sf.json.JSONNull
 
 import grails.converters.JSON
+import java.text.SimpleDateFormat
 
 class ApisController {
 
@@ -109,9 +110,12 @@ class ApisController {
      * @return OutPutStream
      */
     def binary(){
+        def cacheExpiryInDays =1 // example 1 for 1 day
         def query = [ client: "DDB-NEXT" ]
         def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query )
         byte[] bytes=urlResponse.get("bytes")
+        response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
+        response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
         response.setContentType(urlResponse.get("Content-Type"))
         response.setContentLength(urlResponse.get("Content-Length").toInteger())
         response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
@@ -136,7 +140,18 @@ class ApisController {
             response.outputStream << bytes
         }
     }
-
+    /**
+     *  Format RFC 2822 date
+     *  @parameters daysfromtoday, how many days from today do you want the date to be shifted
+     *  @return date
+     */
+    private def formatDateForExpiresHeader(daysfromtoday=4){
+        def tomorrow= new Date()+daysfromtoday
+        String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
+        Date date = format.parse(String.format('%ta, %<te %<tb %<tY %<tT CET', tomorrow));
+        return date
+    }
     private def getFileNamePath() {
         return cleanHtml(params.filename, 'none')
     }
