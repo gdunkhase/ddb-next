@@ -180,6 +180,11 @@
   top: 119px;
 }
 
+.item-hierarchy-result li.root>ul>span.sibling-count {
+  left: -45px;
+  top: 65px;
+}
+
 .item-hierarchy-result li.root>ul>li>ul.has-name>span.sibling-count {
   left: -45px;
   top: 85px;
