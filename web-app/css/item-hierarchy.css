@@ -177,13 +177,19 @@
 }
 
 .item-hierarchy-result ul.has-name>span.sibling-count {
+  top: 119px;
+}
+
+.item-hierarchy-result li.root>ul>li>ul.has-name>span.sibling-count {
   left: -45px;
   top: 85px;
 }
 
-.item-hierarchy-result li.root>ul>span.sibling-count {
-  left: -45px;
-  top: 65px;
+.item-hierarchy-result ul {
+  clear: both;
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
 }
 
 .item-hierarchy-result ul {
@@ -215,7 +221,8 @@
   background: url("../images/icons/tooltips.png") no-repeat 0px -120px;
 }
 
-.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus {
+.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus
+  {
   background-position: 0px -150px;
 }
 

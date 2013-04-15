@@ -140,11 +140,13 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   i.click(function() {
     var isExpanded = $(this).hasClass("expanded");
     var isRoot = currentNode.hasClass("root");
+    var li = $(this).parent().parent();
+    var hasName = li.parent().hasClass("has-name");
 
     setNodeIcon($(this), !isExpanded);
     if (isExpanded) {
       // collapse node
-      var dataBind = currentNode.attr("data-bind");
+      var dataBind = li.attr("data-bind");
       var id = null;
 
       if (dataBind != null) {
@@ -163,7 +165,11 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
       // show minus sign on parent node
       setNodeIcon(currentNode.parent().parent().children("span").children("i"), true);
 
-      showChildren(url, currentNode.parent().parent(), parentId, id, true);
+      if (hasName) {
+        showChildren(url, li.parent().parent().parent().parent(), parentId, id, true);
+      } else {
+        showChildren(url, li.parent().parent(), parentId, id, true);
+      }
     } else {
       // expand node
       if (!isRoot) {
@@ -175,7 +181,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
       // show plus sign on parent node
       setNodeIcon(currentNode.parent().parent().children("span").children("i"), false);
 
-      showChildren(url, currentNode, value.id, parentId, false);
+      showChildren(url, li, value.id, parentId, false);
     }
   });
 
@@ -308,7 +314,8 @@ function createHierarchy(url) {
           }
         }
 
-        var li = $(document.createElement('li'));
+        var li = $("<li>");
+
         li.addClass(isRoot ? "root" : "node");
         li.attr('data-bind', JSON.stringify(parents));
 
@@ -440,8 +447,9 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
 
   // show hierarchy type if not already visible
   var dataType = currentNode.attr("data-type");
+  var hasName = currentNode.parent().hasClass("has-name");
 
-  if (!currentNode.parent().hasClass("has-name") && dataType != null) {
+  if (!hasName && dataType != null) {
     var parent = currentNode.parent();
 
     currentNode.detach();
