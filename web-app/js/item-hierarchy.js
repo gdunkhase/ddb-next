@@ -123,6 +123,9 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
     i.addClass("root");
   } else {
     i.addClass("collapsed");
+    if (value.type != null) {
+      currentNode.attr("data-type", value.type);
+    }
   }
 
   // show plus or minus sign
@@ -327,33 +330,39 @@ function createHierarchy(url) {
             index == parents.length - 2);
         currentNode = li;
       } else if (parents.length > 1) {
-        // show children
+        // show this node and children
         getChildren(url, parents[parents.length - 2].id, function(children) {
           var ul = $("<ul>");
           var length = children.length;
           var type = null;
 
-          $.each(children,
-              function(index, value) {
-                var hasName = value.type != null;
-                var leafNode = $("<li>");
-                var showName = false;
+          $.each(children, function(index, value) {
+            var hasName = value.type != null;
+            var leafNode = $("<li>");
+            var showName = false;
 
-                // show hierarchy type
-                if (value.type != type) {
-                  if (hasName) {
-                    addTypeName(ul, value.type).append(leafNode);
-                    showName = true;
-                  }
-                  type = value.type;
-                }
+            // show hierarchy type
+            if (value.type != type) {
+              if (hasName) {
+                addTypeName(ul, value.type).append(leafNode);
+                showName = true;
+              }
+              type = value.type;
+            }
 
-                if (!showName) {
-                  ul.append(leafNode);
-                }
-                addLeafNode(leafNode, value, value.id == parents[parents.length - 1].id, index == length - 1,
-                    length == 501);
-              });
+            if (!showName) {
+              ul.append(leafNode);
+            }
+            if (value.leaf) {
+              addLeafNode(leafNode, value, value.id == parents[parents.length - 1].id, index == length - 1,
+                  length == 501);
+            } else {
+              leafNode.addClass("node");
+              leafNode.attr('data-bind', JSON.stringify(parents));
+              addParentNode(url, leafNode, parents[parents.length - 2].id, value,
+                  value.id == parents[parents.length - 1].id, index == length - 1, false, false, false);
+            }
+          });
           currentNode.append(ul);
         });
       }
@@ -464,7 +473,7 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
     var parents = JSON.parse(dataBind);
 
     $.each(parents, function(index, value) {
-      if (value.id == currentId) {
+      if (value.id == currentId && index < parents.length - 1) {
         id = parents[index + 1].id;
         return;
       }
@@ -492,9 +501,6 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
       currentNode = ul;
       li.addClass('node last');
       li.attr("data-bind", dataBind);
-      if (value.type != null) {
-        li.attr("data-type", value.type);
-      }
 
       // show hierarchy type
       if (value.type != type) {
