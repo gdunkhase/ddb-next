@@ -41,7 +41,7 @@ class I18NHelperTagLib {
     /**
      * Renders a language switching link dependend on the current url params, the given locale and the internationalized name.
      */
-   def languageLink = {attrs, body ->
+    def languageLink = {attrs, body ->
         def checkLocaleString = attrs.locale
         def localeclass = attrs.islocaleclass
         def locale = RequestContextUtils.getLocale(request)
@@ -63,8 +63,12 @@ class I18NHelperTagLib {
         }else{
             def linkUrl = createLink("url": attrs.params)
             def cleanedParams = attrs.params.clone()
+            def directory = attrs.params?.dir
+            if(!directory) {
+                directory = ""
+            }
             if(linkUrl.contains("staticcontent")){
-                linkUrl = linkUrl.replaceAll("staticcontent", attrs.params?.dir)
+                linkUrl = linkUrl.replaceAll("staticcontent", directory)
                 cleanedParams.remove("dir")
             }
             cleanedParams.remove("controller")
