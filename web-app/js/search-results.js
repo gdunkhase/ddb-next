@@ -349,17 +349,15 @@ function updateLanguageSwitch(params) {
     removeSearchCookieParameter('facetValues[]');
   });
   function fetchResultsList(url){
-    $('.search-results').empty();
-    var imgLoader = $(document.createElement('div'));
-    imgLoader.addClass('small-loader');
-    $('.search-results').prepend(imgLoader);
+    $('.search-results-overlay-modal').removeClass("off");
+    $('.search-results-overlay-waiting').removeClass("off");
     var request = $.ajax({
       type: 'GET',
       dataType: 'json',
       async: true,
       url: url+'&reqType=ajax',
       complete: function(data){
-        $('.search-results').fadeOut('fast', function(){
+        $('.search-results-list').fadeOut('fast', function(){
         var JSONresponse = jQuery.parseJSON(data.responseText);
         if(JSONresponse.numberOfResults==0){
             $('.search-noresults-content').removeClass("off");
@@ -368,7 +366,7 @@ function updateLanguageSwitch(params) {
             $('.search-noresults-content').addClass("off");
             $('.search-results-content').removeClass("off");
         }
-        $('.search-results').html(JSONresponse.results);
+        $('.search-results-list').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
         $('.page-input').attr("value", JSONresponse.page);
         $('.page-nonjs').html(JSONresponse.page);
@@ -400,7 +398,9 @@ function updateLanguageSwitch(params) {
           $(".page-nav .first-page").addClass("off");
         }
         historyManager(url);
-        $('.search-results').fadeIn('fast');
+        $('.search-results-list').fadeIn('fast');
+        $('.search-results-overlay-modal').addClass("off");
+        $('.search-results-overlay-waiting').addClass("off");
         setHovercardEvents();
         });
       }
