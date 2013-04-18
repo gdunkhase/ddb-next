@@ -274,6 +274,10 @@ class SearchService {
      * @return Map with keys used for Search on Search-Server
      */
     def convertQueryParametersToSearchParameters(Map reqParameters) {
+        reqParameters.each {
+            println "############## "+it.key+" / "+it.value
+        }
+
         def urlQuery = [:]
         if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
             urlQuery["query"] = reqParameters.query
@@ -506,7 +510,11 @@ class SearchService {
         }
         if (searchParams) {
             def jSonSlurper = new JsonSlurper()
-            searchParamsMap = jSonSlurper.parseText(searchParams)
+            try{
+                searchParamsMap = jSonSlurper.parseText(searchParams)
+            }catch(Exception e){
+                log.error "getSearchCookieAsMap(): Could not parse search params: "+searchParams, e
+            }
             for (entry in searchParamsMap) {
                 if (entry.value instanceof String) {
                     entry.value = URLDecoder.decode(entry.value, characterEncoding)

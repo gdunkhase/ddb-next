@@ -41,7 +41,8 @@ class I18NHelperTagLib {
     /**
      * Renders a language switching link dependend on the current url params, the given locale and the internationalized name.
      */
-   def languageLink = {attrs, body ->
+    def languageLink = {attrs, body ->
+        println "######################## attrs="+attrs
         def checkLocaleString = attrs.locale
         def localeclass = attrs.islocaleclass
         def locale = RequestContextUtils.getLocale(request)

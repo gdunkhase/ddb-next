@@ -187,6 +187,7 @@ function updateLanguageSwitch(params) {
   }
   
   function readCookie(name) {
+	console.log("########################### readCookie: "+name)
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for(var i = 0; i < ca.length; i++) {

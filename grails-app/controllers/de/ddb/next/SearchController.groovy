@@ -110,6 +110,7 @@ class SearchController {
                 keepFiltersChecked = "checked=\"checked\""
             }
             def subFacetsUrl = [:]
+            println "######################### urlQuery: "+urlQuery
             def selectedFacets = searchService.buildSubFacets(urlQuery)
             if(urlQuery["facet"]){
                 subFacetsUrl = searchService.buildSubFacetsUrl(selectedFacets, mainFacetsUrl, urlQuery)
