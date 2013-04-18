@@ -20,11 +20,25 @@ import javax.servlet.http.Cookie;
 import org.apache.commons.logging.LogFactory;
 import org.ccil.cowan.tagsoup.Parser;
 
+import de.ddb.next.DdbSecurityFilter.DdbRequestWrapper;
+
+/**
+ * Helper class to sanitize all incoming request data (parameters, cookies, etc) from malicious code.
+ * Mainly script tags used for XSS attacks.
+ * 
+ * @author hla
+ */
 class DdbSecurityHelper {
 
     private def log = LogFactory.getLog(this.class)
 
-    void sanitizeRequest(request){
+    /**
+     * Cleans a ServletRequest from malicious code. The request object must be of type DdbRequestWrapper, because
+     * the original HttpServletRequest does not allow manipulation of the request parameters.
+     * 
+     * @param request The wrapped request object
+     */
+    void sanitizeRequest(DdbRequestWrapper request){
         try {
             Parser tagsoupParser = new Parser()
             XmlSlurper slurper = new XmlSlurper(tagsoupParser)
@@ -39,6 +53,12 @@ class DdbSecurityHelper {
         }
     }
 
+    /**
+     * Cleans the request parameters from malicious code
+     * 
+     * @param parameterMap The parameter map
+     * @param slurper The XmlSlurper instance
+     */
     private void sanitizeRequestParameters(Map<String,String[]> parameterMap, XmlSlurper slurper){
         try {
 
@@ -63,6 +83,12 @@ class DdbSecurityHelper {
         }
     }
 
+    /**
+     * Cleans the request cookies from malicious code
+     * 
+     * @param cookies
+     * @param slurper The cookie array
+     */
     private void sanitizeRequestCookies(Cookie[] cookies, XmlSlurper slurper){
         try {
             if(cookies){

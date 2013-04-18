@@ -42,6 +42,11 @@ import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 import javax.servlet.http.Part
 
+/**
+ * A request filter that ensures that no malicious code (script-tags, etc) comes in over request parameters or cookies.
+ * 
+ * @author hla
+ */
 class DdbSecurityFilter implements Filter {
 
     @Override
@@ -64,6 +69,12 @@ class DdbSecurityFilter implements Filter {
     public void init(FilterConfig config) throws ServletException {
     }
 
+    /**
+     * Wrapper class for the HttpServletRequest, because the original request class object does not allow
+     * manipulation of the request parameters.
+     * 
+     * @author hla
+     */
     class DdbRequestWrapper extends HttpServletRequestWrapper {
 
         private Map<String, String[]> sanitizedParameterMap = new LinkedHashMap<String, String[]>()
