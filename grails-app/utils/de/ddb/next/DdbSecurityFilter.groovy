@@ -52,15 +52,10 @@ class DdbSecurityFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         def timestamp = System.currentTimeMillis()
 
-        println "####################### request.parameterMap: "+request.getParameterMap()
         DdbRequestWrapper requestWrapper = new DdbRequestWrapper(request)
         requestWrapper.setParameterMap(request.getParameterMap())
         def ddbSecurityHelper = new DdbSecurityHelper()
-        println "####################### requestWrapper.parameterMap1: "+requestWrapper.getParameterMap()
         ddbSecurityHelper.sanitizeRequest(requestWrapper)
-
-        println "####################### requestWrapper.parameterMap2: "+requestWrapper.getParameterMap()
-        println "####################### ddbSecurityFilter(): sanitized request in "+(System.currentTimeMillis()-timestamp)+"ms"
 
         chain.doFilter(requestWrapper, response)
     }
@@ -393,12 +388,12 @@ class DdbSecurityFilter implements Filter {
 
         @Override
         public boolean isWrapperFor(Class wrappedType) {
-            return this.request.isWrapperFor(wrappedType)
+            return this.request.class == wrappedType
         }
 
         @Override
         public boolean isWrapperFor(ServletRequest wrapped) {
-            return this.request.isWrapperFor(wrapped)
+            return this.request == wrapped
         }
 
         @Override

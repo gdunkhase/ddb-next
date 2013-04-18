@@ -274,10 +274,6 @@ class SearchService {
      * @return Map with keys used for Search on Search-Server
      */
     def convertQueryParametersToSearchParameters(Map reqParameters) {
-        reqParameters.each {
-            println "############## "+it.key+" / "+it.value
-        }
-
         def urlQuery = [:]
         if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
             urlQuery["query"] = reqParameters.query
