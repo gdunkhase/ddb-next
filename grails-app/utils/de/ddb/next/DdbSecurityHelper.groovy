@@ -20,7 +20,6 @@ import javax.servlet.http.Cookie;
 import org.apache.commons.logging.LogFactory;
 import org.ccil.cowan.tagsoup.Parser;
 
-import de.ddb.next.DdbSecurityFilter.DdbRequestWrapper;
 
 /**
  * Helper class to sanitize all incoming request data (parameters, cookies, etc) from malicious code.
@@ -38,13 +37,14 @@ class DdbSecurityHelper {
      * 
      * @param request The wrapped request object
      */
-    void sanitizeRequest(DdbRequestWrapper request){
+    void sanitizeRequest(DdbServletRequestWrapper request){
         try {
             Parser tagsoupParser = new Parser()
             XmlSlurper slurper = new XmlSlurper(tagsoupParser)
 
-            sanitizeRequestParameters(request.getParameterMap(), slurper)
-            sanitizeRequestCookies(request.getCookies(), slurper)
+            sanitizeRequestParameters(request, slurper)
+            sanitizeRequestCookies(request, slurper)
+            sanitizeRequestHeaders(request)
         }catch(Throwable t){
             // Never let any exception pass in a filter, or the application will run into an infinite loop:
             // because the error-page will be called, which causes this filter to be called, which causes
@@ -54,13 +54,43 @@ class DdbSecurityHelper {
     }
 
     /**
+     * Cleans the "Host" header of a servlet request from characters that are definetly not allowed there
+     * (e.g. <, >, -, ...) thus preventing code-injection over this field
+     * 
+     * @param request The wrapped request object
+     */
+    private void sanitizeRequestHeaders(DdbServletRequestWrapper request) {
+        try {
+            request.getHeaderNames().each {
+                if(it.toLowerCase() == "host"){
+                    String hostHeader = request.getHeader(it)
+                    hostHeader = hostHeader.replace(">", "")
+                    hostHeader = hostHeader.replace("<", "")
+                    hostHeader = hostHeader.replace("%3C", "") // <
+                    hostHeader = hostHeader.replace("%3E", "") // >
+                    hostHeader = hostHeader.replace("\"", "")
+                    hostHeader = hostHeader.replace("'", "")
+                    hostHeader = hostHeader.replace("-", "")
+                    request.setHeader(it, hostHeader)
+                }
+            }
+        }catch(Throwable t){
+            // Never let any exception pass in a filter, or the application will run into an infinite loop:
+            // because the error-page will be called, which causes this filter to be called, which causes
+            // this Exception to be thrown, which causes the error-page to be called, ....
+            log.error "sanitizeRequestHeaders(): Critical exception occured in filter", t
+        }
+    }
+
+    /**
      * Cleans the request parameters from malicious code
      * 
      * @param parameterMap The parameter map
      * @param slurper The XmlSlurper instance
      */
-    private void sanitizeRequestParameters(Map<String,String[]> parameterMap, XmlSlurper slurper){
+    private void sanitizeRequestParameters(DdbServletRequestWrapper request, XmlSlurper slurper){
         try {
+            Map<String,String[]> parameterMap = request.getParameterMap()
 
             String[] keys = parameterMap.keySet().toArray()
             for (int i=0; i<keys.length; i++) {
@@ -89,8 +119,10 @@ class DdbSecurityHelper {
      * @param cookies
      * @param slurper The cookie array
      */
-    private void sanitizeRequestCookies(Cookie[] cookies, XmlSlurper slurper){
+    private void sanitizeRequestCookies(DdbServletRequestWrapper request, XmlSlurper slurper){
         try {
+            Cookie[] cookies = request.getCookies()
+
             if(cookies){
                 for (int i=0; i<cookies.length; i++){
                     Cookie cookie = cookies[i]
