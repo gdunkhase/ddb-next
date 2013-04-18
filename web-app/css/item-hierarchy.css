@@ -29,9 +29,8 @@
 }
 
 /* highlight the current node */
-.item-hierarchy-result a.current-node {
+.item-hierarchy-result .current-node {
   color: black;
-  font-weight: bolder;
 }
 
 /* draw a border around plus sign */
@@ -164,7 +163,7 @@
 }
 
 /* highlight the current path */
-.item-hierarchy-result .label.current-path {
+.item-hierarchy-result .current-path {
   font-weight: bolder;
 }
 

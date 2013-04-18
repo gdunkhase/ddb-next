@@ -44,8 +44,8 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   currentNode.addClass("leaf");
   if (isLast) {
     if (moreHidden) {
-      var moreAvailable = $(document.createElement('li'));
-      moreAvailable.addClass('more-available');
+      var moreAvailable = $(document.createElement("li"));
+      moreAvailable.addClass("more-available");
       currentNode.parent().append(moreAvailable);
     } else {
       currentNode.addClass("last");
@@ -54,20 +54,20 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
     currentNode.removeClass("last");
   }
 
-  var branchType = $(document.createElement('span'));
-  branchType.addClass('branch-type fl');
+  var branchType = $(document.createElement("span"));
+  branchType.addClass("branch-type fl");
   var i = $("<i>");
-  var leafIndicator = $(document.createElement('div'));
-  leafIndicator.addClass('leaf-indicator');
+  var leafIndicator = $(document.createElement("div"));
+  leafIndicator.addClass("leaf-indicator");
 
-  var a = $(document.createElement('a'));
-  a.addClass('label');
-  a.attr('href', value.id);
-  a.attr('title', truncateTitle(value.label, 350));
+  var a = $(document.createElement("a"));
+  a.addClass("label");
+  a.attr("href", value.id);
+  a.attr("title", truncateTitle(value.label, 350));
 
   if (isCurrent) {
-    leafIndicator.addClass("current-node");
-    a.addClass("current-node");
+    leafIndicator.addClass("current-node current-path");
+    a.addClass("current-node current-path");
   }
   branchType.append(i);
   currentNode.append(branchType);
@@ -90,6 +90,9 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
  * @param {boolean} isCurrent true if the value points to the currently
  * displayed object
  * 
+ * @param {boolean} isCurrentPath true if the value is a parent of the currently
+ * displayed object
+ * 
  * @param {boolean} isLast true if the current node is the last node in the list
  * 
  * @param {boolean} countSiblings true if the number of siblings must be counted
@@ -98,7 +101,8 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
  * 
  * @param {boolean} isExpanded show a minus sign if true
  */
-function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, countSiblings, drawBorder, isExpanded) {
+function addParentNode(url, currentNode, parentId, value, isCurrent, isCurrentPath, isLast, countSiblings, drawBorder,
+    isExpanded) {
   currentNode.empty();
   if (isLast) {
     currentNode.addClass("last");
@@ -111,8 +115,8 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
     currentNode.addClass("lastExited");
   }
 
-  var branchType = $(document.createElement('span'));
-  branchType.addClass('branch-type fl');
+  var branchType = $(document.createElement("span"));
+  branchType.addClass("branch-type fl");
 
   currentNode.append(branchType);
 
@@ -129,9 +133,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   }
 
   // show plus or minus sign
-  if (value.aggregationEntity) {
-    setNodeIcon(i, isExpanded);
-  }
+  setNodeIcon(i, isExpanded);
 
   branchType.append(i);
 
@@ -189,21 +191,22 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
   });
 
   if (value.aggregationEntity) {
-    var label = $(document.createElement('span'));
+    var label = $(document.createElement("span"));
 
-    label.addClass("label" + (isCurrent ? " current-path" : ""));
+    label.addClass("label" + (isCurrent ? " current-node" : "") + (isCurrentPath ? " current-path" : ""));
     label.append(truncateTitle(value.label, 350));
     currentNode.append(label);
   } else {
-    var leafIndicator = $(document.createElement('div'));
-    leafIndicator.addClass('leaf-indicator');
+    var leafIndicator = $(document.createElement("div"));
+    leafIndicator.addClass("leaf-indicator" + (isCurrentPath ? " current-path" : ""));
 
-    var a = $(document.createElement('a'));
-    a.addClass("label" + (isCurrent ? " current-path" : ""));
-    a.attr('href', value.id);
+    var a = $(document.createElement("a"));
+    a.addClass("label" + (isCurrentPath ? " current-path" : ""));
+    a.attr("href", value.id);
 
     if (isCurrent) {
       leafIndicator.addClass("current-node");
+      a.addClass("current-node");
     }
     a.append(value.label);
     currentNode.append(leafIndicator);
@@ -221,8 +224,8 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isLast, cou
  * @param {String} parentId id of the parent node in the hierarchy
  */
 function addSiblingCount(url, currentNode, parentId) {
-  var siblingCount = $(document.createElement('span'));
-  siblingCount.addClass('sibling-count');
+  var siblingCount = $(document.createElement("span"));
+  siblingCount.addClass("sibling-count");
 
   if (parentId != null) {
     getChildren(url, parentId, function(children) {
@@ -320,18 +323,48 @@ function createHierarchy(url) {
         var li = $("<li>");
 
         li.addClass(isRoot ? "root" : "node");
-        li.attr('data-bind', JSON.stringify(parents));
+        li.attr("data-bind", JSON.stringify(parents));
 
         ul.append(li);
         if (isRoot || !hasName) {
           currentNode.append(ul);
         }
-        addParentNode(url, li, parentId, value, true, index == parents.length - 2, true, false,
-            index == parents.length - 2);
+        addParentNode(url, li, parentId, value, false, true, index == parents.length - 2, true, false,
+            index == parents.length - 2 && parents[parents.length - 1].leaf);
         currentNode = li;
       } else if (parents.length > 1) {
-        // show this node and children
-        getChildren(url, parents[parents.length - 2].id, function(children) {
+        // show this node
+        if (!value.leaf) {
+          var ul = $("<ul>");
+          var hasName = value.type != null;
+          var parentId = parents[parents.length - 2].id;
+
+          // show hierarchy type
+          if (hasName) {
+            currentNode.append(ul);
+            ul = addTypeName(ul, value.type);
+          }
+
+          var li = $("<li>");
+
+          li.addClass("node");
+          li.attr("data-bind", JSON.stringify(parents));
+
+          ul.append(li);
+          if (!hasName) {
+            currentNode.append(ul);
+          }
+          addParentNode(url, li, parentId, value, true, true, true, true, false, true);
+          currentNode = li;
+        }
+
+        // show children / siblings
+        if (value.leaf) {
+          parentId = parents[parents.length - 2].id;
+        } else {
+          parentId = parents[parents.length - 1].id;
+        }
+        getChildren(url, parentId, function(children) {
           var ul = $("<ul>");
           var length = children.length;
           var type = null;
@@ -358,9 +391,8 @@ function createHierarchy(url) {
                   length == 501);
             } else {
               leafNode.addClass("node");
-              leafNode.attr('data-bind', JSON.stringify(parents));
-              addParentNode(url, leafNode, parents[parents.length - 2].id, value,
-                  value.id == parents[parents.length - 1].id, index == length - 1, false, false, false);
+              leafNode.attr("data-bind", JSON.stringify(parents));
+              addParentNode(url, leafNode, parentId, value, false, false, index == length - 1, false, false, false);
             }
           });
           currentNode.append(ul);
@@ -496,10 +528,10 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
     $.each(children, function(index, value) {
       var isCurrent = value.id == id;
       var isLast = index == length - 1;
-      var li = $(document.createElement('li'));
+      var li = $(document.createElement("li"));
 
       currentNode = ul;
-      li.addClass('node last');
+      li.addClass("node last");
       li.attr("data-bind", dataBind);
 
       // show hierarchy type
@@ -514,7 +546,7 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
       addWaitSymbol(li);
       getChildren(url, value.id, function(children) {
         if (children.length > 0) {
-          addParentNode(url, li, currentId, value, isCurrent, isLast, false, drawBorder, false);
+          addParentNode(url, li, currentId, value, isCurrent, isCurrent, isLast, false, drawBorder, false);
         } else {
           addLeafNode(li, value, isCurrent, isLast, length == 501);
         }
