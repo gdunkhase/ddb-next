@@ -147,9 +147,14 @@ class ApisController {
      */
     private def formatDateForExpiresHeader(daysfromtoday=4){
         def tomorrow= new Date()+daysfromtoday
+        log.info "##################(removable) 1 tomorrow: "+tomorrow
         String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
-        Date date = format.parse(String.format('%ta, %<te %<tb %<tY %<tT CET', tomorrow));
+        log.info "##################(removable) 2 format: "+format
+        String tomorrowString = String.format('%ta, %<te %<tb %<tY %<tT CET', tomorrow)
+        log.info "##################(removable) 3 tomorrowString: "+tomorrowString
+        Date date = format.parse(tomorrowString);
+        log.info "##################(removable) 4 date: "+date
         return date
     }
     private def getFileNamePath() {
