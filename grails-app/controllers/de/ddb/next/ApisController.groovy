@@ -150,14 +150,14 @@ class ApisController {
         log.info "##################(removable) 1 tomorrow: "+tomorrow
         String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
         SimpleDateFormat format = new SimpleDateFormat(pattern, SupportedLocales.EN.getLocale());
-        String tomorrowString = String.format('%tA, %<te %<tb %<tY %<tT CET', tomorrow)
+        String tomorrowString = String.format(SupportedLocales.EN.getLocale(), '%ta, %<te %<tb %<tY %<tT CET', tomorrow)
 
-        // The following 5 lines are a bugfix for DDBNEXT-397
-        int indexOfFirstComma = tomorrowString.indexOf(",")
-        String dayPart = tomorrowString.substring(0,indexOfFirstComma-1)
-        dayPart = dayPart.substring(0,3)
-        String datePart = tomorrowString.substring(indexOfFirstComma)
-        tomorrowString = dayPart + datePart
+        //        // The following 5 lines are a bugfix for DDBNEXT-397
+        //        int indexOfFirstComma = tomorrowString.indexOf(",")
+        //        String dayPart = tomorrowString.substring(0,indexOfFirstComma-1)
+        //        dayPart = dayPart.substring(0,3)
+        //        String datePart = tomorrowString.substring(indexOfFirstComma)
+        //        tomorrowString = dayPart + datePart
 
         log.info "##################(removable) 2 tomorrowString: "+tomorrowString
         Date date = format.parse(tomorrowString);
