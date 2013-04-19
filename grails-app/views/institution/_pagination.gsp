@@ -1,6 +1,6 @@
 <div id="first-letter-index" class="pagination pagination-small">
   <ul>
-    <li><a href="#All">All</a></li>
+    <li><a href="#All"><g:message code="ddbnext.InstitutionsList_all" /></a></li>
   <g:each in="${index}">
     <g:if test="${ it.value }">
     <li class="disabled"><a href="#${ it.key }">${ it.key }</a></li>
