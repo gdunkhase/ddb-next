@@ -149,7 +149,7 @@ class ApisController {
         def tomorrow= new Date()+daysfromtoday
         log.info "##################(removable) 1 tomorrow: "+tomorrow
         String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
-        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
+        SimpleDateFormat format = new SimpleDateFormat(pattern, SupportedLocales.EN.getLocale());
         String tomorrowString = String.format('%tA, %<te %<tb %<tY %<tT CET', tomorrow)
 
         // The following 5 lines are a bugfix for DDBNEXT-397

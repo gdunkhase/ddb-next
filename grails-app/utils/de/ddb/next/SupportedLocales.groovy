@@ -21,16 +21,16 @@ import java.util.Locale;
 
 public enum SupportedLocales {
 
-    DE(new Locale("de", "DE")), EN(new Locale("en", "EN"));
+    DE(new Locale("de", "DE")), EN(new Locale("en", "EN"))
 
-    private Locale locale;
+    private Locale locale
 
     SupportedLocales(Locale locale) {
-        this.locale = locale;
+        this.locale = locale
     }
 
     public static Locale getDefaultLocale() {
-        return SupportedLocales.EN.locale;
+        return SupportedLocales.EN.locale
     }
 
     public String getISO2() {
@@ -41,45 +41,49 @@ public enum SupportedLocales {
         return this.locale.getISO3Language();
     }
 
+    public Locale getLocale() {
+        return locale
+    }
+
     public static List<Locale> getSupportedLocales() {
         SupportedLocales[] supported = SupportedLocales.values();
-        ArrayList<Locale> out = new ArrayList<Locale>();
+        ArrayList<Locale> out = new ArrayList<Locale>()
         for (SupportedLocales support : supported) {
-            out.add(support.locale);
+            out.add(support.locale)
         }
-        return out;
+        return out
     }
 
     public static List<String> getSupportedLanguagesISO2() {
-        SupportedLocales[] supported = SupportedLocales.values();
-        ArrayList<String> out = new ArrayList<String>();
+        SupportedLocales[] supported = SupportedLocales.values()
+        ArrayList<String> out = new ArrayList<String>()
         for (SupportedLocales support : supported) {
-            out.add(support.locale.getLanguage());
+            out.add(support.locale.getLanguage())
         }
-        return out;
+        return out
     }
 
     public static List<String> getSupportedLanguagesISO3() {
-        SupportedLocales[] supported = SupportedLocales.values();
-        ArrayList<String> out = new ArrayList<String>();
+        SupportedLocales[] supported = SupportedLocales.values()
+        ArrayList<String> out = new ArrayList<String>()
         for (SupportedLocales support : supported) {
-            out.add(support.locale.getISO3Language());
+            out.add(support.locale.getISO3Language())
         }
-        return out;
+        return out
     }
 
     public static boolean supports(Locale locale) {
         if (locale == null) {
-            return false;
+            return false
         }
         String language = locale.getLanguage();
-        SupportedLocales[] supported = SupportedLocales.values();
+        SupportedLocales[] supported = SupportedLocales.values()
         for (SupportedLocales support : supported) {
             if (support.locale.getLanguage().equals(language)) {
-                return true;
+                return true
             }
         }
-        return false;
+        return false
     }
 
     public static Locale getBestMatchingLocale(Locale input){
@@ -95,15 +99,15 @@ public enum SupportedLocales {
 
     public static Locale getDefinedLocale(Locale locale) {
         if (locale == null) {
-            return null;
+            return null
         }
-        String language = locale.getLanguage();
-        SupportedLocales[] supported = SupportedLocales.values();
+        String language = locale.getLanguage()
+        SupportedLocales[] supported = SupportedLocales.values()
         for (SupportedLocales support : supported) {
             if (support.locale.getLanguage().equals(language)) {
-                return support.locale;
+                return support.locale
             }
         }
-        return null;
+        return null
     }
 }
