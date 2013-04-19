@@ -186,7 +186,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isCurrentPa
       // show plus sign on parent node
       setNodeIcon(currentNode.parent().parent().children("span").children("i"), false);
 
-      showChildren(url, li, value.id, parentId, false);
+      showChildren(url, li, value.id, parentId, true);
     }
   });
 
