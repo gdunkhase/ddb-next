@@ -41,14 +41,14 @@ class ApisController {
             def thumbnail
             def media = []
 
-            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
+            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>/
             if (titleMatch)
                 title= titleMatch[0][3]
 
-            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
+            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>/
             subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
 
-            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
+            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>/
             if (thumbnailMatch)
                 thumbnail= thumbnailMatch[0][2]
 
@@ -153,7 +153,7 @@ class ApisController {
         Date date = format.parse(tomorrowString);
         return date
     }
-    
+
     private def getFileNamePath() {
         return cleanHtml(params.filename, 'none')
     }
