@@ -21,6 +21,12 @@
       </g:link>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
+          <li class="">
+            <g:form class="navbar-search pull-left" method="get" role="search" id="form-search-header-mobile" url="[controller:'search', action:'results']">
+              <input type="search" class="query" name="query" placeholder="Suche">
+              <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
+            </g:form>
+          </li>
           <li class="active"><g:link uri="/"><g:message code="ddbnext.Search"/></g:link>
             <ul class="nav">
               <li class=""><g:link controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link></li>

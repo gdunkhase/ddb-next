@@ -483,14 +483,16 @@ header .link-adv-search, div.header .link-adv-search {
   margin: 0;
 }
 
-.search-header form button {
+.search-header form button,
+.nav form button {
   box-shadow: none;
   overflow: hidden;
   background: none;
   width: 25px;
 }
 
-#form-search-header button:before {
+#form-search-header button:before,
+.nav form button:before {
   display: inline-block;
   content: url("../images/icons/search.png");
   margin: -150px 0px 0px 0px;
@@ -585,8 +587,12 @@ header .language-widget form,.header .language-widget form {
   margin-bottom: 0px;
 }
 
+.navbar .brand {
+  padding: 0px 10px 0px 10px;
+}
+
 .brand img {
-  height: 20px;
+  height: 40px;
   margin: 0px;
   padding: 0px;
 }
