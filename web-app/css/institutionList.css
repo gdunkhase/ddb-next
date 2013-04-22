@@ -140,17 +140,19 @@ div.sector-facet>label:hover {
 
 .list .institutionlist #filter-title {
   padding-top: 8px;
-  padding-bottom: 16px;
+  padding-bottom: 6px;
+  margin-top: 0px;
 }
 
-@media (min-width: 768px) and (max-width: 1200px) {
+@media (min-width: 768px) and (max-width: 980px) {
   .list .institutionlist #filter-title {
-    padding-bottom: 40px !important;
+    padding-bottom: 30px !important;
   }
 }
 
 .institutionlist #first-letter-index {
-  padding-bottom: 15px;
+  margin: 10px 0px !important;
+  padding-bottom: 5px;
   border-bottom: 2px solid #EFEBE8;
 }
 
@@ -182,6 +184,19 @@ div.sector-facet>label:hover {
   float: left;
   line-height: 20px;
   text-decoration: none;
+  padding: 2px 6px;
+}
+
+.institutionlist .pagination ul > li > a:hover, .institutionlist .pagination ul > li > span:hover {
+  text-decoration: underline;  
+}
+
+.institutionlist .pagination ul > .disabled > a:hover, .institutionlist .pagination ul > .disabled > span:hover {
+  text-decoration: none !important;  
+}
+
+.institutionlist .pagination ul > li:last-child > a, .institutionlist .pagination ul> li:last-child > span:hover {
+  border: none !important;
 }
 
 .institutionlist div > ol {
