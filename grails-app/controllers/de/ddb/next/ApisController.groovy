@@ -148,10 +148,12 @@ class ApisController {
     private def formatDateForExpiresHeader(daysfromtoday=4){
         def tomorrow= new Date()+daysfromtoday
         String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
-        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
-        Date date = format.parse(String.format('%ta, %<te %<tb %<tY %<tT CET', tomorrow));
+        SimpleDateFormat format = new SimpleDateFormat(pattern, SupportedLocales.EN.getLocale());
+        String tomorrowString = String.format(SupportedLocales.EN.getLocale(), '%ta, %<te %<tb %<tY %<tT CET', tomorrow)
+        Date date = format.parse(tomorrowString);
         return date
     }
+    
     private def getFileNamePath() {
         return cleanHtml(params.filename, 'none')
     }
