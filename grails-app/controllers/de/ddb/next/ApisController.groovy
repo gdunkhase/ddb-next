@@ -41,14 +41,14 @@ class ApisController {
             def thumbnail
             def media = []
 
-            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
+            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>/
             if (titleMatch)
                 title= titleMatch[0][3]
 
-            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
+            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>/
             subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
 
-            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
+            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>/
             if (thumbnailMatch)
                 thumbnail= thumbnailMatch[0][2]
 
@@ -148,10 +148,12 @@ class ApisController {
     private def formatDateForExpiresHeader(daysfromtoday=4){
         def tomorrow= new Date()+daysfromtoday
         String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
-        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
-        Date date = format.parse(String.format('%ta, %<te %<tb %<tY %<tT CET', tomorrow));
+        SimpleDateFormat format = new SimpleDateFormat(pattern, SupportedLocales.EN.getLocale());
+        String tomorrowString = String.format(SupportedLocales.EN.getLocale(), '%ta, %<te %<tb %<tY %<tT CET', tomorrow)
+        Date date = format.parse(tomorrowString);
         return date
     }
+
     private def getFileNamePath() {
         return cleanHtml(params.filename, 'none')
     }
