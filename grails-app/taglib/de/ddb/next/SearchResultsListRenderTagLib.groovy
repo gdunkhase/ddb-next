@@ -23,9 +23,6 @@ class SearchResultsListRenderTagLib {
      */
     def searchService
     def itemResultsRender = { attrs, body ->
-        println "############# 1 "+attrs.results
-        println "############# 2 "+attrs.urlParams
-        println "############# 3 "+request.getContextPath()
         out << render(template:"/search/resultsList", model:[results: attrs.results, urlParams: attrs.urlParams, confBinary: request.getContextPath()])
     }
 
