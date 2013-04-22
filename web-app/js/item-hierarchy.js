@@ -112,7 +112,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isCurrentPa
 
   // draw a border around the plus sign
   if (isCurrent && drawBorder) {
-    currentNode.addClass("lastExited");
+    currentNode.addClass("last-exited");
   }
 
   var branchType = $(document.createElement("span"));
@@ -186,7 +186,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isCurrentPa
       // show plus sign on parent node
       setNodeIcon(currentNode.parent().parent().children("span").children("i"), false);
 
-      showChildren(url, li, value.id, parentId, false);
+      showChildren(url, li, value.id, parentId, true);
     }
   });
 
@@ -483,7 +483,7 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
   if (isLeaf) {
     setNodeIcon(currentNode.parent().parent().children("span.branch-type").children("i"), false);
   } else {
-    currentNode.removeClass("lastExited");
+    currentNode.removeClass("last-exited");
   }
 
   // show hierarchy type if not already visible
