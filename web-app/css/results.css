@@ -499,6 +499,10 @@ input[type="checkbox"],input[type="radio"] {
   display: block;
 }
 
+.information .hovercard-info-item:hover{
+  display: none;
+}
+
 .information .hovercard-info-item {
   background: #fff;
   border: 1px solid #a7a7a6;
