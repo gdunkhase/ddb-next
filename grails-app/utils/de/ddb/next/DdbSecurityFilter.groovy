@@ -21,6 +21,9 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+
+import de.ddb.next.exception.InvalidUrlException;
 
 
 /**
@@ -36,13 +39,26 @@ class DdbSecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        def timestamp = System.currentTimeMillis()
+        try {
+            def timestamp = System.currentTimeMillis()
 
-        DdbServletRequestWrapper requestWrapper = new DdbServletRequestWrapper(request)
-        def ddbSecurityHelper = new DdbSecurityHelper()
-        ddbSecurityHelper.sanitizeRequest(requestWrapper)
+            DdbServletRequestWrapper requestWrapper = new DdbServletRequestWrapper(request)
+            HttpServletResponse httpResponse = (HttpServletResponse)response
+            def ddbSecurityHelper = new DdbSecurityHelper()
+            ddbSecurityHelper.sanitizeRequest(requestWrapper, httpResponse)
+            chain.doFilter(requestWrapper, response)
+            return
+        }catch(InvalidUrlException i){
+            response.sendRedirect(request.getContextPath())
+            return
+        }catch(Throwable t){
+            // Never let any exception pass in a filter, or the application will run into an infinite loop:
+            // because the error-page will be called, which causes this filter to be called, which causes
+            // this Exception to be thrown, which causes the error-page to be called, ....
+            log.error "doFilter(): Critical exception occured in filter", t
+        }
 
-        chain.doFilter(requestWrapper, response)
+        chain.doFilter(request, response)
     }
 
     @Override

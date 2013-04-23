@@ -16,9 +16,14 @@
 
 package de.ddb.next
 
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.LogFactory;
 import org.ccil.cowan.tagsoup.Parser;
+
+import de.ddb.next.exception.InvalidUrlException;
 
 
 /**
@@ -37,19 +42,25 @@ class DdbSecurityHelper {
      * 
      * @param request The wrapped request object
      */
-    void sanitizeRequest(DdbServletRequestWrapper request){
-        try {
-            Parser tagsoupParser = new Parser()
-            XmlSlurper slurper = new XmlSlurper(tagsoupParser)
+    void sanitizeRequest(DdbServletRequestWrapper request, HttpServletResponse response){
+        Parser tagsoupParser = new Parser()
+        XmlSlurper slurper = new XmlSlurper(tagsoupParser)
 
-            sanitizeRequestParameters(request, slurper)
-            sanitizeRequestCookies(request, slurper)
-            sanitizeRequestHeaders(request)
-        }catch(Throwable t){
-            // Never let any exception pass in a filter, or the application will run into an infinite loop:
-            // because the error-page will be called, which causes this filter to be called, which causes
-            // this Exception to be thrown, which causes the error-page to be called, ....
-            log.error "sanitizeRequest(): Critical exception occured in filter", t
+        sanitizeRequestUrl(request, response)
+        sanitizeRequestParameters(request, slurper)
+        sanitizeRequestCookies(request, slurper)
+        sanitizeRequestHeaders(request)
+    }
+
+    private void sanitizeRequestUrl(DdbServletRequestWrapper request, HttpServletResponse response) {
+        String requestUri = request.getRequestURI()
+
+        if(requestUri.contains("<") ||
+        requestUri.contains(">") ||
+        requestUri.contains("%3E") ||
+        requestUri.contains("%3C")) {
+            log.warn "sanitizeRequestUrl(): possible xss attempt over url: '"+requestUri+"', redirecting to '"+request.getContextPath()+"'"
+            throw new InvalidUrlException()
         }
     }
 
@@ -60,25 +71,21 @@ class DdbSecurityHelper {
      * @param request The wrapped request object
      */
     private void sanitizeRequestHeaders(DdbServletRequestWrapper request) {
-        try {
-            request.getHeaderNames().each {
-                if(it.toLowerCase() == "host"){
-                    String hostHeader = request.getHeader(it)
-                    hostHeader = hostHeader.replace(">", "")
-                    hostHeader = hostHeader.replace("<", "")
-                    hostHeader = hostHeader.replace("%3C", "") // <
-                    hostHeader = hostHeader.replace("%3E", "") // >
-                    hostHeader = hostHeader.replace("\"", "")
-                    hostHeader = hostHeader.replace("'", "")
-                    hostHeader = hostHeader.replace("-", "")
-                    request.setHeader(it, hostHeader)
+        request.getHeaderNames().each {
+            if(it.toLowerCase() == "host"){
+                String hostHeader = request.getHeader(it)
+                if(hostHeader.contains(">") || hostHeader.contains("<") || hostHeader.contains("%3C") || hostHeader.contains("%3E") ){
+                    log.warn "sanitizeRequestHeaders(): possible xss attempt over host header: '"+hostHeader+"'"
                 }
+                hostHeader = hostHeader.replace(">", "")
+                hostHeader = hostHeader.replace("<", "")
+                hostHeader = hostHeader.replace("%3C", "") // <
+                hostHeader = hostHeader.replace("%3E", "") // >
+                hostHeader = hostHeader.replace("\"", "")
+                hostHeader = hostHeader.replace("'", "")
+                hostHeader = hostHeader.replace("-", "")
+                request.setHeader(it, hostHeader)
             }
-        }catch(Throwable t){
-            // Never let any exception pass in a filter, or the application will run into an infinite loop:
-            // because the error-page will be called, which causes this filter to be called, which causes
-            // this Exception to be thrown, which causes the error-page to be called, ....
-            log.error "sanitizeRequestHeaders(): Critical exception occured in filter", t
         }
     }
 
@@ -89,27 +96,23 @@ class DdbSecurityHelper {
      * @param slurper The XmlSlurper instance
      */
     private void sanitizeRequestParameters(DdbServletRequestWrapper request, XmlSlurper slurper){
-        try {
-            Map<String,String[]> parameterMap = request.getParameterMap()
+        Map<String,String[]> parameterMap = request.getParameterMap()
 
-            String[] keys = parameterMap.keySet().toArray()
-            for (int i=0; i<keys.length; i++) {
+        String[] keys = parameterMap.keySet().toArray()
+        for (int i=0; i<keys.length; i++) {
 
-                String key = keys[i]
-                String[] valueArray = parameterMap.get(key)
+            String key = keys[i]
+            String[] valueArray = parameterMap.get(key)
 
-                for (int j=0; j<valueArray.length; j++) {
-                    String parsedText = slurper.parseText(valueArray[j]).text()
-                    valueArray[j] = parsedText
+            for (int j=0; j<valueArray.length; j++) {
+                String parsedText = slurper.parseText(valueArray[j]).text()
+                if(valueArray[j] != parsedText){
+                    log.warn "sanitizeRequestParameters(): possible xss attempt over request parameters: '"+valueArray[j]+"' -> '"+parsedText+"'"
                 }
-
-                parameterMap.put(key, valueArray)
+                valueArray[j] = parsedText
             }
-        }catch(Throwable t){
-            // Never let any exception pass in a filter, or the application will run into an infinite loop:
-            // because the error-page will be called, which causes this filter to be called, which causes
-            // this Exception to be thrown, which causes the error-page to be called, ....
-            log.error "sanitizeRequestParameters(): Critical exception occured in filter", t
+
+            parameterMap.put(key, valueArray)
         }
     }
 
@@ -120,22 +123,18 @@ class DdbSecurityHelper {
      * @param slurper The cookie array
      */
     private void sanitizeRequestCookies(DdbServletRequestWrapper request, XmlSlurper slurper){
-        try {
-            Cookie[] cookies = request.getCookies()
+        Cookie[] cookies = request.getCookies()
 
-            if(cookies){
-                for (int i=0; i<cookies.length; i++){
-                    Cookie cookie = cookies[i]
-                    String decodedCookieValue = URLDecoder.decode(cookie.value, "UTF-8")
-                    String parsedCookieValue = slurper.parseText(decodedCookieValue).text()
-                    cookie.setValue(parsedCookieValue)
+        if(cookies){
+            for (int i=0; i<cookies.length; i++){
+                Cookie cookie = cookies[i]
+                String decodedCookieValue = URLDecoder.decode(cookie.value, "UTF-8")
+                String parsedCookieValue = slurper.parseText(decodedCookieValue).text()
+                if(decodedCookieValue != parsedCookieValue){
+                    log.warn "sanitizeRequestCookies(): possible xss attempt over cookie: '"+decodedCookieValue+"' -> '"+parsedCookieValue+"'"
                 }
+                cookie.setValue(parsedCookieValue)
             }
-        }catch(Throwable t){
-            // Never let any exception pass in a filter, or the application will run into an infinite loop:
-            // because the error-page will be called, which causes this filter to be called, which causes
-            // this Exception to be thrown, which causes the error-page to be called, ....
-            log.error "sanitizeRequestCookies(): Critical exception occured in filter", t
         }
     }
 }
