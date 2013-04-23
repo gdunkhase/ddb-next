@@ -349,8 +349,18 @@ function updateLanguageSwitch(params) {
     removeSearchCookieParameter('facetValues[]');
   });
   function fetchResultsList(url){
-    $('.search-results-overlay-modal').removeClass("off");
-    $('.search-results-overlay-waiting').removeClass("off");
+	  
+    var divSearchResultsOverlayModal = $(document.createElement('div'));
+    divSearchResultsOverlayModal.addClass('search-results-overlay-modal');
+    var divSearchResultsOverlayWaiting = $(document.createElement('div'));
+    divSearchResultsOverlayWaiting.addClass('search-results-overlay-waiting');
+    var divSearchResultsOverlayImg = $(document.createElement('div'));
+    divSearchResultsOverlayImg.addClass('small-loader');
+    divSearchResultsOverlayWaiting.append(divSearchResultsOverlayImg);
+    
+    $('.search-results').append(divSearchResultsOverlayModal);
+    $('.search-results').append(divSearchResultsOverlayWaiting);
+    
     var request = $.ajax({
       type: 'GET',
       dataType: 'json',
@@ -399,8 +409,11 @@ function updateLanguageSwitch(params) {
         }
         historyManager(url);
         $('.search-results-list').fadeIn('fast');
-        $('.search-results-overlay-modal').addClass("off");
-        $('.search-results-overlay-waiting').addClass("off");
+        
+        divSearchResultsOverlayImg.remove();
+        divSearchResultsOverlayWaiting.remove();
+        divSearchResultsOverlayModal.remove();
+        
         setHovercardEvents();
         });
       }
