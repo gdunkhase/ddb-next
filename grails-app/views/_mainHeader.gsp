@@ -27,14 +27,10 @@
               <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
             </g:form>
           </li>
-          <li class="active"><g:link uri="/"><g:message code="ddbnext.Search"/></g:link>
-            <ul class="nav">
-              <li class=""><g:link controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link></li>
-            </ul></li>
           <li class=""><g:link controller="content" params="[dir: 'about']"><g:message code="ddbnext.AboutUs"/></g:link>
             <ul class="nav">
               <li class=""><g:link controller="content" params="[dir: 'news']"><g:message code="ddbnext.News"/></g:link></li>
-              <li class=""><g:link controller="institution" action="show"><g:message code="ddbnext.Institutions"/></g:link></li>
+              <li class=""><g:link controller="institution" action="show" fragment="list"><g:message code="ddbnext.Institutions"/></g:link></li>
               <li class=""><g:link controller="content" params="[dir: 'ddb']"><g:message code="ddbnext.Participate"/></g:link></li>
               <li class=""><g:link controller="content" params="[dir: 'competence-network']"><g:message code="ddbnext.CompetenceNetwork"/></g:link></li>
             </ul></li>
