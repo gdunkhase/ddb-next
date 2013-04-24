@@ -621,11 +621,11 @@ header .language-widget form,.header .language-widget form {
   width: 206px;
 }
 @media (max-width: 979px) {
-.search-header form input {
-    width: 240px;
+  .search-header form input {
+    width: 200px;
   }
   header .link-adv-search, div.header .link-adv-search {
-    margin-left: 20px;
+    margin-left: 60px;
   }
 }
 @media (min-width: 980px) and (max-width: 1199px) {
