@@ -150,6 +150,20 @@ background-position: right -40px;
     text-align: left;
   }
 }
+
+@media (max-width: 489px) {
+  .item-nav .result-label {
+    display: none;
+  }
+  .item-nav .hit-number + span {
+    display: none;
+  }
+
+  .item-nav .hit-number:after {
+    content: " / ";
+  }
+}
+
 .fields .row {
   padding-bottom: 0.5em;
 }
