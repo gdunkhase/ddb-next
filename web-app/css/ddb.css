@@ -614,8 +614,14 @@ header .language-widget form,.header .language-widget form {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
 }
+#form-search-header-mobile {
+  width: 240px;
+}
+#form-search-header-mobile input {
+  width: 206px;
+}
 @media (max-width: 979px) {
-  .search-header form input {
+.search-header form input {
     width: 240px;
   }
   header .link-adv-search, div.header .link-adv-search {
