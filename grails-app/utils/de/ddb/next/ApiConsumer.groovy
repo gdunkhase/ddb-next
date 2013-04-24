@@ -17,6 +17,7 @@ package de.ddb.next
 
 import java.util.regex.Pattern
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
@@ -210,7 +211,7 @@ class ApiConsumer {
         }
     }
 
-    static def getBinaryContent(String baseUrl, String path, query, method = Method.GET) {
+    static def getBinaryContent(String baseUrl, String path, query, method = Method.GET, OutputStream outputStream) {
         try {
             path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
@@ -226,7 +227,16 @@ class ApiConsumer {
                     log.debug 'Headers: -----------'
 
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return [bytes:inputstream.getBytes(),"Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
+
+                    try{
+                        IOUtils.copy(inputstream, outputStream)
+                    }catch(java.net.SocketException c){
+                        log.info "getBinaryContent(): Output socket already closed"
+                    }catch(Throwable t){
+                        log.warn "getBinaryContent(): Could not copy streaming data to output stream. ", t
+                    }
+
+                    return ["Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
                 }
                 response.'404' = {resp, reader ->
                     log.error "404 getBinaryContent(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
