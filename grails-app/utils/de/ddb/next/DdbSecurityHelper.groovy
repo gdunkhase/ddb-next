@@ -73,18 +73,32 @@ class DdbSecurityHelper {
     private void sanitizeRequestHeaders(DdbServletRequestWrapper request) {
         request.getHeaderNames().each {
             if(it.toLowerCase() == "host"){
-                String hostHeader = request.getHeader(it)
-                if(hostHeader.contains(">") || hostHeader.contains("<") || hostHeader.contains("%3C") || hostHeader.contains("%3E") ){
-                    log.warn "sanitizeRequestHeaders(): possible xss attempt over host header: '"+hostHeader+"'"
+                String header = request.getHeader(it)
+                if(header.contains(">") || header.contains("<") || header.contains("%3C") || header.contains("%3E") ){
+                    log.warn "sanitizeRequestHeaders(): possible xss attempt over 'host' header: '"+header+"'"
                 }
-                hostHeader = hostHeader.replace(">", "")
-                hostHeader = hostHeader.replace("<", "")
-                hostHeader = hostHeader.replace("%3C", "") // <
-                hostHeader = hostHeader.replace("%3E", "") // >
-                hostHeader = hostHeader.replace("\"", "")
-                hostHeader = hostHeader.replace("'", "")
-                hostHeader = hostHeader.replace("-", "")
-                request.setHeader(it, hostHeader)
+                header = header.replace(">", "")
+                header = header.replace("<", "")
+                header = header.replace("%3C", "") // <
+                header = header.replace("%3E", "") // >
+                header = header.replace("\"", "")
+                header = header.replace("'", "")
+                header = header.replace("-", "")
+                request.setHeader(it, header)
+            }
+            if(it.toLowerCase() == "referer"){
+                String header = request.getHeader(it)
+                if(header.contains(">") || header.contains("<") || header.contains("%3C") || header.contains("%3E") ){
+                    log.warn "sanitizeRequestHeaders(): possible xss attempt over 'referer' header: '"+header+"'"
+                }
+                header = header.replace(">", "")
+                header = header.replace("<", "")
+                header = header.replace("%3C", "") // <
+                header = header.replace("%3E", "") // >
+                header = header.replace("\"", "")
+                header = header.replace("'", "")
+                header = header.replace("-", "")
+                request.setHeader(it, header)
             }
         }
     }
