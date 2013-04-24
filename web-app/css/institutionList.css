@@ -139,17 +139,20 @@ div.sector-facet>label:hover {
 }
 
 .list .institutionlist #filter-title {
-  padding-top: 26px;
+  padding-top: 8px;
+  padding-bottom: 6px;
+  margin-top: 0px;
 }
 
-@media (min-width: 768px) and (max-width: 1200px) {
+@media (min-width: 768px) and (max-width: 980px) {
   .list .institutionlist #filter-title {
-    padding-top: 52px !important;
+    padding-bottom: 30px !important;
   }
 }
 
 .institutionlist #first-letter-index {
-  padding-bottom: 15px;
+  margin: 10px 0px !important;
+  padding-bottom: 5px;
   border-bottom: 2px solid #EFEBE8;
 }
 
@@ -157,4 +160,45 @@ div.sector-facet>label:hover {
   border-bottom: 2px solid #EFEBE8;
   margin-bottom: 10px;
   padding-bottom: 10px;
+}
+
+.institutionlist .pagination ul {
+    border: none !important;
+    border-radius: none !important;
+    box-shadow: none !important;
+    display: inline-block;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
+.institutionlist .pagination ul > li > a, .institutionlist .pagination ul > li > span {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background-color: #FFFFFF;
+  border-color: #DDDDDD;
+  border-image: none;
+  border-style: solid;
+  border-width: 0px 1px 0px 0 !important;
+  float: left;
+  line-height: 20px;
+  text-decoration: none;
+  padding: 2px 6px;
+}
+
+.institutionlist .pagination ul > li > a:hover, .institutionlist .pagination ul > li > span:hover {
+  text-decoration: underline;  
+}
+
+.institutionlist .pagination ul > .disabled > a:hover, .institutionlist .pagination ul > .disabled > span:hover {
+  text-decoration: none !important;  
+}
+
+.institutionlist .pagination ul > li:last-child > a, .institutionlist .pagination ul> li:last-child > span:hover {
+  border: none !important;
+}
+
+.institutionlist div > ol {
+  margin: 0 0 10px 0px !important;
 }

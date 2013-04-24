@@ -82,9 +82,11 @@
       <div class="row">
         <div class="span9">
           <div class="search-results">
-            <g:if test="${results}">
-              <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
-            </g:if>
+            <div class="search-results-list">
+              <g:if test="${results}">
+                <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
+              </g:if>
+            </div>
           </div>
         </div>
       </div>

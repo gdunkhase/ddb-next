@@ -146,6 +146,7 @@ ddb.advancedSearch.defaultRows=20
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
 
+
 // log4j configuration
 log4j = {
 
@@ -216,7 +217,19 @@ compress {
     statsEnabled = true
     compressionThreshold = 1024
     // filter's url-patterns
-    urlPatterns = ["/*"]
+    //urlPatterns = ["/*"]
+    urlPatterns = [
+        //"/static/*", No /static!
+        //"/binary/*", No /binary!
+        "/apis/*",
+        "/searchresults/*",
+        "/facets/*",
+        "/content/*",
+        "/advancedsearch/*",
+        "/item/*",
+        "/about-us/*",
+        "/entity/*"
+    ]
     includePathPatterns = []
     // Important! CSS and JS must be handled by the ressource plugin
     excludePathPatterns = [

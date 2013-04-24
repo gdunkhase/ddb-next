@@ -26,33 +26,47 @@ class ContentController {
 
     def staticcontent(){
         try{
+            def firstLvl = "news";
 
-            def firstLvl="news";
-            if (params.dir!=null){
-                firstLvl=getFirstLvl();
-            }
             def browserUrl = request.forwardURI.substring(request.contextPath.size())
 
-            //Check if the called url ends with "/content/help" (invalid) or "/content/help/" (valid).
-            //If the url does not end with "/", make a redirect, otherwise the relative linking
-            //in the static pages won't work: see DDBNEXT-145
-            if(browserUrl?.endsWith(firstLvl)){
+            // Check if the called url ends with "/content/help" (invalid) or "/content/help/" (valid).
+            // If the url does not end with "/", make a redirect, otherwise the relative linking
+            // in the static pages won't work: see DDBNEXT-145
+            if(!browserUrl.endsWith("/")){
                 redirect uri: browserUrl+"/"
                 return
             }
 
-            def secondLvl = getSecLvl();
-            def url = getStaticUrl()
-            def lang = getShortLocale()
-            def path = "/static/"+lang+"/"+firstLvl+"/index.html"
-            if (params.id!=null){
-                path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl+".html"
+            if(!params.dir){
+                redirect uri: browserUrl + firstLvl + "/"
+                return
+            }else{
+                firstLvl = getFirstLvl();
             }
-            def query = [ client: "DDB-NEXT" ]
-            //Submit a request via GET
-            def response = ApiConsumer.getText(url, path, query)
-            if (response == "Not found"){
-                throw new ItemNotFoundException()
+
+            def prioritySortedLocales = SupportedLocales.getSupportedLocalesByPriority(RCU.getLocale(request))
+            def response
+
+            for(int i=0; i < prioritySortedLocales.size(); i++){
+                def it = prioritySortedLocales.get(i)
+
+                def secondLvl = getSecLvl();
+                def url = getStaticUrl()
+                def lang = it.getISO2()
+                def path = "/static/"+lang+"/"+firstLvl+"/index.html"
+                if (params.id!=null){
+                    path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl+".html"
+                }
+                def query = [ client: "DDB-NEXT" ]
+                //Submit a request via GET
+
+                response = ApiConsumer.getText(url, path, query)
+                if (response != "Not found"){
+                    break
+                }else if( i==prioritySortedLocales.size()-1 ){ // A 404 was returned for EVERY supported language
+                    throw new ItemNotFoundException()
+                }
             }
 
             def map= retrieveArguments(response)

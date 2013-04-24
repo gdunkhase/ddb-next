@@ -25,7 +25,7 @@
     <g:link controller="item" action="findById" params="[id: prevId, hitNumber: navData.hitNumber - 1]"><g:message code="ddbnext.Previous_Label" /></g:link>
   </li>
   <li>
-    <span><g:message code="ddbnext.Hit" /> <g:localizeNumber>${navData.hitNumber}</g:localizeNumber> <g:message code="ddbnext.Of" /> <g:localizeNumber>${navData.results["numberOfResults"]}</g:localizeNumber></span>
+    <span class="result-label"><g:message code="ddbnext.Hit" /> </span><span class="hit-number"><g:localizeNumber>${navData.hitNumber}</g:localizeNumber></span><span> <g:message code="ddbnext.Of" /> </span><span class="hit-count"><g:localizeNumber>${navData.results["numberOfResults"]}</g:localizeNumber></span>
   </li>
   <li class="next-item bl-white ${displayRightPagination}">
     <g:link controller="item" action="findById" params="[id: nextId, hitNumber: navData.hitNumber + 1]"><g:message code="ddbnext.Next_Label" /></g:link>

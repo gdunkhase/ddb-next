@@ -92,6 +92,8 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
     };
     
     var _enableListView = function() {
+    	window.location.hash = 'list';
+    	
         $('#institution-map').addClass('off');
         $('#institution-list').removeClass('off');
 
@@ -106,7 +108,9 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
     }
 
     var _enableMapView = function() {
-        $('#institution-list').addClass('off');
+    	window.location.hash = 'map';
+
+    	$('#institution-list').addClass('off');
         $('#institution-map').removeClass('off');
 
         $('.view-type-switch').removeClass('off');
@@ -129,10 +133,10 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
         if (typeof console != "undefined") {
             console.log("Anchor-tag: '"+hash+"'");
         }
-    	if(hash === "list"){
-    		_enableListView();
-    	}else{
+    	if(hash === "map"){
     		_enableMapView();
+    	}else{
+    		_enableListView();
     	}    	
 
         $('#view-institution-list').click(function () {

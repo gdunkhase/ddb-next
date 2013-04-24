@@ -41,14 +41,14 @@ class ApisController {
             def thumbnail
             def media = []
 
-            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>$/
+            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>/
             if (titleMatch)
                 title= titleMatch[0][3]
 
-            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>$/
+            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>/
             subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
 
-            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>$/
+            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>/
             if (thumbnailMatch)
                 thumbnail= thumbnailMatch[0][2]
 
@@ -112,14 +112,12 @@ class ApisController {
     def binary(){
         def cacheExpiryInDays =1 // example 1 for 1 day
         def query = [ client: "DDB-NEXT" ]
-        def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query )
-        byte[] bytes=urlResponse.get("bytes")
+        def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query, response.outputStream )
         response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
         response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
         response.setContentType(urlResponse.get("Content-Type"))
         response.setContentLength(urlResponse.get("Content-Length").toInteger())
         response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
-        response.outputStream << bytes
     }
 
     private def getBinaryServerUrl(){
@@ -131,13 +129,11 @@ class ApisController {
     def staticFiles() {
         def query = [ client: "DDB-NEXT" ]
         def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
-                '/static/' + getFileNamePath(), query )
+                '/static/' + getFileNamePath(), query, response.outputStream )
         if(urlResponse && urlResponse != 'Not found') {
-            byte[] bytes = urlResponse.get("bytes")
             response.setContentType(urlResponse.get("Content-Type"))
             response.setContentLength(urlResponse.get("Content-Length").toInteger())
             response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
-            response.outputStream << bytes
         }
     }
     /**
@@ -148,8 +144,9 @@ class ApisController {
     private def formatDateForExpiresHeader(daysfromtoday=4){
         def tomorrow= new Date()+daysfromtoday
         String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
-        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
-        Date date = format.parse(String.format('%ta, %<te %<tb %<tY %<tT CET', tomorrow));
+        SimpleDateFormat format = new SimpleDateFormat(pattern, SupportedLocales.EN.getLocale());
+        String tomorrowString = String.format(SupportedLocales.EN.getLocale(), '%ta, %<te %<tb %<tY %<tT CET', tomorrow)
+        Date date = format.parse(tomorrowString);
         return date
     }
     private def getFileNamePath() {

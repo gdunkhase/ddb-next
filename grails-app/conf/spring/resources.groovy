@@ -21,4 +21,5 @@ beans = {
         java.util.Locale.setDefault(SupportedLocales.getDefaultLocale())
         cookieMaxAge = 31536000 //1y
     }
+
 }

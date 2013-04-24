@@ -349,17 +349,25 @@ function updateLanguageSwitch(params) {
     removeSearchCookieParameter('facetValues[]');
   });
   function fetchResultsList(url){
-    $('.search-results').empty();
-    var imgLoader = $(document.createElement('div'));
-    imgLoader.addClass('small-loader');
-    $('.search-results').prepend(imgLoader);
+	  
+    var divSearchResultsOverlayModal = $(document.createElement('div'));
+    divSearchResultsOverlayModal.addClass('search-results-overlay-modal');
+    var divSearchResultsOverlayWaiting = $(document.createElement('div'));
+    divSearchResultsOverlayWaiting.addClass('search-results-overlay-waiting');
+    var divSearchResultsOverlayImg = $(document.createElement('div'));
+    divSearchResultsOverlayImg.addClass('small-loader');
+    divSearchResultsOverlayWaiting.append(divSearchResultsOverlayImg);
+    
+    $('.search-results').append(divSearchResultsOverlayModal);
+    $('.search-results').append(divSearchResultsOverlayWaiting);
+    
     var request = $.ajax({
       type: 'GET',
       dataType: 'json',
       async: true,
       url: url+'&reqType=ajax',
       complete: function(data){
-        $('.search-results').fadeOut('fast', function(){
+        $('.search-results-list').fadeOut('fast', function(){
         var JSONresponse = jQuery.parseJSON(data.responseText);
         if(JSONresponse.numberOfResults==0){
             $('.search-noresults-content').removeClass("off");
@@ -368,7 +376,7 @@ function updateLanguageSwitch(params) {
             $('.search-noresults-content').addClass("off");
             $('.search-results-content').removeClass("off");
         }
-        $('.search-results').html(JSONresponse.results);
+        $('.search-results-list').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
         $('.page-input').attr("value", JSONresponse.page);
         $('.page-nonjs').html(JSONresponse.page);
@@ -400,7 +408,12 @@ function updateLanguageSwitch(params) {
           $(".page-nav .first-page").addClass("off");
         }
         historyManager(url);
-        $('.search-results').fadeIn('fast');
+        $('.search-results-list').fadeIn('fast');
+        
+        divSearchResultsOverlayImg.remove();
+        divSearchResultsOverlayWaiting.remove();
+        divSearchResultsOverlayModal.remove();
+        
         setHovercardEvents();
         });
       }

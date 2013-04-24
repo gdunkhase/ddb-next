@@ -276,24 +276,22 @@ class SearchService {
     def convertQueryParametersToSearchParameters(Map reqParameters) {
         def urlQuery = [:]
         if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
-            urlQuery["query"] = reqParameters.query
+            urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
         }else{
             urlQuery["query"] = "*"
         }
 
         if (reqParameters.rows == null) {
             urlQuery["rows"] = 20.toInteger()
-        }
-        else {
-            urlQuery["rows"] = reqParameters.rows.toInteger()
+        } else {
+            urlQuery["rows"] = getMapElementOfUnsureType(reqParameters, "rows", "20").toInteger()
         }
         reqParameters.rows = urlQuery["rows"]
 
         if (reqParameters.offset == null) {
             urlQuery["offset"] = 0.toInteger()
-        }
-        else {
-            urlQuery["offset"] = reqParameters.offset.toInteger()
+        } else {
+            urlQuery["offset"] = getMapElementOfUnsureType(reqParameters, "offset", "0").toInteger()
         }
         reqParameters.offset = urlQuery["offset"]
 
@@ -309,11 +307,12 @@ class SearchService {
                 urlQuery["facet"].add(reqParameters.get("facets[]"))
         }
 
-        if(reqParameters.minDocs)
-            urlQuery["minDocs"] = reqParameters.minDocs
+        if(reqParameters.minDocs) {
+            urlQuery["minDocs"] = getMapElementOfUnsureType(reqParameters, "minDocs", "")
+        }
 
         if(reqParameters["sort"] != null){
-            urlQuery["sort"] = reqParameters.sort
+            urlQuery["sort"] = getMapElementOfUnsureType(reqParameters, "sort", "")
         }else{
             if(urlQuery["query"]!="*"){
                 urlQuery["sort"] = "RELEVANCE"
@@ -323,9 +322,8 @@ class SearchService {
         if(reqParameters.viewType == null) {
             urlQuery["viewType"] = "list"
             reqParameters.viewType = "list"
-        }
-        else {
-            urlQuery["viewType"] = reqParameters.viewType
+        } else {
+            urlQuery["viewType"] = getMapElementOfUnsureType(reqParameters, "viewType", "")
         }
 
         if(reqParameters.isThumbnailFiltered){
@@ -336,6 +334,32 @@ class SearchService {
             }
         }
         return urlQuery
+    }
+
+    /**
+     * Utility-method to fix a groovy-inconvenience. Parameter map values can either be a single String or
+     * an Array of Strings (e.g. if the parameter was defined twice in the URL). To handle this, get the 
+     * parameters over this method.
+     * @param map The parameter map
+     * @param elementName The map key
+     * @param defaultValue The default value if no value was found for the key
+     * @return The value or the defaultValue if no value was found
+     */
+    private String getMapElementOfUnsureType(map, elementName, defaultValue){
+        if (map[elementName]?.class.isArray()){
+            if(map[elementName].size() > 0){
+                return map[elementName][0]
+            } else {
+                return defaultValue
+            }
+        }else{
+            if(map[elementName]){
+                return map[elementName]
+            } else {
+                return defaultValue
+            }
+        }
+
     }
 
     /**
