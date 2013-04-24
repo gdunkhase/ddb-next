@@ -15,7 +15,7 @@
     <div class="row">
        <div class="span12 institution">
          <div class="row">
-           <div class="span10">
+           <div class="span9">
              <div>
                <g:message code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
@@ -40,7 +40,7 @@
                <a href="${selectedOrgXML.uri }/">${String.valueOf(selectedOrgXML.uri).trim() }</a>
              </div>
            </div>
-           <div class="span2">
+           <div class="span3">
              <img class="logo" alt="${selectedOrgXML.name}" src="${selectedOrgXML.logo}">
            </div>
          </div>
