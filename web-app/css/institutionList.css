@@ -20,6 +20,12 @@
   padding-bottom: 12px;
   text-align: right;
 }
+@media (max-width: 767px) {
+  .view-type-switch {
+    display:none;
+    visibility: hidden;
+  }
+}
 
 #view-institution-list, #view-institution-map {
  margin-right: 10px;
