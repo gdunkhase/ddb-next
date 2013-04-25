@@ -69,10 +69,10 @@ for (var i = 0; i < document.getElementsByTagName("script").length; i++) {
 /* for ddb-next */
 GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host;
 
-if (typeof console != "undefined") {
-    if (typeof GeoTemCoMinifier_urlPrefix != "undefined") {
-        console.log("GeoTemCoMinifier_urlPrefix: " + GeoTemCoMinifier_urlPrefix);
-    } else {
-        console.warn("GeoTemCoMinifier_urlPrefix: undefined");
-    }
-}
+//if (typeof console != "undefined") {
+//    if (typeof GeoTemCoMinifier_urlPrefix != "undefined") {
+//        console.log("GeoTemCoMinifier_urlPrefix: " + GeoTemCoMinifier_urlPrefix);
+//    } else {
+//        console.warn("GeoTemCoMinifier_urlPrefix: undefined");
+//    }
+//}

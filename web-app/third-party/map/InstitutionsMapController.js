@@ -5,9 +5,9 @@ if ( typeof InstitutionsMapController === 'undefined' ) {
 
         var setupEventSubscriptions = function () {
             GeoPublisher.GeoSubscribe('GeoTemCoReady', this, function () {
-                if (typeof console == "undefined") {
-                    console.log("InstitutionsMapController <<< GeoTemCoReady");
-                }
+//                if (typeof console == "undefined") {
+//                    console.log("InstitutionsMapController <<< GeoTemCoReady");
+//                }
                 // Publisher.Publish(Events.InstitutionsMapReady, true);
                 //var map = InstitutionsMapModel.initialize('mapContainerDiv', 'de');
             });

@@ -26,9 +26,9 @@ MapGui_IE8CanvasEmulation = false; // XXX experiment
 
 function MapGui_IE8Gen(map, div, options) {
 
-    if (typeof console != "undefined") {
-        console.warn("MapGui_IE8 created");
-    }
+//    if (typeof console != "undefined") {
+//        console.warn("MapGui_IE8 created");
+//    }
 	this.map = map;
 
 	this.container = div;

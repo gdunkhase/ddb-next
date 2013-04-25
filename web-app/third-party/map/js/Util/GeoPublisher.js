@@ -72,7 +72,7 @@ if ( typeof GeoPublisher == 'undefined') {
             topics : _topics
         };
 	}();
-    if (typeof console != "undefined") {
-        console.log("GeoPublisher created");
-    }
+//    if (typeof console != "undefined") {
+//        console.log("GeoPublisher created");
+//    }
 }

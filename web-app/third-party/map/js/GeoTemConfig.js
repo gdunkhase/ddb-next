@@ -104,9 +104,9 @@ GeoTemConfig.resolveUrlPrefix = function(filename) {
 }
 
 GeoTemConfig.configure = function(urlPrefix) {
-    if (typeof console != "undefined") {
-        console.log("GeoTemConfig.configure urlPrefix: " + urlPrefix);
-    };
+//    if (typeof console != "undefined") {
+//        console.log("GeoTemConfig.configure urlPrefix: " + urlPrefix);
+//    };
 	GeoTemConfig.urlPrefix = urlPrefix;
 	GeoTemConfig.path = GeoTemConfig.urlPrefix + "images/";
 }
