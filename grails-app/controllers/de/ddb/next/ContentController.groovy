@@ -27,13 +27,17 @@ class ContentController {
     def staticcontent(){
         try{
             def firstLvl = "news";
+            if (params.dir!=null){
+                firstLvl=getFirstLvl();
+            }
 
             def browserUrl = request.forwardURI.substring(request.contextPath.size())
 
-            // Check if the called url ends with "/content/help" (invalid) or "/content/help/" (valid).
-            // If the url does not end with "/", make a redirect, otherwise the relative linking
-            // in the static pages won't work: see DDBNEXT-145
-            if(!browserUrl.endsWith("/")){
+            if(browserUrl.endsWith("content")){
+                redirect uri: browserUrl+"/"
+                return
+            }
+            if(browserUrl?.endsWith(firstLvl)){
                 redirect uri: browserUrl+"/"
                 return
             }
