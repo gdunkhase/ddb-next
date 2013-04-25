@@ -100,11 +100,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
 
         $('#main-container').removeClass('map');
         $('#main-container').addClass('list');
-        if (!mapInitialized) {
-            InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage,
-                institutionsMapOptions);
-            mapInitialized = true;
-        }
+        _initializeMap();
     };
 
     var _enableMapView = function() {
@@ -119,6 +115,10 @@ var InstitutionsMapAdapter = (function($, undefined) {
 
         $('#main-container').addClass('map');
         $('#main-container').removeClass('list');
+        _initializeMap();
+    };
+
+    var _initializeMap = function() {
         if (!mapInitialized) {
             InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage,
                 institutionsMapOptions);
