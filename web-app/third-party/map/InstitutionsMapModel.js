@@ -56,14 +56,14 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
             var MSVersion = f_getInternetExplorerVersion();
 
             _isIE8 = ( MSVersion > -1 && MSVersion <= 8.0 );
-            if (_isIE8 && typeof console != "undefined") {
-                console.warn("running Internet Explorer 8 or less");
-            }
+//            if (_isIE8 && typeof console != "undefined") {
+//                console.warn("running Internet Explorer 8 or less");
+//            }
             
-            if (typeof console != 'undefined') {
-                console.log("f_initialize mapDivId=" + mapDivId + " language=" + language);
-                console.log("f_initialize _urlPrefix=" + f_getUrlPrefix());
-            }
+//            if (typeof console != 'undefined') {
+//                console.log("f_initialize mapDivId=" + mapDivId + " language=" + language);
+//                console.log("f_initialize _urlPrefix=" + f_getUrlPrefix());
+//            }
 
             GeoTemConfig.language = language;
             GeoTemConfig.allowFilter = false;
@@ -93,9 +93,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
                 },startupOptions));
             }
 
-            if (typeof console != 'undefined') {
-                console.log("MapWidget displayed");
-            }
+//            if (typeof console != 'undefined') {
+//                console.log("MapWidget displayed");
+//            }
 
             _initialized = true;
 
@@ -113,9 +113,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         };
 
         var f_selectSectors = function (aSectorSelection) {
-            if (typeof console != 'undefined') {
-                console.log("sectors selected: " + aSectorSelection.selected.length + " deselected: " + aSectorSelection.deselected.length);
-            }
+//            if (typeof console != 'undefined') {
+//                console.log("sectors selected: " + aSectorSelection.selected.length + " deselected: " + aSectorSelection.deselected.length);
+//            }
             _sectorSelection = aSectorSelection; // save the published state
 
             var time0 = (new Date()).getTime();
@@ -178,14 +178,14 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
 
             var clusterUrl = urlPrefix + "cluster" + sectorsName + ".json";
             var mapUrl = urlPrefix + "map" + sectorsName + ".jpg";
-            if (typeof console != "undefined") {
-                console.log(clusterUrl);
-            }
+//            if (typeof console != "undefined") {
+//                console.log(clusterUrl);
+//            }
             clusterSet = GeoTemConfig.getJson(clusterUrl);
-            if (typeof console != "undefined") {
-                console.log("clusterSet name: " + clusterSet.name);
-                console.log("clusterSet size: " + clusterSet.clusters.length + " clusters");
-            }
+//            if (typeof console != "undefined") {
+//                console.log("clusterSet name: " + clusterSet.name);
+//                console.log("clusterSet size: " + clusterSet.clusters.length + " clusters");
+//            }
 
             _ie8MapCluster = {
                 clusterUrl: clusterUrl,
@@ -244,9 +244,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
 
             function flatten(aTree) {
                 var result = flatten_r(aTree,null,0,{count: 0, list: []});
-                if (typeof console != 'undefined') {
-                    console.log("number of institutions: " + result.count);
-                }
+//                if (typeof console != 'undefined') {
+//                    console.log("number of institutions: " + result.count);
+//                }
                 return result.list;
             }
             function flatten_r(aTree, superNode, level, result) {
@@ -261,12 +261,12 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
                         if (mapElement !== null) {
                             result.list.push(mapElement);
                         } else {
-                            if (typeof console !== "undefined") {
-                                console.log("out of germanys bounding box:");
-                                if (!$.browser.msie || ($.browser.msie && parseFloat($.browser.version) > 8.0)) {
-      								console.dir(treeNode);
-    							}                                
-                            }
+//                            if (typeof console !== "undefined") {
+//                                console.log("out of germanys bounding box:");
+//                                if (!$.browser.msie || ($.browser.msie && parseFloat($.browser.version) > 8.0)) {
+//      								console.dir(treeNode);
+//    							}                                
+//                            }
                         }
                         var children = treeNode.children;
                         if (children instanceof Array) {

@@ -70,11 +70,11 @@ for (var i = 0; i < document.getElementsByTagName("script").length; i++) {
 GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host;
 
 if (typeof console != "undefined") {
-    if (typeof GeoTemCoMinifier_urlPrefix != "undefined") {
-        console.log("GeoTemCoMinifier_urlPrefix: " + GeoTemCoMinifier_urlPrefix);
-    } else {
-        console.warn("GeoTemCoMinifier_urlPrefix: undefined");
-    }
+//    if (typeof GeoTemCoMinifier_urlPrefix != "undefined") {
+//        console.log("GeoTemCoMinifier_urlPrefix: " + GeoTemCoMinifier_urlPrefix);
+//    } else {
+//        console.warn("GeoTemCoMinifier_urlPrefix: undefined");
+//    }
 }
 // Copyright 2006 Google Inc.
 //
@@ -3415,9 +3415,9 @@ GeoTemConfig.resolveUrlPrefix = function(filename) {
 }
 
 GeoTemConfig.configure = function(urlPrefix) {
-    if (typeof console != "undefined") {
-        console.log("GeoTemConfig.configure urlPrefix: " + urlPrefix);
-    };
+//    if (typeof console != "undefined") {
+//        console.log("GeoTemConfig.configure urlPrefix: " + urlPrefix);
+//    };
 	GeoTemConfig.urlPrefix = urlPrefix;
 	GeoTemConfig.path = GeoTemConfig.urlPrefix + "images/";
 }
@@ -4877,9 +4877,9 @@ function MapGui(map, div, options) {
 	this.mapWindow.appendChild(this.mapContainer);
 
     if (MapGuiCanvasEmulation) {
-        if (typeof console != "undefined") {
-            console.warn("With canvas emulation");
-        }
+//        if (typeof console != "undefined") {
+//            console.warn("With canvas emulation");
+//        }
         this.background = document.createElement("canvas");
         this.background.setAttribute('class', 'mapCanvas');
         this.mapWindow.appendChild(this.background);
@@ -4887,9 +4887,9 @@ function MapGui(map, div, options) {
             this.background = G_vmlCanvasManager.initElement(this.background);
         }
     } else {
-        if (typeof console != "undefined") {
-            console.warn("No canvas emulation");
-        }
+//        if (typeof console != "undefined") {
+//            console.warn("No canvas emulation");
+//        }
     }
 
 
@@ -4977,9 +4977,9 @@ function MapGui(map, div, options) {
 						gui.geoActive = true;
 						changeStyle();
 					}, function(msg) {
-                        if (typeof console != 'undefined') {
-                            console.log( typeof msg == 'string' ? msg : "error");
-                        }
+//                        if (typeof console != 'undefined') {
+//                            console.log( typeof msg == 'string' ? msg : "error");
+//                        }
 					});
 				} else {
 					gui.map.setMarker(gui.longitude, gui.latitude);
@@ -5832,9 +5832,9 @@ MapWidget.prototype = {
             if (this.options.osmTileset) {
                 osmTileset = this.options.osmTileset;
             };
-            if (typeof console != "undefined") {
-                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmTileset + "', {..}");
-            };
+//            if (typeof console != "undefined") {
+//                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmTileset + "', {..}");
+//            };
 			this.baseLayers.push(new OpenLayers.Layer.OSM('Open Street Map', osmTileset, {
 				sphericalMercator : true,
 				zoomOffset : 1,
@@ -6585,9 +6585,9 @@ MapWidget.prototype = {
             this.zoomSlider.setValue(this.openlayersMap.getZoom());
         }
         this.drawObjectLayer(true);
-        if (typeof console != "undefined") {
-            console.log("openlayers getZoom: " + this.openlayersMap.getZoom());
-        };
+//        if (typeof console != "undefined") {
+//            console.log("openlayers getZoom: " + this.openlayersMap.getZoom());
+//        };
     },
 
 	setMarker : function(lon, lat) {
@@ -6688,9 +6688,9 @@ MapGui_IE8CanvasEmulation = false; // XXX experiment
 
 function MapGui_IE8Gen(map, div, options) {
 
-    if (typeof console != "undefined") {
-        console.warn("MapGui_IE8 created");
-    }
+//    if (typeof console != "undefined") {
+//        console.warn("MapGui_IE8 created");
+//    }
 	this.map = map;
 
 	this.container = div;
@@ -6777,9 +6777,9 @@ function MapGui_IE8Gen(map, div, options) {
  */
 
 MapWidget_IE8Gen_onClusterClick = function(pixelX, pixelY, clusterIndex) {
-        if (typeof console != 'undefined') {
-            console.log("global onClusterClick(" + pixelX + ', ' + pixelY + ', ' + clusterIndex + ')');
-        }
+//        if (typeof console != 'undefined') {
+//            console.log("global onClusterClick(" + pixelX + ', ' + pixelY + ', ' + clusterIndex + ')');
+//        }
         InstitutionsMapModel.mapWidget().onClusterClick(pixelX,pixelY,clusterIndex);
 }
 
@@ -6817,9 +6817,9 @@ MapWidget_IE8Gen.prototype = {
 
 		var map = this;
 
-        if (typeof console != "undefined") {
-            console.warn("MapWidget_IE8Gen.initialize()");
-        }
+//        if (typeof console != "undefined") {
+//            console.warn("MapWidget_IE8Gen.initialize()");
+//        }
 
 	},
 
@@ -6827,9 +6827,9 @@ MapWidget_IE8Gen.prototype = {
 		var map = this;
         map.reset();
 
-        if (typeof console != 'undefined') {
-            console.log("onClusterClick(" + pixelX + ', ' + pixelY + ', ' + clusterIndex + ')');
-        }
+//        if (typeof console != 'undefined') {
+//            console.log("onClusterClick(" + pixelX + ', ' + pixelY + ', ' + clusterIndex + ')');
+//        }
 
         if (map.popup) {
             map.popup.reset();
@@ -6844,9 +6844,9 @@ MapWidget_IE8Gen.prototype = {
 	 * @param {boolean} zoom if there was a zoom; if not, the new boundary of the map is calculated
 	 */
 	drawObjectLayer : function(mapClusterSet) {
-        if (typeof console != "undefined") {
-            console.log("drawObjectLayer");
-        }
+//        if (typeof console != "undefined") {
+//            console.log("drawObjectLayer");
+//        }
         this.gui.changeMap(mapClusterSet);
 	},
 
@@ -6856,12 +6856,12 @@ MapWidget_IE8Gen.prototype = {
 	 * @param {MapObject[][]} mapObjects an array of map objects from different (1-4) sets
 	 */
 	initWidget : function(mapClusterSet) {
-        if (typeof console != "undefined") {
-            console.log("initWidget -" + mapClusterSet + '-' + (typeof mapClusterSet) + '+');
-            if (!$.browser.msie || ($.browser.msie && parseFloat($.browser.version) > 8.0)) {
-      			console.dir(mapClusterSet);
-    		}                                
-        }
+//        if (typeof console != "undefined") {
+//            console.log("initWidget -" + mapClusterSet + '-' + (typeof mapClusterSet) + '+');
+//            if (!$.browser.msie || ($.browser.msie && parseFloat($.browser.version) > 8.0)) {
+//      			console.dir(mapClusterSet);
+//    		}                                
+//        }
 
 		this.clearMap();
 
@@ -7899,9 +7899,9 @@ MapDataSource.prototype = {
         var timeClusterInfo = (this.mapObjects[0].length +
                                " elements clustered in " + (timeCluster - time0) + "ms");
 // XXXXX   alert(timeClusterInfo);
-        if (typeof console != 'undefined') {
-            console.log(timeClusterInfo);
-        }
+//        if (typeof console != 'undefined') {
+//            console.log(timeClusterInfo);
+//        }
     
 
     },
@@ -9881,9 +9881,9 @@ if ( typeof GeoPublisher == 'undefined') {
             topics : _topics
         };
 	}();
-    if (typeof console != "undefined") {
-        console.log("GeoPublisher created");
-    }
+//    if (typeof console != "undefined") {
+//        console.log("GeoPublisher created");
+//    }
 }
 /*
 * WidgetWrapper.js
@@ -9982,9 +9982,9 @@ if ( typeof InstitutionsMapController === 'undefined' ) {
 
         var setupEventSubscriptions = function () {
             GeoPublisher.GeoSubscribe('GeoTemCoReady', this, function () {
-                if (typeof console == "undefined") {
-                    console.log("InstitutionsMapController <<< GeoTemCoReady");
-                }
+//                if (typeof console == "undefined") {
+//                    console.log("InstitutionsMapController <<< GeoTemCoReady");
+//                }
                 // Publisher.Publish(Events.InstitutionsMapReady, true);
                 //var map = InstitutionsMapModel.initialize('mapContainerDiv', 'de');
             });
@@ -10086,14 +10086,14 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
             var MSVersion = f_getInternetExplorerVersion();
 
             _isIE8 = ( MSVersion > -1 && MSVersion <= 8.0 );
-            if (_isIE8 && typeof console != "undefined") {
-                console.warn("running Internet Explorer 8 or less");
-            }
+//            if (_isIE8 && typeof console != "undefined") {
+//                console.warn("running Internet Explorer 8 or less");
+//            }
             
-            if (typeof console != 'undefined') {
-                console.log("f_initialize mapDivId=" + mapDivId + " language=" + language);
-                console.log("f_initialize _urlPrefix=" + f_getUrlPrefix());
-            }
+//            if (typeof console != 'undefined') {
+//                console.log("f_initialize mapDivId=" + mapDivId + " language=" + language);
+//                console.log("f_initialize _urlPrefix=" + f_getUrlPrefix());
+//            }
 
             GeoTemConfig.language = language;
             GeoTemConfig.allowFilter = false;
@@ -10123,9 +10123,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
                 },startupOptions));
             }
 
-            if (typeof console != 'undefined') {
-                console.log("MapWidget displayed");
-            }
+//            if (typeof console != 'undefined') {
+//                console.log("MapWidget displayed");
+//            }
 
             _initialized = true;
 
@@ -10143,9 +10143,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         };
 
         var f_selectSectors = function (aSectorSelection) {
-            if (typeof console != 'undefined') {
-                console.log("sectors selected: " + aSectorSelection.selected.length + " deselected: " + aSectorSelection.deselected.length);
-            }
+//            if (typeof console != 'undefined') {
+//                console.log("sectors selected: " + aSectorSelection.selected.length + " deselected: " + aSectorSelection.deselected.length);
+//            }
             _sectorSelection = aSectorSelection; // save the published state
 
             var time0 = (new Date()).getTime();
@@ -10208,14 +10208,14 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
 
             var clusterUrl = urlPrefix + "cluster" + sectorsName + ".json";
             var mapUrl = urlPrefix + "map" + sectorsName + ".jpg";
-            if (typeof console != "undefined") {
-                console.log(clusterUrl);
-            }
+//            if (typeof console != "undefined") {
+//                console.log(clusterUrl);
+//            }
             clusterSet = GeoTemConfig.getJson(clusterUrl);
-            if (typeof console != "undefined") {
-                console.log("clusterSet name: " + clusterSet.name);
-                console.log("clusterSet size: " + clusterSet.clusters.length + " clusters");
-            }
+//            if (typeof console != "undefined") {
+//                console.log("clusterSet name: " + clusterSet.name);
+//                console.log("clusterSet size: " + clusterSet.clusters.length + " clusters");
+//            }
 
             _ie8MapCluster = {
                 clusterUrl: clusterUrl,
@@ -10274,9 +10274,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
 
             function flatten(aTree) {
                 var result = flatten_r(aTree,null,0,{count: 0, list: []});
-                if (typeof console != 'undefined') {
-                    console.log("number of institutions: " + result.count);
-                }
+//                if (typeof console != 'undefined') {
+//                    console.log("number of institutions: " + result.count);
+//                }
                 return result.list;
             }
             function flatten_r(aTree, superNode, level, result) {
@@ -10291,9 +10291,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
                         if (mapElement !== null) {
                             result.list.push(mapElement);
                         } else {
-                            if (typeof console !== "undefined") {
-                                console.log("out of germanys bounding box:");
-                            }
+//                            if (typeof console !== "undefined") {
+//                                console.log("out of germanys bounding box:");
+//                            }
                         }
                         var children = treeNode.children;
                         if (children instanceof Array) {

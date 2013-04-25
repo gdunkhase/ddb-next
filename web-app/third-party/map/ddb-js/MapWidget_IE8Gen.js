@@ -39,9 +39,9 @@
  */
 
 MapWidget_IE8Gen_onClusterClick = function(pixelX, pixelY, clusterIndex) {
-        if (typeof console != 'undefined') {
-            console.log("global onClusterClick(" + pixelX + ', ' + pixelY + ', ' + clusterIndex + ')');
-        }
+//        if (typeof console != 'undefined') {
+//            console.log("global onClusterClick(" + pixelX + ', ' + pixelY + ', ' + clusterIndex + ')');
+//        }
         InstitutionsMapModel.mapWidget().onClusterClick(pixelX,pixelY,clusterIndex);
 }
 
@@ -79,9 +79,9 @@ MapWidget_IE8Gen.prototype = {
 
 		var map = this;
 
-        if (typeof console != "undefined") {
-            console.warn("MapWidget_IE8Gen.initialize()");
-        }
+//        if (typeof console != "undefined") {
+//            console.warn("MapWidget_IE8Gen.initialize()");
+//        }
 
 	},
 
@@ -89,9 +89,9 @@ MapWidget_IE8Gen.prototype = {
 		var map = this;
         map.reset();
 
-        if (typeof console != 'undefined') {
-            console.log("onClusterClick(" + pixelX + ', ' + pixelY + ', ' + clusterIndex + ')');
-        }
+//        if (typeof console != 'undefined') {
+//            console.log("onClusterClick(" + pixelX + ', ' + pixelY + ', ' + clusterIndex + ')');
+//        }
 
         if (map.popup) {
             map.popup.reset();
@@ -106,9 +106,9 @@ MapWidget_IE8Gen.prototype = {
 	 * @param {boolean} zoom if there was a zoom; if not, the new boundary of the map is calculated
 	 */
 	drawObjectLayer : function(mapClusterSet) {
-        if (typeof console != "undefined") {
-            console.log("drawObjectLayer");
-        }
+//        if (typeof console != "undefined") {
+//            console.log("drawObjectLayer");
+//        }
         this.gui.changeMap(mapClusterSet);
 	},
 
@@ -118,12 +118,12 @@ MapWidget_IE8Gen.prototype = {
 	 * @param {MapObject[][]} mapObjects an array of map objects from different (1-4) sets
 	 */
 	initWidget : function(mapClusterSet) {
-        if (typeof console != "undefined") {
-            console.log("initWidget -" + mapClusterSet + '-' + (typeof mapClusterSet) + '+');
-            if (!$.browser.msie || ($.browser.msie && parseFloat($.browser.version) > 8.0)) {
-      			console.dir(mapClusterSet);
-    		}                                
-        }
+//        if (typeof console != "undefined") {
+//            console.log("initWidget -" + mapClusterSet + '-' + (typeof mapClusterSet) + '+');
+//            if (!$.browser.msie || ($.browser.msie && parseFloat($.browser.version) > 8.0)) {
+//      			console.dir(mapClusterSet);
+//    		}                                
+//        }
 
 		this.clearMap();
 

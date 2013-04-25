@@ -164,9 +164,9 @@ GeoTemCoLoader = {
 	},
 
 	initGeoTemCo : function() {
-        if (typeof console !== 'undefined') {
-            console.log('load time: ' + ((new Date()) - GeoTemCoLoader.startTime) + 'ms');
-        }
+//        if (typeof console !== 'undefined') {
+//            console.log('load time: ' + ((new Date()) - GeoTemCoLoader.startTime) + 'ms');
+//        }
 
 		GeoTemConfig.configure(GeoTemCoLoader.urlPrefix);
 		GeoPublisher.GeoPublish('GeoTemCoReady');

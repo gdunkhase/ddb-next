@@ -171,7 +171,7 @@ function updateLanguageSwitch(params) {
           }
           json[value[0]] = value[1];
         });
-        document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
+        document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"";
     }
   }
   
@@ -182,7 +182,7 @@ function updateLanguageSwitch(params) {
         searchParameters = searchParameters.replace(/\\"/g,'"');
         var json = $.parseJSON(searchParameters);
         json[paramName] = null;
-        document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"; path=/";
+        document.cookie = "searchParameters=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"";
     }
   }
   

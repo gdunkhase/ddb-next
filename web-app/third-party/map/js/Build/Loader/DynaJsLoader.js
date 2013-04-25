@@ -77,9 +77,9 @@ function DynaJsLoader() {
 			var checkStatus = function() {
 				if (scriptEmbedded && scriptLoaded) {
 					loader.loadScript(callback);
-					if ( typeof console != 'undefined') {
-						console.log(scriptData.url + " loaded in " + (iter * loader.checkInterval) + " ms");
-					}
+//					if ( typeof console != 'undefined') {
+//						console.log(scriptData.url + " loaded in " + (iter * loader.checkInterval) + " ms");
+//					}
 				} else {
 					iter++;
 					if (iter > loader.loadAttempts) {
