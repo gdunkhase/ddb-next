@@ -33,6 +33,8 @@ import de.ddb.next.exception.InvalidUrlException;
  */
 class DdbSecurityFilter implements Filter {
 
+    private DdbSecurityHelper ddbSecurityHelper = new DdbSecurityHelper()
+
     @Override
     public void destroy() {
     }
@@ -40,11 +42,22 @@ class DdbSecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            def timestamp = System.currentTimeMillis()
-
             DdbServletRequestWrapper requestWrapper = new DdbServletRequestWrapper(request)
             HttpServletResponse httpResponse = (HttpServletResponse)response
-            def ddbSecurityHelper = new DdbSecurityHelper()
+
+            // Skip check of this static content
+            String contextPath = requestWrapper.getContextPath()
+            String requestedUri = requestWrapper.getRequestURI()
+            if(requestedUri.startsWith(contextPath + "/appStatic") ||
+            requestedUri.endsWith(".png") ||
+            requestedUri.endsWith(".jpg") ||
+            requestedUri.endsWith(".jpeg") ||
+            requestedUri.endsWith(".gif") ||
+            requestedUri.endsWith(".css")){
+                chain.doFilter(request, response)
+                return
+            }
+
             ddbSecurityHelper.sanitizeRequest(requestWrapper, httpResponse)
             chain.doFilter(requestWrapper, response)
             return
