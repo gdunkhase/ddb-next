@@ -83,7 +83,6 @@ class DdbSecurityHelper {
                 header = header.replace("%3E", "") // >
                 header = header.replace("\"", "")
                 header = header.replace("'", "")
-                header = header.replace("-", "")
                 request.setHeader(it, header)
             }
             if(it.toLowerCase() == "referer"){
@@ -97,7 +96,6 @@ class DdbSecurityHelper {
                 header = header.replace("%3E", "") // >
                 header = header.replace("\"", "")
                 header = header.replace("'", "")
-                header = header.replace("-", "")
                 request.setHeader(it, header)
             }
         }
