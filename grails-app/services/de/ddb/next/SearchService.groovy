@@ -530,7 +530,11 @@ class SearchService {
         }
         if (searchParams) {
             def jSonSlurper = new JsonSlurper()
-            searchParamsMap = jSonSlurper.parseText(searchParams)
+            try{
+                searchParamsMap = jSonSlurper.parseText(searchParams)
+            }catch(Exception e){
+                log.error "getSearchCookieAsMap(): Could not parse search params: "+searchParams, e
+            }
             for (entry in searchParamsMap) {
                 if (entry.value instanceof String) {
                     entry.value = URLDecoder.decode(entry.value, characterEncoding)

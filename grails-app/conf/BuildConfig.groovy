@@ -51,6 +51,7 @@ grails.project.dependency.resolution = {
 
         // runtime 'mysql:mysql-connector-java:5.1.20'
         runtime "org.springframework:spring-test:3.1.2.RELEASE" //Needed as dependency for rendering-plugin when used in WAR
+        runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
 
     }
 
