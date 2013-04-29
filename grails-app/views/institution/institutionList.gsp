@@ -51,7 +51,7 @@ limitations under the License.
         </g:each>
       </ol>
     </div>
-    <div id="institution-map" class="span9 off">
+    <div id="institution-map" class="span9">
       <div id="mapview">
         <div id="mapContainerDiv"></div>
       </div>

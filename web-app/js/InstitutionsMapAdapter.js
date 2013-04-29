@@ -89,11 +89,11 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     var _enableListView = function() {
-        $('#institution-map').addClass('off');
-        $('#institution-list').removeClass('off');
+        $('#institution-map').css('display', 'none');
+        $('#institution-list').css('display', '');
 
-        $('.view-type-switch').removeClass('off');
-        $('#first-letter-index').removeClass('off');
+        $('.view-type-switch').css('display', '');
+        $('#first-letter-index').css('display', '');
 
         $('#view-institution-list').addClass('selected');
         $('#view-institution-map').removeClass('selected');
@@ -104,11 +104,13 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     var _enableMapView = function() {
-        $('#institution-list').addClass('off');
-        $('#institution-map').removeClass('off');
+//        $('#institution-list').addClass('off');
 
-        $('.view-type-switch').removeClass('off');
-        $('#first-letter-index').addClass('off');
+        $('#institution-list').css('display', 'none');
+        $('#institution-map').css('display', '');
+
+        $('.view-type-switch').css('display', '');
+        $('#first-letter-index').css('display', 'none');
 
         $('#view-institution-map').addClass('selected');
         $('#view-institution-list').removeClass('selected');
@@ -152,6 +154,9 @@ var InstitutionsMapAdapter = (function($, undefined) {
 })(jQuery);
 
 $(document).ready(function() {
+
+    $('#institution-list').css('display', 'none');
+    $('#institution-map').css('display', '');
     INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
     MAP_DIR = jsContextPath + MAP_DIR;
     GeoTemCoMinifier_urlPrefix = window.document.location.protocol + '//' +
