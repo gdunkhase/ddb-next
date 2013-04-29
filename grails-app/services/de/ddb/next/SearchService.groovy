@@ -275,20 +275,22 @@ class SearchService {
      */
     def convertQueryParametersToSearchParameters(Map reqParameters) {
         def urlQuery = [:]
+        def numbersRangeRegex = /^[0-9]+$/
+        
         if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
             urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
         }else{
             urlQuery["query"] = "*"
         }
 
-        if (reqParameters.rows == null || !(reqParameters.rows=~ /^[0-9]+$/)) {
+        if (reqParameters.rows == null || !(reqParameters.rows=~ numbersRangeRegex)) {
             urlQuery["rows"] = 20.toInteger()
         } else {
             urlQuery["rows"] = getMapElementOfUnsureType(reqParameters, "rows", "20").toInteger()
         }
         reqParameters.rows = urlQuery["rows"]
 
-        if (reqParameters.offset == null || !(reqParameters.rows=~ /^[0-9]+$/)) {
+        if (reqParameters.offset == null || !(reqParameters.offset=~ numbersRangeRegex)) {
             urlQuery["offset"] = 0.toInteger()
         } else {
             urlQuery["offset"] = getMapElementOfUnsureType(reqParameters, "offset", "0").toInteger()
