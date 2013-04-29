@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+
 <%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 
 <html>
@@ -65,9 +66,9 @@ limitations under the License.
      <div class="row">
        <div class="span12 locations">
 
-            <div id="divOSM"></div>
+            <div id="divOSM" class="span5"></div>
             
-            <div class="location-container">
+            <div class="location-container span5">
                 
                 <div class="location" data-lat="${selectedOrgXML.locations.location.geocode.latitude }" data-lon="${selectedOrgXML.locations.location.geocode.longitude }">
                     <p class="address">

@@ -15,6 +15,18 @@
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 $(function() {
+
+  // Fix for back-button problem with the searchfield: DDBNEXT-389 
+  if($.browser.msie){
+    var queryCache = $("#querycache");
+    var queryString = "";
+    if(queryCache.length > 0){
+      queryString = queryCache.val();
+    }
+    $("#form-search-header .query").val(queryString);
+  }
+
+  
   if (window.history && history.pushState) {
     historyedited = false;
     historySupport = true;
@@ -37,6 +49,7 @@ $(function() {
       searchResultsInitializer();
     });
   }
+
 });
 
 function historyManager(path){
