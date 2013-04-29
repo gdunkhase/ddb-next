@@ -785,7 +785,7 @@ noscript .caption {
 }
 
 .carousel a.previous {
-  left: 84px;
+  left: -30px;
 }
 
 .carousel a.previous:hover {
@@ -794,9 +794,18 @@ noscript .caption {
 
 .carousel a.next {
   background-position: 0 -150px;
-  right: 76px;
+  right: -40px;
 }
 /* carousel controls responsiveness */
+@media ( min-width : 1200px) {
+  .carousel a.previous {
+    left: 84px;
+  }
+  .carousel a.next {
+    right: 76px;
+  }
+}
+
 @media ( min-width : 980px) and ( max-width : 1199px) {
   .carousel a.previous {
     left: -30px;
