@@ -36,7 +36,14 @@ limitations under the License.
               <span><g:message code="ddbnext.Search_text_field"/></span>
             </label>
             <input type="search" class="query" name="query" value="" />
-            <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
+            <button type="submit">
+              <!--[if !IE]><!-->
+                <g:message code="ddbnext.Go_Button"/>
+              <!--<![endif]-->
+              <!--[if gt IE 8]>
+                <g:message code="ddbnext.Go_Button"/>
+              <![endif]-->
+            </button>
             <span class="contextual-help hidden-phone hidden-tablet" 
                   title="<g:message code="ddbnext.Search_Hint" 
                   args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
