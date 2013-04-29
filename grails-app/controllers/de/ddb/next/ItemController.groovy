@@ -115,7 +115,7 @@ class ItemController {
         def searchParametersMap
         def resultsItems
         def searchResultUri
-        searchParametersMap = searchService.getSearchCookieAsMap(httpRequest.cookies)
+        searchParametersMap = searchService.getSearchCookieAsMap(httpRequest, httpRequest.cookies)
         if (!searchParametersMap || searchParametersMap.isEmpty()) {
             reqParameters["hitNumber"] = null
             return searchResultParameters

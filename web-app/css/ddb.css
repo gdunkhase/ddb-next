@@ -534,10 +534,6 @@ header .link-adv-search, div.header .link-adv-search {
   cursor: pointer;
 }
 
-.language-wrapper a:hover {
-  text-decoration: none;
-}
-
 .language-wrapper .nopointer {
   background-color: #EEEEEE !important;
 }
@@ -921,6 +917,10 @@ footer .legal ul li+li,.footer .legal ul li+li {
   #form-search {
     width: 100%;
     max-width: 500px;
+  }
+  
+  .link-adv-search {
+    display: none;
   }
   
 }
