@@ -106,8 +106,12 @@
   font-size: 1em;
 }
 
-h2 a.count:hover {
+.institution h2 a.count:hover {
   color: #A5003B;
+}
+
+.institution h2 {
+  margin-top: 0px;
 }
 
 #header {
