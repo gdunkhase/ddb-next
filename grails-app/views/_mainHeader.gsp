@@ -23,7 +23,7 @@
         <ul class="nav nav-list">
           <li class="">
             <g:form class="navbar-search pull-left" method="get" role="search" id="form-search-header-mobile" url="[controller:'search', action:'results']">
-              <input type="search" class="query" name="query" placeholder="Suche">
+              <input type="search" class="query" name="query" placeholder="Suche" value="<g:getCookieFieldValue fieldname="query" />">
               <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
             </g:form>
           </li>
