@@ -534,10 +534,6 @@ header .link-adv-search, div.header .link-adv-search {
   cursor: pointer;
 }
 
-.language-wrapper a:hover {
-  text-decoration: none;
-}
-
 .language-wrapper .nopointer {
   background-color: #EEEEEE !important;
 }
