@@ -101,7 +101,6 @@ select {
   z-index: auto;
   display: inline;
   padding: 0;
-  font-size: medium;
   opacity: 1;
   filter: alpha(opacity = 100);
   visibility: visible;
@@ -279,7 +278,7 @@ a.label:hover {
 .label {
   display: inline;
   padding: 0;
-  font-size: medium;
+  font-size: 0.938em;
   font-weight: normal;
   line-height: normal;
   color: #3e3a37;
@@ -506,6 +505,7 @@ header .link-adv-search, div.header .link-adv-search {
   width: 340px;
   top: 100px;
   right: 0px;
+  font-size: 1em;
 }
 
 .language-widget {
@@ -1120,7 +1120,6 @@ select {
 }
 
 .tooltip {
-  font-size: 0.813em;
   color: #999;
   position: absolute;
   display: block; z-index : 4;
