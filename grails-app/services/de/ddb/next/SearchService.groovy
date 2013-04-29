@@ -275,20 +275,22 @@ class SearchService {
      */
     def convertQueryParametersToSearchParameters(Map reqParameters) {
         def urlQuery = [:]
+        def numbersRangeRegex = /^[0-9]+$/
+        
         if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
             urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
         }else{
             urlQuery["query"] = "*"
         }
 
-        if (reqParameters.rows == null) {
+        if (reqParameters.rows == null || !(reqParameters.rows=~ numbersRangeRegex)) {
             urlQuery["rows"] = 20.toInteger()
         } else {
             urlQuery["rows"] = getMapElementOfUnsureType(reqParameters, "rows", "20").toInteger()
         }
         reqParameters.rows = urlQuery["rows"]
 
-        if (reqParameters.offset == null) {
+        if (reqParameters.offset == null || !(reqParameters.offset=~ numbersRangeRegex)) {
             urlQuery["offset"] = 0.toInteger()
         } else {
             urlQuery["offset"] = getMapElementOfUnsureType(reqParameters, "offset", "0").toInteger()
@@ -311,7 +313,7 @@ class SearchService {
             urlQuery["minDocs"] = getMapElementOfUnsureType(reqParameters, "minDocs", "")
         }
 
-        if(reqParameters["sort"] != null){
+        if(reqParameters["sort"] != null && (reqParameters["sort"]=~ /^random_[0-9]+$/)){
             urlQuery["sort"] = getMapElementOfUnsureType(reqParameters, "sort", "")
         }else{
             if(urlQuery["query"]!="*"){
@@ -319,7 +321,7 @@ class SearchService {
             }
         }
 
-        if(reqParameters.viewType == null) {
+        if(reqParameters.viewType == null || (!(reqParameters.viewType=~ /^list$/) && !(reqParameters.viewType=~ /^grid$/))) {
             urlQuery["viewType"] = "list"
             reqParameters.viewType = "list"
         } else {
