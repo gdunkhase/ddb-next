@@ -38,6 +38,9 @@
       <g:if test="${mediaType == 'other'}">
         <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_006" /></g:set>
       </g:if>
+      <g:if test="${mediaType == 'Institution'}">
+        <g:set var="mediaTitle"><g:message code="ddbnext.Institution" /></g:set>
+      </g:if>
       <li class="${mediaType}" classname="${mediaType}" title="${mediaTitle}">${mediaTitle}</li>
     </g:each>
     </ul>
