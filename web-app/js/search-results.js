@@ -15,6 +15,7 @@
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 $(function() {
+    console.log("ciao")
   if (window.history && history.pushState) {
     historyedited = false;
     historySupport = true;
