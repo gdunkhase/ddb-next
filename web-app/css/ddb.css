@@ -923,6 +923,10 @@ footer .legal ul li+li,.footer .legal ul li+li {
     max-width: 500px;
   }
   
+  .link-adv-search {
+    display: none;
+  }
+  
 }
 /* responsive sartpage - end */
 
