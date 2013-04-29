@@ -13,9 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/* We tell JS Hint, that $ and _ are not global.
+ * See Also: http://www.jshint.com/docs/#config
+ */
+/* global $:false, _: false */
+
+/* Even if jsContextPath is global, we load it first before any other JavaScripts.
+ * We therefore tell JS Hint, jsContextPath is not global
+ */
+/* global jsContextPath: false */
+
+
+/* TODO: wrap it in Iffy, then use the module pattern to export public properties
+as public interface */
+"use strict";
+
 // TODO: remove `use strict` via automate script in the production mode.
 // SEE: http://scriptogr.am/micmath/post/should-you-use-strict-in-your-production-javascript
-'use strict';
 
 // TODO: use other pattern for namespace in JS
 // SEE: http://enterprisejquery.com/2010/10/how-good-c-habits-can-encourage-bad-javascript-habits-part-1/
@@ -84,6 +99,18 @@ var ddb = {
     var hash = window.location.hash.substring(1);
     ddb.styleIndex(hash);
     if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
+      /* TODO: here we should check if the user return to the page using
+       * the web browser's back button and if they performed the sector
+       * filters before.
+       */
+
+      // TODO: get the selected sector filters.
+      var isChecked = $('input:checkbox').filter(':checked').length;
+
+      // TODO: apply the filter, if the filters is not empty.
+      if(isChecked) {
+        ddb.applyFilter();
+      }
       return;
     } else {
       ddb.applyFilter();
@@ -143,7 +170,7 @@ var ddb = {
     if (ddb.institutionList) {
       return ddb.institutionList;
     } else {
-      ddb.institutionList = _.chain(ddb.institutionsByFirstChar)
+      ddb.institutionList = _.chain(ddb.institutionstitutionsByFirstChar)
         .values()
         .flatten()
         .value();
@@ -387,6 +414,7 @@ var ddb = {
 
 };
 
+
 $(function() {
   var institutionList = $('#institution-list');
 
@@ -398,3 +426,4 @@ $(function() {
     ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onIndexClick, ddb.onPageLoad);
   }
 });
+
