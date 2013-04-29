@@ -486,7 +486,7 @@ class SearchService {
      * @param reqParameters request-parameters
      * @return Cookie with search-parameters
      */
-    def createSearchCookie(Map reqParameters, Map additionalParams) {
+    def createSearchCookie( HttpServletRequest requestObject, Map reqParameters, Map additionalParams) {
         //Create Cookie with search-parameters for use on other pages
         //convert HashMap containing parameters to JSON
         if (additionalParams) {
@@ -509,7 +509,7 @@ class SearchService {
                 jSonObject.put(entry.key, entry.value)
             }
         }
-        def cookie = new Cookie(searchCookieName, jSonObject.toString())
+        def cookie = new Cookie(searchCookieName + requestObject.contextPath, jSonObject.toString())
         cookie.maxAge = -1
         return cookie
     }
@@ -520,17 +520,21 @@ class SearchService {
      * @param request
      * @return Map with key-values from cookie
      */
-    def getSearchCookieAsMap(Cookie[] cookies) {
+    def getSearchCookieAsMap(HttpServletRequest requestObject, Cookie[] cookies) {
         def searchParams
         def searchParamsMap = [:]
         for (cookie in cookies) {
-            if (cookie.name == searchCookieName) {
+            if (cookie.name == searchCookieName + requestObject.contextPath) {
                 searchParams = cookie.value
             }
         }
         if (searchParams) {
             def jSonSlurper = new JsonSlurper()
-            searchParamsMap = jSonSlurper.parseText(searchParams)
+            try{
+                searchParamsMap = jSonSlurper.parseText(searchParams)
+            }catch(Exception e){
+                log.error "getSearchCookieAsMap(): Could not parse search params: "+searchParams, e
+            }
             for (entry in searchParamsMap) {
                 if (entry.value instanceof String) {
                     entry.value = URLDecoder.decode(entry.value, characterEncoding)

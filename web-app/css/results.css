@@ -419,7 +419,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .results-paginator-options {
-  font-size: 0.938em;
+  font-size: 0.938em !important;
 }
 
 .results-paginator-options label{
@@ -578,10 +578,15 @@ input[type="checkbox"],input[type="radio"] {
   word-wrap: normal;
   width: 340px;
 }
+
 .hovercard-info-item ul span {
   display: block;
   float: left;
   line-height: 25px;
+}
+
+.facets-container .tooltip{
+  font-size: 0.813em;
 }
 /*Facets flyout*/
 .flyout-left-container {
@@ -666,7 +671,7 @@ input[type="checkbox"],input[type="radio"] {
   position:relative;
   line-height: 28px;
   color: #4c4a48;
-  font-size: 1.071em;
+  font-size: 0.938em;
 }
 .selected-items .facet-value{
   display: block;

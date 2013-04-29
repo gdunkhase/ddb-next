@@ -26,3 +26,6 @@ header .toolbar, .header .toolbar {
   margin-top:0px;
   margin-bottom: 15px;
 }
+.ui-widget{
+  font-size: 1.25em!important;
+}

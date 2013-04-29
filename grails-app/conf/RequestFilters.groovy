@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+//import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap;
+//import de.ddb.next.DdbSecurityHelper;
+
+
 /**
  * This class acts as the default Grails request filter class. 
  * Any filter can be defined by adding a new entry in the filters section.
@@ -22,6 +26,9 @@
  * @author hla
  */
 class RequestFilters {
+
+    def log
+
     def filters = {
 
         /**
@@ -32,5 +39,6 @@ class RequestFilters {
                 response.addHeader("X-UA-Compatible", "IE=8,9,10")
             }
         }
+
     }
 }

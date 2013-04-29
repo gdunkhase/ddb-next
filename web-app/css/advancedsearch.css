@@ -18,7 +18,6 @@
 }
 .advanced-search .operator label {
   margin-right: 5px;
-  font-size: 1em;
 }
 .advanced-search .heading span {
   margin-top:12px;
@@ -51,7 +50,7 @@
 }
 .advanced-search .add-group-button {
   width:205px;
-  font-size:1em;
+  font-size:0.938em;
   font-weight:normal;
   text-shadow:none;
   color:#000000;
@@ -102,8 +101,11 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.advanced-search .tooltip{
+.advanced-search .tooltip {
   top: 228px;
   color: #3e3a37;
+  font-size: 0.938em;
+}
+.advanced-search select, .advanced-search label {
   font-size: 0.938em;
 }

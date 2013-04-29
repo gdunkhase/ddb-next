@@ -101,7 +101,6 @@ select {
   z-index: auto;
   display: inline;
   padding: 0;
-  font-size: medium;
   opacity: 1;
   filter: alpha(opacity = 100);
   visibility: visible;
@@ -279,7 +278,7 @@ a.label:hover {
 .label {
   display: inline;
   padding: 0;
-  font-size: medium;
+  font-size: 0.938em;
   font-weight: normal;
   line-height: normal;
   color: #3e3a37;
@@ -506,6 +505,7 @@ header .link-adv-search, div.header .link-adv-search {
   width: 340px;
   top: 100px;
   right: 0px;
+  font-size: 1em;
 }
 
 .language-widget {
@@ -532,10 +532,6 @@ header .link-adv-search, div.header .link-adv-search {
   position: relative;
   display: inline-block;
   cursor: pointer;
-}
-
-.language-wrapper a:hover {
-  text-decoration: none;
 }
 
 .language-wrapper .nopointer {
@@ -622,7 +618,7 @@ header .language-widget form,.header .language-widget form {
 }
 @media (max-width: 979px) {
   .search-header form input {
-    width: 200px;
+    width: 180px!important;
   }
   header .link-adv-search, div.header .link-adv-search {
     margin-left: 60px;
@@ -701,10 +697,11 @@ header .language-widget form,.header .language-widget form {
 
 #form-search input {
   font-size: 1.25em;
-  width: 82%;
+  width: 80.4%;
   height: 37px !important;
   line-height: 40px;
   float: left;
+  padding-left: 10px;
 }
 
 #form-search .link-adv-search {
@@ -922,6 +919,10 @@ footer .legal ul li+li,.footer .legal ul li+li {
     max-width: 500px;
   }
   
+  .link-adv-search {
+    display: none;
+  }
+  
 }
 /* responsive sartpage - end */
 
@@ -991,10 +992,16 @@ form label {
 }
 
 form input {
-  width: 280px;
+  width:280px;
   margin: 0 0 1px 0;
   height: 23px !important;
   vertical-align: middle !important;
+}
+
+form input[type="search"]{
+  width: 260px;
+  padding-left:10px!important;
+  padding-right:10px!important;
 }
 
 input {
@@ -1113,7 +1120,6 @@ select {
 }
 
 .tooltip {
-  font-size: 0.813em;
   color: #999;
   position: absolute;
   display: block; z-index : 4;
