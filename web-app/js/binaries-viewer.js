@@ -15,8 +15,34 @@
  */
 $(document).ready(function() {
 
-  var currentPage = $('meta[name=page]').attr("content");
-  if(currentPage == "item"){
+  if(jsPageName == "staticcontent"){
+    
+    var videoDivs = $(".jwplayer-video");
+    for(var i=0;i<videoDivs.length; i++){
+      var videoDiv = videoDivs[i];
+      var id = $(videoDiv).attr("id");
+      var width = $(videoDiv).data("jwplayer-width");
+      var height = $(videoDiv).data("jwplayer-height");
+      var file = $(videoDiv).data("jwplayer-file");
+      var image = $(videoDiv).data("jwplayer-image");
+
+      jwplayer(id).setup({
+        'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
+        'modes': [{type: "html5"}, 
+                  {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
+                  {type: "download"}],
+        'file': file,
+        'skin': jsContextPath + '/jwplayer/skins/five.xml',
+        'image': image,
+        'controlbar': 'bottom',
+        'width': width,
+        'height': height
+      });      
+      
+    }
+  }
+  
+  if(jsPageName == "item"){
 
     if(navigator.appName.indexOf("Internet Explorer")==-1){
       var mediaQuery = window.matchMedia( "(min-width: 530px)" );
