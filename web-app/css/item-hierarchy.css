@@ -235,16 +235,9 @@
   color: #3e3a37;
 }
 
-/* TODO just for mobile views not to scroll horizontally. find a better solution! */
 @media ( max-width : 767px) {
   .item-hierarchy {
-    overflow: hidden;
+    display: none;
   }
 }
 
-@media ( max-width : 767px) {
-  .item-hierarchy-result {
-    width: 767px;
-    overflow: hidden;
-  }
-}
