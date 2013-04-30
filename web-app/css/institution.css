@@ -38,6 +38,8 @@
 @media (min-width: 768px) and (max-width: 980px) {
   .locations #divOSM { 
     margin-left: 0px;
+    width: 400px;    
+    float: right;
   }
 }
 
