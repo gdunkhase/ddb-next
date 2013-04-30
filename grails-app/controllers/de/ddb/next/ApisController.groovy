@@ -97,7 +97,7 @@ class ApisController {
     def autocomplete (){
         def query = apisService.getQueryParameters(params)
         def callback = apisService.getQueryParameters(params)
-        def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.search.autocomplete.url.toString(),'/search/suggest', query)
+        def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search/suggest', query)
         if (callback) {
             render "${params.callback}(${result as JSON})"
         } else {
