@@ -174,7 +174,6 @@
   background: #efebe8;
   padding: 0px 12px 0px 12px;
   overflow: hidden;
-  font-size: 0.938em;
 }
 
 .results-paginator-view .group-actions {
@@ -264,6 +263,10 @@ input[type="checkbox"],input[type="radio"] {
   box-shadow: none;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
+}
+
+.search-results-content label {
+  font-size: 0.938em !important;
 }
 
 .search-results-content .search-results .item{
@@ -416,10 +419,6 @@ input[type="checkbox"],input[type="radio"] {
 .search-noresults-content .noresults {
   margin-top: 40px;
   margin-bottom: 50px;
-}
-
-.results-paginator-options {
-  font-size: 0.938em !important;
 }
 
 .results-paginator-options label{
