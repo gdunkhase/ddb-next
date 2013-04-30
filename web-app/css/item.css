@@ -44,6 +44,9 @@
   border-width: 0 0 5px;
   font-size: 0.938em;
 }
+.institution .span3 img {
+  margin: 0 15px 0 0;
+}
 @media (min-width: 980px) {
   .institution .span3 img {
     float: right;
