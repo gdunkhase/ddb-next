@@ -92,6 +92,10 @@
   font-size: small;
 }
 
+.hierarchy > .institution-list {
+  margin-left: 0px;
+}
+
 .institution-list {
   list-style: none;
   margin-bottom: 6px;
@@ -112,6 +116,7 @@
 
 .institution h2 {
   margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 #header {
