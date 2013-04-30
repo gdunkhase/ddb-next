@@ -31,12 +31,7 @@
 @media (max-width: 979px) {
   .slide-viewer {
     margin-top: 10px;
-  }
-}
-@media (max-width: 767px) {
-  .slide-viewer {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 150px;
   }
 }
 @media (max-width: 529px) {
