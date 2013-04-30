@@ -26,6 +26,9 @@ header .toolbar, .header .toolbar {
   margin-top:0px;
   margin-bottom: 15px;
 }
+.header .nav {
+  min-height: 85px !important;
+}
 .ui-widget{
   font-size: 1.25em!important;
 }

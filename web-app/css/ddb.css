@@ -437,12 +437,16 @@ header .language-wrapper >a,.header .language-wrapper >a {
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 46px -42px;
 }
 
-header .link-adv-search, div.header .link-adv-search {
+#form-search-header .link-adv-search {
   font-size: 0.938em;
   display: inline-block;
   float: left;
   text-align: left;
   margin-left: 130px;
+}
+
+.header .link-adv-search {
+  margin-left: 40px !important;
 }
 
 .search-header {
@@ -489,7 +493,9 @@ header .link-adv-search, div.header .link-adv-search {
   background: none;
   width: 25px;
 }
-
+.nav form button {
+  margin-left:3px;
+}
 #form-search-header button:before,
 .nav form button:before {
   display: inline-block;
@@ -501,11 +507,24 @@ header .link-adv-search, div.header .link-adv-search {
   margin: -200px 0px 0px 0px;
 }
 
+#form-search-header button {
+  background-image: url("../images/icons/search.png");
+  background-position-y: 150px;
+}
+
+#form-search-header button:hover {
+  background-position-y: 100px;
+}
+
 #form-search-header .tooltip {
   width: 340px;
   top: 100px;
   right: 0px;
   font-size: 1em;
+}
+
+.nav .tooltip {
+  width: 321px !important;
 }
 
 .language-widget {
@@ -572,6 +591,10 @@ header .toolbar .selector a,.header .toolbar .selector a {
 header .language-widget form,.header .language-widget form {
   display: none;
 }
+
+.header .nav {
+  min-height: 155px;
+}
 /* header - end */
 
 /* mobile view header */
@@ -620,12 +643,12 @@ header .language-widget form,.header .language-widget form {
   .search-header form input {
     width: 180px!important;
   }
-  header .link-adv-search, div.header .link-adv-search {
+  #form-search-header .link-adv-search, .header .link-adv-search {
     margin-left: 60px;
   }
 }
 @media (min-width: 980px) and (max-width: 1199px) {
-  header .link-adv-search, div.header .link-adv-search {
+  #form-search-header .link-adv-search, .header .link-adv-search {
     margin-left: 40px;
   }
 }
@@ -670,6 +693,14 @@ header .language-widget form,.header .language-widget form {
 
 .search-widget form button:hover:before {
   margin: -50px 0px 0px 0px;
+}
+
+.search-widget form button {
+  background-image: url("../images/icons/search.png");
+}
+
+.search-widget form button:hover {
+  background-position-y: -50px;
 }
 
 .search-widget .contextual-help,.advanced-search .contextual-help {

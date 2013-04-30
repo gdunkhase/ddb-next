@@ -128,8 +128,16 @@ limitations under the License.
                     <label> 
                       <span><g:message code="ddbnext.Search_text_field"/></span>
                     </label>
-                    <input type="search" class="query" name="query" value="<g:getCookieFieldValue fieldname="query" />"/>
-                    <button type="submit"><g:message code="ddbnext.Go_Button"/></button>
+                    <input type="hidden" id="querycache" value="<g:getCookieFieldValue fieldname="query" />" />
+                    <input type="search" class="query" name="query" value="<g:getCookieFieldValue fieldname="query" />" autocomplete="off"/>
+                    <button type="submit">
+                      <!--[if !IE]><!-->
+                        <g:message code="ddbnext.Go_Button"/>
+                      <!--<![endif]-->
+                      <!--[if gt IE 8]>
+                        <g:message code="ddbnext.Go_Button"/>
+                      <![endif]-->
+                    </button>
                     <span class="contextual-help hidden-phone hidden-tablet" 
                           title="<g:message code="ddbnext.Search_Hint" 
                           args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
