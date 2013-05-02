@@ -867,6 +867,11 @@ filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	z-index: 1003;
 }
 
+.ddbPopupCancel:hover {
+  background-image: url("../images/ddb_PopupCancelHover.png") ;
+  background-position-y: 40px;
+}
+
 .ddbPopupInput {
     margin-top: 5px;
 	overflow-x: hidden;
