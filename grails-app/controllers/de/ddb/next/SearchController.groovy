@@ -119,6 +119,7 @@ class SearchController {
                 results: resultsItems,
                 isThumbnailFiltered: params.isThumbnailFiltered,
                 clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
+                correctedQuery:resultsItems["correctedQuery"],
                 viewType:  urlQuery["viewType"],
                 facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
                 resultsPaginatorOptions: resultsPaginatorOptions,
