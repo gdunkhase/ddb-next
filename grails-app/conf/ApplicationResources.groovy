@@ -50,6 +50,8 @@ modules = {
         resource url:'/css/institutionList.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/results.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/print.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/third-party/map/css/style.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/third-party/map/css/ddbPlacenamePopupList.css', attrs:[media:'print'], bundle: 'print'
     }
 
     javascript {

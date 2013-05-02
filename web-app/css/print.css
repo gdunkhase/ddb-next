@@ -25,7 +25,9 @@ footer, .footer,
 .object-controls, .origin, .slide-viewer .tabs, .sibling-count,
 #first-letter-index li:not(.active),
 .group-operator, .add-group-button,
-#articles-prev, #articles-next, .link-adv-search, .contextual-help {
+#articles-prev, #articles-next, .link-adv-search, .contextual-help,
+#divOSM .sliderStyle-vertical, #divOSM .mapHome,
+#mapContainerDiv .sliderStyle-vertical, #mapContainerDiv .mapHome {
   display: none;
 }
 
@@ -126,3 +128,15 @@ footer, .footer,
   display: block !important;
 }
 /* Advanced search - end */
+
+/* Institution details */
+#divOSM {
+  width: 555px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.institution-item-page .location-container {
+  position: absolute;
+  margin-top: 310px;
+}
+/* Institution details - end */
