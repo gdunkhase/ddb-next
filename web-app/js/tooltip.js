@@ -36,6 +36,11 @@ $(function() {
             this.tooltip = element.siblings("div.tooltip");
             element.removeAttr("title");
             this.tooltip.html(this.hint).text();
+            if(this.tooltip.hasClass('hasArrow')){
+              var arrow = $(document.createElement('div'));
+              arrow.addClass('arrow');
+              arrow.appendTo(this.tooltip);
+            }
             this.tooltip.hide();
             this.tooltip.removeClass("off");
             element.hover(function(){

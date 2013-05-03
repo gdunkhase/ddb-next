@@ -25,7 +25,7 @@ limitations under the License.
             args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'objdetails-hierarchy']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
             default="ddbnext.Search_Hint"/>">
         </span>
-        <div class="tooltip off"></div>
+        <div class="tooltip off hasArrow"></div>
     </div>
     <div class="row">
       <div class="span12 item-hierarchy-result" /></div>

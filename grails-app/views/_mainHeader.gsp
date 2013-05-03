@@ -147,7 +147,7 @@ limitations under the License.
                           default="ddbnext.Search_Hint"/>">
                     </span> 
                     <g:link class="link-adv-search" controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link>
-                    <div class="tooltip off">
+                    <div class="tooltip off hasArrow">
                     </div>
                 </g:form>
               </div>

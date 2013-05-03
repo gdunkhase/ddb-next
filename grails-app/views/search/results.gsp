@@ -37,7 +37,7 @@ limitations under the License.
               args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-filters']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
               default="ddbnext.SearchResultsFacetHeading_TooltipContent"/>">
         </span> 
-        <div class="tooltip off"></div>
+        <div class="tooltip off hasArrow"></div>
       </div>
       <div class="facets-list bt bb">
         <g:each in="${facetsList}" var="mit">

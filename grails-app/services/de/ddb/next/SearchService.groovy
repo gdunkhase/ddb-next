@@ -313,7 +313,7 @@ class SearchService {
             urlQuery["minDocs"] = getMapElementOfUnsureType(reqParameters, "minDocs", "")
         }
 
-        if(reqParameters["sort"] != null && (reqParameters["sort"]=~ /^random_[0-9]+$/)){
+        if(reqParameters["sort"] != null && ((reqParameters["sort"]=~ /^random_[0-9]+$/) || reqParameters["sort"]=='ALPHA_ASC' || reqParameters["sort"]=='ALPHA_DESC')){
             urlQuery["sort"] = getMapElementOfUnsureType(reqParameters, "sort", "")
         }else{
             if(urlQuery["query"]!="*"){
