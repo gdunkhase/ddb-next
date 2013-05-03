@@ -266,6 +266,12 @@ noscript .scroller {
   color: #3E3A37; 
   font-size: 0.875em;
 }
+
+.fancybox-click-nav {
+  position: absolute; 
+  width: 50%;
+  height: 100%;
+}
 .fancybox-pagination span {
   font-size: 1.250em;
   padding: 5px;
