@@ -472,6 +472,10 @@ header .language-wrapper >a,.header .language-wrapper >a {
   margin-left: 10px;
 }
 
+.search-header .tooltip .arrow {
+  right: 5px;
+}
+
 .search-header form .contextual-help a {
   display: block;
   overflow: hidden;
@@ -1232,5 +1236,13 @@ select {
 
 .nopointer {
   cursor: default !important;
+}
+.tooltip .arrow{
+  background: url("../images/icons/tooltip.png") -11px -12px no-repeat;
+  width: 17px;
+  height: 9px;
+  position: absolute;
+  top: -9px;
+  background-color: #fff;
 }
 /* genaral rules - end */

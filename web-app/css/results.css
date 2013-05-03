@@ -586,6 +586,12 @@ input[type="checkbox"],input[type="radio"] {
 
 .facets-container .tooltip{
   font-size: 0.813em;
+  left: 50%;
+  width: 100%;
+}
+.facets-container .tooltip .arrow{
+  left: 50%;
+  margin-left: -17px;
 }
 /*Facets flyout*/
 .flyout-left-container {
