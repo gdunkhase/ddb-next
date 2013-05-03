@@ -869,7 +869,7 @@ filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 
 .ddbPopupCancel:hover {
   background-image: url("../images/ddb_PopupCancelHover.png") ;
-  background-position-y: 40px;
+  background-position: 0px 40px;
 }
 
 .ddbPopupInput {
