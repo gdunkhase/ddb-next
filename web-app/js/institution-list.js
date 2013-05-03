@@ -411,11 +411,11 @@
 
 
   $(function() {
+    $('#institution-list').addClass('off');
     var institutionList = $('#institution-list');
 
     // Only execute the script when the user is in the institution list page.
     if (institutionList.length) {
-      $('#institution-list').addClass('off');
      // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
       ddb.$index = $('#first-letter-index').clone(true, true);
       ddb.$institutionList = institutionList.clone();
