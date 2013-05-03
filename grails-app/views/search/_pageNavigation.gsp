@@ -34,10 +34,10 @@ limitations under the License.
         <g:set var="displayRightPagination" value="off"></g:set>
       </g:if>
       <li class="first-page ${displayLeftPagination}">
-        <a class="page-nav-result" href="${navData.paginationURL.firstPg}"><g:message code="ddbnext.First_Label" /></a>  
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.firstPg}"><g:message code="ddbnext.First_Label" /></a>  
       </li>
       <li class="prev-page br ${displayLeftPagination}">
-        <a class="page-nav-result" href="${navData.paginationURL.prevPg}"><g:message code="ddbnext.Previous_Label" /></a> 
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg}"><g:message code="ddbnext.Previous_Label" /></a> 
       </li>
       <li class="pages-overall-index">
         <span>
@@ -49,10 +49,10 @@ limitations under the License.
         </span>
       </li>
       <li class="next-page bl ${displayRightPagination}">
-        <a class="page-nav-result" href="${navData.paginationURL.nextPg}"><g:message code="ddbnext.Next_Label" /></a> 
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg}"><g:message code="ddbnext.Next_Label" /></a> 
       </li>
       <li class="last-page ${displayRightPagination}">
-        <a class="page-nav-result" href="${navData.paginationURL.lastPg}"><g:message code="ddbnext.Last_Label" /></a> 
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.lastPg}"><g:message code="ddbnext.Last_Label" /></a> 
       </li>
     </ul>
   </div>

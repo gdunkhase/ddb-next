@@ -16,6 +16,9 @@
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 $(function() {
 
+  // workaround for ffox + ie click focus - prevents links that load dynamic content to be focussed/active. 
+  $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
+
   // Fix for back-button problem with the searchfield: DDBNEXT-389 
   if($.browser.msie){
     var queryCache = $("#querycache");
@@ -26,7 +29,6 @@ $(function() {
     $("#form-search-header .query").val(queryString);
   }
 
-  
   if (window.history && history.pushState) {
     historyedited = false;
     historySupport = true;
