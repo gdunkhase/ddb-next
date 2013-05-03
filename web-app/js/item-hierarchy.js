@@ -143,10 +143,23 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isCurrentPa
   }
 
   i.click(function() {
+    var isRoot = $(this).hasClass("root");
     var isExpanded = $(this).hasClass("expanded");
+
+    if (isRoot && isExpanded) {
+      return;
+    }
+
     var isRoot = currentNode.hasClass("root");
     var li = $(this).parent().parent();
     var hasName = li.parent().hasClass("has-name");
+    var parentLi;
+
+    if (hasName) {
+      parentLi = li.parent().parent().parent().parent();
+    } else {
+      parentLi = li.parent().parent();
+    }
 
     setNodeIcon($(this), !isExpanded);
     if (isExpanded) {
@@ -168,13 +181,9 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isCurrentPa
       }
 
       // show minus sign on parent node
-      setNodeIcon(currentNode.parent().parent().children("span").children("i"), true);
+      setNodeIcon(parentLi.children("span").children("i"), true);
 
-      if (hasName) {
-        showChildren(url, li.parent().parent().parent().parent(), parentId, id, true);
-      } else {
-        showChildren(url, li.parent().parent(), parentId, id, true);
-      }
+      showChildren(url, parentLi, parentId, id, true);
     } else {
       // expand node
       if (!isRoot) {
@@ -184,7 +193,7 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isCurrentPa
       }
 
       // show plus sign on parent node
-      setNodeIcon(currentNode.parent().parent().children("span").children("i"), false);
+      setNodeIcon(parentLi.children("span").children("i"), false);
 
       showChildren(url, li, value.id, parentId, true);
     }
@@ -447,14 +456,12 @@ function parseUrl(url) {
  * plus symbol
  */
 function setNodeIcon(currentNode, setExpanded) {
-  if (!currentNode.hasClass("root")) {
-    if (setExpanded) {
-      currentNode.removeClass("collapsed");
-      currentNode.addClass("expanded");
-    } else {
-      currentNode.removeClass("expanded");
-      currentNode.addClass("collapsed");
-    }
+  if (setExpanded) {
+    currentNode.removeClass("collapsed");
+    currentNode.addClass("expanded");
+  } else {
+    currentNode.removeClass("expanded");
+    currentNode.addClass("collapsed");
   }
 }
 

@@ -63,11 +63,6 @@
   width: 20px;
 }
 
-.item-hierarchy-result i.root {
-  background: #999 none;
-  cursor: pointer;
-}
-
 /* draw a plus sign */
 .item-hierarchy-result i.collapsed {
   background: #a5003b
@@ -80,6 +75,16 @@
   background: #a5003b
     url("../images/bg/advanced_search_parent_node_collapse.png");
   cursor: pointer;
+}
+
+/* draw a grey rectangle */
+.item-hierarchy-result i.root {
+  background: #999 none;
+  cursor: pointer;
+}
+
+.item-hierarchy-result i.root.expanded {
+  cursor: auto;
 }
 
 /* draw a circle in front of the leaf indicator */
@@ -240,9 +245,11 @@
     display: none;
   }
 }
+
 .item-hierarchy .tooltip {
   margin-top: 10px;
 }
+
 .item-hierarchy .tooltip .arrow {
   left: 148px;
 }
