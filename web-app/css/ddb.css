@@ -722,7 +722,7 @@ header .language-widget form,.header .language-widget form {
 
 #form-search {
   position: relative;
-  width: 50%;
+  width: 575px;
   margin: 0 auto;
 }
 
@@ -732,11 +732,20 @@ header .language-widget form,.header .language-widget form {
 
 #form-search input {
   font-size: 1.25em;
-  width: 80.4%;
-  height: 37px !important;
+  width: 463px;
+  height: 38px !important;
   line-height: 40px;
   float: left;
   padding-left: 10px;
+}
+
+@media (max-width: 979px) {
+  #form-search {
+    width: 50%;
+  }
+  #form-search input {
+    width: 80%;
+  }
 }
 
 #form-search .link-adv-search {
