@@ -240,4 +240,9 @@
     display: none;
   }
 }
-
+.item-hierarchy .tooltip {
+  margin-top: 10px;
+}
+.item-hierarchy .tooltip .arrow {
+  left: 148px;
+}
