@@ -143,7 +143,13 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isCurrentPa
   }
 
   i.click(function() {
+    var isRoot = $(this).hasClass("root");
     var isExpanded = $(this).hasClass("expanded");
+
+    if (isRoot && isExpanded) {
+      return;
+    }
+
     var isRoot = currentNode.hasClass("root");
     var li = $(this).parent().parent();
     var hasName = li.parent().hasClass("has-name");
@@ -168,13 +174,15 @@ function addParentNode(url, currentNode, parentId, value, isCurrent, isCurrentPa
       }
 
       // show minus sign on parent node
-      setNodeIcon(currentNode.parent().parent().children("span").children("i"), true);
+      var parentLi;
 
       if (hasName) {
-        showChildren(url, li.parent().parent().parent().parent(), parentId, id, true);
+        parentLi = li.parent().parent().parent().parent();
       } else {
-        showChildren(url, li.parent().parent(), parentId, id, true);
+        parentLi = li.parent().parent();
       }
+      setNodeIcon(parentLi.children("span").children("i"), true);
+      showChildren(url, parentLi, parentId, id, true);
     } else {
       // expand node
       if (!isRoot) {
@@ -447,14 +455,12 @@ function parseUrl(url) {
  * plus symbol
  */
 function setNodeIcon(currentNode, setExpanded) {
-  if (!currentNode.hasClass("root")) {
-    if (setExpanded) {
-      currentNode.removeClass("collapsed");
-      currentNode.addClass("expanded");
-    } else {
-      currentNode.removeClass("expanded");
-      currentNode.addClass("collapsed");
-    }
+  if (setExpanded) {
+    currentNode.removeClass("collapsed");
+    currentNode.addClass("expanded");
+  } else {
+    currentNode.removeClass("expanded");
+    currentNode.addClass("collapsed");
   }
 }
 
