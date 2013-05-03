@@ -411,7 +411,6 @@
 
 
   $(function() {
-    $('#institution-list').addClass('off');
     var institutionList = $('#institution-list');
 
     // Only execute the script when the user is in the institution list page.
