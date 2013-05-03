@@ -189,7 +189,7 @@ function updateLanguageSwitch(params) {
   }
   
   function removeSearchCookieParameter(paramName){
-    var searchParameters = readCookie("searchParameters");
+    var searchParameters = readCookie("searchParameters" + jsContextPath);
     if (searchParameters != null && searchParameters.length > 0) {
         searchParameters = searchParameters.substring(1, searchParameters.length -1);
         searchParameters = searchParameters.replace(/\\"/g,'"');
