@@ -151,6 +151,11 @@ var InstitutionsMapAdapter = (function($, undefined) {
 
 })(jQuery);
 
+$('#institution-list').ready(function() {
+    $('#institution-list').addClass('off');
+    return;
+});
+
 $(document).ready(function() {
     INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
     MAP_DIR = jsContextPath + MAP_DIR;
