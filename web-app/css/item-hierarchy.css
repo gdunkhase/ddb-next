@@ -101,11 +101,6 @@
   position: relative;
 }
 
-.item-hierarchy-result li.more-available {
-  background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
-    scroll 7px 0px transparent;
-}
-
 .item-hierarchy-result li.leaf {
   background:
     url("../images/bg/advanced_search_solid_joint_standard_top.png" )
@@ -123,6 +118,12 @@
 }
 
 /* draw a dotted line */
+.item-hierarchy-result li.more-available {
+  background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
+    scroll 7px 0px transparent;
+  min-height: 26px;
+}
+
 .item-hierarchy-result li.node.more-hidden {
   background: url("../images/bg/advanced_search_dotted_joint.png")
     no-repeat 7px 0px;
