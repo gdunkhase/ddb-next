@@ -101,11 +101,6 @@
   position: relative;
 }
 
-.item-hierarchy-result li.more-available {
-  background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
-    scroll 7px 0px transparent;
-}
-
 .item-hierarchy-result li.leaf {
   background:
     url("../images/bg/advanced_search_solid_joint_standard_top.png" )
@@ -120,6 +115,20 @@
   background:
     url("../images/bg/advanced_search_solid_joint_last_item.png")
     no-repeat 7px 0px;
+}
+
+/* draw a dotted line */
+.item-hierarchy-result li.more-available {
+  background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
+    scroll 7px 0px transparent;
+  min-height: 26px;
+}
+
+/* draw 2 ellipsis */
+.item-hierarchy-result li.leaf.more-available {
+  background:
+    url("../images/bg/advanced_search_solid_joint_break_top.png")
+    no-repeat -1px 0px;
 }
 
 /* draw a dotted line */
