@@ -29,6 +29,7 @@ class ApisController {
         def resultList = [:]
         def facets = []
         def highlightedTerms = []
+        def correctedQuery = []
         def docs = []
         def query = apisService.getQueryParameters(params)
         def slurper = new XmlSlurper()
@@ -80,6 +81,7 @@ class ApisController {
         }
         resultList["facets"] = jsonResp.facets
         resultList["highlightedTerms"] = jsonResp.highlightedTerms
+        resultList["correctedQuery"] = jsonResp.correctedQuery
         resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
         resultList["numberOfResults"] = jsonResp.numberOfResults
         resultList["randomSeed"] = jsonResp.randomSeed

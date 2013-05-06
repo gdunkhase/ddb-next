@@ -785,3 +785,12 @@ input[type="checkbox"],input[type="radio"] {
 
 }
 /* responsive - end */
+.searchSuggestion{
+ padding-top:25px;
+ padding-bottom:25px
+}
+.searchSuggestion a {
+font-family: KarbidWeb, Calibri, Arial, sans-serif;
+font-size: 1.1em;
+color: #a5003b;
+}
