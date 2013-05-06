@@ -31,6 +31,7 @@ class ApisController {
         def highlightedTerms = []
         def docs = []
         def query = apisService.getQueryParameters(params)
+        def slurper = new XmlSlurper()
 
         def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search', query)
         jsonResp.results["docs"].get(0).each{
@@ -40,13 +41,15 @@ class ApisController {
             def subtitle
             def thumbnail
             def media = []
-
-            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>/
-            if (titleMatch)
-                title= titleMatch[0][3]
-
-            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>/
-            subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
+            
+            def htmlParser = slurper.parseText(it.preview.toString())
+            
+            def temp_title = htmlParser.'**'.find{ it.@class == 'title' }*.text()
+            title = (temp_title)?temp_title.get(0):null
+            
+            def temp_subtitle = htmlParser.'**'.find{ it.@class == 'subtitle' }*.text()
+            subtitle = (temp_subtitle)?temp_subtitle.get(0):null
+            
 
             def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>/
             if (thumbnailMatch)
