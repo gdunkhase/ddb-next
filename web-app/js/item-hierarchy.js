@@ -43,11 +43,7 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   currentNode.empty();
   currentNode.addClass("leaf");
   if (isLast) {
-    if (moreHidden) {
-      var moreAvailable = $(document.createElement("li"));
-      moreAvailable.addClass("more-available");
-      currentNode.parent().append(moreAvailable);
-    } else {
+    if (!moreHidden) {
       currentNode.addClass("last");
     }
   } else {
@@ -74,6 +70,31 @@ function addLeafNode(currentNode, value, isCurrent, isLast, moreHidden) {
   a.append(truncateTitle(value.label, 350));
   currentNode.append(leafIndicator);
   currentNode.append(a);
+}
+
+/*
+ * Add the currently displayed object and a dotted line to the the current node.
+ * 
+ * @param {Element} currentNode current node (ul element)
+ * 
+ * @param {boolean} currentNodeFound true if the currently displayed object was
+ * aleady added to the current node. Otherwise it will be added here.
+ * 
+ * @param {JSON} value data object
+ */
+function addMoreHiddenNode(currentNode, currentNodeFound, value) {
+  if (!currentNodeFound) {
+    var leafNode = $("<li>");
+
+    addLeafNode(leafNode, value, true, true, true);
+    leafNode.addClass("more-available");
+    currentNode.append(leafNode);
+  }
+
+  var moreAvailable = $("<li>");
+
+  moreAvailable.addClass("more-available");
+  currentNode.append(moreAvailable);
 }
 
 /*
@@ -378,6 +399,9 @@ function createHierarchy(url) {
     } else {
       parentId = parents[parents.length - 1].id;
     }
+
+    var currentNodeFound = false;
+
     getChildren(url, parentId, function(children) {
       var ul = $("<ul>");
       var length = children.length;
@@ -385,8 +409,13 @@ function createHierarchy(url) {
 
       $.each(children, function(index, value) {
         var hasName = value.type != null;
+        var isCurrent = value.id == parents[parents.length - 1].id;
         var leafNode = $("<li>");
         var showName = false;
+
+        if (isCurrent) {
+          currentNodeFound = true;
+        }
 
         // show hierarchy type
         if (value.type != type) {
@@ -401,7 +430,7 @@ function createHierarchy(url) {
           ul.append(leafNode);
         }
         if (value.leaf) {
-          addLeafNode(leafNode, value, value.id == parents[parents.length - 1].id, index == length - 1, length == 501);
+          addLeafNode(leafNode, value, isCurrent, index == length - 1, length == 501);
         } else {
           leafNode.addClass("node");
           leafNode.attr("data-bind", JSON.stringify(parents));
@@ -409,6 +438,11 @@ function createHierarchy(url) {
         }
       });
       currentNode.append(ul);
+
+      // add current node if it is not within the first 500 children
+      if (length == 501) {
+        addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
+      }
     });
 
     $(".item-hierarchy-result").html(list);
@@ -508,12 +542,12 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
   }
 
   // get the id of the child which is on the current path
-  var id = "";
   var dataBind = currentNode.attr("data-bind");
+  var parents = null;
+  var id = "";
 
   if (dataBind != null) {
-    var parents = JSON.parse(dataBind);
-
+    parents = JSON.parse(dataBind);
     $.each(parents, function(index, value) {
       if (value.id == currentId && index < parents.length - 1) {
         id = parents[index + 1].id;
@@ -532,6 +566,7 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
 
   // add children
   getChildren(url, currentId, function(children) {
+    var currentNodeFound = false;
     var length = children.length;
     var type = null;
 
@@ -540,8 +575,12 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
       var isLast = index == length - 1;
       var li = $(document.createElement("li"));
 
+      if (isCurrent) {
+        currentNodeFound = true;
+      }
+
       currentNode = ul;
-      li.addClass("node last");
+      li.addClass("node");
       li.attr("data-bind", dataBind);
 
       // show hierarchy type
@@ -553,15 +592,16 @@ function showChildren(url, currentNode, currentId, parentId, drawBorder) {
       }
 
       currentNode.append(li);
-      addWaitSymbol(li);
-      getChildren(url, value.id, function(children) {
-        if (children.length > 0) {
-          addParentNode(url, li, currentId, value, isCurrent, isCurrent, isLast, false, drawBorder, false);
-        } else {
-          addLeafNode(li, value, isCurrent, isLast, length == 501);
+      if (value.leaf) {
+        addLeafNode(li, value, isCurrent, isLast, length == 501);
+
+        // add current node if it is not within the first 500 children
+        if (isLast && length == 501) {
+          addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
         }
-        return;
-      });
+      } else {
+        addParentNode(url, li, currentId, value, isCurrent, isCurrent, isLast, false, drawBorder, false);
+      }
     });
   });
 }

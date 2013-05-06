@@ -124,6 +124,14 @@
   min-height: 26px;
 }
 
+/* draw 2 ellipsis */
+.item-hierarchy-result li.leaf.more-available {
+  background:
+    url("../images/bg/advanced_search_solid_joint_break_top.png")
+    no-repeat -1px 0px;
+}
+
+/* draw a dotted line */
 .item-hierarchy-result li.node.more-hidden {
   background: url("../images/bg/advanced_search_dotted_joint.png")
     no-repeat 7px 0px;
