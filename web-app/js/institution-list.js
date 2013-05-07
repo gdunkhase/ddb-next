@@ -289,7 +289,6 @@
     },
 
     updateIndex: function(hasNoMember) {
-      console.log('has no member: ', hasNoMember);
       if (hasNoMember) {
         // enable all index. It means visually that the index all not grey.
         $('#first-letter-index li').removeClass('disabled');
@@ -302,9 +301,6 @@
             e.preventDefault();
           });
         });
-      } else {
-        // TODO: restore the index to initial state.
-        $('#first-letter-index li').removeClass('disabled');
       }
     },
 
