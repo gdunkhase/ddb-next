@@ -34,6 +34,8 @@ class ApisController {
         def query = apisService.getQueryParameters(params)
         def slurper = new XmlSlurper()
 
+        slurper.setKeepWhitespace(true)
+
         def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search', query)
         jsonResp.results["docs"].get(0).each{
 
