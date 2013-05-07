@@ -67,7 +67,7 @@ class ItemController {
                 redirect(controller: 'error')
             } else {
                 def itemUri = request.forwardURI
-                def fields = translate(item.fields)
+                def fields = translate(item.fields, convertToHtmlLink)
 
                 if(params.print){
                     renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
@@ -91,7 +91,7 @@ class ItemController {
         }
     }
 
-    def translate(fields) {
+    def translate(fields, convertToHtmlLink) {
         fields.each {
             it = convertToHtmlLink(it)
 
@@ -106,7 +106,7 @@ class ItemController {
         }
     }
 
-    def convertToHtmlLink(field) {
+    def convertToHtmlLink = { field ->
         def fieldValue = field.value?.toString()
         if(fieldValue.startsWith(HTTP) || fieldValue.startsWith(HTTPS)) {
             field.value = '<a href="' + fieldValue + '">' + fieldValue + '</a>'
