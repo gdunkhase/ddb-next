@@ -166,6 +166,7 @@ $(document).ready(function() {
             jsLongitude, jsLatitude);
     }
     else if (jsPageName == INSTITUTIONLIST_PAGE_NAME) {
+        $('.loader').addClass('off');
         InstitutionsMapAdapter.setupDom4MapDisplay();
     }
     return;

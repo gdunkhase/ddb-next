@@ -21,6 +21,7 @@ limitations under the License.
 <meta name="layout" content="main" />
 
 <r:require module="institutionlist"/>
+
 </head>
 <body>
   <h1><g:message code="ddbnext.Institutions" /></h1>
@@ -33,6 +34,15 @@ limitations under the License.
   </div>
   <div class="row institutionlist">
     <div class="span9">
+    <noscript>
+      <div class="off">
+    </noscript>
+    <div class="loader">
+      <img alt="" src="../images/icons/loader_small.gif">
+    </div>
+    <noscript>
+      </div>
+    </noscript>
     <g:render template="filterPhone" />
     <g:render template="pagination" />
       <%-- 
