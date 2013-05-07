@@ -615,9 +615,7 @@ header .language-widget form,.header .language-widget form {
 }
 
 .brand img {
-  height: 40px;
   margin: 0px;
-  padding: 0px;
 }
 
 .btn-navbar {
@@ -865,6 +863,15 @@ noscript .caption {
   }
   .carousel a.next {
     right: -30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .search-widget img {
+    display: none;
+  }
+  #form-search {
+    margin-top: 60px;
   }
 }
 
