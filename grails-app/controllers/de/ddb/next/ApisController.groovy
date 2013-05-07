@@ -29,7 +29,7 @@ class ApisController {
         def resultList = [:]
         def facets = []
         def highlightedTerms = []
-        def correctedQuery = []
+        def correctedQuery = ""
         def docs = []
         def query = apisService.getQueryParameters(params)
         def slurper = new XmlSlurper()
@@ -42,15 +42,15 @@ class ApisController {
             def subtitle
             def thumbnail
             def media = []
-            
+
             def htmlParser = slurper.parseText(it.preview.toString())
-            
+
             def temp_title = htmlParser.'**'.find{ it.@class == 'title' }*.text()
             title = (temp_title)?temp_title.get(0):null
-            
+
             def temp_subtitle = htmlParser.'**'.find{ it.@class == 'subtitle' }*.text()
             subtitle = (temp_subtitle)?temp_subtitle.get(0):null
-            
+
 
             def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>/
             if (thumbnailMatch)
@@ -115,27 +115,39 @@ class ApisController {
      * @return OutPutStream
      */
     synchronized def binary(){
-        def cacheExpiryInDays =1 // example 1 for 1 day
+        def cacheExpiryInDays = 1 // example 1 for 1 day
+
+        String defaultExpirationDate = formatDateForExpiresHeader(cacheExpiryInDays).toString()
+        String defaultCacheExpires = "max-age="+cacheExpiryInDays * 24 * 60 *60
+        String fileNamePath = getFileNamePath().tokenize('/')[-1]
+
         def query = [ client: "DDB-NEXT" ]
-        def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query, response.outputStream )
+        def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(),
+                getFileNamePath(),
+                query,
+                response,
+                defaultExpirationDate,
+                defaultCacheExpires,
+                fileNamePath)
 
-        def expiresHeaderBackend = urlResponse.get("Expires")
-        if(expiresHeaderBackend){
-            response.setHeader("Expires", expiresHeaderBackend)
-        }else{
-            response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
-        }
+        //        def expiresHeaderBackend = resp.headers.'Expires'
+        //        if(expiresHeaderBackend){
+        //            response.setHeader("Expires", expiresHeaderBackend)
+        //        }else{
+        //            response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+        //        }
+        //
+        //        def cacheControlHeaderBackend = urlResponse.get("Cache-Control")
+        //        if(cacheControlHeaderBackend){
+        //            response.setHeader("Cache-Control", cacheControlHeaderBackend)
+        //        }else{
+        //            response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
+        //        }
+        //
+        //        response.setContentType(urlResponse.get("Content-Type"))
+        //        response.setContentLength(urlResponse.get("Content-Length").toInteger())
+        //        response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
 
-        def cacheControlHeaderBackend = urlResponse.get("Cache-Control")
-        if(cacheControlHeaderBackend){
-            response.setHeader("Cache-Control", cacheControlHeaderBackend)
-        }else{
-            response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
-        }
-
-        response.setContentType(urlResponse.get("Content-Type"))
-        response.setContentLength(urlResponse.get("Content-Length").toInteger())
-        response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
     }
 
     private def getBinaryServerUrl(){
@@ -146,13 +158,29 @@ class ApisController {
 
     def staticFiles() {
         def query = [ client: "DDB-NEXT" ]
+        //        def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
+        //                '/static/' + getFileNamePath(), query, response.outputStream )
+
+        //        if(urlResponse && urlResponse != 'Not found') {
+        //            response.setContentType(urlResponse.get("Content-Type"))
+        //            response.setContentLength(urlResponse.get("Content-Length").toInteger())
+        //            response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
+        //        }
+
+        def cacheExpiryInDays = 1 // example 1 for 1 day
+
+        String defaultExpirationDate = formatDateForExpiresHeader(cacheExpiryInDays).toString()
+        String defaultCacheExpires = "max-age="+cacheExpiryInDays * 24 * 60 *60
+        String fileNamePath = getFileNamePath().tokenize('/')[-1]
+
         def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
-                '/static/' + getFileNamePath(), query, response.outputStream )
-        if(urlResponse && urlResponse != 'Not found') {
-            response.setContentType(urlResponse.get("Content-Type"))
-            response.setContentLength(urlResponse.get("Content-Length").toInteger())
-            response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
-        }
+                '/static/' + getFileNamePath(),
+                query,
+                response,
+                defaultExpirationDate,
+                defaultCacheExpires,
+                fileNamePath)
+
     }
     /**
      *  Format RFC 2822 date

@@ -45,11 +45,9 @@ limitations under the License.
     </noscript>
     <g:render template="filterPhone" />
     <g:render template="pagination" />
-      <%-- 
       <div id="no-match-message">
         <g:message code="ddbnext.InstitutionPage_NoMatches" />
       </div>
-      --%>
       <ol id="institution-list">
         <g:each in="${ all }">
         <li class="institution-listitem" data-sector="${ it?.sector }" 

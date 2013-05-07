@@ -67,7 +67,11 @@ limitations under the License.
     </div>
     
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
-      <g:render template="searchSuggestion" />
+      <g:if test="${correctedQuery!='null'}">
+        <g:if test="${correctedQuery}">
+          <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+        </g:if>
+      </g:if>
       <g:render template="noResults" />
     </div>
     <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
@@ -95,8 +99,10 @@ limitations under the License.
           </div>
         </div>
       </div>
-      <g:if test="${correctedQuery}">
-        <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+      <g:if test="${correctedQuery!='null'}">
+	      <g:if test="${correctedQuery}">
+	        <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+	      </g:if>
       </g:if>
       
       <div class="row">

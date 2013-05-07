@@ -267,7 +267,9 @@
         $('#institution-list')
           .empty()
           .html(ddb.$institutionList.html());
-        ddb.updateIndex();
+
+        var $currentIndex = $('#first-letter-index');
+        $currentIndex.html(ddb.$index.html());
       }
     },
 
@@ -362,7 +364,6 @@
       $currentIndex.html(ddb.$index.html());
 
       ddb.onIndexClick();
-
 
       // style the selected index.
       var $aHref = $('#first-letter-index a[href="' + '#' + firstLetter + '"]');

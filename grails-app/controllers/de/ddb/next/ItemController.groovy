@@ -18,6 +18,9 @@ package de.ddb.next
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
+
+    private static final def HTTP ='http://'
+    private static final def HTTPS ='https://'
     static defaultAction = "findById"
 
     def itemService
@@ -26,7 +29,10 @@ class ItemController {
 
 
     def children() {
-        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", ["rows":501]))
+        render(contentType:"application/json",
+        text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),
+        "/hierarchy/" + params.id + "/children",
+        ["rows":501]))
     }
 
     def findById() {
@@ -61,7 +67,7 @@ class ItemController {
                 redirect(controller: 'error')
             } else {
                 def itemUri = request.forwardURI
-                def fields = translate(item.fields)
+                def fields = translate(item.fields, convertToHtmlLink)
 
                 if(params.print){
                     renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
@@ -85,8 +91,10 @@ class ItemController {
         }
     }
 
-    def translate(fields) {
+    def translate(fields, convertToHtmlLink) {
         fields.each {
+            it = convertToHtmlLink(it)
+
             def messageKey = 'ddbnext.' + it.'@id'
             def translated = message(code: messageKey)
             if(translated != messageKey) {
@@ -96,6 +104,14 @@ class ItemController {
                 log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
             }
         }
+    }
+
+    def convertToHtmlLink = { field ->
+        def fieldValue = field.value?.toString()
+        if(fieldValue.startsWith(HTTP) || fieldValue.startsWith(HTTPS)) {
+            field.value = '<a href="' + fieldValue + '">' + fieldValue + '</a>'
+        }
+        return field
     }
 
     def parents() {
