@@ -28,7 +28,7 @@ limitations under the License.
         <div class="tooltip off hasArrow"></div>
     </div>
     <div class="row">
-      <div class="span12 item-hierarchy-result" /></div>
+      <div class="span12 item-hierarchy-result"></div>
     </div>
   </div>
 </div>
