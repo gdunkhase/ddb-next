@@ -29,7 +29,7 @@ class ApisController {
         def resultList = [:]
         def facets = []
         def highlightedTerms = []
-        def correctedQuery = []
+        def correctedQuery = ""
         def docs = []
         def query = apisService.getQueryParameters(params)
         def slurper = new XmlSlurper()
