@@ -236,7 +236,7 @@ class ApiConsumer {
                         log.warn "getBinaryContent(): Could not copy streaming data to output stream. ", t
                     }
 
-                    return ["Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
+                    return ["Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length', "Expires":resp.headers.'Expires', "Cache-Control":resp.headers.'Cache-Control']
                 }
                 response.'404' = {resp, reader ->
                     log.error "404 getBinaryContent(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri

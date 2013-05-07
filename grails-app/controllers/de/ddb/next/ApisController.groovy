@@ -114,12 +114,25 @@ class ApisController {
      * Wrapper to support streaming of files from the backend
      * @return OutPutStream
      */
-    def binary(){
+    synchronized def binary(){
         def cacheExpiryInDays =1 // example 1 for 1 day
         def query = [ client: "DDB-NEXT" ]
-        def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query, response.outputStream )
-        response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
-        response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+        def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query, response.outputStream )
+
+        def expiresHeaderBackend = urlResponse.get("Expires")
+        if(expiresHeaderBackend){
+            response.setHeader("Expires", expiresHeaderBackend)
+        }else{
+            response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+        }
+
+        def cacheControlHeaderBackend = urlResponse.get("Cache-Control")
+        if(cacheControlHeaderBackend){
+            response.setHeader("Cache-Control", cacheControlHeaderBackend)
+        }else{
+            response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
+        }
+
         response.setContentType(urlResponse.get("Content-Type"))
         response.setContentLength(urlResponse.get("Content-Length").toInteger())
         response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
