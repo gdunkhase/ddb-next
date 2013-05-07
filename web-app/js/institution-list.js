@@ -267,7 +267,9 @@
         $('#institution-list')
           .empty()
           .html(ddb.$institutionList.html());
-        ddb.updateIndex();
+
+        var $currentIndex = $('#first-letter-index');
+        $currentIndex.html(ddb.$index.html());
       }
     },
 
@@ -287,6 +289,7 @@
     },
 
     updateIndex: function(hasNoMember) {
+      console.log('has no member: ', hasNoMember);
       if (hasNoMember) {
         // enable all index. It means visually that the index all not grey.
         $('#first-letter-index li').removeClass('disabled');
@@ -299,6 +302,9 @@
             e.preventDefault();
           });
         });
+      } else {
+        // TODO: restore the index to initial state.
+        $('#first-letter-index li').removeClass('disabled');
       }
     },
 
@@ -362,7 +368,6 @@
       $currentIndex.html(ddb.$index.html());
 
       ddb.onIndexClick();
-
 
       // style the selected index.
       var $aHref = $('#first-letter-index a[href="' + '#' + firstLetter + '"]');
