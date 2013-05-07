@@ -253,7 +253,7 @@ noscript .scroller {
   background: url("../images/icons/homepage_carousel_controls.png") no-repeat left -203px;
 }
 .fancybox-inner:hover .fancybox-pagination{
-  display: block;
+  display: block !important;
 } 
 .fancybox-pagination {
   display: none;

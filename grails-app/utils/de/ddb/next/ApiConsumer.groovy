@@ -211,7 +211,14 @@ class ApiConsumer {
         }
     }
 
-    static def getBinaryContent(String baseUrl, String path, query, method = Method.GET, OutputStream outputStream) {
+    static def getBinaryContent(String baseUrl,
+            String path,
+            query,
+            method = Method.GET,
+            def responseBrowser,
+            String defaultExpirationDate,
+            String defaultCacheExpires,
+            String fileNamePath) {
         try {
             path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
@@ -228,15 +235,34 @@ class ApiConsumer {
 
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
 
+                    def expiresHeaderBackend = resp.headers.'Expires'
+                    if(expiresHeaderBackend){
+                        responseBrowser.setHeader("Expires", expiresHeaderBackend)
+                    }else{
+                        responseBrowser.setHeader("Expires", defaultExpirationDate)
+                    }
+
+                    def cacheControlHeaderBackend = resp.headers.'Cache-Control'
+                    if(cacheControlHeaderBackend){
+                        responseBrowser.setHeader("Cache-Control", cacheControlHeaderBackend)
+                    }else{
+                        responseBrowser.setHeader("Cache-Control", defaultCacheExpires)
+                    }
+
+                    responseBrowser.setContentType(resp.headers.'Content-Type')
+                    responseBrowser.setContentLength(resp.headers.'Content-Length'.toInteger())
+                    responseBrowser.setHeader("Content-Disposition", "inline; filename="+fileNamePath)
+
+
                     try{
-                        IOUtils.copy(inputstream, outputStream)
+                        IOUtils.copy(inputstream, responseBrowser.outputStream)
                     }catch(java.net.SocketException c){
                         log.info "getBinaryContent(): Output socket already closed"
                     }catch(Throwable t){
                         log.warn "getBinaryContent(): Could not copy streaming data to output stream. ", t
                     }
 
-                    return ["Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
+                    return
                 }
                 response.'404' = {resp, reader ->
                     log.error "404 getBinaryContent(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri

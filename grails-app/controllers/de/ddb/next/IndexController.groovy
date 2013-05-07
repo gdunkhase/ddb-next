@@ -39,7 +39,7 @@ class IndexController {
         def response = ApiConsumer.getText(staticUrl, path, query)
 
         if (response == "Not found"){
-            forward controller: "error", action: "notfound"
+            forward controller: "error", action: "notFound"
             return
         }
 
