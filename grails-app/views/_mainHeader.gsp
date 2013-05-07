@@ -32,7 +32,7 @@ limitations under the License.
         <span class="icon-bar" style="visibility:hidden;"></span>
       </button>
       <g:link uri="/" class="brand" title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}" tabindex="-1">
-        <r:img dir="images" file="logo_header.png" alt="Deutsche Digitale Bibliothek"/>
+        <r:img dir="images" file="mobile-logo.png" alt="Deutsche Digitale Bibliothek"/>
       </g:link>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
