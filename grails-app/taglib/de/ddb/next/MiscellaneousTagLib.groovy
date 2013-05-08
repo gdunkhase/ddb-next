@@ -32,9 +32,9 @@ class MiscellaneousTagLib {
         def inputString = body()
         def outputString = ""
         if(inputString){
-            outputString = inputString.replaceAll(/<!--.*?-->/, '').replaceAll(/<.*?>/, '').replaceAll("&", "&amp;")
+            outputString = inputString.replaceAll(/<!--.*?-->/, '').replaceAll(/<.*?>/, '')
         }
-        out << outputString
+        out << outputString.encodeAsHTML()
     }
 
     /**

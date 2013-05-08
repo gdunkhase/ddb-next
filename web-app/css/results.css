@@ -643,19 +643,22 @@ input[type="checkbox"],input[type="radio"] {
   display: inline-block;
   vertical-align: top;
 }
-.flyout-right-body .left-col >div, .flyout-right-body .right-col >div {
+.flyout-right-body .left-col >li, .flyout-right-body .right-col >li {
   background: #efebe8;
   padding: 5px 5px 5px 5px;
   margin-bottom:2px;
   line-height: 15px;
 }
-.flyout-right-body.body-extender .left-col >div{
+.flyout-right-body.body-extender .left-col >li{
   margin-right: 5px;
 }
-.flyout-right-body.body-extender .right-col >div, .flyout-page-nav .pages-overall-index span{
+.flyout-right-body.body-extender .right-col >li, .flyout-page-nav .pages-overall-index span{
   margin-left: 5px;
 }
-.flyout-right-body .left-col >div span, .flyout-right-body .right-col >div span {
+.flyout-right-body .left-col >li a{
+  display: block;
+}
+.flyout-right-body .left-col >li span, .flyout-right-body .right-col >li span {
   float: right;
   margin-left: 5px;
 }
@@ -665,10 +668,10 @@ input[type="checkbox"],input[type="radio"] {
 .flyout-page-nav {
   font-weight: normal;
 }
-.flyout-right-body .left-col >div,  .flyout-right-body .right-col >div {
+.flyout-right-body .left-col >li,  .flyout-right-body .right-col >li {
   cursor: pointer;
 }
-.flyout-right-body .left-col >div:hover,  .flyout-right-body .right-col >div:hover, .add-more-filters:hover{
+.flyout-right-body .left-col >li:hover,  .flyout-right-body .right-col >li:hover, .add-more-filters:hover{
   text-decoration: underline;
   color: #a5003b;
 }
