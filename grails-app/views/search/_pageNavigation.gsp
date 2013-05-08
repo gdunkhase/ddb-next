@@ -15,10 +15,10 @@ limitations under the License.
 --%>
 <div class="page-info-nav">
   <div class="page-info">
-    <span class="results-overall-index">${navData.resultsOverallIndex}</span>
-    <span><g:message code="ddbnext.Of" /></span>
-    <span><strong><span class="results-total">${numberOfResultsFormatted}</span></strong></span>
-    <g:if test="${numberOfResultsFormatted == '1'}">
+    <span class="results-overall-index">${navData.resultsOverallIndex} </span> 
+    <span><g:message code="ddbnext.Of" /> </span> 
+    <span><strong><span class="results-total">${numberOfResultsFormatted}</span></strong> </span> 
+    <g:if test="${numberOfResultsFormatted == '1'}"> 
         <span id="results-label"><g:message code="ddbnext.Result_lowercase" /></span>
     </g:if>
     <g:else>
