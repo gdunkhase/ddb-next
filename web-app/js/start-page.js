@@ -25,32 +25,18 @@ $(document).ready(function() {
         var carouselItems = $("#articles");
         if (carouselItems.length) {
             carouselItems.carouFredSel({
-                auto : {
-                    items : 1,
-                    duration : 1000,
-                    easing : "linear",
-                    timeoutDuration : 0
+                scroll: 1,
+                infinite: false,
+                auto    : false,
+                prev    : {
+                    button : "#articles-prev",
+                    key    : "left"
+                },
+                next    : { 
+                    button  : "#articles-next",
+                    key     : "right"
                 }
-            }).trigger("pause");
-
-            $("#articles-prev").hover(function() {
-                carouselItems.trigger("configuration", ["direction", "right"]);
-                carouselItems.trigger("play");
-            }, function() {
-                carouselItems.trigger("pause");
-            }).click(function() {
-                return false;
-            });
-
-            $("#articles-next").hover(function() {
-                carouselItems.trigger("configuration", ["direction", "left"]);
-                carouselItems.trigger("play");
-            }, function() {
-                carouselItems.trigger("pause");
-            }).click(function() {
-                return false;
             });
         }
-
     });
 });
