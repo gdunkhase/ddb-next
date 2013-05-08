@@ -123,19 +123,16 @@ footer, .footer,
   display: inline-block;
   width: 130px;
 }
-.item-detail .institution .row {
-  position: relative;
-}
-.item-detail .institution .row div:last-child {
-  clear: both;
-}
 .item-detail .institution .span9 {
-  float: left;
-  width: 480px; 
+  display: inline-block;
+  width: 470px;
 }
 .item-detail .institution .span3 {
-  float: right;
-  width: 160px; 
+  display: inline-block;
+  width: 160px;
+}
+.item-detail .institution .row {
+  position: relative;
 }
 .item-detail .institution .span3 img {
   float: right;
@@ -150,13 +147,14 @@ footer, .footer,
 .item-detail .slide-viewer img {
   margin-left: 0px;
 }
-.item-detail .linkurl {
+.item-detail.linkurl {
   font-size: 0.938em;
   display: block !important;
-  padding-bottom: 10px;
+  margin-top: 10px;
+  padding-top: 10px;
   border-color: #efebe8;
   border-style: solid;
-  border-width: 0 0 2px 0;
+  border-width: 2px 0 0 0;
 }
 
 .item-detail .item-description {
