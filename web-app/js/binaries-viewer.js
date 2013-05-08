@@ -35,11 +35,12 @@ $(document).ready(function() {
         'file': file,
         'skin': jsContextPath + '/jwplayer/skins/five.xml',
         'image': image,
-        'controlbar': 'bottom',
-        'stretching': "uniform",
+        'controls': true,
+        'controlbar': "bottom",
+        'stretching': 'uniform',
         'width': width,
         'height': height,
-        'primary': "flash"
+        'primary': 'flash',
       });      
       
     }
