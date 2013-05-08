@@ -163,7 +163,7 @@ function updateLanguageSwitch(params) {
         params = params.substring(1);
     }
     var pattern = /(.*?\?).*?(lang=\w*)/;
-    $('.language-wrapper').find('a[href]').each(function(){
+    $('.language-wrapper .selector').find('a[href]').each(function(){
       var matches = pattern.exec($(this).attr('href'));
       $(this).attr('href', matches[1] + params + matches[2]);
     }); 
