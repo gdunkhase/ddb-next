@@ -642,7 +642,7 @@ header .language-widget form,.header .language-widget form {
   width: 240px;
 }
 #form-search-header-mobile input {
-  width: 206px;
+  width: 75%;
 }
 @media (max-width: 979px) {
   .search-header form input {
@@ -746,6 +746,12 @@ header .language-widget form,.header .language-widget form {
   }
   #form-search input {
     width: 80%;
+  }
+}
+
+@media (max-width: 373px) {
+  #form-search input {
+    width: 72%;
   }
 }
 
