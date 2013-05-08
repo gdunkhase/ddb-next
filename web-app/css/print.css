@@ -135,8 +135,22 @@ footer, .footer,
   margin-left: auto;
   margin-right: auto;
 }
+.institution {
+  border-width: 2px 0 2px 0;
+  padding: 10px 0 10px 0;
+}
+.institution .count {
+  font-size: 0.682em;
+  color: #3e3a37;
+}
 .institution-item-page .location-container {
   position: absolute;
   margin-top: 310px;
+}
+.institution-list {
+  list-style: square;
+}
+.institution-listitem {
+  list-style: square;
 }
 /* Institution details - end */
