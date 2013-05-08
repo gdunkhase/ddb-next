@@ -71,6 +71,9 @@
 .grey-arrow li {
   background: url("../images/icons/list_arrow_grey.png") no-repeat 0 4px;
 }
+.no-arrow {
+  background: none !important;
+}
 /*TODO find a solution for the conflict with fl and fr classes*/
 .floatLeft {
     float: left;
