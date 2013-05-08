@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 $(document).ready(function() {
-
   if ($(".item-hierarchy").length > 0) {
-    var imgLoader = document.createElement("img");
-    imgLoader.src = "../images/icons/loader_small.gif";
-    $(".item-hierarchy-result").prepend(imgLoader);
-
+    itemHierarchy.addWaitSymbol($(".item-hierarchy-result"));
     itemHierarchy.createHierarchy(itemHierarchy.parseUrl(location.href));
   }
 });
@@ -439,7 +435,8 @@ var itemHierarchy = {
           } else {
             leafNode.addClass("node");
             leafNode.attr("data-bind", JSON.stringify(parents));
-            itemHierarchy.addParentNode(url, leafNode, parentId, value, false, false, index == length - 1, false, false, false);
+            itemHierarchy.addParentNode(url, leafNode, parentId, value, false, false, index == length - 1, false,
+                false, false);
           }
         });
         currentNode.append(ul);
@@ -605,7 +602,8 @@ var itemHierarchy = {
             itemHierarchy.addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
           }
         } else {
-          itemHierarchy.addParentNode(url, li, currentId, value, isCurrent, isCurrent, isLast, false, drawBorder, false);
+          itemHierarchy
+              .addParentNode(url, li, currentId, value, isCurrent, isCurrent, isLast, false, drawBorder, false);
         }
       });
     });
