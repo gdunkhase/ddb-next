@@ -24,7 +24,7 @@ limitations under the License.
 <body>
   <g:render template="controls" />
   <g:render template="institution" />
-  <div class="row item-content">
+  <div class="row item-detail item-content">
     <div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
       <h2>${title}</h2>
       <g:render template="fields" />

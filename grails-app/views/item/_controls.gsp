@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <!-- TODO: rewrite the class controls, disable back to results -->
-<div class="row">
+<div class="row item-detail">
   <div class="span12 object-controls">
     <!-- buttons -->
     <div class="span6 item-nav-left">
