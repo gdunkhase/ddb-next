@@ -31,11 +31,11 @@ limitations under the License.
       <g:render template="rights" />
       <g:render template="origin" />
     </div>
-    <g:render template="linkurl" />
     <g:if test="${binaryList}">
       <g:render template="binaries" />
     </g:if>
   </div>
   <g:render template="hierarchy" />
+  <g:render template="linkurl" />
 </body>
 </html>
