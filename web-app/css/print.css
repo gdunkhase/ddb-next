@@ -96,8 +96,15 @@ footer, .footer,
   margin-left: -40px; 
 }
 
-.page-info-nav .page-info{
-  margin-left: 40px;
+.page-info-nav .page-info {
+  margin-top: 15px;
+  line-height: normal;
+}
+
+.results-list .bt {
+  border-color: #efebe8;
+  border-style: solid;
+  border-width: 2px 0 0 0;
 }
 /* Search page - end*/
 
