@@ -41,7 +41,6 @@ limitations under the License.
         <div class="span3" >
             <img alt="${institution.name}" src="${institution.logo.a}"/>
         </div>
-        <div></div><!-- for print preview -->
     </div>
   </div>
 </div>
