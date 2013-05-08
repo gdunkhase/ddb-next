@@ -616,10 +616,13 @@ header .language-widget form,.header .language-widget form {
 
 .brand img {
   margin: 0px;
+  height: 90px;
 }
 
 .btn-navbar {
   height: 30px;
+  position: absolute;
+  right: 0;
 }
 
 .nav-list ul>li {
@@ -635,12 +638,20 @@ header .language-widget form,.header .language-widget form {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
 }
+
 #form-search-header-mobile {
-  width: 240px;
+  width: 275px;
+  padding: 10px 0;
 }
+
 #form-search-header-mobile input {
-  width: 206px;
+  width: 80%;
 }
+
+#form-search-header-mobile button {
+  float: right;
+}
+
 @media (max-width: 979px) {
   .search-header form input {
     width: 180px!important;
@@ -742,7 +753,28 @@ header .language-widget form,.header .language-widget form {
     width: 50%;
   }
   #form-search input {
+    width: 85%;
+  }
+  .search-widget form button {
+    float: right;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  #form-search {
+    width: 64%;
+  }
+}
+
+@media (max-width: 479px) {
+  #form-search input {
     width: 80%;
+  }
+}
+
+@media (max-width: 373px) {
+  #form-search input {
+    width: 74%;
   }
 }
 
