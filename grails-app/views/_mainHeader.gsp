@@ -32,7 +32,7 @@ limitations under the License.
         <span class="icon-bar" style="visibility:hidden;"></span>
       </button>
       <g:link uri="/" class="brand" title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}" tabindex="-1">
-        <r:img dir="images" file="mobile-logo.png" alt="Deutsche Digitale Bibliothek"/>
+        <r:img dir="images" file="mobile-logo.png" alt="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}"/>
       </g:link>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
@@ -72,7 +72,7 @@ limitations under the License.
           <div class="row">
             <div class="span7">
               <g:link uri="/" class="navigation-header-logo" title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}" tabindex="-1">
-                <r:img dir="images" file="logo_header.png" alt=""/>
+                <r:img dir="images" file="logo_header.png" alt="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}"/>
               </g:link>
               <ul class="navigation inline" role="navigation">
                 <li class="root <g:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</g:isMappingActive><g:isMappingActive context="${params}" testif="${[[controller: "index"]]}">active-closed</g:isMappingActive>">
@@ -115,7 +115,7 @@ limitations under the License.
             </div>
             <div class="span5 toolbar">
               <div class="language-wrapper">
-                <a>
+                <a href="#">
                   <g:currentLanguage />
                 </a>
                 <ul class="selector language">
