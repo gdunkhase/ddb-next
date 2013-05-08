@@ -40,19 +40,15 @@ class ApisController {
         jsonResp.results["docs"].get(0).each{
 
             def tmpResult = [:]
-            def title
-            def subtitle
+            String title
+            String subtitle
             def thumbnail
             def media = []
 
-            def htmlParser = slurper.parseText(it.preview.toString())
+            def htmlParser = slurper.parseText(it.preview.toString()) 
 
-            def temp_title = htmlParser.'**'.find{ it.@class == 'title' }*.text()
-            title = (temp_title)?temp_title.get(0):null
-
-            def temp_subtitle = htmlParser.'**'.find{ it.@class == 'subtitle' }*.text()
-            subtitle = (temp_subtitle)?temp_subtitle.get(0):null
-
+            title = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'title' }*.getBody()}
+            subtitle = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'subtitle' }*.getBody()}
 
             def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>/
             if (thumbnailMatch)

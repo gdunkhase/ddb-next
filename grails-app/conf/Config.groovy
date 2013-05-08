@@ -252,3 +252,6 @@ compress {
     production {  statsEnabled = false  }
 }
 
+// Often needed for testing the staticpages on localhost,
+// because these use absolute linking to the server root "/abc"
+//grails.app.context = "/"

@@ -1058,14 +1058,6 @@ a:hover,a:active,a:focus {
   color: #a5003b;
 }
 
-a {
-  outline: 0;
-}
-
-a:focus {
-  outline: none;
-}
-
 body {
   font-family: Calibri,Arial,sans-serif;
   font-size: 16px;

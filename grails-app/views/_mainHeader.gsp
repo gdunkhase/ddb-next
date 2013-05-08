@@ -125,11 +125,11 @@ limitations under the License.
               </div>
               <div class="search-header hidden-phone">
                 <g:form method="get" role="search" id="form-search-header" url="[controller:'search', action:'results']">
-                    <label> 
+                    <label for="search-small"> 
                       <span><g:message code="ddbnext.Search_text_field"/></span>
                     </label>
                     <input type="hidden" id="querycache" value="<g:getCookieFieldValue fieldname="query" />" />
-                    <input type="search" class="query" name="query" value="<g:getCookieFieldValue fieldname="query" />" autocomplete="off"/>
+                    <input type="search" id="search-small" class="query" name="query" value="<g:getCookieFieldValue fieldname="query" />" autocomplete="off"/>
                     <button type="submit">
                       <!--[if !IE]><!-->
                         <g:message code="ddbnext.Go_Button"/>
