@@ -94,6 +94,8 @@ limitations under the License.
                             <i class="icon-child-institution"></i>
                             <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                           </g:else>
+                          <g:set var="maxDepthOfLoop" value="${10}" />
+                          <g:set var="loopCount" value="${0}" />
                           <g:render template="subinstitutions" />
                         </li>
                       </ol>
