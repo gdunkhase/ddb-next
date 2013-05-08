@@ -221,7 +221,7 @@ footer, .footer,
 
 .institution-item-page #divOSM {
   width: 555px;
-  height: 555px;
+  height: 300px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -246,13 +246,19 @@ footer, .footer,
 
 .institution-item-page .institution {
   border-width: 0 0 2px 0 !important;
+  height: 120px;
 }
 .institution-item-page .institution .span9 {
-  display: inline-block;
+  position: absolute;
   width: 480px;
 }
 .institution-item-page .institution .span3 {
-  display: inline-block;
+  position: absolute;
   width: 130px;
+  margin-left: 515px !important;
+}
+.institution-item-page .institution .span3 img {
+  display: block;
+  margin-right:0px;
 }
 /* Institution details - end */
