@@ -43,7 +43,6 @@ limitations under the License.
     <noscript>
       </div>
     </noscript>
-    <g:render template="filterPhone" />
     <g:render template="pagination" />
       <div id="no-match-message">
         <g:message code="ddbnext.InstitutionPage_NoMatches" />
