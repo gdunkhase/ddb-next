@@ -56,10 +56,11 @@ $(document).ready(function() {
     currentTab($("p.all"));
     $("div.all").show();
     $("p.divider").show();
+    $(".tab").addClass('show-divider');
     $("div.tabs").addClass("fix");
     updatePreview($("div.all"));
-    createGallery($("#gallery-all"));
-    updateGalleryPagination(0,"#gallery-all li");
+    createGallery($(".gallery-all"));
+    updateGalleryPagination(0,".gallery-all li");
   });
   function updateGalleryPagination(pag,list) {
     var pos;
@@ -219,10 +220,10 @@ $(document).ready(function() {
   };
   $(".btn-prev").click(function() {
     if(!$(this).hasClass("disabled")){
-      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("pag");
+      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("data-pag");
       var prevPage = parseInt(currentTabPage)-1;
       updateGalleryPagination(prevPage,$(this).parent().find(".gallery-tab li"));
-      $(this).parent().find(".gallery-pagination").attr("pag",prevPage);
+      $(this).parent().find(".gallery-pagination").attr("data-pag",prevPage);
       $(this).addClass("disabled");
       setTimeout(function() {
         $(this).removeClass("disabled");
@@ -231,10 +232,10 @@ $(document).ready(function() {
   });
   $(".btn-next").click(function() {
     if(!$(this).hasClass("disabled")){
-      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("pag");
+      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("data-pag");
       var nextPage = parseInt(currentTabPage)+1;
       updateGalleryPagination(nextPage,$(this).parent().find(".gallery-tab li"));
-      $(this).parent().find(".gallery-pagination").attr("pag",nextPage);
+      $(this).parent().find(".gallery-pagination").attr("data-pag",nextPage);
       $(this).addClass("disabled");
       setTimeout(function() {
         $(this).removeClass("disabled");
@@ -250,11 +251,11 @@ $(document).ready(function() {
     currentTab(this);
     $("div.scroller").hide();
     tab.show();
-    if($("#gallery-all").find('li').size()>3) {
-      createGallery($("#gallery-all"));
+    if($(".gallery-all").find('li').size()>3) {
+      createGallery($(".gallery-all"));
     }
     updatePreview(tab);
-    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-all li");
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),".gallery-all li");
   });
   $("p.images").click(function() {
     var tab = $("div.images");
@@ -263,9 +264,9 @@ $(document).ready(function() {
     currentTab(this);
     $("div.scroller").hide();
     tab.show();
-    createGallery($("#gallery-images"));
+    createGallery($(".gallery-images"));
     updatePreview(tab);
-    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-images li");
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),".gallery-images li");
   });
   $("p.videos").click(function() {
     var tab = $("div.videos");
@@ -274,9 +275,9 @@ $(document).ready(function() {
     currentTab(this);
     $("div.scroller").hide();
     tab.show();
-    createGallery($("#gallery-videos"));
+    createGallery($(".gallery-videos"));
     updatePreview(tab);
-    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-videos li");
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),".gallery-videos li");
   });
   $("p.audios").click(function() {
     var tab = $("div.audios");
@@ -285,9 +286,9 @@ $(document).ready(function() {
     currentTab(this);
     $("div.scroller").hide();
     tab.show();
-    createGallery($("#gallery-audios"));
+    createGallery($(".gallery-audios"));
     updatePreview(tab);
-    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-audios li");
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),".gallery-audios li");
   });
   $(".previews").click(function(e) {
         e.preventDefault();
