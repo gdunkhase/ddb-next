@@ -150,11 +150,6 @@ footer, .footer,
 }
 .item-detail .slide-viewer {
   font-size: 0.938em;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-color: #efebe8;
-  border-style: solid;
-  border-width: 0 0 2px 0;
 }
 .item-detail .slide-viewer img {
   margin-left: 0px;
@@ -171,9 +166,6 @@ footer, .footer,
 
 .item-detail .item-description {
   margin-bottom: 10px;
-  border-color: #efebe8;
-  border-style: solid;
-  border-width: 0 0 2px 0;
 }
 .item-detail .item-description .span2 {
   display: inline-table;
@@ -186,6 +178,12 @@ footer, .footer,
 
 .item-detail .item-hierarchy {
   font-size: 0.938em;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-color: #efebe8;
+  border-style: solid;
+  border-width: 2px 0 0 0;
+  
 }
 .item-detail .item-hierarchy .field-header {
   font-weight: bold;
