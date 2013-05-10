@@ -113,13 +113,13 @@ class ApiConsumer {
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "getTextAsJson(): A HttpResponseException occured", ex
+            log.error "getTextAsJson(): A HttpResponseException occured: "+baseUrl+path+"?"+query, ex
             return null
         } catch (java.net.ConnectException ex) {
-            log.error "getTextAsJson(): A ConnectException occured", ex
+            log.error "getTextAsJson(): A ConnectException occured: "+baseUrl+path+"?"+query, ex
             return null
         } catch (java.lang.Exception ex) {
-            log.error "getTextAsJson(): An unexpected exception occured", ex
+            log.error "getTextAsJson(): An unexpected exception occured: "+baseUrl+path+"?"+query, ex
             return null
         }
     }
