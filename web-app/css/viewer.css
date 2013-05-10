@@ -161,6 +161,15 @@
   color:#3e3a37;
   font-size:1em;
   margin-top:16px;
+  line-height: 1em;
+}
+.slide-viewer .show-divider{
+  border-right: #a5003b 2px solid;
+  padding-right: 5px;
+  margin-right: 5px;
+}
+.slide-viewer .tab.audios{
+  border-right: none;
 }
 @media (max-width: 529px) {
   .slide-viewer .tab {
@@ -170,17 +179,6 @@
 .slide-viewer .tab:hover {
   text-decoration:underline;
   color:#a5003b;
-}
-.slide-viewer .divider {
-  text-decoration:none;
-  cursor:default;
-  padding:0 5px;
-  display:none;
-  color:#a5003b;
-  font-weight:bold;
-}
-.slide-viewer .divider:hover {
-  text-decoration:none;
 }
 .slide-viewer .gallery-pagination {
   margin-bottom:0;
