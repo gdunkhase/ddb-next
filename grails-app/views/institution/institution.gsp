@@ -104,7 +104,11 @@ limitations under the License.
                 </div>
               </div>
             </div>
-  </div>  
+  </div> 
+  <div class="printViewUrl off">
+    <strong><g:message code="ddbnext.CulturalItem_Deeplink"/></strong>: 
+    <div>${url}</div>
+  </div> 
 </body>
 </html>
 
