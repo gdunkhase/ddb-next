@@ -65,7 +65,7 @@ class InstitutionController {
         def vApiInstitution = new ApiInstitution();
         log.debug("read insitution by item id: ${id}");
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, grailsApplication.config.ddb.backend.url.toString());
-        def pageUrl = request.forwardURI;
+        def pageUrl = "http://www.deutsche-digitale-bibliothek.de"+request.forwardURI;
         if (selectedOrgXML) {
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, grailsApplication.config.ddb.backend.url.toString())
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
