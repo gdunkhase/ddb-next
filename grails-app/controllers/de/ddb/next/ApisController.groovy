@@ -45,7 +45,7 @@ class ApisController {
             def thumbnail
             def media = []
 
-            def htmlParser = slurper.parseText(it.preview.toString()) 
+            def htmlParser = slurper.parseText(it.preview.toString())
 
             title = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'title' }*.getBody()}
             subtitle = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'subtitle' }*.getBody()}
@@ -128,24 +128,6 @@ class ApisController {
                 defaultCacheExpires,
                 fileNamePath)
 
-        //        def expiresHeaderBackend = resp.headers.'Expires'
-        //        if(expiresHeaderBackend){
-        //            response.setHeader("Expires", expiresHeaderBackend)
-        //        }else{
-        //            response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
-        //        }
-        //
-        //        def cacheControlHeaderBackend = urlResponse.get("Cache-Control")
-        //        if(cacheControlHeaderBackend){
-        //            response.setHeader("Cache-Control", cacheControlHeaderBackend)
-        //        }else{
-        //            response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
-        //        }
-        //
-        //        response.setContentType(urlResponse.get("Content-Type"))
-        //        response.setContentLength(urlResponse.get("Content-Length").toInteger())
-        //        response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
-
     }
 
     private def getBinaryServerUrl(){
@@ -156,14 +138,6 @@ class ApisController {
 
     def staticFiles() {
         def query = [ client: "DDB-NEXT" ]
-        //        def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
-        //                '/static/' + getFileNamePath(), query, response.outputStream )
-
-        //        if(urlResponse && urlResponse != 'Not found') {
-        //            response.setContentType(urlResponse.get("Content-Type"))
-        //            response.setContentLength(urlResponse.get("Content-Length").toInteger())
-        //            response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
-        //        }
 
         def cacheExpiryInDays = 1 // example 1 for 1 day
 
