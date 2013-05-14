@@ -24,27 +24,50 @@ $(document).ready(function() {
       var id = $(videoDiv).attr("id");
       var width = $(videoDiv).data("jwplayer-width");
       var height = $(videoDiv).data("jwplayer-height");
-      var height = height - 32; // Temporary workaround
+      height = height - 32; // Temporary workaround
       var file = $(videoDiv).data("jwplayer-file");
       var image = $(videoDiv).data("jwplayer-image");
       
-      jwplayer(id).setup({
-        'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
-        'modes': [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
-                  {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
-                  {type: "download"}],
-        'file': file,
-        'skin': jsContextPath + '/jwplayer/skins/five.xml',
-        'image': image,
-        'controls': true,
-        'controlbar': "bottom",
-        'stretching': 'uniform',
-        'width': width,
-        'height': height,
-        'primary': 'flash',
-      });      
+      initializeJwPlayer(id, file, image, width, height, function(){}, function(){});
+//      jwplayer(id).setup({
+//        'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
+//        'modes': [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
+//                  {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
+//                  {type: "download"}],
+//        'file': file,
+//        'skin': jsContextPath + '/jwplayer/skins/five.xml',
+//        'image': image,
+//        'controls': true,
+//        'controlbar': "bottom",
+//        'stretching': 'uniform',
+//        'width': width,
+//        'height': height,
+//        'primary': 'flash',
+//      });      
       
     }
+  }
+  
+  function initializeJwPlayer(divId, videoFile, previewImage, width, height, onReadyCallback, onErrorCallback) {
+    jwplayer(divId).setup({
+      'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
+      'modes': [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
+                {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
+                {type: "download"}],
+      'file': videoFile,
+      'skin': jsContextPath + '/jwplayer/skins/five.xml',
+      'image': previewImage,
+      'controls': true,
+      'controlbar': "bottom",
+      'stretching': 'uniform',
+      'width': width,
+      'height': height,
+      'primary': 'flash',
+      'events': {
+        onError: onErrorCallback,
+        onReady: onReadyCallback
+      }
+    });      
   }
   
   if(jsPageName == "item"){
@@ -147,38 +170,65 @@ $(document).ready(function() {
       w = 260;
       h = 200;
     }
-    jwplayer("jwplayer-container").setup({
-          file: content,
-          controlbar: "bottom",
-          stretching: "uniform",
-          width: w,
-          height: h,
-          image: poster,
-          skin: "../jwplayer/skins/five.xml", 
-          modes: [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
-                  {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
-                  {type: "download"}],
-          events: {
-              onError: function () {
-                  if($("#jwplayer-container"))
-                    $("#jwplayer-container").remove();
-                  if($("#jwplayer-container_wrapper"))
-                    $("#jwplayer-container_wrapper").remove();
-                  if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
-                    $("binary-viewer-flash-upgrade").removeClass("off");
-                  }else{ 
-                    $("div.binary-viewer-error").removeClass("off");
-                  }
-              },
-              onReady: function () {
-                  if ($.browser.msie && this.getRenderingMode() === "html5") {
-                    $("#binary-viewer").find("[id*='jwplayer']").each(function () {
-                          $(this).attr("unselectable", "on")
-                    })
-                  }
-              }
+    
+    initializeJwPlayer("jwplayer-container", 
+        content, 
+        poster, 
+        w, 
+        h, 
+        function () {
+          if ($.browser.msie && this.getRenderingMode() === "html5") {
+            $("#binary-viewer").find("[id*='jwplayer']").each(function () {
+                  $(this).attr("unselectable", "on")
+            })
           }
-    })
+        }, 
+        function(){
+          // Removed custom error messages to make the messages look like the provider ones
+          //if($("#jwplayer-container"))
+          //  $("#jwplayer-container").remove(); 
+          //if($("#jwplayer-container_wrapper"))
+          //  $("#jwplayer-container_wrapper").remove();
+          //if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
+          //  $("binary-viewer-flash-upgrade").removeClass("off");
+          //}else{ 
+          //  $("div.binary-viewer-error").removeClass("off");
+          //}
+        });
+
+//    jwplayer("jwplayer-container").setup({
+//          file: content,
+//          controlbar: "bottom",
+//          stretching: "uniform",
+//          width: w,
+//          height: h,
+//          image: poster,
+//          skin: "../jwplayer/skins/five.xml", 
+//          modes: [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
+//                  {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
+//                  {type: "download"}],
+//          events: {
+//              onError: function () {
+//                  // Removed custom error messages to make the messages look like the provider ones
+//                  //if($("#jwplayer-container"))
+//                  //  $("#jwplayer-container").remove(); 
+//                  //if($("#jwplayer-container_wrapper"))
+//                  //  $("#jwplayer-container_wrapper").remove();
+//                  //if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
+//                  //  $("binary-viewer-flash-upgrade").removeClass("off");
+//                  //}else{ 
+//                  //  $("div.binary-viewer-error").removeClass("off");
+//                  //}
+//              },
+//              onReady: function () {
+//                  if ($.browser.msie && this.getRenderingMode() === "html5") {
+//                    $("#binary-viewer").find("[id*='jwplayer']").each(function () {
+//                          $(this).attr("unselectable", "on")
+//                    })
+//                  }
+//              }
+//          }
+//    })
   };
   function createGallery(el) {
     var img = 3;
