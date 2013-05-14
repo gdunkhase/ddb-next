@@ -3,7 +3,7 @@
   <sel:row command="open" target="${request.contextPath}" value="/" />
 
   <%--fill out search slot--%>
-  <sel:row command="type"	target="//form[@id='form-search']//input[@name='q']" value="Rom" />
+  <sel:row command="type" target="//form[@id='form-search']//input[@name='query']" value="Rom" />
 
   <%--press submit button--%>
   <sel:row line="clickAndWait|//form[@id='form-search']/button[@type='submit']" />
@@ -15,5 +15,5 @@
   <sel:row line="clickAndWait|//div[@class='search-results']//div[@class='summary-main']//a[1]" />
 
   <%--verify that we got a search hit--%>
-  <sel:row line="verifyElementPresent|//div[@class='culture-item-page']" />
+  <sel:row line="verifyElementPresent|//div[contains(@class,'item-detail')]" />
 </sel:test>
