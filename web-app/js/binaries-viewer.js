@@ -103,6 +103,7 @@ $(document).ready(function() {
     }); 
   }
   
+  
   if(jsPageName == "item"){
 
     if(navigator.appName.indexOf("Internet Explorer")==-1){
