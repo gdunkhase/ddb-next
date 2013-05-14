@@ -62,7 +62,7 @@ $(document).ready(function() {
       'stretching': 'uniform',
       'width': width,
       'height': height,
-      'primary': 'flash',
+      'primary': 'html5',
       'events': {
         onError: onErrorCallback,
         onReady: onReadyCallback
