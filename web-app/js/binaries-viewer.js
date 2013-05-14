@@ -28,7 +28,7 @@ $(document).ready(function() {
       var file = $(videoDiv).data("jwplayer-file");
       var image = $(videoDiv).data("jwplayer-image");
       
-      initializeJwPlayer(id, file, image, width, height, function(){}, function(){});
+      initializeJwPlayer(id, file, image, width, height, function(){});
 //      jwplayer(id).setup({
 //        'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
 //        'modes': [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
@@ -48,7 +48,7 @@ $(document).ready(function() {
     }
   }
   
-  function initializeJwPlayer(divId, videoFile, previewImage, width, height, onReadyCallback, onErrorCallback) {
+  function initializeJwPlayer(divId, videoFile, previewImage, width, height, onReadyCallback) {
     jwplayer(divId).setup({
       'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
       'html5player': jsContextPath + '/jwplayer/jwplayer.html5.js',
@@ -67,7 +67,7 @@ $(document).ready(function() {
       'height': height,
       'primary': 'html5',
       'events': {
-        onError: onErrorCallback,
+        //onError: onErrorCallback
         onReady: onReadyCallback
       }
     });      
@@ -185,8 +185,8 @@ $(document).ready(function() {
                   $(this).attr("unselectable", "on")
             })
           }
-        }, 
-        function(){
+        } 
+        //function(){
           // Removed custom error messages to make the messages look like the provider ones
           //if($("#jwplayer-container"))
           //  $("#jwplayer-container").remove(); 
@@ -197,7 +197,8 @@ $(document).ready(function() {
           //}else{ 
           //  $("div.binary-viewer-error").removeClass("off");
           //}
-        });
+        //}
+      );
 
 //    jwplayer("jwplayer-container").setup({
 //          file: content,
