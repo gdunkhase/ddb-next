@@ -126,9 +126,22 @@ var InstitutionsMapAdapter = (function($, undefined) {
         }
     };
 
+    var _getWindowWidth = function() { 
+        if (window.innerWidth) { 
+            return window.innerWidth; 
+        } 
+        else if (window.document.documentElement &&
+            window.document.documentElement.clientWidth) { 
+            return window.document.documentElement.clientWidth; 
+        }
+        else {
+            return window.document.body.offsetWidth; 
+        } 
+    };
+
     Public.setupDom4MapDisplay = function() {
         var hash = window.location.hash.substring(1);
-        if (hash === 'map' || hash === '') {
+        if ((hash === 'map' || hash === '') && (_getWindowWidth() > 767)) {
             _enableMapView();
         }else {
             _enableListView();
