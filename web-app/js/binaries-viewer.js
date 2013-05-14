@@ -28,7 +28,36 @@ $(document).ready(function() {
       var file = $(videoDiv).data("jwplayer-file");
       var image = $(videoDiv).data("jwplayer-image");
       
-      initializeJwPlayer(id, file, image, width, height, function(){});
+      initializeJwPlayer(id, 
+        file, 
+        image, 
+        width, 
+        height, 
+        function(event){
+        }, 
+        function(event){
+          var playerDiv = $("#mediaspace_wrapper");
+          if(playerDiv.length == 0){
+            playerDiv = $("#mediaspace");
+          }
+          if(playerDiv.length > 0) {
+            console.log(playerDiv);
+            var errorDiv = $(document.createElement('div'));
+            errorDiv.addClass('static-content-viewer-error');
+            errorDiv.css('width', width+'px');
+            errorDiv.css('height', height+'px');
+            var errorHeaderDiv = $(document.createElement('div'));
+            errorHeaderDiv.text(messages.ddbnext.We_could_not_play_the_file);
+            errorHeaderDiv.addClass('viewer-error-header');
+            var errorBodyDiv = $(document.createElement('div'));
+            errorBodyDiv.text(messages.ddbnext.You_can_download_or_use_alternative);
+            errorBodyDiv.addClass('viewer-error-body');
+            errorDiv.append(errorHeaderDiv);
+            errorDiv.append(errorBodyDiv);
+            playerDiv.append(errorDiv);
+          }
+        }
+      );
 //      jwplayer(id).setup({
 //        'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
 //        'modes': [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
@@ -48,7 +77,7 @@ $(document).ready(function() {
     }
   }
   
-  function initializeJwPlayer(divId, videoFile, previewImage, width, height, onReadyCallback) {
+  function initializeJwPlayer(divId, videoFile, previewImage, width, height, onReadyCallback, onErrorCallback) {
     jwplayer(divId).setup({
       'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
       'html5player': jsContextPath + '/jwplayer/jwplayer.html5.js',
@@ -57,20 +86,21 @@ $(document).ready(function() {
                 {type: "download"}],
       'fallback': true,
       'autostart': false,
-      'file': videoFile,
+      //'file': videoFile,
+      'file': "http://localhost:8080/ddb-next/binary/HSBDRQHXFJ65EIW2P4EFTFI47VEUHHQF/orig/a1.mp4",
       'skin': jsContextPath + '/jwplayer/skins/five.xml',
       'image': previewImage,
       'controls': true,
-      'controlbar': "bottom",
+      'controlbar': 'bottom',
       'stretching': 'uniform',
       'width': width,
       'height': height,
       'primary': 'html5',
       'events': {
-        //onError: onErrorCallback
+        onError: onErrorCallback,
         onReady: onReadyCallback
       }
-    });      
+    }); 
   }
   
   if(jsPageName == "item"){
@@ -179,25 +209,24 @@ $(document).ready(function() {
         poster, 
         w, 
         h, 
-        function () {
+        function(event) {
           if ($.browser.msie && this.getRenderingMode() === "html5") {
             $("#binary-viewer").find("[id*='jwplayer']").each(function () {
                   $(this).attr("unselectable", "on")
             })
           }
-        } 
-        //function(){
-          // Removed custom error messages to make the messages look like the provider ones
-          //if($("#jwplayer-container"))
-          //  $("#jwplayer-container").remove(); 
-          //if($("#jwplayer-container_wrapper"))
-          //  $("#jwplayer-container_wrapper").remove();
-          //if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
-          //  $("binary-viewer-flash-upgrade").removeClass("off");
-          //}else{ 
-          //  $("div.binary-viewer-error").removeClass("off");
-          //}
-        //}
+        }, 
+        function(event){
+          if($("#jwplayer-container"))
+            $("#jwplayer-container").remove(); 
+          if($("#jwplayer-container_wrapper"))
+            $("#jwplayer-container_wrapper").remove();
+          if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
+            $("binary-viewer-flash-upgrade").removeClass("off");
+          }else{ 
+            $("div.binary-viewer-error").removeClass("off");
+          }
+        }
       );
 
 //    jwplayer("jwplayer-container").setup({
