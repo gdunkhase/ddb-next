@@ -64,14 +64,15 @@ function historyManager(path){
   }
 }
 
-function setHovercardEvents(){
-    $('.thumbnail a').mouseenter(function(){
-        $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').addClass('on');
-    });
-    $('.thumbnail a').mouseleave(function(){
-        $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').removeClass('on');
-    });
-}
+//Temporarily removed
+//function setHovercardEvents(){
+//    $('.thumbnail a').mouseenter(function(){
+//        $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').addClass('on');
+//    });
+//    $('.thumbnail a').mouseleave(function(){
+//        $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').removeClass('on');
+//    });
+//}
 
 function searchResultsInitializer(){
   $('.results-paginator-options').removeClass('off');
