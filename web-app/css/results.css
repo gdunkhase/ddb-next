@@ -408,7 +408,7 @@ input[type="checkbox"],input[type="radio"] {
   position: absolute;
   right: 0;
   background: url("../images/icons/search_actions.png") no-repeat 0 0;
-  margin-top: -32px;
+  margin-top: -15px;
   cursor: pointer;
 }
 
