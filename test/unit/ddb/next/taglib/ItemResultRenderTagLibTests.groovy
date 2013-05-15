@@ -1,10 +1,5 @@
 package ddb.next.taglib
 
-
-
-import grails.test.mixin.*
-import org.junit.*
-
 import de.ddb.next.SearchResultsListRenderTagLib;
 
 /**
