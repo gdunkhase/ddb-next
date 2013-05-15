@@ -395,9 +395,9 @@ var itemHierarchy = {
       }
 
       // show children / siblings
-      if (value.leaf) {
+      if (value.leaf && parents[parents.length - 2] != null) {
         parentId = parents[parents.length - 2].id;
-      } else {
+      } else if (parents[parents.length - 1] != null) {
         parentId = parents[parents.length - 1].id;
       }
 
