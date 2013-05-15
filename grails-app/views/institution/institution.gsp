@@ -36,7 +36,7 @@ limitations under the License.
                <g:message code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
              <div>
-                 <h2>${selectedOrgXML.name}
+                 <h2>${selectedOrgXML.name} 
                  <g:if test="${(countObjcs > 0)}">
                     <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
                     <g:link class="count" controller="search" action="results" params="[query: '', offset: '0',
