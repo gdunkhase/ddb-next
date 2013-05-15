@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 $(document).ready(function() {
-
   if(jsPageName == "staticcontent"){
     
     var videoDivs = $(".jwplayer-video");
@@ -103,11 +102,13 @@ $(document).ready(function() {
   }
   
   if(jsPageName == "item"){
-
-    if(navigator.appName.indexOf("Internet Explorer")==-1){
-      var mediaQuery = window.matchMedia( "(min-width: 530px)" );
+   if(navigator.appName.indexOf("Internet Explorer")==-1){
+       if ($(window).width()>530){
+           mediaQuery=true
+       }else{
+           mediaQuery=false
+       }
     }
-
   $(function() {
     currentTab($("p.all"));
     $("div.all").show();
@@ -123,7 +124,7 @@ $(document).ready(function() {
     var tot=$(list).size();
     var mediaQueryMatches = 1;
     if(navigator.appName.indexOf("Internet Explorer")==-1){
-      mediaQueryMatches = mediaQuery.matches;
+      mediaQueryMatches = mediaQuery;
     }
     if (mediaQueryMatches) {
       // window width is at least 530px
@@ -196,7 +197,7 @@ $(document).ready(function() {
     var h = 320;
     var mediaQueryMatches = 1;
     if(navigator.appName.indexOf("Internet Explorer")==-1){
-      mediaQueryMatches = mediaQuery.matches;
+      mediaQueryMatches = mediaQuery;
     }
     if (!mediaQueryMatches) {
       w = 260;
@@ -266,7 +267,7 @@ $(document).ready(function() {
     var img = 3;
     var mediaQueryMatches = 1;
     if(navigator.appName.indexOf("Internet Explorer")==-1){
-      mediaQueryMatches = mediaQuery.matches;
+      mediaQueryMatches = mediaQuery;
     }
     if (!mediaQueryMatches) {
       img = 2;
