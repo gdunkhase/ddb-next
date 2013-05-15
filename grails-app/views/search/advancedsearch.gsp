@@ -15,6 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
+<title><g:message code="ddbnext.Advanced_search" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="advancedsearch" />
 <meta name="layout" content="main" />
@@ -42,7 +43,8 @@ limitations under the License.
                   <g:form method="post" id="advanced-search-form" url="[controller:'advancedsearch', action:'executeSearch']" >
                       <div class="row">
                           <div class="span12">
-                              <div class="row operator global-operator">
+                              <fieldset>
+                                <div class="row operator global-operator">
                                   <div class="span12">
                                       <label for="operator" ><g:message code="ddbnext.AdvancedSearch_AllGroupsOperator_MatchLabel"/></label>
                                       <select id="operator" name="operator">
@@ -50,24 +52,31 @@ limitations under the License.
                                           <option value="AND"><g:message code="ddbnext.AdvancedSearchGlobalOperator_AllGroups"/></option>
                                       </select>
                                   </div>
-                              </div>
+                                </div>
+                              </fieldset>
                               <g:set var="group" value="${0}"/>
                               <g:while test="${group < searchGroupCount}">
-                                <g:render template="/search/advancedsearchgroup" /><%group++%>
+                                <fieldset>
+                                    <g:render template="/search/advancedsearchgroup" /><%group++%>
+                                </fieldset>
                               </g:while>
-                              <div class="row bb">
+                              <fieldset>
+                                <div class="row bb">
                                   <div class="span12 button-group">
                                       <button type="button" class="add-group-button fr" style="display: none" title="<g:message code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>">
                                         <g:message code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>
                                       </button>
                                   </div>
-                              </div>
-                              <div class="row">
+                                </div>
+                              </fieldset>
+                              <fieldset>
+                                <div class="row">
                                   <div class="span6 button-group fr">
                                     <button class="reset" type="reset"><span><g:message code="ddbnext.Reset"/></span></button>
                                     <button class="submit" type="submit"><span><g:message code="ddbnext.Search"/></span></button>
                                   </div>
-                              </div>
+                                </div>
+                              </fieldset>
                           </div>
                       </div>
                   </g:form>
