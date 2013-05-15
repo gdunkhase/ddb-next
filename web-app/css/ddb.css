@@ -660,6 +660,8 @@ header .language-widget form,.header .language-widget form {
   float: right;
 }
 
+@media * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
 @media (max-width: 979px) {
   .search-header form input {
     width: 180px!important;
