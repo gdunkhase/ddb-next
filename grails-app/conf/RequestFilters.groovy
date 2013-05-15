@@ -36,7 +36,7 @@ class RequestFilters {
          */
         ieHeaderFilter(controller:'*', action:'*') {
             after = {
-                response.addHeader("X-UA-Compatible", "IE=8,9,10")
+                response.addHeader("X-UA-Compatible", "IE=7,9,10")
             }
         }
 
