@@ -1,12 +1,7 @@
 package ddb.next.controllers
 
-
-
-import grails.test.mixin.*
 import grails.test.mixin.web.GroovyPageUnitTestMixin;
 import grails.util.Environment;
-
-import org.junit.*
 
 import de.ddb.next.ErrorController;
 

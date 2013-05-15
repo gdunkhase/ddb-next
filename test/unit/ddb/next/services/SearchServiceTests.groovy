@@ -1,10 +1,6 @@
 package ddb.next.services
 
-import grails.test.mixin.*
-import org.junit.*
-
 import de.ddb.next.SearchService;
-
 
 /**
  * See the API for usage instructions
