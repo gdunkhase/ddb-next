@@ -32,12 +32,6 @@
 /*
 * Bootstrap overridden rules
 */
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  padding: 1px;
-  border: #000 1px solid;
-}
-
 label {
   font-size: medium;
   font-weight: normal;
