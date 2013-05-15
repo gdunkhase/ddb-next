@@ -458,11 +458,15 @@ header .language-wrapper >a,.header .language-wrapper >a {
   display: inline-block;
 }
 
+.search-header form label {
+  width: 0;
+}
+
 .search-header form label span {
   display: block;
   overflow: hidden;
-  height: 0px;
-  width: 0px;
+  height: 0;
+  width: 0;
   margin: 0;
 }
 
