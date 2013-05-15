@@ -81,7 +81,7 @@ function searchResultsInitializer(){
   $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
   
-  setHovercardEvents();
+//  setHovercardEvents();
   
   $('.page-filter select').change(function(){
     var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));

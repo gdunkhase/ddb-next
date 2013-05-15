@@ -846,6 +846,7 @@ noscript .caption {
 .teaser .article img {
   width: 204px;
   height: 180px;
+  max-width:204px;
 }
 
 .carousel {
