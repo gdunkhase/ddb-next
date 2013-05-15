@@ -39,6 +39,21 @@ class I18NHelperTagLib {
     }
 
     /**
+     * Checks if the given "locale" attribute matches the currently set locale of the I18N. If it matches, the body is rendered,
+     * otherwise not.
+     */
+    def isCurrentLanguage = {attrs, body ->
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def checkLocale = SupportedLocales.getBestMatchingLocale(attrs.locale)
+
+        if(locale.getLanguage() == checkLocale.getLanguage()){
+            out << body()
+        }else{
+            out << ""
+        }
+    }
+
+    /**
      * Renders a language switching link dependend on the current url params, the given locale and the internationalized name.
      */
     def languageLink = {attrs, body ->

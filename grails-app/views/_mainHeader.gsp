@@ -85,6 +85,22 @@ limitations under the License.
                   <g:message code="ddbnext.Tutorial" />
                 </g:link></li>
             </ul></li>
+          <li class=""><a>
+              <g:message code="ddbnext.ChangeLanguage" />
+            </a>
+            <ul class="nav">
+              <li class="<g:isCurrentLanguage locale="de">selected-language</g:isCurrentLanguage>">
+                <g:languageLink params="${params}" locale="de" islocaleclass="nopointer">
+                  <g:message code="ddbnext.language_de" />
+                </g:languageLink>
+              </li>
+              <li class="<g:isCurrentLanguage locale="en">selected-language</g:isCurrentLanguage>">
+                <g:languageLink params="${params}" locale="en" islocaleclass="nopointer">
+                  <g:message code="ddbnext.language_en" />
+                </g:languageLink>
+              </li>              
+            </ul>
+          </li>
         </ul>
       </div>
     </div>

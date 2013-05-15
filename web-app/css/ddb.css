@@ -639,6 +639,10 @@ header .language-widget form,.header .language-widget form {
   margin-bottom: 0px !important;
 }
 
+.nav-list .selected-language .nopointer {
+  color: #BBBBBB;
+}
+
 #form-search-header-mobile {
   width: 275px;
   padding: 10px 0;

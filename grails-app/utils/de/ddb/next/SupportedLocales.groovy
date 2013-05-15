@@ -117,7 +117,19 @@ public enum SupportedLocales {
         if(!SupportedLocales.supports(locale)){
             locale = SupportedLocales.getDefaultLocale()
         }
+        SupportedLocales[] supported = SupportedLocales.values()
+        for(int i=0; i<supported.length; i++){
+            if(supported[i].getISO2().equals(locale.getLanguage())){
+                locale = supported[i].getLocale()
+                break;
+            }
+        }
         return locale
+    }
+
+    public static Locale getBestMatchingLocale(String input){
+        Locale locale = new Locale(input)
+        return getBestMatchingLocale(locale)
     }
 
     public static Locale getDefinedLocale(Locale locale) {
