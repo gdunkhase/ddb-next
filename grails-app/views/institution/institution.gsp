@@ -1,3 +1,19 @@
+<%--
+Copyright (C) 2013 FIZ Karlsruhe
+ 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--%>
+
 <%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 
 <html>
@@ -15,12 +31,12 @@
     <div class="row">
        <div class="span12 institution">
          <div class="row">
-           <div class="span10">
+           <div class="span9">
              <div>
                <g:message code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
              <div>
-                 <h2>${selectedOrgXML.name}
+                 <h2>${selectedOrgXML.name} 
                  <g:if test="${(countObjcs > 0)}">
                     <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
                     <g:link class="count" controller="search" action="results" params="[query: '', offset: '0',
@@ -40,7 +56,7 @@
                <a href="${selectedOrgXML.uri }/">${String.valueOf(selectedOrgXML.uri).trim() }</a>
              </div>
            </div>
-           <div class="span2">
+           <div class="span3">
              <img class="logo" alt="${selectedOrgXML.name}" src="${selectedOrgXML.logo}">
            </div>
          </div>
@@ -50,9 +66,9 @@
      <div class="row">
        <div class="span12 locations">
 
-            <div id="divOSM"></div>
+            <div id="divOSM" class="span5"></div>
             
-            <div class="location-container">
+            <div class="location-container span5">
                 
                 <div class="location" data-lat="${selectedOrgXML.locations.location.geocode.latitude }" data-lon="${selectedOrgXML.locations.location.geocode.longitude }">
                     <p class="address">
@@ -78,6 +94,8 @@
                             <i class="icon-child-institution"></i>
                             <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                           </g:else>
+                          <g:set var="maxDepthOfLoop" value="${10}" />
+                          <g:set var="loopCount" value="${0}" />
                           <g:render template="subinstitutions" />
                         </li>
                       </ol>
@@ -86,7 +104,11 @@
                 </div>
               </div>
             </div>
-  </div>  
+  </div> 
+  <div class="printViewUrl off">
+    <strong><g:message code="ddbnext.CulturalItem_Deeplink"/></strong>: 
+    <div>${url}</div>
+  </div> 
 </body>
 </html>
 

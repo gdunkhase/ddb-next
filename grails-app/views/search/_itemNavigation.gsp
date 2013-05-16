@@ -1,3 +1,18 @@
+<%--
+Copyright (C) 2013 FIZ Karlsruhe
+ 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--%>
 <g:set var="prevId" value="${navData.results.results["docs"][0].id}" />
 <g:set var="nextId" value="nodisplay" />
 <g:if test="${navData.hitNumber == 1}">
@@ -25,7 +40,7 @@
     <g:link controller="item" action="findById" params="[id: prevId, hitNumber: navData.hitNumber - 1]"><g:message code="ddbnext.Previous_Label" /></g:link>
   </li>
   <li>
-    <span><g:message code="ddbnext.Hit" /> <g:localizeNumber>${navData.hitNumber}</g:localizeNumber> <g:message code="ddbnext.Of" /> <g:localizeNumber>${navData.results["numberOfResults"]}</g:localizeNumber></span>
+    <span class="result-label"><g:message code="ddbnext.Hit" /> </span><span class="hit-number"><g:localizeNumber>${navData.hitNumber}</g:localizeNumber></span><span> <g:message code="ddbnext.Of" /> </span><span class="hit-count"><g:localizeNumber>${navData.results["numberOfResults"]}</g:localizeNumber></span>
   </li>
   <li class="next-item bl-white ${displayRightPagination}">
     <g:link controller="item" action="findById" params="[id: nextId, hitNumber: navData.hitNumber + 1]"><g:message code="ddbnext.Next_Label" /></g:link>

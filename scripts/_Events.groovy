@@ -12,6 +12,20 @@ eventWebXmlEnd = {String tmpfile ->
     log.info "Adding session listener (de.ddb.next.DdbSessionListener) to web.xml"
     
     root.appendNode {
+        'filter' {
+            'filter-name' ('DdbSecurityFilter')
+            'filter-class' ('de.ddb.next.DdbSecurityFilter')
+        }
+    }
+    root.appendNode {
+        'filter-mapping' {
+            'filter-name' ('DdbSecurityFilter')
+            'url-pattern' ('/*')
+        }
+    }
+    
+    
+    root.appendNode {
         'listener' {
             'listener-class' (
             'de.ddb.next.DdbSessionListener'

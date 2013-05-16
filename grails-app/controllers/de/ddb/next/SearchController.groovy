@@ -26,7 +26,7 @@ class SearchController {
 
     def results() {
 
-        def searchParametersMap = searchService.getSearchCookieAsMap(request.cookies)
+        def searchParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
         def additionalParams = [:]
         if (searchService.checkPersistentFacets(searchParametersMap, params, additionalParams)) {
             redirect(controller: "search", action: "results", params: params)
@@ -68,7 +68,7 @@ class SearchController {
         }
 
         //create cookie with search parameters
-        response.addCookie(searchService.createSearchCookie(params, additionalParams))
+        response.addCookie(searchService.createSearchCookie(request, params, additionalParams))
 
         //Calculating results details info (number of results in page, total results number)
         def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
@@ -119,6 +119,7 @@ class SearchController {
                 results: resultsItems,
                 isThumbnailFiltered: params.isThumbnailFiltered,
                 clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
+                correctedQuery:resultsItems["correctedQuery"],
                 viewType:  urlQuery["viewType"],
                 facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
                 resultsPaginatorOptions: resultsPaginatorOptions,

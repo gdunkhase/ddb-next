@@ -44,6 +44,9 @@
   border-width: 0 0 5px;
   font-size: 0.938em;
 }
+.institution .span3 img {
+  margin: 0 15px 0 0;
+}
 @media (min-width: 980px) {
   .institution .span3 img {
     float: right;
@@ -85,6 +88,9 @@
   padding-left: 17px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
   margin-right: 10px;
+}
+.has-origin {
+  font-size: 0.938em;
 }
 .item-nav {
   line-height: 30px;
@@ -150,6 +156,33 @@ background-position: right -40px;
     text-align: left;
   }
 }
+
+@media (max-width: 489px) {
+  .item-nav .result-label {
+    display: none;
+  }
+  .item-nav .hit-number + span {
+    display: none;
+  }
+
+  .item-nav .hit-number:after {
+    content: " / ";
+  }
+}
+
 .fields .row {
   padding-bottom: 0.5em;
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .fields .span2,.fields .span4,
+  .rights .span2,.rights .span4 {
+    float: none;
+    width: 100%;
+    max-width: 724px;
+  }
+  .item-description {
+    width: 100%;
+    max-width: 724px;
+  }
 }

@@ -23,15 +23,16 @@ var INSTITUTION_DIV = 'divOSM';
 //only initialize map once, then remember in this variable
 var mapInitialized = false;
 
-var InstitutionsMapAdapter = (function ( $, undefined ) {
+var InstitutionsMapAdapter = (function($, undefined) {
+    'use strict';
 
     //var osmTileServer = "openstreetmap.org";
     //var osmTileServer = "opencyclemap.org/cycle";
 
-    var osmTileServer = "maps.deutsche-digitale-bibliothek.de";
-    var osmTileset = [ "http://a.tile." + osmTileServer + "/${z}/${x}/${y}.png",
-                       "http://b.tile." + osmTileServer + "/${z}/${x}/${y}.png",
-                       "http://c.tile." + osmTileServer + "/${z}/${x}/${y}.png" ];
+    var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
+    var osmTileset = ['http://a.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
+                       'http://b.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
+                       'http://c.tile.' + osmTileServer + '/${z}/${x}/${y}.png'];
 
     var institutionsMapOptions = {
         resetMap: true,
@@ -46,51 +47,47 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
     var Public = {}; // for public properties. avoid the reserved keyword "public"
 
-    Public.drawInstitution = function ( mapDiv, lang, lon, lat) {
-        if (typeof console != "undefined") {
-            console.log("startup");
-        }
-
-        InstitutionItemMapController.drawMap( mapDiv, lang, lon, lat, institutionMapOptions );
+    Public.drawInstitution = function(mapDiv, lang, lon, lat) {
+        InstitutionItemMapController.drawMap(mapDiv, lang, lon, lat, institutionMapOptions);
     };
 
-    Public.selectSectors = function () {
+    Public.selectSectors = function() {
         var sectors = _getSectorSelection();
         InstitutionsMapController.selectSectors(sectors);
     };
 
-    var _getSectorSelection = function () {
+    var _getSectorSelection = function() {
         var sectors = {};
-        sectors["selected"] = [];
-        sectors["deselected"] = [];
-        $('.sector-facet').each(function () {
+        sectors['selected'] = [];
+        sectors['deselected'] = [];
+        $('.sector-facet').each(function() {
             var sectorData = {};
-            sectorData["sector"] = $(this).find('input').data('sector');
-            sectorData["name"] = $.trim($(this).children('label').text());
-            if ($(this).find('input').is(":checked")) {
-                sectors["selected"].push(sectorData);
+            sectorData['sector'] = $(this).find('input').data('sector');
+            sectorData['name'] = $.trim($(this).children('label').text());
+            if ($(this).find('input').is(':checked')) {
+                sectors['selected'].push(sectorData);
             } else {
-                sectors["deselected"].push(sectorData);
+                sectors['deselected'].push(sectorData);
             }
         });
         return sectors;
-    }
+    };
 
 
-    Public.fetchAllInstitutions = function ( successFn ) {
+    Public.fetchAllInstitutions = function(successFn) {
         _fetchDataAjax(INSTITUTIONS_MAP_REF + '?clusterid=-1', successFn);
     };
 
-    var _fetchDataAjax = function (a_url,a_successFn) {
+    var _fetchDataAjax = function(a_url, a_successFn) {
         $.ajax({
-            type : 'GET',
-            dataType : 'json',
-            async : true,
-            url : a_url,
-            success : a_successFn
+            type: 'GET',
+            dataType: 'json',
+            async: true,
+            url: a_url,
+            success: a_successFn
         });
     };
-    
+
     var _enableListView = function() {
         $('#institution-map').addClass('off');
         $('#institution-list').removeClass('off');
@@ -103,7 +100,8 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
         $('#main-container').removeClass('map');
         $('#main-container').addClass('list');
-    }
+        _initializeMap();
+    };
 
     var _enableMapView = function() {
         $('#institution-list').addClass('off');
@@ -111,39 +109,53 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
         $('.view-type-switch').removeClass('off');
         $('#first-letter-index').addClass('off');
-        
+
         $('#view-institution-map').addClass('selected');
         $('#view-institution-list').removeClass('selected');
 
         $('#main-container').addClass('map');
         $('#main-container').removeClass('list');
+        _initializeMap();
+    };
+
+    var _initializeMap = function() {
         if (!mapInitialized) {
-            InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
+            InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage,
+                institutionsMapOptions);
             mapInitialized = true;
         }
-    }
+    };
 
-    Public.setupDom4MapDisplay = function () {
-    	
-    	var hash = window.location.hash.substring(1);
-        if (typeof console != "undefined") {
-            console.log("Anchor-tag: '"+hash+"'");
+    var _getWindowWidth = function() { 
+        if (window.innerWidth) { 
+            return window.innerWidth; 
+        } 
+        else if (window.document.documentElement &&
+            window.document.documentElement.clientWidth) { 
+            return window.document.documentElement.clientWidth; 
         }
-    	if(hash === "list"){
-    		_enableListView();
-    	}else{
-    		_enableMapView();
-    	}    	
+        else {
+            return window.document.body.offsetWidth; 
+        } 
+    };
 
-        $('#view-institution-list').click(function () {
-    		_enableListView();
+    Public.setupDom4MapDisplay = function() {
+        var hash = window.location.hash.substring(1);
+        if ((hash === 'map' || hash === '') && (_getWindowWidth() > 767)) {
+            _enableMapView();
+        }else {
+            _enableListView();
+        }
+
+        $('#view-institution-list').click(function() {
+            _enableListView();
         });
 
-        $('#view-institution-map').click(function () {
-    		_enableMapView();
+        $('#view-institution-map').click(function() {
+            _enableMapView();
         });
 
-        $('input:checkbox').click(function () {
+        $('input:checkbox').click(function() {
             Public.selectSectors();
         });
     };
@@ -152,16 +164,23 @@ var InstitutionsMapAdapter = (function ( $, undefined ) {
 
 })(jQuery);
 
-$(document).ready(function () {
-    INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
-    MAP_DIR = jsContextPath + MAP_DIR;
-    GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host + MAP_DIR;
-    if (jsPageName == INSTITUTION_PAGE_NAME) {
-        InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
-    }
-    else if (jsPageName == INSTITUTIONLIST_PAGE_NAME) {
-    	InstitutionsMapAdapter.setupDom4MapDisplay();
-    }
+$('#institution-list').ready(function() {
+    $('#institution-list').addClass('off');
     return;
 });
 
+$(document).ready(function() {
+    INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
+    MAP_DIR = jsContextPath + MAP_DIR;
+    GeoTemCoMinifier_urlPrefix = window.document.location.protocol + '//' +
+        window.document.location.host + MAP_DIR;
+    if (jsPageName == INSTITUTION_PAGE_NAME) {
+        InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage,
+            jsLongitude, jsLatitude);
+    }
+    else if (jsPageName == INSTITUTIONLIST_PAGE_NAME) {
+        $('.loader').addClass('off');
+        InstitutionsMapAdapter.setupDom4MapDisplay();
+    }
+    return;
+});

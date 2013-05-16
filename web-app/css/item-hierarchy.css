@@ -15,7 +15,6 @@
  */
 .field-header {
   clear: both;
-  font-size: 1.064em;
   line-height: 30px;
   height: 32px;
   font-weight: normal;
@@ -29,13 +28,12 @@
 }
 
 /* highlight the current node */
-.item-hierarchy-result a.current-node {
+.item-hierarchy-result .current-node {
   color: black;
-  font-weight: bolder;
 }
 
 /* draw a border around plus sign */
-.item-hierarchy-result .lastExited>.branch-type {
+.item-hierarchy-result .last-exited>.branch-type {
   border: 1px solid #ccc;
   padding: 3px;
   left: -3px;
@@ -65,11 +63,6 @@
   width: 20px;
 }
 
-.item-hierarchy-result i.root {
-  background: #999 none;
-  cursor: pointer;
-}
-
 /* draw a plus sign */
 .item-hierarchy-result i.collapsed {
   background: #a5003b
@@ -84,12 +77,22 @@
   cursor: pointer;
 }
 
+/* draw a grey rectangle */
+.item-hierarchy-result i.root {
+  background: #999 none;
+  cursor: pointer;
+}
+
+.item-hierarchy-result i.root.expanded {
+  cursor: auto;
+}
+
 /* draw a circle in front of the leaf indicator */
 .item-hierarchy-result li.leaf i {
   background: url("../images/bg/advanced_search_empty_node.png") no-repeat;
 }
 
-.item-hierarchy-result li {
+.item-hierarchy-result li.node {
   background:
     url("../images/bg/advanced_search_solid_joint_standard_top.png")
     no-repeat 7px 0px;
@@ -98,15 +101,13 @@
   position: relative;
 }
 
-.item-hierarchy-result li.more-available {
-  background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
-    scroll 7px 0px transparent;
-}
-
 .item-hierarchy-result li.leaf {
   background:
     url("../images/bg/advanced_search_solid_joint_standard_top.png" )
     no-repeat 7px 0px;
+  min-height: 26px;
+  padding: 17px 0 0 56px;
+  position: relative;
 }
 
 /* last node in the tree */
@@ -117,14 +118,35 @@
 }
 
 /* draw a dotted line */
+.item-hierarchy-result li.more-available {
+  background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
+    scroll 7px 0px transparent;
+  min-height: 26px;
+}
+
+/* draw 2 ellipsis */
+.item-hierarchy-result li.leaf.more-available {
+  background:
+    url("../images/bg/advanced_search_solid_joint_break_top.png")
+    no-repeat -1px 0px;
+}
+
+/* draw a dotted line */
 .item-hierarchy-result li.node.more-hidden {
   background: url("../images/bg/advanced_search_dotted_joint.png")
     no-repeat 7px 0px;
 }
 
+.item-hierarchy-result ul.has-name>li.node.more-hidden {
+  background: url("../images/bg/advanced_search_dotted_joint_first.png")
+    no-repeat 7px -30px;
+}
+
 .item-hierarchy-result li.root {
   background: none;
+  min-height: 26px;
   padding: 0;
+  position: relative;
 }
 
 .item-hierarchy-result a:hover {
@@ -141,12 +163,21 @@
   margin-left: 10px;
 }
 
-.item-hierarchy-result .lastExited .label.current-path {
+.item-hierarchy-result .group-name {
+  font-style: italic;
+  font-size: 15px;
+  padding-left: 60px;
+  padding-top: 8px;
+  position: absolute;
+  color: #3e3a37;
+}
+
+.item-hierarchy-result .last-exited .label.current-path {
   margin-left: 2px;
 }
 
 /* highlight the current path */
-.item-hierarchy-result .label.current-path {
+.item-hierarchy-result .current-path {
   font-weight: bolder;
 }
 
@@ -158,15 +189,45 @@
   width: 93px;
 }
 
+.item-hierarchy-result ul.has-name>span.sibling-count {
+  top: 119px;
+}
+
 .item-hierarchy-result li.root>ul>span.sibling-count {
   left: -45px;
   top: 65px;
 }
 
+.item-hierarchy-result li.root>ul>li>ul.has-name>span.sibling-count {
+  left: -45px;
+  top: 85px;
+}
+
 .item-hierarchy-result ul {
+  clear: both;
   list-style: none outside none;
   margin: 0;
   padding: 0;
+}
+
+.item-hierarchy-result ul {
+  clear: both;
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+}
+
+.item-hierarchy-result ul.has-name>li:first-child {
+  background:
+    url("../images/bg/advanced_search_solid_joint_standard_top_first.png")
+    no-repeat 7px -38px;
+  padding-top: 36px;
+}
+
+.item-hierarchy-result ul.has-name>li.last.leaf:first-child {
+  background:
+    url("../images/bg/advanced_search_solid_joint_last_item_first.png")
+    no-repeat 7px -30px;
 }
 
 .field-header .contextual-help {
@@ -178,7 +239,8 @@
   background: url("../images/icons/tooltips.png") no-repeat 0px -120px;
 }
 
-.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus {
+.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus
+  {
   background-position: 0px -150px;
 }
 
@@ -187,16 +249,16 @@
   color: #3e3a37;
 }
 
-/* TODO just for mobile views not to scroll horizontally. find a better solution! */
 @media ( max-width : 767px) {
   .item-hierarchy {
-    overflow: hidden;
+    display: none;
   }
 }
 
-@media ( max-width : 767px) {
-  .item-hierarchy-result {
-    width: 767px;
-    overflow: hidden;
-  }
+.item-hierarchy .tooltip {
+  margin-top: 10px;
+}
+
+.item-hierarchy .tooltip .arrow {
+  left: 148px;
 }

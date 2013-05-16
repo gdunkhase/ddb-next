@@ -14,29 +14,117 @@
  * limitations under the License.
  */
 $(document).ready(function() {
+  if(jsPageName == "staticcontent"){
+    
+    var videoDivs = $(".jwplayer-video");
+    for(var i=0;i<videoDivs.length; i++){
+      var videoDiv = videoDivs[i];
 
-  var currentPage = $('meta[name=page]').attr("content");
-  if(currentPage == "item"){
-
-    if(navigator.appName.indexOf("Internet Explorer")==-1){
-      var mediaQuery = window.matchMedia( "(min-width: 530px)" );
+      var id = $(videoDiv).attr("id");
+      var width = $(videoDiv).data("jwplayer-width");
+      var height = $(videoDiv).data("jwplayer-height");
+      height = height - 32; // Temporary workaround
+      var file = $(videoDiv).data("jwplayer-file");
+      var image = $(videoDiv).data("jwplayer-image");
+      
+      initializeJwPlayer(id, 
+        file, 
+        image, 
+        width, 
+        height, 
+        function(event){
+        }, 
+        function(event){
+          var playerDiv = $("#mediaspace_wrapper");
+          if(playerDiv.length == 0){
+            playerDiv = $("#mediaspace");
+          }
+          if(playerDiv.length > 0) {
+            console.log(playerDiv);
+            var errorDiv = $(document.createElement('div'));
+            errorDiv.addClass('static-content-viewer-error');
+            errorDiv.css('width', width+'px');
+            errorDiv.css('height', height+'px');
+            var errorHeaderDiv = $(document.createElement('div'));
+            errorHeaderDiv.text(messages.ddbnext.We_could_not_play_the_file);
+            errorHeaderDiv.addClass('viewer-error-header');
+            var errorBodyDiv = $(document.createElement('div'));
+            errorBodyDiv.text(messages.ddbnext.You_can_download_or_use_alternative);
+            errorBodyDiv.addClass('viewer-error-body');
+            errorDiv.append(errorHeaderDiv);
+            errorDiv.append(errorBodyDiv);
+            playerDiv.append(errorDiv);
+          }
+        }
+      );
+//      jwplayer(id).setup({
+//        'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
+//        'modes': [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
+//                  {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
+//                  {type: "download"}],
+//        'file': file,
+//        'skin': jsContextPath + '/jwplayer/skins/five.xml',
+//        'image': image,
+//        'controls': true,
+//        'controlbar': "bottom",
+//        'stretching': 'uniform',
+//        'width': width,
+//        'height': height,
+//        'primary': 'flash',
+//      });      
+      
     }
-
+  }
+  
+  function initializeJwPlayer(divId, videoFile, previewImage, width, height, onReadyCallback, onErrorCallback) {
+    jwplayer(divId).setup({
+      'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
+      'html5player': jsContextPath + '/jwplayer/jwplayer.html5.js',
+      'modes': [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
+                {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
+                {type: "download"}],
+      'fallback': true,
+      'autostart': false,
+      'file': videoFile,
+      'skin': jsContextPath + '/jwplayer/skins/five.xml',
+      'image': previewImage,
+      'controls': true,
+      'controlbar': 'bottom',
+      'stretching': 'uniform',
+      'width': width,
+      'height': height,
+      'primary': 'html5',
+      'events': {
+        onError: onErrorCallback,
+        onReady: onReadyCallback
+      }
+    }); 
+  }
+  
+  if(jsPageName == "item"){
+   if(navigator.appName.indexOf("Internet Explorer")==-1){
+       if ($(window).width()>530){
+           mediaQuery=true
+       }else{
+           mediaQuery=false
+       }
+    }
   $(function() {
     currentTab($("p.all"));
     $("div.all").show();
     $("p.divider").show();
+    $(".tab").addClass('show-divider');
     $("div.tabs").addClass("fix");
     updatePreview($("div.all"));
-    createGallery($("#gallery-all"));
-    updateGalleryPagination(0,"#gallery-all li");
+    createGallery($(".gallery-all"));
+    updateGalleryPagination(0,".gallery-all li");
   });
   function updateGalleryPagination(pag,list) {
     var pos;
     var tot=$(list).size();
     var mediaQueryMatches = 1;
     if(navigator.appName.indexOf("Internet Explorer")==-1){
-      mediaQueryMatches = mediaQuery.matches;
+      mediaQueryMatches = mediaQuery;
     }
     if (mediaQueryMatches) {
       // window width is at least 530px
@@ -109,55 +197,77 @@ $(document).ready(function() {
     var h = 320;
     var mediaQueryMatches = 1;
     if(navigator.appName.indexOf("Internet Explorer")==-1){
-      mediaQueryMatches = mediaQuery.matches;
+      mediaQueryMatches = mediaQuery;
     }
     if (!mediaQueryMatches) {
       w = 260;
       h = 200;
     }
-    jwplayer("jwplayer-container").setup({
-          file: content,
-          controlbar: "bottom",
-          stretching: "uniform",
-          width: w,
-          height: h,
-          image: poster,
-          skin: "../jwplayer/skins/five.xml", 
-          modes: [{
-              type: "html5"
-          }, {
-              type: "flash",
-              src: "../jwplayer/jwplayer.flash.swf"
-          }, {
-              type: "download"
-          }],
-          events: {
-              onError: function () {
-                  if($("#jwplayer-container"))
-                    $("#jwplayer-container").remove();
-                  if($("#jwplayer-container_wrapper"))
-                    $("#jwplayer-container_wrapper").remove();
-                  if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
-                    $("binary-viewer-flash-upgrade").removeClass("off");
-                  }else{ 
-                    $("div.binary-viewer-error").removeClass("off");
-                  }
-              },
-              onReady: function () {
-                  if ($.browser.msie && this.getRenderingMode() === "html5") {
-                    $("#binary-viewer").find("[id*='jwplayer']").each(function () {
-                          $(this).attr("unselectable", "on")
-                    })
-                  }
-              }
+    
+    initializeJwPlayer("jwplayer-container", 
+        content, 
+        poster, 
+        w, 
+        h, 
+        function(event) {
+          if ($.browser.msie && this.getRenderingMode() === "html5") {
+            $("#binary-viewer").find("[id*='jwplayer']").each(function () {
+                  $(this).attr("unselectable", "on")
+            })
           }
-    })
+        }, 
+        function(event){
+          if($("#jwplayer-container"))
+            $("#jwplayer-container").remove(); 
+          if($("#jwplayer-container_wrapper"))
+            $("#jwplayer-container_wrapper").remove();
+          if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
+            $("binary-viewer-flash-upgrade").removeClass("off");
+          }else{ 
+            $("div.binary-viewer-error").removeClass("off");
+          }
+        }
+      );
+
+//    jwplayer("jwplayer-container").setup({
+//          file: content,
+//          controlbar: "bottom",
+//          stretching: "uniform",
+//          width: w,
+//          height: h,
+//          image: poster,
+//          skin: "../jwplayer/skins/five.xml", 
+//          modes: [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
+//                  {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
+//                  {type: "download"}],
+//          events: {
+//              onError: function () {
+//                  // Removed custom error messages to make the messages look like the provider ones
+//                  //if($("#jwplayer-container"))
+//                  //  $("#jwplayer-container").remove(); 
+//                  //if($("#jwplayer-container_wrapper"))
+//                  //  $("#jwplayer-container_wrapper").remove();
+//                  //if($("#jwplayer-container").attr("type")=="application/x-shockwave-flash") {
+//                  //  $("binary-viewer-flash-upgrade").removeClass("off");
+//                  //}else{ 
+//                  //  $("div.binary-viewer-error").removeClass("off");
+//                  //}
+//              },
+//              onReady: function () {
+//                  if ($.browser.msie && this.getRenderingMode() === "html5") {
+//                    $("#binary-viewer").find("[id*='jwplayer']").each(function () {
+//                          $(this).attr("unselectable", "on")
+//                    })
+//                  }
+//              }
+//          }
+//    })
   };
   function createGallery(el) {
     var img = 3;
     var mediaQueryMatches = 1;
     if(navigator.appName.indexOf("Internet Explorer")==-1){
-      mediaQueryMatches = mediaQuery.matches;
+      mediaQueryMatches = mediaQuery;
     }
     if (!mediaQueryMatches) {
       img = 2;
@@ -189,10 +299,10 @@ $(document).ready(function() {
   };
   $(".btn-prev").click(function() {
     if(!$(this).hasClass("disabled")){
-      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("pag");
+      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("data-pag");
       var prevPage = parseInt(currentTabPage)-1;
       updateGalleryPagination(prevPage,$(this).parent().find(".gallery-tab li"));
-      $(this).parent().find(".gallery-pagination").attr("pag",prevPage);
+      $(this).parent().find(".gallery-pagination").attr("data-pag",prevPage);
       $(this).addClass("disabled");
       setTimeout(function() {
         $(this).removeClass("disabled");
@@ -201,10 +311,10 @@ $(document).ready(function() {
   });
   $(".btn-next").click(function() {
     if(!$(this).hasClass("disabled")){
-      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("pag");
+      var currentTabPage = $(this).parent().find(".gallery-pagination").attr("data-pag");
       var nextPage = parseInt(currentTabPage)+1;
       updateGalleryPagination(nextPage,$(this).parent().find(".gallery-tab li"));
-      $(this).parent().find(".gallery-pagination").attr("pag",nextPage);
+      $(this).parent().find(".gallery-pagination").attr("data-pag",nextPage);
       $(this).addClass("disabled");
       setTimeout(function() {
         $(this).removeClass("disabled");
@@ -220,11 +330,11 @@ $(document).ready(function() {
     currentTab(this);
     $("div.scroller").hide();
     tab.show();
-    if($("#gallery-all").find('li').size()>3) {
-      createGallery($("#gallery-all"));
+    if($(".gallery-all").find('li').size()>3) {
+      createGallery($(".gallery-all"));
     }
     updatePreview(tab);
-    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-all li");
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),".gallery-all li");
   });
   $("p.images").click(function() {
     var tab = $("div.images");
@@ -233,9 +343,9 @@ $(document).ready(function() {
     currentTab(this);
     $("div.scroller").hide();
     tab.show();
-    createGallery($("#gallery-images"));
+    createGallery($(".gallery-images"));
     updatePreview(tab);
-    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-images li");
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),".gallery-images li");
   });
   $("p.videos").click(function() {
     var tab = $("div.videos");
@@ -244,9 +354,9 @@ $(document).ready(function() {
     currentTab(this);
     $("div.scroller").hide();
     tab.show();
-    createGallery($("#gallery-videos"));
+    createGallery($(".gallery-videos"));
     updatePreview(tab);
-    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-videos li");
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),".gallery-videos li");
   });
   $("p.audios").click(function() {
     var tab = $("div.audios");
@@ -255,9 +365,9 @@ $(document).ready(function() {
     currentTab(this);
     $("div.scroller").hide();
     tab.show();
-    createGallery($("#gallery-audios"));
+    createGallery($(".gallery-audios"));
     updatePreview(tab);
-    updateGalleryPagination(tab.find(".gallery-pagination").attr("pag"),"#gallery-audios li");
+    updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),".gallery-audios li");
   });
   $(".previews").click(function(e) {
         e.preventDefault();
@@ -270,9 +380,9 @@ $(document).ready(function() {
             'prevEffect'   : 'fade',
             'nextEffect'   : 'fade',
             'tpl' :{
-                wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-pagination"><span></span></div></div></div></div></div>',
-                prev     : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();" ></span>',
-                next     : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();" ></span>'
+                wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'+$("div.binary-title span").html()+'</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-click-nav" onclick="$.fancybox.prev();"></div><div class="fancybox-click-nav" style="right: 0;" onclick="$.fancybox.next();"></div><div class="fancybox-pagination"><span></span></div></div></div></div></div>',
+                prev     : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();" onmouseover="$(\'.fancybox-pagination\').show();" onmouseout="$(\'.fancybox-pagination\').hide();"></span>',
+                next     : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();" onmouseover="$(\'.fancybox-pagination\').show();" onmouseout="$(\'.fancybox-pagination\').hide();"></span>'
             },
             'afterLoad': function() {
                 var title = $(this.element).attr('caption');

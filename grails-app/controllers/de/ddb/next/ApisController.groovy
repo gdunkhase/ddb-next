@@ -18,6 +18,7 @@ package de.ddb.next
 import net.sf.json.JSONNull
 
 import grails.converters.JSON
+
 import java.text.SimpleDateFormat
 
 class ApisController {
@@ -29,24 +30,26 @@ class ApisController {
         def resultList = [:]
         def facets = []
         def highlightedTerms = []
+        def correctedQuery = ""
         def docs = []
         def query = apisService.getQueryParameters(params)
+        def slurper = new XmlSlurper()
+
+        slurper.setKeepWhitespace(true)
 
         def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search', query)
         jsonResp.results["docs"].get(0).each{
 
             def tmpResult = [:]
-            def title
-            def subtitle
+            String title
+            String subtitle
             def thumbnail
             def media = []
 
-            def titleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="title"(.*?)>(.*?)<\/div>/
-            if (titleMatch)
-                title= titleMatch[0][3]
+            def htmlParser = slurper.parseText(it.preview.toString())
 
-            def subtitleMatch = it.preview.toString() =~ /(?m)<div (.*?)class="subtitle"(.*?)>(.*?)<\/div>/
-            subtitle= (subtitleMatch)?subtitleMatch[0][3]:""
+            title = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'title' }*.getBody()}
+            subtitle = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'subtitle' }*.getBody()}
 
             def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>/
             if (thumbnailMatch)
@@ -77,6 +80,7 @@ class ApisController {
         }
         resultList["facets"] = jsonResp.facets
         resultList["highlightedTerms"] = jsonResp.highlightedTerms
+        resultList["correctedQuery"] = jsonResp.correctedQuery
         resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
         resultList["numberOfResults"] = jsonResp.numberOfResults
         resultList["randomSeed"] = jsonResp.randomSeed
@@ -97,7 +101,7 @@ class ApisController {
     def autocomplete (){
         def query = apisService.getQueryParameters(params)
         def callback = apisService.getQueryParameters(params)
-        def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.search.autocomplete.url.toString(),'/search/suggest', query)
+        def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search/suggest', query)
         if (callback) {
             render "${params.callback}(${result as JSON})"
         } else {
@@ -109,17 +113,22 @@ class ApisController {
      * Wrapper to support streaming of files from the backend
      * @return OutPutStream
      */
-    def binary(){
-        def cacheExpiryInDays =1 // example 1 for 1 day
+    synchronized def binary(){
+        def cacheExpiryInDays = 1 // example 1 for 1 day
+
+        String defaultExpirationDate = formatDateForExpiresHeader(cacheExpiryInDays).toString()
+        String defaultCacheExpires = "max-age="+cacheExpiryInDays * 24 * 60 *60
+        String fileNamePath = getFileNamePath().tokenize('/')[-1]
+
         def query = [ client: "DDB-NEXT" ]
-        def urlResponse= ApiConsumer.getBinaryContent(getBinaryServerUrl(),getFileNamePath(),query )
-        byte[] bytes=urlResponse.get("bytes")
-        response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
-        response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
-        response.setContentType(urlResponse.get("Content-Type"))
-        response.setContentLength(urlResponse.get("Content-Length").toInteger())
-        response.setHeader("Content-Disposition", "inline; filename="+getFileNamePath().tokenize('/')[-1])
-        response.outputStream << bytes
+        def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(),
+                getFileNamePath(),
+                query,
+                response,
+                defaultExpirationDate,
+                defaultCacheExpires,
+                fileNamePath)
+
     }
 
     private def getBinaryServerUrl(){
@@ -130,15 +139,21 @@ class ApisController {
 
     def staticFiles() {
         def query = [ client: "DDB-NEXT" ]
+
+        def cacheExpiryInDays = 1 // example 1 for 1 day
+
+        String defaultExpirationDate = formatDateForExpiresHeader(cacheExpiryInDays).toString()
+        String defaultCacheExpires = "max-age="+cacheExpiryInDays * 24 * 60 *60
+        String fileNamePath = getFileNamePath().tokenize('/')[-1]
+
         def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
-                '/static/' + getFileNamePath(), query )
-        if(urlResponse && urlResponse != 'Not found') {
-            byte[] bytes = urlResponse.get("bytes")
-            response.setContentType(urlResponse.get("Content-Type"))
-            response.setContentLength(urlResponse.get("Content-Length").toInteger())
-            response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
-            response.outputStream << bytes
-        }
+                '/static/' + getFileNamePath(),
+                query,
+                response,
+                defaultExpirationDate,
+                defaultCacheExpires,
+                fileNamePath)
+
     }
     /**
      *  Format RFC 2822 date
@@ -153,7 +168,6 @@ class ApisController {
         Date date = format.parse(tomorrowString);
         return date
     }
-
     private def getFileNamePath() {
         return cleanHtml(params.filename, 'none')
     }

@@ -1,3 +1,18 @@
+<%--
+Copyright (C) 2013 FIZ Karlsruhe
+ 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--%>
 <g:set var="facetsList" value="${['time_fct', 'place_fct', 'affiliate_fct', 'keywords_fct', 'language_fct', 'type_fct', 'sector_fct', 'provider_fct']}"></g:set>
 <html>
 <head>
@@ -22,7 +37,7 @@
               args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-filters']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
               default="ddbnext.SearchResultsFacetHeading_TooltipContent"/>">
         </span> 
-        <div class="tooltip off"></div>
+        <div class="tooltip off hasArrow"></div>
       </div>
       <div class="facets-list bt bb">
         <g:each in="${facetsList}" var="mit">
@@ -52,6 +67,11 @@
     </div>
     
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
+      <g:if test="${correctedQuery!='null'}">
+        <g:if test="${correctedQuery}">
+          <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+        </g:if>
+      </g:if>
       <g:render template="noResults" />
     </div>
     <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
@@ -79,12 +99,20 @@
           </div>
         </div>
       </div>
+      <g:if test="${correctedQuery!='null'}">
+	      <g:if test="${correctedQuery}">
+	        <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+	      </g:if>
+      </g:if>
+      
       <div class="row">
         <div class="span9">
           <div class="search-results">
-            <g:if test="${results}">
-              <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
-            </g:if>
+            <div class="search-results-list">
+              <g:if test="${results}">
+                <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
+              </g:if>
+            </div>
           </div>
         </div>
       </div>

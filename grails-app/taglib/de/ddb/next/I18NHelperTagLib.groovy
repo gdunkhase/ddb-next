@@ -39,9 +39,24 @@ class I18NHelperTagLib {
     }
 
     /**
+     * Checks if the given "locale" attribute matches the currently set locale of the I18N. If it matches, the body is rendered,
+     * otherwise not.
+     */
+    def isCurrentLanguage = {attrs, body ->
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def checkLocale = SupportedLocales.getBestMatchingLocale(attrs.locale)
+
+        if(locale.getLanguage() == checkLocale.getLanguage()){
+            out << body()
+        }else{
+            out << ""
+        }
+    }
+
+    /**
      * Renders a language switching link dependend on the current url params, the given locale and the internationalized name.
      */
-   def languageLink = {attrs, body ->
+    def languageLink = {attrs, body ->
         def checkLocaleString = attrs.locale
         def localeclass = attrs.islocaleclass
         def locale = RequestContextUtils.getLocale(request)
@@ -63,8 +78,12 @@ class I18NHelperTagLib {
         }else{
             def linkUrl = createLink("url": attrs.params)
             def cleanedParams = attrs.params.clone()
+            def directory = attrs.params?.dir
+            if(!directory) {
+                directory = ""
+            }
             if(linkUrl.contains("staticcontent")){
-                linkUrl = linkUrl.replaceAll("staticcontent", attrs.params?.dir)
+                linkUrl = linkUrl.replaceAll("staticcontent", directory)
                 cleanedParams.remove("dir")
             }
             cleanedParams.remove("controller")

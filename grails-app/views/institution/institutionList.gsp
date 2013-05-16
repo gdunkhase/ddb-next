@@ -1,3 +1,18 @@
+<%--
+Copyright (C) 2013 FIZ Karlsruhe
+ 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--%>
 <html>
 <head>
 <title><g:message code="ddbnext.Institutions" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
@@ -6,6 +21,7 @@
 <meta name="layout" content="main" />
 
 <r:require module="institutionlist"/>
+
 </head>
 <body>
   <h1><g:message code="ddbnext.Institutions" /></h1>
@@ -18,13 +34,19 @@
   </div>
   <div class="row institutionlist">
     <div class="span9">
-    <g:render template="filterPhone" />
+    <noscript>
+      <div class="off">
+    </noscript>
+    <div class="loader">
+      <img alt="" src="../images/icons/loader_small.gif">
+    </div>
+    <noscript>
+      </div>
+    </noscript>
     <g:render template="pagination" />
-      <%-- 
       <div id="no-match-message">
         <g:message code="ddbnext.InstitutionPage_NoMatches" />
       </div>
-      --%>
       <ol id="institution-list">
         <g:each in="${ all }">
         <li class="institution-listitem" data-sector="${ it?.sector }" 

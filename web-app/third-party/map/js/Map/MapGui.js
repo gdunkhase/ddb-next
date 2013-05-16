@@ -57,9 +57,9 @@ function MapGui(map, div, options) {
 	this.mapWindow.appendChild(this.mapContainer);
 
     if (MapGuiCanvasEmulation) {
-        if (typeof console != "undefined") {
-            console.warn("With canvas emulation");
-        }
+//        if (typeof console != "undefined") {
+//            console.warn("With canvas emulation");
+//        }
         this.background = document.createElement("canvas");
         this.background.setAttribute('class', 'mapCanvas');
         this.mapWindow.appendChild(this.background);
@@ -67,9 +67,9 @@ function MapGui(map, div, options) {
             this.background = G_vmlCanvasManager.initElement(this.background);
         }
     } else {
-        if (typeof console != "undefined") {
-            console.warn("No canvas emulation");
-        }
+//        if (typeof console != "undefined") {
+//            console.warn("No canvas emulation");
+//        }
     }
 
 
@@ -157,9 +157,9 @@ function MapGui(map, div, options) {
 						gui.geoActive = true;
 						changeStyle();
 					}, function(msg) {
-                        if (typeof console != 'undefined') {
-                            console.log( typeof msg == 'string' ? msg : "error");
-                        }
+//                        if (typeof console != 'undefined') {
+//                            console.log( typeof msg == 'string' ? msg : "error");
+//                        }
 					});
 				} else {
 					gui.map.setMarker(gui.longitude, gui.latitude);

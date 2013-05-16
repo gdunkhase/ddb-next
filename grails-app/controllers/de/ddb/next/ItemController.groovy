@@ -18,6 +18,9 @@ package de.ddb.next
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
+
+    private static final def HTTP ='http://'
+    private static final def HTTPS ='https://'
     static defaultAction = "findById"
 
     def itemService
@@ -26,7 +29,10 @@ class ItemController {
 
 
     def children() {
-        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/children", ["rows":501]))
+        render(contentType:"application/json",
+        text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),
+        "/hierarchy/" + params.id + "/children",
+        ["rows":501]))
     }
 
     def findById() {
@@ -61,7 +67,7 @@ class ItemController {
                 redirect(controller: 'error')
             } else {
                 def itemUri = request.forwardURI
-                def fields = translate(item.fields)
+                def fields = translate(item.fields, convertToHtmlLink)
 
                 if(params.print){
                     renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
@@ -85,8 +91,10 @@ class ItemController {
         }
     }
 
-    def translate(fields) {
+    def translate(fields, convertToHtmlLink) {
         fields.each {
+            it = convertToHtmlLink(it)
+
             def messageKey = 'ddbnext.' + it.'@id'
             def translated = message(code: messageKey)
             if(translated != messageKey) {
@@ -96,6 +104,14 @@ class ItemController {
                 log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
             }
         }
+    }
+
+    def convertToHtmlLink = { field ->
+        def fieldValue = field.value?.toString()
+        if(fieldValue.startsWith(HTTP) || fieldValue.startsWith(HTTPS)) {
+            field.value = '<a href="' + fieldValue + '">' + fieldValue + '</a>'
+        }
+        return field
     }
 
     def parents() {
@@ -115,12 +131,13 @@ class ItemController {
         def searchParametersMap
         def resultsItems
         def searchResultUri
+        searchParametersMap = searchService.getSearchCookieAsMap(httpRequest, httpRequest.cookies)
+        if (!searchParametersMap || searchParametersMap.isEmpty()) {
+            reqParameters["hitNumber"] = null
+            return searchResultParameters
+        }
+
         if (reqParameters["hitNumber"]) {
-            searchParametersMap = searchService.getSearchCookieAsMap(httpRequest.cookies)
-            if (!searchParametersMap || searchParametersMap.isEmpty()) {
-                reqParameters["hitNumber"] = null
-                return searchResultParameters
-            }
             def urlQuery = searchService.convertQueryParametersToSearchParameters(searchParametersMap)
 
             //Search and return 3 Hits: previous, current and last
@@ -134,20 +151,24 @@ class ItemController {
             }
             resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
 
-            //generate link back to search-result. Calculate Offset.
-            def searchGetParameters = searchService.getSearchGetParameters(searchParametersMap)
-            def offset = ((Integer)((params["hitNumber"]-1)/searchParametersMap["rows"]))*searchParametersMap["rows"]
-            searchGetParameters["offset"] = offset
-            searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
-            searchResultParameters["resultsItems"] = resultsItems
-            searchResultParameters["searchResultUri"] = searchResultUri
-            searchResultParameters["searchParametersMap"] = searchParametersMap
-
             //Workaround for last-hit (Performance-issue)
             if (reqParameters.id && reqParameters.id.equals("lasthit")) {
                 reqParameters.id = resultsItems.results["docs"][1].id
             }
+            searchResultParameters["resultsItems"] = resultsItems
         }
+
+        //generate link back to search-result. Calculate Offset.
+        def searchGetParameters = searchService.getSearchGetParameters(searchParametersMap)
+        def offset = 0
+        if (reqParameters["hitNumber"] && searchParametersMap["rows"]) {
+            offset = ((Integer)((reqParameters["hitNumber"]-1)/searchParametersMap["rows"]))*searchParametersMap["rows"]
+        }
+        searchGetParameters["offset"] = offset
+        searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
+        searchResultParameters["searchResultUri"] = searchResultUri
+        searchResultParameters["searchParametersMap"] = searchParametersMap
+
         return searchResultParameters
     }
 }

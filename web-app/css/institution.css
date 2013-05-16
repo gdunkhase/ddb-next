@@ -13,18 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 .locations #divOSM { 
   position: relative;
-  float: right;
   clear: right;
   width: 476px;
   height: 300px;
   line-height: 0px;
-  margin-left: 8px;
   background-color:#efebe8;
   overflow: hidden;
   font-size:0.938em;
   font-style: italic;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 981px) {
+  .locations #divOSM { 
+    float: right;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 980px) {
+  .locations #divOSM { 
+    margin-left: 0px;
+    width: 400px;    
+    float: right;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .locations #divOSM { 
+    margin-left: 0px;
+    width: 420px;    
+  }
+}
+
+@media (max-width: 480px) {
+  .locations #divOSM { 
+    margin-left: 0px;
+    width: 100%;
+  }
+}
+
+.location-container {
+  margin-left: 0px
 }
 
 .location-container .location {
@@ -43,7 +75,7 @@
   margin-left: 6px;
 }
 .institution .count {
-  font-size: 13pt; 
+  font-size: 0.682em;
   color: #3e3a37;
 }
 
@@ -60,6 +92,10 @@
   font-size: small;
 }
 
+.hierarchy > .institution-list {
+  margin-left: 0px;
+}
+
 .institution-list {
   list-style: none;
   margin-bottom: 6px;
@@ -74,8 +110,14 @@
   font-size: 1em;
 }
 
-h2 a.count:hover {
+.institution h2 a.count:hover {
   color: #A5003B;
+}
+
+.institution h2 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 1.467em;
 }
 
 #header {
@@ -109,22 +151,3 @@ h2 a.count:hover {
   margin: 0 !important;
 }
 
-@media (max-width: 767px) {
-  .locations #divOSM {
-    width: 260px;
-    height: 164px;
-  }
-}
-
-@media (max-width: 529px) {
-  .locations #divOSM {
-    width: 200px;
-    height: 126px;
-  }
-}
-
-@media (max-width: 489px) {
-  #divOSM {
-    display: none;
-  }
-}

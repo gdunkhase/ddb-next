@@ -62,9 +62,9 @@ MapDataSource.prototype = {
         var timeClusterInfo = (this.mapObjects[0].length +
                                " elements clustered in " + (timeCluster - time0) + "ms");
 // XXXXX   alert(timeClusterInfo);
-        if (typeof console != 'undefined') {
-            console.log(timeClusterInfo);
-        }
+//        if (typeof console != 'undefined') {
+//            console.log(timeClusterInfo);
+//        }
     
 
     },

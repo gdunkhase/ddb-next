@@ -65,6 +65,7 @@ class InstitutionController {
         def vApiInstitution = new ApiInstitution();
         log.debug("read insitution by item id: ${id}");
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, grailsApplication.config.ddb.backend.url.toString());
+        def pageUrl = "http://www.deutsche-digitale-bibliothek.de"+request.forwardURI;
         if (selectedOrgXML) {
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, grailsApplication.config.ddb.backend.url.toString())
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
@@ -90,7 +91,7 @@ class InstitutionController {
                     countObjectsForProv = -1;
                 }
             }
-            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution])
+            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl])
         } 
         else {
            forward controller: 'error', action: "notfound"

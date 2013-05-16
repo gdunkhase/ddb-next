@@ -275,25 +275,25 @@ class SearchService {
      */
     def convertQueryParametersToSearchParameters(Map reqParameters) {
         def urlQuery = [:]
+        def numbersRangeRegex = /^[0-9]+$/
+        
         if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
-            urlQuery["query"] = reqParameters.query
+            urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
         }else{
             urlQuery["query"] = "*"
         }
 
-        if (reqParameters.rows == null) {
+        if (reqParameters.rows == null || !(reqParameters.rows=~ numbersRangeRegex)) {
             urlQuery["rows"] = 20.toInteger()
-        }
-        else {
-            urlQuery["rows"] = reqParameters.rows.toInteger()
+        } else {
+            urlQuery["rows"] = getMapElementOfUnsureType(reqParameters, "rows", "20").toInteger()
         }
         reqParameters.rows = urlQuery["rows"]
 
-        if (reqParameters.offset == null) {
+        if (reqParameters.offset == null || !(reqParameters.offset=~ numbersRangeRegex)) {
             urlQuery["offset"] = 0.toInteger()
-        }
-        else {
-            urlQuery["offset"] = reqParameters.offset.toInteger()
+        } else {
+            urlQuery["offset"] = getMapElementOfUnsureType(reqParameters, "offset", "0").toInteger()
         }
         reqParameters.offset = urlQuery["offset"]
 
@@ -309,23 +309,23 @@ class SearchService {
                 urlQuery["facet"].add(reqParameters.get("facets[]"))
         }
 
-        if(reqParameters.minDocs)
-            urlQuery["minDocs"] = reqParameters.minDocs
+        if(reqParameters.minDocs) {
+            urlQuery["minDocs"] = getMapElementOfUnsureType(reqParameters, "minDocs", "")
+        }
 
-        if(reqParameters["sort"] != null){
-            urlQuery["sort"] = reqParameters.sort
+        if(reqParameters["sort"] != null && ((reqParameters["sort"]=~ /^random_[0-9]+$/) || reqParameters["sort"]=='ALPHA_ASC' || reqParameters["sort"]=='ALPHA_DESC')){
+            urlQuery["sort"] = getMapElementOfUnsureType(reqParameters, "sort", "")
         }else{
             if(urlQuery["query"]!="*"){
                 urlQuery["sort"] = "RELEVANCE"
             }
         }
 
-        if(reqParameters.viewType == null) {
+        if(reqParameters.viewType == null || (!(reqParameters.viewType=~ /^list$/) && !(reqParameters.viewType=~ /^grid$/))) {
             urlQuery["viewType"] = "list"
             reqParameters.viewType = "list"
-        }
-        else {
-            urlQuery["viewType"] = reqParameters.viewType
+        } else {
+            urlQuery["viewType"] = getMapElementOfUnsureType(reqParameters, "viewType", "")
         }
 
         if(reqParameters.isThumbnailFiltered){
@@ -336,6 +336,32 @@ class SearchService {
             }
         }
         return urlQuery
+    }
+
+    /**
+     * Utility-method to fix a groovy-inconvenience. Parameter map values can either be a single String or
+     * an Array of Strings (e.g. if the parameter was defined twice in the URL). To handle this, get the 
+     * parameters over this method.
+     * @param map The parameter map
+     * @param elementName The map key
+     * @param defaultValue The default value if no value was found for the key
+     * @return The value or the defaultValue if no value was found
+     */
+    private String getMapElementOfUnsureType(map, elementName, defaultValue){
+        if (map[elementName]?.class.isArray()){
+            if(map[elementName].size() > 0){
+                return map[elementName][0]
+            } else {
+                return defaultValue
+            }
+        }else{
+            if(map[elementName]){
+                return map[elementName]
+            } else {
+                return defaultValue
+            }
+        }
+
     }
 
     /**
@@ -462,7 +488,7 @@ class SearchService {
      * @param reqParameters request-parameters
      * @return Cookie with search-parameters
      */
-    def createSearchCookie(Map reqParameters, Map additionalParams) {
+    def createSearchCookie( HttpServletRequest requestObject, Map reqParameters, Map additionalParams) {
         //Create Cookie with search-parameters for use on other pages
         //convert HashMap containing parameters to JSON
         if (additionalParams) {
@@ -485,7 +511,7 @@ class SearchService {
                 jSonObject.put(entry.key, entry.value)
             }
         }
-        def cookie = new Cookie(searchCookieName, jSonObject.toString())
+        def cookie = new Cookie(searchCookieName + requestObject.contextPath, jSonObject.toString())
         cookie.maxAge = -1
         return cookie
     }
@@ -496,17 +522,21 @@ class SearchService {
      * @param request
      * @return Map with key-values from cookie
      */
-    def getSearchCookieAsMap(Cookie[] cookies) {
+    def getSearchCookieAsMap(HttpServletRequest requestObject, Cookie[] cookies) {
         def searchParams
         def searchParamsMap = [:]
         for (cookie in cookies) {
-            if (cookie.name == searchCookieName) {
+            if (cookie.name == searchCookieName + requestObject.contextPath) {
                 searchParams = cookie.value
             }
         }
         if (searchParams) {
             def jSonSlurper = new JsonSlurper()
-            searchParamsMap = jSonSlurper.parseText(searchParams)
+            try{
+                searchParamsMap = jSonSlurper.parseText(searchParams)
+            }catch(Exception e){
+                log.error "getSearchCookieAsMap(): Could not parse search params: "+searchParams, e
+            }
             for (entry in searchParamsMap) {
                 if (entry.value instanceof String) {
                     entry.value = URLDecoder.decode(entry.value, characterEncoding)

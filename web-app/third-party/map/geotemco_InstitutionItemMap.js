@@ -69,13 +69,13 @@ for (var i = 0; i < document.getElementsByTagName("script").length; i++) {
 /* for ddb-next */
 GeoTemCoMinifier_urlPrefix = window.document.location.protocol + "//" + window.document.location.host;
 
-if (typeof console != "undefined") {
-    if (typeof GeoTemCoMinifier_urlPrefix != "undefined") {
-        console.log("GeoTemCoMinifier_urlPrefix: " + GeoTemCoMinifier_urlPrefix);
-    } else {
-        console.warn("GeoTemCoMinifier_urlPrefix: undefined");
-    }
-}
+//if (typeof console != "undefined") {
+//    if (typeof GeoTemCoMinifier_urlPrefix != "undefined") {
+//        console.log("GeoTemCoMinifier_urlPrefix: " + GeoTemCoMinifier_urlPrefix);
+//    } else {
+//        console.warn("GeoTemCoMinifier_urlPrefix: undefined");
+//    }
+//}
 // Copyright 2006 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -3415,9 +3415,9 @@ GeoTemConfig.resolveUrlPrefix = function(filename) {
 }
 
 GeoTemConfig.configure = function(urlPrefix) {
-    if (typeof console != "undefined") {
-        console.log("GeoTemConfig.configure urlPrefix: " + urlPrefix);
-    };
+//    if (typeof console != "undefined") {
+//        console.log("GeoTemConfig.configure urlPrefix: " + urlPrefix);
+//    };
 	GeoTemConfig.urlPrefix = urlPrefix;
 	GeoTemConfig.path = GeoTemConfig.urlPrefix + "images/";
 }
@@ -4877,9 +4877,9 @@ function MapGui(map, div, options) {
 	this.mapWindow.appendChild(this.mapContainer);
 
     if (MapGuiCanvasEmulation) {
-        if (typeof console != "undefined") {
-            console.warn("With canvas emulation");
-        }
+//        if (typeof console != "undefined") {
+//            console.warn("With canvas emulation");
+//        }
         this.background = document.createElement("canvas");
         this.background.setAttribute('class', 'mapCanvas');
         this.mapWindow.appendChild(this.background);
@@ -4887,9 +4887,9 @@ function MapGui(map, div, options) {
             this.background = G_vmlCanvasManager.initElement(this.background);
         }
     } else {
-        if (typeof console != "undefined") {
-            console.warn("No canvas emulation");
-        }
+//        if (typeof console != "undefined") {
+//            console.warn("No canvas emulation");
+//        }
     }
 
 
@@ -4977,9 +4977,9 @@ function MapGui(map, div, options) {
 						gui.geoActive = true;
 						changeStyle();
 					}, function(msg) {
-                        if (typeof console != 'undefined') {
-                            console.log( typeof msg == 'string' ? msg : "error");
-                        }
+//                        if (typeof console != 'undefined') {
+//                            console.log( typeof msg == 'string' ? msg : "error");
+//                        }
 					});
 				} else {
 					gui.map.setMarker(gui.longitude, gui.latitude);
@@ -5832,9 +5832,9 @@ MapWidget.prototype = {
             if (this.options.osmTileset) {
                 osmTileset = this.options.osmTileset;
             };
-            if (typeof console != "undefined") {
-                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmTileset + "', {..}");
-            };
+//            if (typeof console != "undefined") {
+//                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmTileset + "', {..}");
+//            };
 			this.baseLayers.push(new OpenLayers.Layer.OSM('Open Street Map', osmTileset, {
 				sphericalMercator : true,
 				zoomOffset : 1,
@@ -6585,9 +6585,9 @@ MapWidget.prototype = {
             this.zoomSlider.setValue(this.openlayersMap.getZoom());
         }
         this.drawObjectLayer(true);
-        if (typeof console != "undefined") {
-            console.log("openlayers getZoom: " + this.openlayersMap.getZoom());
-        };
+//        if (typeof console != "undefined") {
+//            console.log("openlayers getZoom: " + this.openlayersMap.getZoom());
+//        };
     },
 
 	setMarker : function(lon, lat) {
@@ -7616,9 +7616,9 @@ MapDataSource.prototype = {
         var timeClusterInfo = (this.mapObjects[0].length +
                                " elements clustered in " + (timeCluster - time0) + "ms");
 // XXXXX   alert(timeClusterInfo);
-        if (typeof console != 'undefined') {
-            console.log(timeClusterInfo);
-        }
+//        if (typeof console != 'undefined') {
+//            console.log(timeClusterInfo);
+//        }
     
 
     },
@@ -9238,9 +9238,9 @@ if ( typeof GeoPublisher == 'undefined') {
             topics : _topics
         };
 	}();
-    if (typeof console != "undefined") {
-        console.log("GeoPublisher created");
-    }
+//    if (typeof console != "undefined") {
+//        console.log("GeoPublisher created");
+//    }
 }
 /*
 * WidgetWrapper.js
@@ -9375,12 +9375,12 @@ if ( typeof InstitutionItemMapModel == 'undefined' ) {
 
             GeoTemConfig.determineAndSetUrlPrefix("InstitutionItemMapModel.js");
 
-            if (typeof console != 'undefined') {
+//            if (typeof console != 'undefined') {
              // console.log("f_initialize mapDivId=" + mapDivId + " language=" + language);
              // console.dir(position);
              // console.dir(startupOptions);
              // console.log("GeoTemConfig.urlPrefix=" + GeoTemConfig.urlPrefix);
-            }
+//            }
 
             GeoTemConfig.language = language;
             GeoTemConfig.allowFilter = false;
@@ -9414,9 +9414,9 @@ if ( typeof InstitutionItemMapModel == 'undefined' ) {
                 detailedViewSpec: _detailedViewSpec
             },startupOptions) );
 
-            if (typeof console != 'undefined') {
-                console.log("MapWidget displayed");
-            }
+//            if (typeof console != 'undefined') {
+//                console.log("MapWidget displayed");
+//            }
 
             _initialized = true;
 

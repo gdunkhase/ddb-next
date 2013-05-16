@@ -71,6 +71,9 @@
 .grey-arrow li {
   background: url("../images/icons/list_arrow_grey.png") no-repeat 0 4px;
 }
+.no-arrow {
+  background: none !important;
+}
 /*TODO find a solution for the conflict with fl and fr classes*/
 .floatLeft {
     float: left;
@@ -212,4 +215,22 @@ div#help-toc-right {
 
 .static_content h3 {
   clear: both;
+}
+
+.static-content-viewer-error {
+  background-color: #FFFFFF !important;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border: 1px solid #efebe8 !important;
+}
+
+.viewer-error-header {
+  font-weight: bold !important;
+  font-style: italic !important;
+  margin: 20px 20px 0px 20px !important;
+}
+
+.viewer-error-body {
+  margin: 20px !important;
 }

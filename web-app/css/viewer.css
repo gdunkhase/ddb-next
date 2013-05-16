@@ -31,12 +31,7 @@
 @media (max-width: 979px) {
   .slide-viewer {
     margin-top: 10px;
-  }
-}
-@media (max-width: 767px) {
-  .slide-viewer {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 150px;
   }
 }
 @media (max-width: 529px) {
@@ -166,6 +161,15 @@
   color:#3e3a37;
   font-size:1em;
   margin-top:16px;
+  line-height: 1em;
+}
+.slide-viewer .show-divider{
+  border-right: #a5003b 2px solid;
+  padding-right: 5px;
+  margin-right: 5px;
+}
+.slide-viewer .tab.audios{
+  border-right: none;
 }
 @media (max-width: 529px) {
   .slide-viewer .tab {
@@ -175,17 +179,6 @@
 .slide-viewer .tab:hover {
   text-decoration:underline;
   color:#a5003b;
-}
-.slide-viewer .divider {
-  text-decoration:none;
-  cursor:default;
-  padding:0 5px;
-  display:none;
-  color:#a5003b;
-  font-weight:bold;
-}
-.slide-viewer .divider:hover {
-  text-decoration:none;
 }
 .slide-viewer .gallery-pagination {
   margin-bottom:0;
@@ -258,7 +251,7 @@ noscript .scroller {
   background: url("../images/icons/homepage_carousel_controls.png") no-repeat left -203px;
 }
 .fancybox-inner:hover .fancybox-pagination{
-  display: block;
+  display: block !important;
 } 
 .fancybox-pagination {
   display: none;
@@ -270,6 +263,12 @@ noscript .scroller {
   opacity: 0.8;
   color: #3E3A37; 
   font-size: 0.875em;
+}
+
+.fancybox-click-nav {
+  position: absolute; 
+  width: 50%;
+  height: 100%;
 }
 .fancybox-pagination span {
   font-size: 1.250em;
@@ -299,6 +298,7 @@ noscript .scroller {
 }
 .binary-title {
   padding-top:7px;
+  font-size: 0.938em;
 }
 #binary-viewer {
   width: 445px;

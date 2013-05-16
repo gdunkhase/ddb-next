@@ -51,7 +51,7 @@ class ApiInstitution {
         return jsonResult;
     }
     
-    def getFacetValues(String provName, String url) {
+    def getFacetValuesX(String provName, String url) {
         log.debug("get facets values for: ${provName}")
         def jsonResult;
         int shortLength = 50;
@@ -62,5 +62,18 @@ class ApiInstitution {
         return jsonResult;
     }
     
+    def getFacetValues(String provName, String url) {
+        log.debug("get facets values for: ${provName}")
+        def jsonResult;
+        def uriPath = "/search"
+        def query = ['query':"*","facet":"provider_fct", "provider_fct":"${provName}","rows":"0" ]
+        log.debug("query = '" + query + "'");
+        jsonResult = ApiConsumer.getTextAsJson(url, uriPath, query);
+        log.debug("jsonResult = " + jsonResult.toString());
+        log.debug("jsonResult.numberOfResults = " + jsonResult.numberOfResults);
+        log.debug("jsonResult.facets[5] = " + (jsonResult.facets.size() >= 6 ? jsonResult.facets[5] : "null"));
+        return jsonResult.facets[5];
+    }
+
     
 }

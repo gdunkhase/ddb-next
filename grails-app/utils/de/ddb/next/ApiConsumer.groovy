@@ -17,6 +17,7 @@ package de.ddb.next
 
 import java.util.regex.Pattern
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
@@ -112,13 +113,13 @@ class ApiConsumer {
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "getTextAsJson(): A HttpResponseException occured", ex
+            log.error "getTextAsJson(): A HttpResponseException occured: "+baseUrl+path+"?"+query, ex
             return null
         } catch (java.net.ConnectException ex) {
-            log.error "getTextAsJson(): A ConnectException occured", ex
+            log.error "getTextAsJson(): A ConnectException occured: "+baseUrl+path+"?"+query, ex
             return null
         } catch (java.lang.Exception ex) {
-            log.error "getTextAsJson(): An unexpected exception occured", ex
+            log.error "getTextAsJson(): An unexpected exception occured: "+baseUrl+path+"?"+query, ex
             return null
         }
     }
@@ -210,7 +211,14 @@ class ApiConsumer {
         }
     }
 
-    static def getBinaryContent(String baseUrl, String path, query, method = Method.GET) {
+    static def getBinaryContent(String baseUrl,
+            String path,
+            query,
+            method = Method.GET,
+            def responseBrowser,
+            String defaultExpirationDate,
+            String defaultCacheExpires,
+            String fileNamePath) {
         try {
             path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
@@ -226,7 +234,35 @@ class ApiConsumer {
                     log.debug 'Headers: -----------'
 
                     resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-                    return [bytes:inputstream.getBytes(),"Content-Type":resp.headers.'Content-Type',"Content-Length":resp.headers.'Content-Length']
+
+                    def expiresHeaderBackend = resp.headers.'Expires'
+                    if(expiresHeaderBackend){
+                        responseBrowser.setHeader("Expires", expiresHeaderBackend)
+                    }else{
+                        responseBrowser.setHeader("Expires", defaultExpirationDate)
+                    }
+
+                    def cacheControlHeaderBackend = resp.headers.'Cache-Control'
+                    if(cacheControlHeaderBackend){
+                        responseBrowser.setHeader("Cache-Control", cacheControlHeaderBackend)
+                    }else{
+                        responseBrowser.setHeader("Cache-Control", defaultCacheExpires)
+                    }
+
+                    responseBrowser.setContentType(resp.headers.'Content-Type')
+                    responseBrowser.setContentLength(resp.headers.'Content-Length'.toInteger())
+                    responseBrowser.setHeader("Content-Disposition", "inline; filename="+fileNamePath)
+
+
+                    try{
+                        IOUtils.copy(inputstream, responseBrowser.outputStream)
+                    }catch(java.net.SocketException c){
+                        log.info "getBinaryContent(): Output socket already closed"
+                    }catch(Throwable t){
+                        log.warn "getBinaryContent(): Could not copy streaming data to output stream. ", t
+                    }
+
+                    return
                 }
                 response.'404' = {resp, reader ->
                     log.error "404 getBinaryContent(): Current request uri: 404, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri

@@ -642,9 +642,9 @@ MapWidget.prototype = {
             if (this.options.osmTileset) {
                 osmTileset = this.options.osmTileset;
             };
-            if (typeof console != "undefined") {
-                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmTileset + "', {..}");
-            };
+//            if (typeof console != "undefined") {
+//                console.log("new Openlayers.Layers.OSM('OpenStreetMap', '" + osmTileset + "', {..}");
+//            };
 			this.baseLayers.push(new OpenLayers.Layer.OSM('Open Street Map', osmTileset, {
 				sphericalMercator : true,
 				zoomOffset : 1,
@@ -1395,9 +1395,9 @@ MapWidget.prototype = {
             this.zoomSlider.setValue(this.openlayersMap.getZoom());
         }
         this.drawObjectLayer(true);
-        if (typeof console != "undefined") {
-            console.log("openlayers getZoom: " + this.openlayersMap.getZoom());
-        };
+//        if (typeof console != "undefined") {
+//            console.log("openlayers getZoom: " + this.openlayersMap.getZoom());
+//        };
     },
 
 	setMarker : function(lon, lat) {
