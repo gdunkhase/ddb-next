@@ -328,125 +328,124 @@ var itemHierarchy = {
       // check if there is a hierarchy
       if (parents.length > 1 || (parents.length > 0 && !parents[0].leaf)) {
         $(".item-hierarchy").removeClass("off");
-      }
 
-      var list = $("<div>");
-      var currentNode = list;
+        var list = $("<div>");
+        var currentNode = list;
 
-      // show parent nodes
-      $.each(parents.reverse(), function(index, value) {
-        if (index < parents.length - 1) {
-          var ul = $("<ul>");
-          var hasName = value.type != null;
-          var isRoot = index == 0;
-          var parentId = null;
+        // show parent nodes
+        $.each(parents.reverse(), function(index, value) {
+          if (index < parents.length - 1) {
+            var ul = $("<ul>");
+            var hasName = value.type != null;
+            var isRoot = index == 0;
+            var parentId = null;
 
-          if (!isRoot) {
-            parentId = parents[index - 1].id;
+            if (!isRoot) {
+              parentId = parents[index - 1].id;
 
-            // show hierarchy type
-            if (hasName) {
-              currentNode.append(ul);
-              ul = itemHierarchy.addTypeName(ul, value.type);
+              // show hierarchy type
+              if (hasName) {
+                currentNode.append(ul);
+                ul = itemHierarchy.addTypeName(ul, value.type);
+              }
             }
+
+            var li = $("<li>");
+
+            li.addClass(isRoot ? "root" : "node");
+            li.attr("data-bind", JSON.stringify(parents));
+
+            ul.append(li);
+            if (isRoot || !hasName) {
+              currentNode.append(ul);
+            }
+            itemHierarchy.addParentNode(url, li, parentId, value, false, true, index == parents.length - 2, true,
+                false, index == parents.length - 2 && parents[parents.length - 1].leaf);
+            currentNode = li;
+          }
+        });
+
+        // show this node
+        var value = parents[parents.length - 1];
+
+        if (!value.leaf) {
+          var ul = $("<ul>");
+          var isRoot = parents.length == 1;
+          var hasName = !isRoot && value.type != null;
+          var parentId = !isRoot ? parents[parents.length - 2].id : null;
+
+          // show hierarchy type
+          if (hasName) {
+            currentNode.append(ul);
+            ul = itemHierarchy.addTypeName(ul, value.type);
           }
 
           var li = $("<li>");
 
-          li.addClass(isRoot ? "root" : "node");
+          li.addClass(parentId == null ? "root" : "node");
           li.attr("data-bind", JSON.stringify(parents));
 
           ul.append(li);
-          if (isRoot || !hasName) {
+          if (!hasName) {
             currentNode.append(ul);
           }
-          itemHierarchy.addParentNode(url, li, parentId, value, false, true, index == parents.length - 2, true, false,
-              index == parents.length - 2 && parents[parents.length - 1].leaf);
+          itemHierarchy.addParentNode(url, li, parentId, value, true, true, false, true, false, true);
           currentNode = li;
         }
-      });
 
-      // show this node
-      var value = parents[parents.length - 1];
-
-      if (!value.leaf) {
-        var ul = $("<ul>");
-        var isRoot = parents.length == 1;
-        var hasName = !isRoot && value.type != null;
-        var parentId = !isRoot ? parents[parents.length - 2].id : null;
-
-        // show hierarchy type
-        if (hasName) {
-          currentNode.append(ul);
-          ul = itemHierarchy.addTypeName(ul, value.type);
+        // show children / siblings
+        if (value.leaf) {
+          parentId = parents[parents.length - 2].id;
+        } else {
+          parentId = parents[parents.length - 1].id;
         }
 
-        var li = $("<li>");
+        var currentNodeFound = false;
 
-        li.addClass(parentId == null ? "root" : "node");
-        li.attr("data-bind", JSON.stringify(parents));
+        itemHierarchy.getChildren(url, parentId, function(children) {
+          var ul = $("<ul>");
+          var length = children.length;
+          var type = null;
 
-        ul.append(li);
-        if (!hasName) {
-          currentNode.append(ul);
-        }
-        itemHierarchy.addParentNode(url, li, parentId, value, true, true, false, true, false, true);
-        currentNode = li;
-      }
+          $.each(children, function(index, value) {
+            var hasName = value.type != null;
+            var isCurrent = value.id == parents[parents.length - 1].id;
+            var leafNode = $("<li>");
+            var showName = false;
 
-      // show children / siblings
-      if (value.leaf && parents[parents.length - 2] != null) {
-        parentId = parents[parents.length - 2].id;
-      } else if (parents[parents.length - 1] != null) {
-        parentId = parents[parents.length - 1].id;
-      }
-
-      var currentNodeFound = false;
-
-      itemHierarchy.getChildren(url, parentId, function(children) {
-        var ul = $("<ul>");
-        var length = children.length;
-        var type = null;
-
-        $.each(children, function(index, value) {
-          var hasName = value.type != null;
-          var isCurrent = value.id == parents[parents.length - 1].id;
-          var leafNode = $("<li>");
-          var showName = false;
-
-          if (isCurrent) {
-            currentNodeFound = true;
-          }
-
-          // show hierarchy type
-          if (value.type != type) {
-            if (hasName) {
-              itemHierarchy.addTypeName(ul, value.type).append(leafNode);
-              showName = true;
+            if (isCurrent) {
+              currentNodeFound = true;
             }
-            type = value.type;
-          }
 
-          if (!showName) {
-            ul.append(leafNode);
-          }
-          if (value.leaf) {
-            itemHierarchy.addLeafNode(leafNode, value, isCurrent, index == length - 1, length == 501);
-          } else {
-            leafNode.addClass("node");
-            leafNode.attr("data-bind", JSON.stringify(parents));
-            itemHierarchy.addParentNode(url, leafNode, parentId, value, false, false, index == length - 1, false,
-                false, false);
+            // show hierarchy type
+            if (value.type != type) {
+              if (hasName) {
+                itemHierarchy.addTypeName(ul, value.type).append(leafNode);
+                showName = true;
+              }
+              type = value.type;
+            }
+
+            if (!showName) {
+              ul.append(leafNode);
+            }
+            if (value.leaf) {
+              itemHierarchy.addLeafNode(leafNode, value, isCurrent, index == length - 1, length == 501);
+            } else {
+              leafNode.addClass("node");
+              leafNode.attr("data-bind", JSON.stringify(parents));
+              itemHierarchy.addParentNode(url, leafNode, parentId, value, false, false, index == length - 1, false,
+                  false, false);
+            }
+          });
+          currentNode.append(ul);
+
+          // add current node if it is not within the first 500 children
+          if (length == 501) {
+            itemHierarchy.addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
           }
         });
-        currentNode.append(ul);
-
-        // add current node if it is not within the first 500 children
-        if (length == 501) {
-          itemHierarchy.addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
-        }
-      });
-
+      }
       $(".item-hierarchy-result").html(list);
     });
   },
