@@ -432,7 +432,7 @@ function updateLanguageSwitch(params) {
         divSearchResultsOverlayWaiting.remove();
         divSearchResultsOverlayModal.remove();
         
-        setHovercardEvents();
+//        setHovercardEvents();
         });
       }
     });
