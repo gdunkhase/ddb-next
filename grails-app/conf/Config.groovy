@@ -130,7 +130,7 @@ environments {
 
 //DDB SPECIFIC Configuration variables
 //The variables can be overwritten by defining local configurations, see below environments
-ddb.binary.backend.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
+ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de"
 ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
 ddb.apis.url="http://localhost:8080"
 ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
