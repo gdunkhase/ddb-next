@@ -15,7 +15,6 @@
  */
 $(document).ready(function() {
   if(jsPageName == "staticcontent"){
-    
     var videoDivs = $(".jwplayer-video");
     for(var i=0;i<videoDivs.length; i++){
       var videoDiv = videoDivs[i];
@@ -191,6 +190,7 @@ $(document).ready(function() {
     $("div.binary-title span").text(title);
   };
   function jwPlayerSetup(content,poster){
+    if($("#binary-viewer").length==0)return;
     $(".previews").parent().addClass("off");
     $("#binary-viewer").append('<div id="jwplayer-container"></div>');
     var w = 445;
