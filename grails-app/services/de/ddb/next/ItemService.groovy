@@ -41,9 +41,9 @@ class ItemService {
 
     def transactional = false
     def grailsApplication
-	LinkGenerator grailsLinkGenerator
+    LinkGenerator grailsLinkGenerator
 
-	def findItemById(id) {
+    def findItemById(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
         ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
@@ -143,7 +143,7 @@ class ItemService {
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
-            def sourceUri = grailsApplication.config.ddb.binary.url + componentsPath + 'source'
+            def sourceUri = grailsApplication.config.ddb.backend.url + componentsPath + 'source'
             def encodedSourceUri= URLEncoder.encode sourceUri, 'UTF-8'
             return withoutPlaceholder + encodedSourceUri
         }
