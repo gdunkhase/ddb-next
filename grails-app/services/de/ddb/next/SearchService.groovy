@@ -244,7 +244,8 @@ class SearchService {
         def matches
         def matchesMatch = title =~ /(?m)<match>(.*?)<\/match>/
         def cleanTitle = title.replaceAll("<match>", "").replaceAll("</match>", "")
-        def tmpTitle = (cleanTitle.length()>length)?cleanTitle.substring(0,cleanTitle.substring(0,length).lastIndexOf(" "))+"...":cleanTitle
+        def index = cleanTitle.length() > length ? cleanTitle.substring(0,length).lastIndexOf(" ") : -1
+        def tmpTitle = index >= 0 ? cleanTitle.substring(0,index) + "..." : cleanTitle
         if(matchesMatch.size()>0){
             matchesMatch.each{
                 tmpTitle = tmpTitle.replaceAll(Pattern.quote(it[1]), "<strong>"+it[1]+"</strong>")
