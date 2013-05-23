@@ -52,8 +52,10 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     Public.selectSectors = function() {
-        var sectors = _getSectorSelection();
-        InstitutionsMapController.selectSectors(sectors);
+        if(mapInitialized){
+          var sectors = _getSectorSelection();
+          InstitutionsMapController.selectSectors(sectors);
+        }
     };
 
     var _getSectorSelection = function() {
@@ -119,7 +121,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     var _initializeMap = function() {
-        if (!mapInitialized) {
+        if (!mapInitialized && !$('#institution-map').hasClass('off')) {
             InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage,
                 institutionsMapOptions);
             mapInitialized = true;
