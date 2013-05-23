@@ -256,9 +256,13 @@ function updateLanguageSwitch(params) {
       if(newTitle.length>100){
           newTitle = $.trim(newTitle).substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
       }
-      $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-        newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
-      });
+      if(jQuery.trim($(value).text()) == jQuery.trim($(value).find('strong').text())){
+        newTitle = '<strong>'+jQuery.trim($(value).text())+'</strong>';
+      }else{
+        $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
+          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
+        });
+      }
       value.innerHTML = newTitle;
     });
     $('#view-list').addClass('selected');
@@ -322,9 +326,13 @@ function updateLanguageSwitch(params) {
       if(newTitle.length>53){
           newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
       }
-      $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-        newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
-      });
+      if(jQuery.trim($(value).text()) == jQuery.trim($(value).find('strong').text())){
+        newTitle = '<strong>'+jQuery.trim($(value).text())+'</strong>';
+      }else{
+        $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
+          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
+        });
+      }
       value.innerHTML = newTitle;
     });
     var newTitle = $('.summary-main .title a').title;

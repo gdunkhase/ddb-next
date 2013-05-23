@@ -1,6 +1,7 @@
 package ddb.next.controllers
 
 import grails.test.GrailsUnitTestCase;
+import grails.test.mixin.TestFor;
 
 import de.ddb.next.AdvancedsearchController;
 
