@@ -18,16 +18,16 @@ $(function() {
 
   // workaround for ffox + ie click focus - prevents links that load dynamic
   // content to be focussed/active.
-  $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
+  $('a.noclickfocus').live('mouseup', function() { $(this).blur(); });
 
   // Fix for back-button problem with the searchfield: DDBNEXT-389
-  if($.browser.msie){
-    var queryCache = $("#querycache");
-    var queryString = "";
-    if(queryCache.length > 0){
+  if ($.browser.msie) {
+    var queryCache = $('#querycache');
+    var queryString = '';
+    if (queryCache.length > 0) {
       queryString = queryCache.val();
     }
-    $("#form-search-header .query").val(queryString);
+    $('#form-search-header .query').val(queryString);
   }
 
   if (window.history && history.pushState) {
@@ -38,29 +38,29 @@ $(function() {
       stateManager(location.pathname + location.search);
      }
     });
-  }else{
+  }else {
       historySupport = false;
       // Utilized for browser that doesn't supports pushState.
       // It will be used as reference URL for all the ajax actions
       globalUrl = location.search.substring(1);
   }
-  
+
   searchResultsInitializer();
-  
-  function stateManager(url){
-    $('#main-container').load(url+' .search-results-container', function(){
+
+  function stateManager(url) {
+    $('#main-container').load(url + ' .search-results-container', function() {
       searchResultsInitializer();
     });
   }
 
 });
 
-function historyManager(path){
-  if(historySupport) {
-    window.history.pushState({path:path},'',path);
+function historyManager(path) {
+  if (historySupport) {
+    window.history.pushState({path: path},'', path);
     historyedited = true;
-  }else{
-    globalUrl = (path.indexOf('?')>-1)?path.split('?')[1]:path;
+  }else {
+    globalUrl = (path.indexOf('?') > -1) ? path.split('?')[1] : path;
   }
 }
 
@@ -74,73 +74,73 @@ function historyManager(path){
 //    });
 //}
 
-function searchResultsInitializer(){
+function searchResultsInitializer() {
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
   $('.page-input').removeClass('off');
   $('.keep-filters').removeClass('off');
-  $('.page-nonjs').addClass("off");
-  
+  $('.page-nonjs').addClass('off');
+
 //  setHovercardEvents();
-  
-  $('.page-filter select').change(function(){
+
+  $('.page-filter select').change(function() {
     var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
     fetchResultsList(addParamToCurrentUrl(paramsArray));
-    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/rows=\d+/g,'rows='+this.value));
+    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + this.value));
     return false;
   });
-  
-  $('.sort-results-switch select').change(function(){
+
+  $('.sort-results-switch select').change(function() {
     var paramsArray = new Array(new Array('sort', this.value), new Array('offset', 0));
     fetchResultsList(addParamToCurrentUrl(paramsArray));
-    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i,'sort='+this.value));
+    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i, 'sort=' + this.value));
     return false;
   });
-  
-  function addParamToCurrentUrl(arrayParamVal, urlString){
+
+  function addParamToCurrentUrl(arrayParamVal, urlString) {
     return addParamToUrl(arrayParamVal, null, urlString);
   }
   // This function will give you back the current url (if no urlParameters is
   // setted) plus the new parameters added
   // IMPORTANT: remember to pass your arrayParamVal already URL decoded
-  function addParamToUrl(arrayParamVal, path, urlString){
-    var currentUrl = (historySupport)?location.search.substring(1):globalUrl;
-    var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
+  function addParamToUrl(arrayParamVal, path, urlString) {
+    var currentUrl = (historySupport) ? location.search.substring(1) : globalUrl;
+    var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
-        var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+        var decodedKey = decodeURIComponent(m[1].replace(/\+/g, '%20'));
         if (queryParameters[decodedKey] == null) {
             queryParameters[decodedKey] = new Array();
         }
-        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
+        queryParameters[decodeURIComponent(m[1].replace(/\+/g, '%20'))].push(decodeURIComponent(m[2].replace(/\+/g, '%20')));
     }
-    $.each(arrayParamVal, function(key, value){
+    $.each(arrayParamVal, function(key, value) {
       queryParameters[value[0]] = value[1];
     });
     var tmp = jQuery.param(queryParameters, true);
     updateLanguageSwitch(tmp);
     if (path == null) {
-      return window.location.pathname+'?'+tmp;
+      return window.location.pathname + '?' + tmp;
     }
     else {
-      return path+'?'+tmp;
+      return path + '?' + tmp;
     }
   }
-  
-  function removeParamFromUrl(arrayParamVal, path, urlString){
-    var currentUrl = (historySupport)?location.search.substring(1):globalUrl;
-    var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
+
+  function removeParamFromUrl(arrayParamVal, path, urlString) {
+    var currentUrl = (historySupport) ? location.search.substring(1) : globalUrl;
+    var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString,
       re = /([^&=]+)=([^&]*)/g, m;
     while (m = re.exec(queryString)) {
-        var keyParam = decodeURIComponent(m[1].replace(/\+/g,'%20'));
-        if(queryParameters[keyParam]==null){
+        var keyParam = decodeURIComponent(m[1].replace(/\+/g, '%20'));
+        if (queryParameters[keyParam] == null) {
           queryParameters[keyParam] = new Array();
         }
-        queryParameters[keyParam].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
+        queryParameters[keyParam].push(decodeURIComponent(m[2].replace(/\+/g, '%20')));
     }
-    $.each(arrayParamVal, function(key, value){
-      if(queryParameters[value[0]] && (paramIndex = $.inArray(value[1], queryParameters[value[0]]))>-1){
-        queryParameters[value[0]] = jQuery.grep(queryParameters[value[0]], function(cValue){
+    $.each(arrayParamVal, function(key, value) {
+      if (queryParameters[value[0]] && (paramIndex = $.inArray(value[1], queryParameters[value[0]])) > -1) {
+        queryParameters[value[0]] = jQuery.grep(queryParameters[value[0]], function(cValue) {
             return cValue != value[1];
         });
       }
@@ -148,150 +148,150 @@ function searchResultsInitializer(){
     var tmp = jQuery.param(queryParameters, true);
     updateLanguageSwitch(tmp);
     if (path == null) {
-      return window.location.pathname+'?'+tmp;
+      return window.location.pathname + '?' + tmp;
     }
     else {
-      return path+'?'+tmp;
+      return path + '?' + tmp;
     }
   }
-  
+
 function updateLanguageSwitch(params) {
     params = params.replace(/\&?lang=[^\&]*/g, '');
     if (params.length > 0) {
-        params += '&'
+        params += '&';
     }
     if (params.indexOf('&') == 0) {
         params = params.substring(1);
     }
     var pattern = /(.*?\?).*?(lang=\w*)/;
-    $('.language-wrapper .selector').find('a[href]').each(function(){
+    $('.language-wrapper .selector').find('a[href]').each(function() {
       var matches = pattern.exec($(this).attr('href'));
       $(this).attr('href', matches[1] + params + matches[2]);
-    }); 
+    });
 }
 
-  function setSearchCookieParameter(arrayParamVal){
-    var searchParameters = readCookie("searchParameters" + jsContextPath);
+  function setSearchCookieParameter(arrayParamVal) {
+    var searchParameters = readCookie('searchParameters' + jsContextPath);
     if (searchParameters != null && searchParameters.length > 0) {
-        searchParameters = searchParameters.substring(1, searchParameters.length -1);
-        searchParameters = searchParameters.replace(/\\"/g,'"');
+        searchParameters = searchParameters.substring(1, searchParameters.length - 1);
+        searchParameters = searchParameters.replace(/\\"/g, '"');
         var json = $.parseJSON(searchParameters);
-        $.each(arrayParamVal, function(key, value){
+        $.each(arrayParamVal, function(key, value) {
           if (value[1].constructor === Array) {
-            for(var i = 0; i < value[1].length; i++) {
+            for (var i = 0; i < value[1].length; i++) {
                 if (value[1][i].constructor === String) {
-                    value[1][i] = encodeURIComponent(value[1][i]).replace(/%20/g,'\+');
+                    value[1][i] = encodeURIComponent(value[1][i]).replace(/%20/g, '\+');
                 }
             }
           }
           else if (value[1].constructor === String) {
-            value[1] = encodeURIComponent(value[1]).replace(/%20/g,'\+');
+            value[1] = encodeURIComponent(value[1]).replace(/%20/g, '\+');
           }
           json[value[0]] = value[1];
         });
-        document.cookie = "searchParameters" + jsContextPath + "=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"";
+        document.cookie = 'searchParameters' + jsContextPath + '=\"' + JSON.stringify(json).replace(/"/g, '\\"') + '\"';
     }
   }
-  
-  function removeSearchCookieParameter(paramName){
-    var searchParameters = readCookie("searchParameters" + jsContextPath);
+
+  function removeSearchCookieParameter(paramName) {
+    var searchParameters = readCookie('searchParameters' + jsContextPath);
     if (searchParameters != null && searchParameters.length > 0) {
-        searchParameters = searchParameters.substring(1, searchParameters.length -1);
-        searchParameters = searchParameters.replace(/\\"/g,'"');
+        searchParameters = searchParameters.substring(1, searchParameters.length - 1);
+        searchParameters = searchParameters.replace(/\\"/g, '"');
         var json = $.parseJSON(searchParameters);
         json[paramName] = null;
-        document.cookie = "searchParameters" + jsContextPath + "=\"" + JSON.stringify(json).replace(/"/g,'\\"') + "\"";
+        document.cookie = 'searchParameters' + jsContextPath + '=\"' + JSON.stringify(json).replace(/"/g, '\\"') + '\"';
     }
   }
-  
+
   function readCookie(name) {
-    var nameEQ = name + "=";
+    var nameEQ = name + '=';
     var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == ' ') c = c.substring(1, c.length);
         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
   }
-  
-  $('.page-nav-result').click(function(){
+
+  $('.page-nav-result').click(function() {
     fetchResultsList(this.href);
     return false;
   });
-  $('#form-search-header button').click(function(){
-    var searchParameters = readCookie("searchParameters" + jsContextPath);
+  $('#form-search-header button').click(function() {
+    var searchParameters = readCookie('searchParameters' + jsContextPath);
     if (searchParameters != null && searchParameters.length > 0) {
-        searchParameters = searchParameters.substring(1, searchParameters.length -1);
-        searchParameters = searchParameters.replace(/\\"/g,'"');
+        searchParameters = searchParameters.substring(1, searchParameters.length - 1);
+        searchParameters = searchParameters.replace(/\\"/g, '"');
         var json = $.parseJSON(searchParameters);
-        if (json["rows"]) {
-            $(this).append('<input type="hidden" name="rows" value="' + json["rows"] + '"/>')
+        if (json['rows']) {
+            $(this).append('<input type="hidden" name="rows" value="' + json['rows'] + '"/>');
         }
-        if (json["clustered"]) {
-            $(this).append('<input type="hidden" name="clustered" value="' + json["clustered"] + '"/>')
+        if (json['clustered']) {
+            $(this).append('<input type="hidden" name="clustered" value="' + json['clustered'] + '"/>');
         }
-        if (json["isThumbnailFiltered"]) {
-            $(this).append('<input type="hidden" name="isThumbnailFiltered" value="' + json["isThumbnailFiltered"] + '"/>')
+        if (json['isThumbnailFiltered']) {
+            $(this).append('<input type="hidden" name="isThumbnailFiltered" value="' + json['isThumbnailFiltered'] + '"/>');
         }
-        if (json["viewType"]) {
-            $(this).append('<input type="hidden" name="viewType" value="' + json["viewType"] + '"/>')
+        if (json['viewType']) {
+            $(this).append('<input type="hidden" name="viewType" value="' + json['viewType'] + '"/>');
         }
-        if (json["sort"]) {
-            $(this).append('<input type="hidden" name="sort" value="' + json["sort"] + '"/>')
+        if (json['sort']) {
+            $(this).append('<input type="hidden" name="sort" value="' + json['sort'] + '"/>');
         }
     }
   });
-  $('#form-search-header input').keyup(function(e){
-    if(e.keyCode == 13) {
+  $('#form-search-header input').keyup(function(e) {
+    if (e.keyCode == 13) {
       if ($.browser.msie && parseFloat($.browser.version) <= 8.0) {
         $('#form-search-header button').click();
       }
-    } 
+    }
     return false;
   });
-  $('#view-list').click(function(){
-    $('.summary-main .title a').each(function(index,value){
+  $('#view-list').click(function() {
+    $('.summary-main .title a').each(function(index,value) {
       var newTitle = value.title.toString();
-      if(newTitle.length>100){
-          newTitle = $.trim(newTitle).substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
+      if (newTitle.length > 100) {
+          newTitle = $.trim(newTitle).substring(0, 100).split(' ').slice(0, -1).join(' ') + '...';
       }
-      if(jQuery.trim($(value).text()) == jQuery.trim($(value).find('strong').text())){
-        newTitle = '<strong>'+jQuery.trim($(value).text())+'</strong>';
-      }else{
-        $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
+      if (jQuery.trim($(value).text()) == jQuery.trim($(value).find('strong').text())) {
+        newTitle = '<strong>' + jQuery.trim($(value).text()) + '</strong>';
+      }else {
+        $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue) {
+          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'), '<strong>' + svalue.innerHTML + '</strong>');
         });
       }
       value.innerHTML = newTitle;
     });
     $('#view-list').addClass('selected');
     $('#view-grid').removeClass('selected');
-    $('.search-results').fadeOut('fast', function(){
+    $('.search-results').fadeOut('fast', function() {
       $('.results-list .summary').addClass('row');
       $('.summary-main-wrapper').addClass('span7');
       $('.thumbnail-wrapper').addClass('span2');
-      $('.results-list').removeClass("grid");
+      $('.results-list').removeClass('grid');
       $('.search-results').fadeOut('fast');
-      $('.summary .thumbnail-wrapper').each(function(){
+      $('.summary .thumbnail-wrapper').each(function() {
         $(this).appendTo(this.parentNode);
       });
       $('.search-results').fadeIn('fast');
     });
     var paramsArray = new Array(new Array('viewType', 'list'));
     var newUrl = addParamToCurrentUrl(paramsArray);
-    $('.page-nav a').each(function(){
-      this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
+    $('.page-nav a').each(function() {
+      this.href = addParamToCurrentUrl(paramsArray, this.href.split('?')[1]);
     });
-    $('.results-list a').each(function(){
-      this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
+    $('.results-list a').each(function() {
+      this.href = addParamToUrl(paramsArray, this.href.split('?')[0], this.href.split('?')[1]);
     });
-    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/viewType=(list|grid)/i,'viewType=list'));
+    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/viewType=(list|grid)/i, 'viewType=list'));
     historyManager(newUrl);
     setSearchCookieParameter(paramsArray);
   });
-  $('.page-input').keyup(function(e){
-    if(e.keyCode == 13) {
+  $('.page-input').keyup(function(e) {
+    if (e.keyCode == 13) {
       if (/^[0-9]+$/.test(this.value)) {
         if (parseInt(this.value) <= 0) {
             this.value = 1;
@@ -304,33 +304,33 @@ function updateLanguageSwitch(params) {
         this.value = 1;
       }
       $('.page-input').attr('value', this.value);
-      var paramsArray = new Array(new Array('offset', (this.value - 1) * $('.page-filter').find("select").val()));
+      var paramsArray = new Array(new Array('offset', (this.value - 1) * $('.page-filter').find('select').val()));
       var newUrl = addParamToCurrentUrl(paramsArray);
       fetchResultsList(newUrl);
     }
   });
-  $('#thumbnail-filter').click(function(){
+  $('#thumbnail-filter').click(function() {
     var valueCheck = $(this);
-    if(valueCheck.is(':checked')){
+    if (valueCheck.is(':checked')) {
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'true'));
-    }else{
+    }else {
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'false'));
     }
     paramsArray.push(new Array('offset', 0));
     var newUrl = addParamToCurrentUrl(paramsArray);
     fetchResultsList(newUrl);
   });
-  $('#view-grid').click(function(){
-    $('.summary-main .title a').each(function(index,value){
+  $('#view-grid').click(function() {
+    $('.summary-main .title a').each(function(index,value) {
       var newTitle = value.title.toString();
-      if(newTitle.length>53){
-          newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
+      if (newTitle.length > 53) {
+          newTitle = $.trim(newTitle).substring(0, 53).split(' ').slice(0, -1).join(' ') + '...';
       }
-      if(jQuery.trim($(value).text()) == jQuery.trim($(value).find('strong').text())){
-        newTitle = '<strong>'+jQuery.trim($(value).text())+'</strong>';
-      }else{
-        $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
+      if (jQuery.trim($(value).text()) == jQuery.trim($(value).find('strong').text())) {
+        newTitle = '<strong>' + jQuery.trim($(value).text()) + '</strong>';
+      }else {
+        $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue) {
+          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'), '<strong>' + svalue.innerHTML + '</strong>');
         });
       }
       value.innerHTML = newTitle;
@@ -338,44 +338,44 @@ function updateLanguageSwitch(params) {
     var newTitle = $('.summary-main .title a').title;
     $('#view-list').removeClass('selected');
     $('#view-grid').addClass('selected');
-    $('.search-results').fadeOut('fast', function(){
+    $('.search-results').fadeOut('fast', function() {
       $('.results-list .summary').removeClass('row');
       $('.summary-main-wrapper').removeClass('span7');
       $('.thumbnail-wrapper').removeClass('span2');
-      $('.results-list').addClass("grid");
+      $('.results-list').addClass('grid');
       $('.search-results').fadeOut('fast');
-      $('.summary .summary-main-wrapper').each(function(){
+      $('.summary .summary-main-wrapper').each(function() {
         $(this).appendTo(this.parentNode);
       });
       $('.search-results').fadeIn('fast');
     });
     var paramsArray = new Array(new Array('viewType', 'grid'));
     var newUrl = addParamToCurrentUrl(paramsArray);
-    $('.page-nav a').each(function(){
-      this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
+    $('.page-nav a').each(function() {
+      this.href = addParamToCurrentUrl(paramsArray, this.href.split('?')[1]);
     });
-    $('.results-list a').each(function(){
-      this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
+    $('.results-list a').each(function() {
+      this.href = addParamToUrl(paramsArray, this.href.split('?')[0], this.href.split('?')[1]);
     });
-    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/viewType=(list|grid)/i,'viewType=grid'));
+    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/viewType=(list|grid)/i, 'viewType=grid'));
     historyManager(newUrl);
     setSearchCookieParameter(paramsArray);
-    historyedited= true;
+    historyedited = true;
   });
-  $('#keep-filters').click(function(){
+  $('#keep-filters').click(function() {
     var valueCheck = $(this);
-    if(valueCheck.is(':checked'))
+    if (valueCheck.is(':checked'))
       var paramsArray = new Array(new Array('keepFilters', 'true'));
     else
       var paramsArray = new Array(new Array('keepFilters', 'false'));
     addParamToCurrentUrl(paramsArray);
     setSearchCookieParameter(paramsArray);
   });
-  $('.clear-filters').click(function(){
+  $('.clear-filters').click(function() {
     removeSearchCookieParameter('facetValues[]');
   });
-  function fetchResultsList(url){
-	  
+  function fetchResultsList(url) {
+
     var divSearchResultsOverlayModal = $(document.createElement('div'));
     divSearchResultsOverlayModal.addClass('search-results-overlay-modal');
     var divSearchResultsOverlayWaiting = $(document.createElement('div'));
@@ -383,79 +383,79 @@ function updateLanguageSwitch(params) {
     var divSearchResultsOverlayImg = $(document.createElement('div'));
     divSearchResultsOverlayImg.addClass('small-loader');
     divSearchResultsOverlayWaiting.append(divSearchResultsOverlayImg);
-    
+
     $('.search-results').append(divSearchResultsOverlayModal);
     $('.search-results').append(divSearchResultsOverlayWaiting);
-    
+
     var request = $.ajax({
       type: 'GET',
       dataType: 'json',
       async: true,
-      url: url+'&reqType=ajax',
-      complete: function(data){
-        $('.search-results-list').fadeOut('fast', function(){
+      url: url + '&reqType=ajax',
+      complete: function(data) {
+        $('.search-results-list').fadeOut('fast', function() {
         var JSONresponse = jQuery.parseJSON(data.responseText);
-        if(JSONresponse.numberOfResults==0){
-            $('.search-noresults-content').removeClass("off");
-            $('.search-results-content').addClass("off");
-        }else{
-            $('.search-noresults-content').addClass("off");
-            $('.search-results-content').removeClass("off");
+        if (JSONresponse.numberOfResults == 0) {
+            $('.search-noresults-content').removeClass('off');
+            $('.search-results-content').addClass('off');
+        }else {
+            $('.search-noresults-content').addClass('off');
+            $('.search-results-content').removeClass('off');
         }
         $('.search-results-list').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
-        $('.page-input').attr("value", JSONresponse.page);
+        $('.page-input').attr('value', JSONresponse.page);
         $('.page-nonjs').html(JSONresponse.page);
         $('.total-pages').html(JSONresponse.totalPages);
         $('.result-pages-count').html(JSONresponse.totalPages);
         $('.results-total').html(JSONresponse.numberOfResults);
-        if (JSONresponse.numberOfResults == "1") {
+        if (JSONresponse.numberOfResults == '1') {
             $('#results-label').html(messages.ddbnext.Result_lowercase);
         }
         else {
             $('#results-label').html(messages.ddbnext.Results_lowercase);
         }
-        if(JSONresponse.paginationURL.nextPg){
-          $(".page-nav .next-page").removeClass("off");
-          $(".page-nav .last-page").removeClass("off");
+        if (JSONresponse.paginationURL.nextPg) {
+          $('.page-nav .next-page').removeClass('off');
+          $('.page-nav .last-page').removeClass('off');
           $('.page-nav .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
           $('.page-nav .last-page a').attr('href', JSONresponse.paginationURL.lastPg);
-        }else{
-          $(".page-nav .next-page").addClass("off");
-          $(".page-nav .last-page").addClass("off");
+        }else {
+          $('.page-nav .next-page').addClass('off');
+          $('.page-nav .last-page').addClass('off');
         }
-        if(JSONresponse.paginationURL.firstPg){
-          $(".page-nav .prev-page").removeClass("off");
-          $(".page-nav .first-page").removeClass("off");
+        if (JSONresponse.paginationURL.firstPg) {
+          $('.page-nav .prev-page').removeClass('off');
+          $('.page-nav .first-page').removeClass('off');
           $('.page-nav .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
           $('.page-nav .first-page a').attr('href', JSONresponse.paginationURL.firstPg);
-        }else{
-          $(".page-nav .prev-page").addClass("off");
-          $(".page-nav .first-page").addClass("off");
+        }else {
+          $('.page-nav .prev-page').addClass('off');
+          $('.page-nav .first-page').addClass('off');
         }
         historyManager(url);
         $('.search-results-list').fadeIn('fast');
-        
+
         divSearchResultsOverlayImg.remove();
         divSearchResultsOverlayWaiting.remove();
         divSearchResultsOverlayModal.remove();
-        
+
 //        setHovercardEvents();
         });
       }
     });
   }
- 
+
   // Facets Manager --
-  FacetsManager = function(){
+  FacetsManager = function() {
     this.init();
-  }
+  };
 
   $.extend(FacetsManager.prototype, {
-      
+
     connectedflyoutWidget: null,
-    facetsEndPoint: jsContextPath +'/facets',
-    currentOffset: 0, 
+    facetsEndPoint: jsContextPath + '/facets',
+    currentOffset: 0,
     currentRows: -1, // all facets
     currentFacetField: null,
     currentFacetValuesSelected: new Array(),
@@ -489,13 +489,13 @@ function updateLanguageSwitch(params) {
         SHIFT: 16,
         SPACE: 32,
         TAB: 9,
-        UP: 38  },
+        UP: 38 },
 
-    init: function(){
+    init: function() {
     },
 
-    fetchFacetValues: function(flyoutWidget, query){
-        if(flyoutWidget!=null)
+    fetchFacetValues: function(flyoutWidget, query) {
+        if (flyoutWidget != null)
           this.connectedflyoutWidget = flyoutWidget;
         var oldParams = this.getUrlVars();
         var currObjInstance = this;
@@ -503,24 +503,24 @@ function updateLanguageSwitch(params) {
         var isThumbnailFIltered = '';
         var queryParam = '';
         var resp = new Array();
-        if(oldParams['facetValues%5B%5D']){
-          $.each(oldParams['facetValues%5B%5D'], function(key, value){
-            fctValues = (value.indexOf(currObjInstance.currentFacetField)>=0)?fctValues:fctValues+'&facetValues%5B%5D='+value;
+        if (oldParams['facetValues%5B%5D']) {
+          $.each(oldParams['facetValues%5B%5D'], function(key, value) {
+            fctValues = (value.indexOf(currObjInstance.currentFacetField) >= 0) ? fctValues : fctValues + '&facetValues%5B%5D=' + value;
           });
         }
-        if(oldParams['isThumbnailFiltered'] && oldParams['isThumbnailFiltered']=='true'){
+        if (oldParams['isThumbnailFiltered'] && oldParams['isThumbnailFiltered'] == 'true') {
             isThumbnailFIltered = '&isThumbnailFiltered=true';
         }
-        if(query){
-            queryParam='&query='+query;
+        if (query) {
+            queryParam = '&query=' + query;
         }
         this.connectedflyoutWidget.renderFacetLoader();
         var request = $.ajax({
             type: 'GET',
             dataType: 'json',
             async: true,
-            url: this.facetsEndPoint+'?name='+this.currentFacetField+'&searchQuery='+oldParams['query']+queryParam+fctValues+isThumbnailFIltered+'&offset='+this.currentOffset+'&rows='+this.currentRows,
-            complete: function(data){
+            url: this.facetsEndPoint + '?name=' + this.currentFacetField + '&searchQuery=' + oldParams['query'] + queryParam + fctValues + isThumbnailFIltered + '&offset=' + this.currentOffset + '&rows=' + this.currentRows,
+            complete: function(data) {
                 var parsedResponse = jQuery.parseJSON(data.responseText);
                 // Initialization of currentFacetValuesSelected /
                 // currentFacetValuesNotSelected
@@ -531,15 +531,15 @@ function updateLanguageSwitch(params) {
     },
     // Initialize the structures for the pagination logic inside facets
     // flyoutWidget
-    initPagination: function(){
+    initPagination: function() {
       var currObjInstance = this;
-      if(Math.round((this.currentFacetValuesNotSelected.length)/10)>1){
-        this.connectedflyoutWidget.paginationLiPrev.click(function(e){
+      if (Math.round((this.currentFacetValuesNotSelected.length) / 10) > 1) {
+        this.connectedflyoutWidget.paginationLiPrev.click(function(e) {
             e.preventDefault();
             currObjInstance.goPrevPage();
             return false;
         });
-        this.connectedflyoutWidget.paginationLiNext.click(function(e){
+        this.connectedflyoutWidget.paginationLiNext.click(function(e) {
             e.preventDefault();
             currObjInstance.goNextPage();
             return false;
@@ -548,14 +548,14 @@ function updateLanguageSwitch(params) {
       }
       this.connectedflyoutWidget.setFacetValuesPage(this.currentPage);
     },
-    initializeFacetValuesStructures: function(responseFacetValues){
+    initializeFacetValuesStructures: function(responseFacetValues) {
       // LeftBody will not exists on the first opening of the flyout
-      if(this.connectedflyoutWidget.facetLeftContainer){
+      if (this.connectedflyoutWidget.facetLeftContainer) {
         var currObjInstance = this;
         var selectedList = this.connectedflyoutWidget.facetLeftContainer.find('.selected-items li');
         this.currentFacetValuesNotSelected = responseFacetValues;
-        if(selectedList.length>0){
-          selectedList.each(function(){
+        if (selectedList.length > 0) {
+          selectedList.each(function() {
             var tmpFacetValue = $(this).attr('data-fctvalue');
             currObjInstance.currentFacetValuesSelected.push(tmpFacetValue);
             currObjInstance.currentFacetValuesNotSelected = jQuery.grep(currObjInstance.currentFacetValuesNotSelected, function(element) {
@@ -565,73 +565,73 @@ function updateLanguageSwitch(params) {
         }
       }
     },
-    goNextPage: function(){
+    goNextPage: function() {
       this.currentOffset += 10;
-      this.currentPage +=1;
+      this.currentPage += 1;
       this.connectedflyoutWidget.renderFacetValues(this.currentFacetField, this.currentFacetValuesNotSelected.slice(this.currentOffset));
       this.connectedflyoutWidget.setFacetValuesPage(this.currentPage);
-      
-      if(this.currentPage+1 > Math.ceil((this.currentFacetValuesNotSelected.length)/10)){
+
+      if (this.currentPage + 1 > Math.ceil((this.currentFacetValuesNotSelected.length) / 10)) {
           this.connectedflyoutWidget.paginationLiNext.addClass('off');
       }
       this.connectedflyoutWidget.paginationLiPrev.removeClass('off');
     },
-    goPrevPage: function(){
+    goPrevPage: function() {
       this.currentOffset -= 10;
-      this.currentPage -=1;
+      this.currentPage -= 1;
       this.connectedflyoutWidget.renderFacetValues(this.currentFacetField, this.currentFacetValuesNotSelected.slice(this.currentOffset));
       this.connectedflyoutWidget.setFacetValuesPage(this.currentPage);
-      
-      if(this.currentPage-1 < 1){
+
+      if (this.currentPage - 1 < 1) {
           this.connectedflyoutWidget.paginationLiPrev.addClass('off');
       }
       this.connectedflyoutWidget.paginationLiNext.removeClass('off');
     },
-    
-    selectFacetValue: function(facetValue, localizedValue){
+
+    selectFacetValue: function(facetValue, localizedValue) {
         var currObjInstance = this;
         this.currentFacetValuesSelected.push(facetValue);
-        
+
         this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected, function(element) {
             return element.value != facetValue;
         });
-        
+
         var selectedFacetValue = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
-        
-        selectedFacetValue.find('.facet-remove').click(function(event){
+
+        selectedFacetValue.find('.facet-remove').click(function(event) {
           currObjInstance.unselectFacetValue(selectedFacetValue);
           event.preventDefault();
         });
-        
-        if(this.currentFacetValuesSelected.length == 1){
+
+        if (this.currentFacetValuesSelected.length == 1) {
             this.connectedflyoutWidget.renderAddMoreFiltersButton(this.currentFacetField);
-            this.connectedflyoutWidget.addMoreFilters.click(function(event){
+            this.connectedflyoutWidget.addMoreFilters.click(function(event) {
                 currObjInstance.connectedflyoutWidget.build($(this));
             });
         }
         this.connectedflyoutWidget.close();
-        
+
         // We want to add the facet value selected, but at the same time we want
         // to keep all the old selected values
         var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
-        if(paramsFacetValues){
-          $.each(paramsFacetValues, function(key,value){
-            paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
+        if (paramsFacetValues) {
+          $.each(paramsFacetValues, function(key,value) {
+            paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g, '%20'));
           });
-          paramsFacetValues.push(this.currentFacetField+'='+facetValue);
+          paramsFacetValues.push(this.currentFacetField + '=' + facetValue);
           var paramsArray = new Array(new Array('facetValues[]', paramsFacetValues));
-        }else{
-          var paramsArray = new Array(new Array('facetValues[]', this.currentFacetField+'='+facetValue));
+        }else {
+          var paramsArray = new Array(new Array('facetValues[]', this.currentFacetField + '=' + facetValue));
         }
         paramsArray.push(new Array('offset', 0));
         fetchResultsList(addParamToCurrentUrl(paramsArray));
-        
+
         $('.clear-filters').removeClass('off');
     },
-    
-    unselectFacetValue: function(element){
+
+    unselectFacetValue: function(element) {
       var facetFieldFilter = element.parents('.facets-item');
-      if(this.connectedflyoutWidget.opened){
+      if (this.connectedflyoutWidget.opened) {
           this.connectedflyoutWidget.close();
           this.currentFacetValuesSelected = jQuery.grep(this.currentFacetValuesSelected, function(el) {
               return el != element.attr('data-fctvalue');
@@ -639,132 +639,132 @@ function updateLanguageSwitch(params) {
       }
       // if in the list there is only one element means that is the case of the
       // last element that we are going to remove
-      if(facetFieldFilter.find('.selected-items li').length == 1){
+      if (facetFieldFilter.find('.selected-items li').length == 1) {
         var facetFieldFilter = element.parents('.facets-item');
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
-      var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+element.attr('data-fctvalue'))));
+      var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]', facetFieldFilter.find('.h3').attr('data-fctname') + '=' + element.attr('data-fctvalue'))));
       if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
           removeSearchCookieParameter('facetValues[]');
       }
-      fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
+      fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf('?') + 1)));
       element.remove();
-      
-      if($('.facets-list').find('li[data-fctvalue]').length==0) $('.clear-filters').addClass('off');
-          
+
+      if ($('.facets-list').find('li[data-fctvalue]').length == 0) $('.clear-filters').addClass('off');
+
     },
-    
-    initializeFacetValuesDynamicSearch: function(inputSearchElement){
+
+    initializeFacetValuesDynamicSearch: function(inputSearchElement) {
       var currObjInstance = this;
-      inputSearchElement.keyup(function(e){
+      inputSearchElement.keyup(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         var inputValue = this.value;
-        if(code!=currObjInstance.keyCode.SHIFT 
-            && code!=currObjInstance.keyCode.CONTROL 
-            && code!=currObjInstance.keyCode.ALT 
-            && code!=currObjInstance.keyCode.LEFT 
-            && code!=currObjInstance.keyCode.UP 
-            && code!=currObjInstance.keyCode.RIGHT 
-            && code!=currObjInstance.keyCode.DOWN 
-            && code!=currObjInstance.keyCode.ENTER 
-            && code!=currObjInstance.keyCode.TAB){
+        if (code != currObjInstance.keyCode.SHIFT
+            && code != currObjInstance.keyCode.CONTROL
+            && code != currObjInstance.keyCode.ALT
+            && code != currObjInstance.keyCode.LEFT
+            && code != currObjInstance.keyCode.UP
+            && code != currObjInstance.keyCode.RIGHT
+            && code != currObjInstance.keyCode.DOWN
+            && code != currObjInstance.keyCode.ENTER
+            && code != currObjInstance.keyCode.TAB) {
             var d = new Date();
             currObjInstance.searchFacetValuesTimeout = d.getTime();
-            setTimeout(function(){
+            setTimeout(function() {
                 var currentD = new Date();
-              if(currObjInstance.searchFacetValuesTimeout+400<currentD.getTime()  && currObjInstance.connectedflyoutWidget.opened){
+              if (currObjInstance.searchFacetValuesTimeout + 400 < currentD.getTime() && currObjInstance.connectedflyoutWidget.opened) {
                   currObjInstance.connectedflyoutWidget.parentMainElement.find('.flyout-right-container').remove();
                   currObjInstance.connectedflyoutWidget.buildStructure();
-                  currObjInstance.fetchFacetValues(null,inputValue);
+                  currObjInstance.fetchFacetValues(null, inputValue);
               }
-              else{
+              else {
                 return;
               }
             },500);
-          }else if(code==currObjInstance.keyCode.TAB){
+          }else if (code == currObjInstance.keyCode.TAB) {
             currObjInstance.connectedflyoutWidget.close();
           }
       });
     },
-    
-    initializeSelectedFacetOnLoad: function(connectedflyoutWidget){
+
+    initializeSelectedFacetOnLoad: function(connectedflyoutWidget) {
       var currObjInstance = this;
       this.connectedflyoutWidget = connectedflyoutWidget;
       var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
-      if(paramsFacetValues){
+      if (paramsFacetValues) {
         var selectedFacets = {};
-        $.each(paramsFacetValues, function(key,value){
-          var decodedElement = decodeURIComponent(value.replace(/\+/g,'%20')).split('=');
+        $.each(paramsFacetValues, function(key,value) {
+          var decodedElement = decodeURIComponent(value.replace(/\+/g, '%20')).split('=');
           var fctField = decodedElement[0];
           var fctValue = decodedElement[1];
-          if(!selectedFacets[fctField]){
+          if (!selectedFacets[fctField]) {
             selectedFacets[fctField] = new Array();
           }
           selectedFacets[fctField].push(fctValue);
         });
-        $.each(selectedFacets, function(fctField, fctValues){
-            currObjInstance.connectedflyoutWidget.mainElement = $('.facets-list').find('a[data-fctname="'+fctField+'"]');
+        $.each(selectedFacets, function(fctField, fctValues) {
+            currObjInstance.connectedflyoutWidget.mainElement = $('.facets-list').find('a[data-fctname="' + fctField + '"]');
             currObjInstance.connectedflyoutWidget.parentMainElement = currObjInstance.connectedflyoutWidget.mainElement.parent();
             currObjInstance.currentFacetField = currObjInstance.connectedflyoutWidget.mainElement.attr('data-fctname');
             currObjInstance.connectedflyoutWidget.buildLeftContainer();
             currObjInstance.connectedflyoutWidget.parentMainElement.find('.input-search-fct-container').hide();
-            $.each(fctValues, function(){
+            $.each(fctValues, function() {
                 var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, currObjInstance.getLocalizedValue(fctField, this));
-                
-                selectedFacetValue.find('.facet-remove').click(function(){
+
+                selectedFacetValue.find('.facet-remove').click(function() {
                   currObjInstance.unselectFacetValue(selectedFacetValue);
                 });
             });
-            
+
             currObjInstance.connectedflyoutWidget.renderAddMoreFiltersButton(fctField);
-            currObjInstance.connectedflyoutWidget.addMoreFilters.click(function(event){
+            currObjInstance.connectedflyoutWidget.addMoreFilters.click(function(event) {
                 currObjInstance.connectedflyoutWidget.build($(this));
             });
         });
         $('.clear-filters').removeClass('off');
       }
     },
-    
-    getUrlVars: function(){
+
+    getUrlVars: function() {
       var vars = {}, hash;
-      var hashes = (historySupport)?window.location.href.slice(window.location.href.indexOf('?') + 1).split('&'):globalUrl.split('&');
-      for(var i = 0; i < hashes.length; i++)
+      var hashes = (historySupport) ? window.location.href.slice(window.location.href.indexOf('?') + 1).split('&') : globalUrl.split('&');
+      for (var i = 0; i < hashes.length; i++)
       {
         hash = hashes[i].split('=');
-        if(!Object.prototype.hasOwnProperty.call(vars, hash[0])){
+        if (!Object.prototype.hasOwnProperty.call(vars, hash[0])) {
           vars[hash[0]] = new Array();
         }
         vars[hash[0]].push(hash[1]);
       }
       return vars;
     },
-    getUrlVar: function(name){
+    getUrlVar: function(name) {
       return this.getUrlVars()[name];
     },
-    getLocalizedValue: function(facetField, facetValue){
-        if(facetField=='affiliate_fct' || facetField=='keywords_fct' || facetField=='place_fct' || facetField=='provider_fct'){
+    getLocalizedValue: function(facetField, facetValue) {
+        if (facetField == 'affiliate_fct' || facetField == 'keywords_fct' || facetField == 'place_fct' || facetField == 'provider_fct') {
             return facetValue.toString();
         }
-        if(facetField=='type_fct'){
-            return messages.ddbnext['type_fct_'+facetValue];
+        if (facetField == 'type_fct') {
+            return messages.ddbnext['type_fct_' + facetValue];
         }
-        if(facetField=='time_fct'){
-            return messages.ddbnext['time_fct_'+facetValue];
+        if (facetField == 'time_fct') {
+            return messages.ddbnext['time_fct_' + facetValue];
         }
-        if(facetField=='language_fct'){
-            return messages.ddbnext['language_fct_'+facetValue];
+        if (facetField == 'language_fct') {
+            return messages.ddbnext['language_fct_' + facetValue];
         }
-        if(facetField=='sector_fct'){
-            return messages.ddbnext['sector_fct_'+facetValue];
+        if (facetField == 'sector_fct') {
+            return messages.ddbnext['sector_fct_' + facetValue];
         }
         return '';
     }
   });
-  
+
   // Flyout Widget --
-  FlyoutFacetsWidget = function(){
+  FlyoutFacetsWidget = function() {
     this.init();
-  }
+  };
 
   $.extend(FlyoutFacetsWidget.prototype, {
     mainElement: null,
@@ -773,7 +773,7 @@ function updateLanguageSwitch(params) {
     fctManager: new FacetsManager(),
 
     facetLeftContainer: null,
-    facetRightContainer:null,
+    facetRightContainer: null,
     rightBody: null,
     leftBody: null,
     selectedItems: null,
@@ -782,10 +782,10 @@ function updateLanguageSwitch(params) {
     paginationLiSeite: null,
     addMoreFilters: null,
     inputSearch: null,
-    
+
 
     // i18n variables
-    
+
     field_MostRelevant: messages.ddbnext.Most_relevant,
     field_NoAvailableValues: messages.ddbnext.No_Available_Values,
     field_AddMoreFiltersButtonTooltip: messages.ddbnext.Add_More_Filters_ButtonTooltip,
@@ -794,49 +794,49 @@ function updateLanguageSwitch(params) {
     field_Page: messages.ddbnext.Page,
     field_RemoveSelectedItem: messages.ddbnext.Remove_selected_item,
     field_RemoveButton: messages.ddbnext.Remove_Button,
-    
-    init: function(){
+
+    init: function() {
         this.cleanNonJsStructures();
         this.fctManager.initializeSelectedFacetOnLoad(this);
     },
-    
-    build: function(element){
-        if((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length == 0) || element.attr('class') == 'add-more-filters'){
-            if((element.attr('data-fctname') != this.fctManager.currentFacetField 
-                    || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))){
-              if(this.opened) this.close();
+
+    build: function(element) {
+        if ((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length == 0) || element.attr('class') == 'add-more-filters') {
+            if ((element.attr('data-fctname') != this.fctManager.currentFacetField
+                    || (element.attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))) {
+              if (this.opened) this.close();
               this.mainElement = element.parents('.facets-item').find('.h3');
               this.parentMainElement = this.mainElement.parent();
               this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
-              if(!this.parentMainElement.hasClass('active')){
+              if (!this.parentMainElement.hasClass('active')) {
                 this.parentMainElement.hide();
                 this.parentMainElement.addClass('active');
               }
               this.buildStructure();
               this.fctManager.fetchFacetValues(this);
               this.opened = true;
-            }else if(this.opened) this.close();
-        }else if(element.attr('class') == 'h3' && this.opened){
+            }else if (this.opened) this.close();
+        }else if (element.attr('class') == 'h3' && this.opened) {
             this.close();
-        }else{
+        }else {
             return false;
         }
     },
-    
-    buildStructure: function(){
-      
-      if(this.parentMainElement.find('.flyout-left-container').length>0){
+
+    buildStructure: function() {
+
+      if (this.parentMainElement.find('.flyout-left-container').length > 0) {
         this.facetLeftContainer = this.parentMainElement.find('.flyout-left-container');
         this.selectedItems = this.parentMainElement.find('.selected-items');
         var inputSearchContainer = this.parentMainElement.find('.input-search-fct-container');
         this.inputSearch = this.parentMainElement.find('.input-search-fct');
-      }else{
+      }else {
         this.buildLeftContainer();
       }
-      
+
       this.facetRightContainer = $(document.createElement('div'));
-      var rightHead = $( document.createElement('div') );
-      this.rightBody = $( document.createElement('div') );
+      var rightHead = $(document.createElement('div'));
+      this.rightBody = $(document.createElement('div'));
       // pagination structure for facets
       var paginationContainer = $(document.createElement('div'));
       var paginationUl = $(document.createElement('ul'));
@@ -846,7 +846,7 @@ function updateLanguageSwitch(params) {
       var paginationAPrev = $(document.createElement('a'));
       var paginationANext = $(document.createElement('a'));
       var spanSeiteNumber = $(document.createElement('span'));
-      
+
       this.facetRightContainer.addClass('flyout-right-container');
       this.facetRightContainer.hide();
       rightHead.addClass('flyout-right-head');
@@ -856,17 +856,17 @@ function updateLanguageSwitch(params) {
       this.paginationLiPrev.addClass('prev-page br off');
       this.paginationLiNext.addClass('next-page bl off');
       this.paginationLiSeite.addClass('pages-overall-index');
-      paginationAPrev.attr('href','');
-      paginationANext.attr('href','');
-      
+      paginationAPrev.attr('href', '');
+      paginationANext.attr('href', '');
+
       this.facetRightContainer.appendTo(this.mainElement.parent());
       rightHead.appendTo(this.facetRightContainer);
       this.rightBody.appendTo(this.facetRightContainer);
-      
+
       paginationAPrev.html(this.field_SearchResultsFacetValuePrevious);
       paginationANext.html(this.field_SearchResultsFacetValueNext);
       this.paginationLiSeite.html(this.field_Page);
-      
+
       paginationContainer.appendTo(rightHead);
       paginationUl.appendTo(paginationContainer);
       paginationAPrev.appendTo(this.paginationLiPrev);
@@ -875,13 +875,13 @@ function updateLanguageSwitch(params) {
       this.paginationLiPrev.appendTo(paginationUl);
       this.paginationLiSeite.appendTo(paginationUl);
       this.paginationLiNext.appendTo(paginationUl);
-      
+
       this.parentMainElement.fadeIn('fast');
       this.facetRightContainer.fadeIn('fast');
       this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
     },
-    
-    buildLeftContainer: function(){        
+
+    buildLeftContainer: function() {
         this.facetLeftContainer = $(document.createElement('div'));
         this.selectedItems = $(document.createElement('ul'));
         var inputSearchContainer = $(document.createElement('div'));
@@ -890,75 +890,75 @@ function updateLanguageSwitch(params) {
         this.facetLeftContainer.addClass('flyout-left-container');
         this.selectedItems.addClass('selected-items unstyled');
         inputSearchContainer.addClass('input-search-fct-container');
-        this.inputSearch.attr('type','text');
+        this.inputSearch.attr('type', 'text');
         this.inputSearch.addClass('input-search-fct');
-        
+
         this.facetLeftContainer.appendTo(this.mainElement.parent());
         this.selectedItems.appendTo(this.facetLeftContainer);
         this.inputSearch.appendTo(inputSearchContainer);
         inputSearchContainer.appendTo(this.facetLeftContainer);
         this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
     },
-    
-    initializeFacetValues: function(field, facetValues){
+
+    initializeFacetValues: function(field, facetValues) {
         var leftCol = $(document.createElement('ul'));
         var rightCol = $(document.createElement('ul'));
 
         this.rightBody.empty();
-        
+
         leftCol.addClass('left-col unstyled');
         rightCol.addClass('right-col unstyled');
 
         leftCol.appendTo(this.rightBody);
         rightCol.appendTo(this.rightBody);
-        
+
         this.renderFacetValues(field, facetValues);
         this.fctManager.initPagination();
     },
-    
-    renderFacetValues: function(field, facetValues){
+
+    renderFacetValues: function(field, facetValues) {
       var currObjInstance = this;
-        
+
       var leftCol = this.rightBody.find('.left-col');
       var rightCol = this.rightBody.find('.right-col');
       var flyoutRightHeadTitle;
-      if(this.facetRightContainer.find('.flyout-right-head span').length > 0){
+      if (this.facetRightContainer.find('.flyout-right-head span').length > 0) {
           flyoutRightHeadTitle = $(this.facetRightContainer.find('.flyout-right-head span')[0]);
-      }else{
+      }else {
           flyoutRightHeadTitle = $(document.createElement('span'));
       }
-      if(field == this.fctManager.currentFacetField && facetValues.length >0){
+      if (field == this.fctManager.currentFacetField && facetValues.length > 0) {
         flyoutRightHeadTitle.html(this.field_MostRelevant);
-        if(facetValues.length > 5){
+        if (facetValues.length > 5) {
           this.rightBody.addClass('body-extender');
         }
-        else{
+        else {
           this.rightBody.removeClass('body-extender');
         }
-        this.rightBody.fadeOut('fast', function(){
+        this.rightBody.fadeOut('fast', function() {
           leftCol.empty();
           rightCol.empty();
-          
-          $.each(facetValues, function(index){
-            if(jQuery.inArray(this.value,currObjInstance.fctManager.currentFacetValuesSelected)==-1){
+
+          $.each(facetValues, function(index) {
+            if (jQuery.inArray(this.value, currObjInstance.fctManager.currentFacetValuesSelected) == -1) {
                 var facetValueContainer = $(document.createElement('li'));
                 var facetValueAnchor = $(document.createElement('a'));
                 var spanCount = $(document.createElement('span'));
                 var facetValue = this.value;
                 var localizedValue = this.localizedValue;
-                
-                facetValueContainer.click(function(){
-                  currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue.replace('<strong>','').replace('</strong>',''));
+
+                facetValueContainer.click(function() {
+                  currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue.replace('<strong>', '').replace('</strong>', ''));
                   $(this).remove();
                 });
-                
+
                 facetValueContainer.attr('data-fctvalue', facetValue);
-                spanCount.html('('+this.count+')');
-        
-                if(index<5){
+                spanCount.html('(' + this.count + ')');
+
+                if (index < 5) {
                   facetValueContainer.appendTo(leftCol);
                 }
-                else if(index<10){
+                else if (index < 10) {
                   facetValueContainer.appendTo(rightCol);
                 }
                 facetValueAnchor.appendTo(facetValueContainer);
@@ -968,122 +968,122 @@ function updateLanguageSwitch(params) {
           });
           currObjInstance.rightBody.fadeIn('fast');
         });
-      }else{
+      }else {
         flyoutRightHeadTitle.html(this.field_NoAvailableValues);
       }
       flyoutRightHeadTitle.prependTo(this.facetRightContainer.find('.flyout-right-head'));
     },
-    
-    renderSelectedFacetValue: function(facetValue, localizedValue){
+
+    renderSelectedFacetValue: function(facetValue, localizedValue) {
       var facetValueContainer = $(document.createElement('li'));
       var facetValueSpan = $(document.createElement('span'));
       var facetValueRemove = $(document.createElement('a'));
 // var facetValueRemove = $(document.createElement('span'));
-      
+
       facetValueContainer.attr('data-fctvalue', facetValue);
       facetValueSpan.attr('title', localizedValue);
       facetValueSpan.html(localizedValue);
       facetValueRemove.attr('href', '#');
       facetValueRemove.attr('title', this.field_RemoveButton);
-      
+
       facetValueSpan.addClass('facet-value');
       facetValueRemove.addClass('facet-remove fr');
-      
+
       facetValueSpan.appendTo(facetValueContainer);
       facetValueRemove.appendTo(facetValueContainer);
       facetValueContainer.appendTo(this.selectedItems);
-      
+
       return facetValueContainer;
     },
-    
-    renderAddMoreFiltersButton: function(facetField){
+
+    renderAddMoreFiltersButton: function(facetField) {
         this.addMoreFilters = $(document.createElement('div'));
         var text = $(document.createElement('span'));
         var icon = $(document.createElement('span'));
-        
+
         this.addMoreFilters.attr('data-fctname', facetField);
         text.html(this.field_AddMoreFiltersButtonTooltip);
-        
+
         this.addMoreFilters.addClass('add-more-filters');
         icon.addClass('icon');
-        
+
         text.appendTo(this.addMoreFilters);
         icon.appendTo(this.addMoreFilters);
         this.addMoreFilters.appendTo(this.facetLeftContainer);
         this.facetLeftContainer.find('.input-search-fct-container').appendTo(this.facetLeftContainer);
-        
-        this.addMoreFilters.click(function(event){
+
+        this.addMoreFilters.click(function(event) {
             $(this).hide();
-        })
+        });
     },
-    
-    removeAddMoreFiltersButton: function(FacetFieldFilter , addMoreFiltersElement){
+
+    removeAddMoreFiltersButton: function(FacetFieldFilter , addMoreFiltersElement) {
       addMoreFiltersElement.remove();
       this.resetFacetFieldFilter(FacetFieldFilter);
     },
-    
-    setFacetValuesPage: function(pageNumber){
+
+    setFacetValuesPage: function(pageNumber) {
       var spanPGNumber = this.paginationLiSeite.find('span');
-      if(spanPGNumber.length == 0){
-          ($(document.createElement('span')).html(pageNumber)).appendTo(this.paginationLiSeite)
+      if (spanPGNumber.length == 0) {
+          ($(document.createElement('span')).html(pageNumber)).appendTo(this.paginationLiSeite);
       }
       $(spanPGNumber[0]).html(pageNumber);
     },
-    
-    renderFacetLoader: function(){
+
+    renderFacetLoader: function() {
       this.rightBody.empty();
       var imgLoader = $(document.createElement('div'));
       imgLoader.addClass('small-loader');
       this.rightBody.prepend(imgLoader);
     },
-    
-    manageOutsideClicks: function(thisInstance){
-      $(document).mouseup(function (e){
-        var container = $(".facets-list");
-        if (container.has(e.target).length === 0 && thisInstance.opened == true){
+
+    manageOutsideClicks: function(thisInstance) {
+      $(document).mouseup(function(e) {
+        var container = $('.facets-list');
+        if (container.has(e.target).length === 0 && thisInstance.opened == true) {
           thisInstance.close();
         }
       });
     },
-    
-    cleanNonJsStructures: function(){
+
+    cleanNonJsStructures: function() {
       $('.facets-item >ul').remove();
       $('.clear-filters').addClass('off');
     },
-    
-    close: function(){
+
+    close: function() {
       var currObjInstance = this;
       var oldMainElement = this.mainElement;
       var oldParentMainElement = this.parentMainElement;
-      oldParentMainElement.find('.input-search-fct-container').hide('100', function(){
-        if(oldParentMainElement.find('.flyout-left-container ul li').length > 0){
+      oldParentMainElement.find('.input-search-fct-container').hide('100', function() {
+        if (oldParentMainElement.find('.flyout-left-container ul li').length > 0) {
           oldParentMainElement.find('.add-more-filters').show('100');
-        }else{
+        }else {
           currObjInstance.resetFacetFieldFilter(oldParentMainElement);
         }
       });
-      oldParentMainElement.find('.flyout-right-container').hide('100', function(){
+      oldParentMainElement.find('.flyout-right-container').hide('100', function() {
         oldParentMainElement.find('.flyout-right-container').remove();
       });
-      this.inputSearch.attr('value','');
+      this.inputSearch.attr('value', '');
       this.fctManager.currentPage = 1;
       this.fctManager.currentOffset = 0;
       this.fctManager.currentFacetValuesSelected = new Array();
       this.opened = false;
     },
-    
-    resetFacetFieldFilter: function(element){
-        element.fadeOut('fast',function(){
+
+    resetFacetFieldFilter: function(element) {
+        element.fadeOut('fast', function() {
             element.removeClass('active');
             element.fadeIn('fast');
           });
     }
   });
-  
-  function initializeFacets(){
+
+  function initializeFacets() {
     var fctWidget = new FlyoutFacetsWidget();
-    $('.facets-item a').each(function(){
-        $(this).click(function(event){
+    $('.facets-item a').each(function() {
+        $(this).click(function(event) {
             event.preventDefault();
             fctWidget.build($(this));
         });
@@ -1092,4 +1092,4 @@ function updateLanguageSwitch(params) {
   }
   initializeFacets();
   // -- End Facet Manager
-};
+}
