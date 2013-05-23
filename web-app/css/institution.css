@@ -25,33 +25,27 @@
   font-size:0.938em;
   font-style: italic;
   margin-bottom: 20px;
+  float: right;
 }
 
-@media (min-width: 981px) {
-  .locations #divOSM { 
-    float: right;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 980px) {
+@media (min-width: 768px) and (max-width: 979px) {
   .locations #divOSM { 
     margin-left: 0px;
-    width: 400px;    
-    float: right;
+    width: 400px;
   }
 }
 
 @media (min-width: 481px) and (max-width: 767px) {
   .locations #divOSM { 
-    margin-left: 0px;
-    width: 420px;    
+    width: 420px;
+    float: none;
   }
 }
 
 @media (max-width: 480px) {
   .locations #divOSM { 
-    margin-left: 0px;
     width: 100%;
+    float: none;
   }
 }
 
