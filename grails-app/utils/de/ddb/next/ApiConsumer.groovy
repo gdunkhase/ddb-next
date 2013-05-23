@@ -229,7 +229,7 @@ class ApiConsumer {
                 uri.path = path
                 uri.query = query
                 response.success = { resp, inputstream ->
-                    log.debug "Success getBinaryContent(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.info "Success getBinaryContent(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug "response status: ${resp.statusLine}"
                     log.debug 'Headers: -----------'
 
