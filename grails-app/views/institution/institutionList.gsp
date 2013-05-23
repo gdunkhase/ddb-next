@@ -1,6 +1,6 @@
 <%--
 Copyright (C) 2013 FIZ Karlsruhe
- 
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -25,10 +25,11 @@ limitations under the License.
 </head>
 <body>
   <h1><g:message code="ddbnext.Institutions" /></h1>
-  
+
   <div class="row">
     <div class="view-type-switch span12 off">
-      <button id="view-institution-map" class="selected" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Label" /></button>
+      <button id="view-institution-map" class="selected" type="button"
+        title="<g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Label" /></button>
       <button id="view-institution-list" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsListButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsListButton_Label" /></button>
     </div>
   </div>
@@ -49,7 +50,7 @@ limitations under the License.
       </div>
       <ol id="institution-list">
         <g:each in="${ all }">
-        <li class="institution-listitem" data-sector="${ it?.sector }" 
+        <li class="institution-listitem" data-sector="${ it?.sector }"
           data-institution-id="${ it?.id }">
           <i class="icon-institution"></i>
           <g:render template="listItem" model="['item': it]"/>

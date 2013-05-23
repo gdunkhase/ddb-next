@@ -26,9 +26,8 @@ var mapInitialized = false;
 var InstitutionsMapAdapter = (function($, undefined) {
     'use strict';
 
-    var osmTileServer = "openstreetmap.org";
+    var osmTileServer = 'openstreetmap.org';
     //var osmTileServer = "opencyclemap.org/cycle";
-
     //var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
     var osmTileset = ['http://a.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
                        'http://b.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
@@ -100,7 +99,6 @@ var InstitutionsMapAdapter = (function($, undefined) {
 
         $('#main-container').removeClass('map');
         $('#main-container').addClass('list');
-        _initializeMap();
     };
 
     var _enableMapView = function() {
@@ -115,7 +113,12 @@ var InstitutionsMapAdapter = (function($, undefined) {
 
         $('#main-container').addClass('map');
         $('#main-container').removeClass('list');
+
         _initializeMap();
+
+        $('input:checkbox').click(function() {
+            Public.selectSectors();
+        });
     };
 
     var _initializeMap = function() {
@@ -126,21 +129,29 @@ var InstitutionsMapAdapter = (function($, undefined) {
         }
     };
 
-    var _getWindowWidth = function() { 
-        if (window.innerWidth) { 
-            return window.innerWidth; 
-        } 
+    var _getWindowWidth = function() {
+        if (window.innerWidth) {
+            return window.innerWidth;
+        }
         else if (window.document.documentElement &&
-            window.document.documentElement.clientWidth) { 
-            return window.document.documentElement.clientWidth; 
+            window.document.documentElement.clientWidth) {
+            return window.document.documentElement.clientWidth;
         }
         else {
-            return window.document.body.offsetWidth; 
-        } 
+            return window.document.body.offsetWidth;
+        }
     };
 
     Public.setupDom4MapDisplay = function() {
+        // We hide the loader image.
+        $('.loader').addClass('off');
+
         var hash = window.location.hash.substring(1);
+
+        /*
+         * Depends on the hash, we decide to the shows the map or the list view.
+         */
+        // TODO: why we need _getWindowWidth ?
         if ((hash === 'map' || hash === '') && (_getWindowWidth() > 767)) {
             _enableMapView();
         }else {
@@ -155,9 +166,6 @@ var InstitutionsMapAdapter = (function($, undefined) {
             _enableMapView();
         });
 
-        $('input:checkbox').click(function() {
-            Public.selectSectors();
-        });
     };
 
     return Public;
@@ -169,17 +177,25 @@ $('#institution-list').ready(function() {
     return;
 });
 
-$(document).ready(function() {
+$(function() {
     INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
     MAP_DIR = jsContextPath + MAP_DIR;
     GeoTemCoMinifier_urlPrefix = window.document.location.protocol + '//' +
         window.document.location.host + MAP_DIR;
-    if (jsPageName == INSTITUTION_PAGE_NAME) {
+    if (jsPageName === INSTITUTION_PAGE_NAME) {
+        /* We execute this function in the institution page, for example:
+         * //about-us/institutions/item/CGTOW3JCT4TEG3FIU6KI3TMAGEC4DJJR
+         */
         InstitutionsMapAdapter.drawInstitution(INSTITUTION_DIV, jsLanguage,
             jsLongitude, jsLatitude);
     }
-    else if (jsPageName == INSTITUTIONLIST_PAGE_NAME) {
-        $('.loader').addClass('off');
+    else if (jsPageName === INSTITUTIONLIST_PAGE_NAME) {
+        /* We execute this function in the institution list or map page, for example:
+         * - //about-us/institutions
+         * - //about-us/institutions#list
+         * - //about-us/institutions#Z
+         */
+        // We set the institution list and map adapter.
         InstitutionsMapAdapter.setupDom4MapDisplay();
     }
     return;
