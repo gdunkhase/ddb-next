@@ -66,44 +66,45 @@ limitations under the License.
      <div class="row">
        <div class="span12 locations">
 
-            <div id="divOSM" class="span5"></div>
-            
             <div class="location-container span5">
-                
-                <div class="location" data-lat="${selectedOrgXML.locations.location.geocode.latitude }" data-lon="${selectedOrgXML.locations.location.geocode.longitude }">
-                    <p class="address">
-                        <b>${selectedOrgXML.name}</b><br>
-                        <span class="space">${selectedOrgXML.locations.location.address.street }</span>${selectedOrgXML.locations.location.address.houseIdentifier }<br>
-                        <g:if test="${(selectedOrgXML.locations.location.address.addressSupplement)&&(selectedOrgXML.locations.location.address.addressSupplement.text().length() > 0)}">
-                            ${selectedOrgXML.locations.location.address.addressSupplement}<br>
-                        </g:if>
-                        <span class="space">${selectedOrgXML.locations.location.address.postalCode }</span>${selectedOrgXML.locations.location.address.city }
-                    </p>
-                </div>
-                
-                <g:if test="${((subOrg)&&(subOrg.size() > 0)&&(!(parentOrg[parentOrg.size() - 1].aggregationEntity)))}">
-                    <div class="hierarchy">
-                      <span class="title"><g:message code="ddbnext.InstitutionItem_OtherLocations" /></span>
-                      <ol class="institution-list">
-                        <li class="institution-listitem">
-                          <g:if test="${(selectedItemId == itemId)}">
-                              <i class="icon-institution"></i>
-                              <b>${parentOrg[parentOrg.size() - 1].label}</b>
-                          </g:if>
-                          <g:else>
-                            <i class="icon-child-institution"></i>
-                            <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
-                          </g:else>
-                          <g:set var="maxDepthOfLoop" value="${10}" />
-                          <g:set var="loopCount" value="${0}" />
-                          <g:render template="subinstitutions" />
-                        </li>
-                      </ol>
-                    </div>
+
+              <div class="location" data-lat="${selectedOrgXML.locations.location.geocode.latitude }" data-lon="${selectedOrgXML.locations.location.geocode.longitude }">
+                <p class="address">
+                  <b>${selectedOrgXML.name}</b><br>
+                  <span class="space">${selectedOrgXML.locations.location.address.street }</span>${selectedOrgXML.locations.location.address.houseIdentifier }<br>
+                  <g:if test="${(selectedOrgXML.locations.location.address.addressSupplement)&&(selectedOrgXML.locations.location.address.addressSupplement.text().length() > 0)}">
+                    ${selectedOrgXML.locations.location.address.addressSupplement}<br>
                   </g:if>
-                </div>
+                  <span class="space">${selectedOrgXML.locations.location.address.postalCode }</span>${selectedOrgXML.locations.location.address.city }
+                </p>
               </div>
+
+              <g:if test="${((subOrg)&&(subOrg.size() > 0)&&(!(parentOrg[parentOrg.size() - 1].aggregationEntity)))}">
+                <div class="hierarchy">
+                  <span class="title"><g:message code="ddbnext.InstitutionItem_OtherLocations" /></span>
+                  <ol class="institution-list">
+                    <li class="institution-listitem">
+                      <g:if test="${(selectedItemId == itemId)}">
+                        <i class="icon-institution"></i>
+                        <b>${parentOrg[parentOrg.size() - 1].label}</b>
+                      </g:if>
+                      <g:else>
+                        <i class="icon-child-institution"></i>
+                        <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
+                      </g:else>
+                      <g:set var="maxDepthOfLoop" value="${10}" />
+                      <g:set var="loopCount" value="${0}" />
+                      <g:render template="subinstitutions" />
+                    </li>
+                  </ol>
+                </div>
+              </g:if>
             </div>
+
+            <div id="divOSM" class="span5"></div>
+
+        </div>
+      </div>
   </div> 
   <div class="printViewUrl off">
     <strong><g:message code="ddbnext.CulturalItem_Deeplink"/></strong>: 
