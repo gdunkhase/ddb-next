@@ -143,7 +143,15 @@ class ItemService {
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
-            def sourceUri = grailsApplication.config.ddb.backend.url + componentsPath + 'source'
+            def binaryServerUrl = grailsApplication.config.ddb.binary.url
+
+            //Security check: if the binaryServerUrl is configured with an ending ".../binary/", this has to be removed
+            int firstOccuranceOfBinaryString = binaryServerUrl.indexOf("/binary/")
+            if(firstOccuranceOfBinaryString >= 0){
+                binaryServerUrl = binaryServerUrl.substring(0, firstOccuranceOfBinaryString)
+            }
+
+            def sourceUri = binaryServerUrl + componentsPath + 'source'
             def encodedSourceUri= URLEncoder.encode sourceUri, 'UTF-8'
             return withoutPlaceholder + encodedSourceUri
         }
