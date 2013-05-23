@@ -627,6 +627,7 @@ header .language-widget form,.header .language-widget form {
   height: 30px;
   position: absolute;
   right: 0;
+  background-image: none;
 }
 
 .nav-list ul>li {

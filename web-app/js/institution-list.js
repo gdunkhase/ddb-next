@@ -69,8 +69,10 @@
     },
 
     findElements: function(list) {
+      var idList = _.pluck(list, 'id');
       return $('li.institution-listitem').filter(function() {
-        return _.contains(_.pluck(list, 'id'), $(this).data('institution-id'));
+        var institutionId = $(this).data('institution-id')
+        return _.contains(idList, $(this).data('institution-id'));
       });
     },
 
@@ -201,6 +203,7 @@
       var parentList = [];
 
       if (sectors.length > 0 && firstLetter === '') {
+
         // when at least one sector selected _and_ no first letter filter.
         // e.g. sector = ['Media'], index = All
         var filteredBySector = ddb.filterBySectors(institutionList, sectors, parentList);

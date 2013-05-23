@@ -26,10 +26,10 @@ var mapInitialized = false;
 var InstitutionsMapAdapter = (function($, undefined) {
     'use strict';
 
-    //var osmTileServer = "openstreetmap.org";
+    var osmTileServer = "openstreetmap.org";
     //var osmTileServer = "opencyclemap.org/cycle";
 
-    var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
+    //var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
     var osmTileset = ['http://a.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
                        'http://b.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
                        'http://c.tile.' + osmTileServer + '/${z}/${x}/${y}.png'];
@@ -52,8 +52,10 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     Public.selectSectors = function() {
-        var sectors = _getSectorSelection();
-        InstitutionsMapController.selectSectors(sectors);
+        if(mapInitialized){
+          var sectors = _getSectorSelection();
+          InstitutionsMapController.selectSectors(sectors);
+        }
     };
 
     var _getSectorSelection = function() {
@@ -119,7 +121,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     var _initializeMap = function() {
-        if (!mapInitialized) {
+        if (!mapInitialized && !$('#institution-map').hasClass('off')) {
             InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage,
                 institutionsMapOptions);
             mapInitialized = true;

@@ -226,6 +226,10 @@
   background: none;
 }
 
+.view-type-switch >div{
+  display:inline-block;
+}
+
 .view-type-switch button:before {
   display: inline-block;
   content: url("../images/icons/viewSelector.png");
@@ -790,7 +794,9 @@ input[type="checkbox"],input[type="radio"] {
 /* responsive - end */
 .searchSuggestion{
  padding-top:25px;
- padding-bottom:25px
+ padding-bottom:25px;
+ display: none;
+ text-indent: -1000em;
 }
 .searchSuggestion a {
 font-family: KarbidWeb, Calibri, Arial, sans-serif;

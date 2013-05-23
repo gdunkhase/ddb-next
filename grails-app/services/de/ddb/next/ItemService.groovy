@@ -41,9 +41,9 @@ class ItemService {
 
     def transactional = false
     def grailsApplication
-	LinkGenerator grailsLinkGenerator
+    LinkGenerator grailsLinkGenerator
 
-	def findItemById(id) {
+    def findItemById(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
         ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
@@ -139,12 +139,19 @@ class ItemService {
             return ''
         }
 
-        def BINARY_SERVER_URI = grailsLinkGenerator.getContextPath()
         def viewerPrefix = item.viewers.viewer.uri.toString()
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
-            def sourceUri = BINARY_SERVER_URI + componentsPath + 'source'
+            def binaryServerUrl = grailsApplication.config.ddb.binary.url
+
+            //Security check: if the binaryServerUrl is configured with an ending ".../binary/", this has to be removed
+            int firstOccuranceOfBinaryString = binaryServerUrl.indexOf("/binary/")
+            if(firstOccuranceOfBinaryString >= 0){
+                binaryServerUrl = binaryServerUrl.substring(0, firstOccuranceOfBinaryString)
+            }
+
+            def sourceUri = binaryServerUrl + componentsPath + 'source'
             def encodedSourceUri= URLEncoder.encode sourceUri, 'UTF-8'
             return withoutPlaceholder + encodedSourceUri
         }

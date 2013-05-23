@@ -229,7 +229,7 @@ class ApiConsumer {
                 uri.path = path
                 uri.query = query
                 response.success = { resp, inputstream ->
-                    log.debug "Success getBinaryContent(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
+                    log.info "Success getBinaryContent(): Current request uri: 200, "+(System.currentTimeMillis()-timestampStart)+"ms, "+uri
                     log.debug "response status: ${resp.statusLine}"
                     log.debug 'Headers: -----------'
 
@@ -278,13 +278,13 @@ class ApiConsumer {
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
-            log.error "getBinaryContent(): A HttpResponseException occured", ex
+            log.error "getBinaryContent(): A HttpResponseException occured: "+baseUrl+path+"?"+query, ex
             return null
         } catch (java.net.ConnectException ex) {
-            log.error "getBinaryContent(): A ConnectException occured", ex
+            log.error "getBinaryContent(): A ConnectException occured: "+baseUrl+path+"?"+query, ex
             return null
         } catch (java.lang.Exception ex) {
-            log.error "getBinaryContent(): An unexpected exception occured", ex
+            log.error "getBinaryContent(): An unexpected exception occured: "+baseUrl+path+"?"+query, ex
             return null
         }
     }

@@ -15,11 +15,11 @@
  */
 package de.ddb.next
 
-import net.sf.json.JSONNull
-
 import grails.converters.JSON
 
 import java.text.SimpleDateFormat
+
+import net.sf.json.JSONNull
 
 class ApisController {
 
@@ -132,8 +132,9 @@ class ApisController {
     }
 
     private def getBinaryServerUrl(){
-        def url = grailsApplication.config.ddb.binary.backend.url
+        def url = grailsApplication.config.ddb.backend.url
         assert url instanceof String, "This is not a string"
+        url = url + "/binary/"
         return url
     }
 

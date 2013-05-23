@@ -52,12 +52,12 @@ In development environment, proxies are read from $USER_HOME/.grails/ProxySettin
 In case there is a need to change the default configurations, through external configuration files it is possible to overridde the default configurations. 
 A list of some predefined variables is set below:
 
-    ddb.binary.backend.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
+    # ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/" (Deprecated: the binaries are now accessed over the ddb.backend.url)
     ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
     ddb.apis.url="http://localhost:8080"
     ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
-	ddb.logging.folder=/opt/ddb/logs
-	ddb.tracking.piwikfile=/opt/ddb/tracking.txt
+	  ddb.logging.folder=/opt/ddb/logs
+	  ddb.tracking.piwikfile=/opt/ddb/tracking.txt
     ddb.advancedSearch.searchGroupCount=3
     ddb.advancedSearch.searchFieldCount=10
     ddb.advancedSearch.defaultOffset=0

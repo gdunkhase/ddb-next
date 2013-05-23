@@ -28,8 +28,12 @@ limitations under the License.
   
   <div class="row">
     <div class="view-type-switch span12 off">
-      <button id="view-institution-map" class="selected" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Label" /></button>
-      <button id="view-institution-list" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsListButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsListButton_Label" /></button>
+      <div>
+        <button id="view-institution-map" class="selected" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Label" /></button>
+      </div>
+      <div>
+        <button id="view-institution-list" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsListButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsListButton_Label" /></button>
+      </div>
     </div>
   </div>
   <div class="row institutionlist">
