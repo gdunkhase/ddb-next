@@ -226,6 +226,10 @@
   background: none;
 }
 
+.view-type-switch >div{
+  display:inline-block;
+}
+
 .view-type-switch button:before {
   display: inline-block;
   content: url("../images/icons/viewSelector.png");
