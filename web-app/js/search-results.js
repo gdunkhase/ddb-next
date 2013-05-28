@@ -256,11 +256,12 @@ function updateLanguageSwitch(params) {
       if(newTitle.length>100){
           newTitle = $.trim(newTitle).substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
       }
-      if(jQuery.trim($(value).text()) == jQuery.trim($(value).find('strong').text())){
-        newTitle = '<strong>'+jQuery.trim($(value).text())+'</strong>';
+      if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
+        newTitle = jQuery.trim($(value).html());
       }else{
         $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
+          var tmpSvalueText = svalue.innerHTML.replace('(','').replace(')','').replace('[','').replace(']','').replace('{','').replace('}','');
+          newTitle = newTitle.replace(new RegExp(tmpSvalueText, 'gi'),'<strong>'+tmpSvalueText+'</strong>'); 
         });
       }
       value.innerHTML = newTitle;
@@ -326,11 +327,12 @@ function updateLanguageSwitch(params) {
       if(newTitle.length>53){
           newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
       }
-      if(jQuery.trim($(value).text()) == jQuery.trim($(value).find('strong').text())){
-        newTitle = '<strong>'+jQuery.trim($(value).text())+'</strong>';
+      if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
+        newTitle = jQuery.trim($(value).html());
       }else{
         $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          newTitle = newTitle.replace(new RegExp(svalue.innerHTML, 'g'),'<strong>'+svalue.innerHTML+'</strong>'); 
+          var tmpSvalueText = svalue.innerHTML.replace('(','').replace(')','').replace('[','').replace(']','').replace('{','').replace('}','');
+          newTitle = newTitle.replace(new RegExp(tmpSvalueText, 'gi'),'<strong>'+tmpSvalueText+'</strong>'); 
         });
       }
       value.innerHTML = newTitle;
@@ -375,7 +377,7 @@ function updateLanguageSwitch(params) {
     removeSearchCookieParameter('facetValues[]');
   });
   function fetchResultsList(url){
-	  
+    
     var divSearchResultsOverlayModal = $(document.createElement('div'));
     divSearchResultsOverlayModal.addClass('search-results-overlay-modal');
     var divSearchResultsOverlayWaiting = $(document.createElement('div'));
