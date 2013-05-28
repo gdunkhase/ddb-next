@@ -35,6 +35,7 @@ import groovyx.net.http.Method
 class ApiConsumer {
     private static final log = LogFactory.getLog(this)
     private static Pattern nonProxyHostsPattern
+    private static int BINARY_BACKEND_TIMEOUT = 5000 // 5s timeout for binary backend requests // TODO move to ddbnext-properties
 
     static def postText(String baseUrl, String path, query, method = Method.POST) {
         try {
@@ -225,7 +226,10 @@ class ApiConsumer {
             setProxy(http, baseUrl)
 
             def timestampStart = System.currentTimeMillis()
-            http.request(method, ContentType.BINARY) {
+            http.request(method, ContentType.BINARY) { req ->
+
+                setTimeout(req)
+
                 uri.path = path
                 uri.query = query
                 response.success = { resp, inputstream ->
@@ -312,6 +316,15 @@ class ApiConsumer {
                 proxyPort = "80"
             }
             http.setProxy(proxyHost, new Integer(proxyPort), 'http')
+        }
+    }
+
+    static def setTimeout(def req){
+        try {
+            req.getParams().setParameter("http.connection.timeout", new Integer(BINARY_BACKEND_TIMEOUT));
+            req.getParams().setParameter("http.socket.timeout", new Integer(BINARY_BACKEND_TIMEOUT))
+        } catch(Exception e) {
+            log.error "setTimeout(): Could not set the timeout to the binary request"
         }
     }
 
