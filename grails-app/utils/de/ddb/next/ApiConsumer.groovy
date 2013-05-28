@@ -260,6 +260,8 @@ class ApiConsumer {
                         log.info "getBinaryContent(): Output socket already closed"
                     }catch(Throwable t){
                         log.warn "getBinaryContent(): Could not copy streaming data to output stream. ", t
+                    }finally{
+                        IOUtils.closeQuietly(inputstream)
                     }
 
                     return
