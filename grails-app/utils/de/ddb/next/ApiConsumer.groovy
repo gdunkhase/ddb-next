@@ -253,9 +253,37 @@ class ApiConsumer {
                         responseBrowser.setHeader("Cache-Control", defaultCacheExpires)
                     }
 
-                    responseBrowser.setContentType(resp.headers.'Content-Type')
-                    responseBrowser.setContentLength(resp.headers.'Content-Length'.toInteger())
+                    def contentTypeHeaderBackend = resp.headers.'Content-Type'
+                    if(contentTypeHeaderBackend){
+                        responseBrowser.setContentType(contentTypeHeaderBackend)
+                    }
+                    if(fileNamePath.contains(".mp4") && !contentTypeHeaderBackend.contains("video/mp4")){
+                        log.error "getBinaryContent(): Backend provides content-type '"+contentTypeHeaderBackend+"', but a file containing '.mp4' was requested. The content-type now gets explicitly set to 'video/mp4; charset=utf-8' as a workaround."
+                        responseBrowser.setContentType("video/mp4; charset=utf-8")
+                    }
+
+                    def contentLengthHeaderBackend = resp.headers.'Content-Length'
+                    if(contentLengthHeaderBackend){
+                        responseBrowser.setContentLength(contentLengthHeaderBackend.toInteger())
+                    }
+
                     responseBrowser.setHeader("Content-Disposition", "inline; filename="+fileNamePath)
+
+                    def connectionBackendHeader = resp.headers.'Connection'
+                    if(connectionBackendHeader){
+                        responseBrowser.setHeader("Connection", connectionBackendHeader)
+                    }
+
+                    // Attention! With Accept-Ranges commented in, it won't run in Chrome!
+                    // def acceptRangesBackendHeader = resp.headers.'Accept-Ranges'
+                    // if(acceptRangesBackendHeader){
+                    // responseBrowser.setHeader("Accept-Ranges", acceptRangesBackendHeader)
+                    // }
+
+                    def proxyConnectionBackendHeader = resp.headers.'Proxy-Connection'
+                    if(proxyConnectionBackendHeader){
+                        responseBrowser.setHeader("Proxy-Connection", proxyConnectionBackendHeader)
+                    }
 
 
                     try{
