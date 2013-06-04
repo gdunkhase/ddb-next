@@ -118,6 +118,7 @@ class ApisController {
         String defaultExpirationDate = formatDateForExpiresHeader(cacheExpiryInDays).toString()
         String defaultCacheExpires = "max-age="+cacheExpiryInDays * 24 * 60 *60
         String fileNamePath = getFileNamePath().tokenize('/')[-1]
+        String userAgent = request.getHeader("user-agent")
 
         def query = [ client: "DDB-NEXT" ]
         def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(),
@@ -126,7 +127,8 @@ class ApisController {
                 response,
                 defaultExpirationDate,
                 defaultCacheExpires,
-                fileNamePath)
+                fileNamePath,
+                userAgent)
 
     }
 
@@ -145,6 +147,7 @@ class ApisController {
         String defaultExpirationDate = formatDateForExpiresHeader(cacheExpiryInDays).toString()
         String defaultCacheExpires = "max-age="+cacheExpiryInDays * 24 * 60 *60
         String fileNamePath = getFileNamePath().tokenize('/')[-1]
+        String userAgent = request.getHeader("user-agent")
 
         def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
                 '/static/' + getFileNamePath(),
@@ -152,7 +155,8 @@ class ApisController {
                 response,
                 defaultExpirationDate,
                 defaultCacheExpires,
-                fileNamePath)
+                fileNamePath,
+                userAgent)
 
     }
     /**

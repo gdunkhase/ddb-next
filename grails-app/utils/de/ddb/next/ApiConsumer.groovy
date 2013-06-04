@@ -219,7 +219,8 @@ class ApiConsumer {
             def responseBrowser,
             String defaultExpirationDate,
             String defaultCacheExpires,
-            String fileNamePath) {
+            String fileNamePath,
+            String userAgent) {
         try {
             path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
@@ -254,12 +255,14 @@ class ApiConsumer {
                     }
 
                     def contentTypeHeaderBackend = resp.headers.'Content-Type'
-                    if(contentTypeHeaderBackend){
+                    if(fileNamePath.endsWith(".mp4") && !contentTypeHeaderBackend.contains("video/mp4")){
+                        log.error "getBinaryContent(): Backend provides content-type '"+contentTypeHeaderBackend+"', but a file ending with '.mp4' was requested. The content-type now gets explicitly set to 'video/mp4' as a workaround."
+                        responseBrowser.setContentType("video/mp4")
+                    }else if(fileNamePath.endsWith(".mp4") && contentTypeHeaderBackend.contains("charset")){
+                        log.error "getBinaryContent(): Backend provides content-type '"+contentTypeHeaderBackend+"', but a file ending with '.mp4' was requested. The content-type now gets explicitly set to 'video/mp4' as a workaround."
+                        responseBrowser.setContentType("video/mp4")
+                    }else if(contentTypeHeaderBackend){
                         responseBrowser.setContentType(contentTypeHeaderBackend)
-                    }
-                    if(fileNamePath.contains(".mp4") && !contentTypeHeaderBackend.contains("video/mp4")){
-                        log.error "getBinaryContent(): Backend provides content-type '"+contentTypeHeaderBackend+"', but a file containing '.mp4' was requested. The content-type now gets explicitly set to 'video/mp4; charset=utf-8' as a workaround."
-                        responseBrowser.setContentType("video/mp4; charset=utf-8")
                     }
 
                     def contentLengthHeaderBackend = resp.headers.'Content-Length'
@@ -275,10 +278,12 @@ class ApiConsumer {
                     }
 
                     // Attention! With Accept-Ranges commented in, it won't run in Chrome!
-                    // def acceptRangesBackendHeader = resp.headers.'Accept-Ranges'
-                    // if(acceptRangesBackendHeader){
-                    // responseBrowser.setHeader("Accept-Ranges", acceptRangesBackendHeader)
-                    // }
+                    if(!userAgent.contains("Chrome") && !userAgent.contains("MSIE 7.0")){
+                        def acceptRangesBackendHeader = resp.headers.'Accept-Ranges'
+                        if(acceptRangesBackendHeader){
+                            responseBrowser.setHeader("Accept-Ranges", acceptRangesBackendHeader)
+                        }
+                    }
 
                     def proxyConnectionBackendHeader = resp.headers.'Proxy-Connection'
                     if(proxyConnectionBackendHeader){
