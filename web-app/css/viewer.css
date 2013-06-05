@@ -66,6 +66,7 @@
   vertical-align:middle;
 }
 .scroller li a .thumbnail {
+  display: block;
   text-align:center;
   width: 120px;
   height: 90px;
