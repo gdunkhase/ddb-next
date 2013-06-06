@@ -14,28 +14,31 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <html>
-<head>
-<title><g:message code="ddbnext.Login_Title" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-
-<meta name="page" content="login" />
-<meta name="layout" content="main" />
-
-</head>
-<body>
-
-  Login
+  <head>
+    <title><g:message code="ddbnext.Login" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    
+    <meta name="page" content="login" />
+    <meta name="layout" content="main" />
   
-  <g:form>
+  </head>
+  <body>
   
-    email: 
-    <input type="text" />
+    <g:message code="ddbnext.Please_Login" />
     <br />
-    password: 
-    <input type="password" />
-    <br />
-    <input type="button" value="Einloggen" />
+    
+    <g:form controller="login" action="login">
+    
+      <div class="<g:if test="loginSuccess">off</g:if>"><g:message code="ddbnext.Error_Email_Password_Combination" /></div>
+      <br />
+      <g:message code="ddbnext.Username" />
+      <input type="text" name="email"/>
+      <br />
+      <g:message code="ddbnext.Your_Password" />
+      <input type="password" name="password"/>
+      <br />
+      <input type="submit" value="<g:message code="ddbnext.Login_Button" />" />
+    
+    </g:form>
   
-  </g:form>
-
-</body>
+  </body>
 </html>

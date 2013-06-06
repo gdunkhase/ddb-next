@@ -202,7 +202,7 @@ limitations under the License.
           </div>
           <div class="span5 toolbar">
             <div class="login-wrapper">
-              login
+              <g:link controller="login"><g:message code="ddbnext.Login" /></g:link>
             </div>
             <div class="language-wrapper">
               <a href="#"> <g:currentLanguage />
