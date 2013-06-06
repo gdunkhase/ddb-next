@@ -84,6 +84,11 @@ class UrlMappings {
             controller="apis"
             action="staticFiles"
         }
+        
+        "/user/$id/profile" {
+            controller="user"
+            action="profilePage"
+        }
 
         "500"(controller: "error", action: "serverError")
         "500"(controller: "error", action: "uncaughtException", exception: Throwable)
