@@ -201,6 +201,9 @@ limitations under the License.
             </div>
           </div>
           <div class="span5 toolbar">
+            <div class="login-wrapper">
+              login
+            </div>
             <div class="language-wrapper">
               <a href="#"> <g:currentLanguage />
               </a>

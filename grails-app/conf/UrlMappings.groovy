@@ -74,15 +74,20 @@ class UrlMappings {
             controller="entity"
             action="show"
         }
-		
-		"/binary/$filename**" {
-			controller="apis"
-			action="binary"
-		}
+
+        "/binary/$filename**" {
+            controller="apis"
+            action="binary"
+        }
 
         "/static/$filename**" {
             controller="apis"
             action="staticFiles"
+        }
+
+        "/login" {
+            controller="login"
+            action="index"
         }
 
         "500"(controller: "error", action: "serverError")
