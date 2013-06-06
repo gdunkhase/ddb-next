@@ -25,13 +25,16 @@ limitations under the License.
 <body>
   <div class="row search-results-container">
     <div>
-        <g:message code="ddbnext.user.name" />${username}
+        <g:message code="ddbnext.user.name" />
+        <input type="text" class="page-input" maxlength="50" value="${ user.id }"/>
     </div>
     <div>
         <g:message code="ddbnext.user.password" />
+        <input type="text" class="page-input" maxlength="50" value="${password}"/>
     </div>
     <div>
         <g:message code="ddbnext.user.email" />
+        <input type="text" class="page-input" maxlength="50" value="${user.email}"/>
     </div>
     <div>
        <label class="checkbox"> <input type="checkbox"><g:message code="ddbnext.newsletter.subscription" /></label>

@@ -134,6 +134,7 @@ ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
 ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
 ddb.apis.url="http://localhost:8080"
 ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+aas.url="http://whddbapp10.fiz-karlsruhe.de:8081"
 ddb.logging.folder="target/logs"
 ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
 ddb.advancedSearch.searchGroupCount=3

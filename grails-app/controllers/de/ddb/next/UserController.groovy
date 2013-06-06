@@ -15,6 +15,7 @@
  */
 package de.ddb.next
 
+import de.ddb.next.exception.UserNotFoundException
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 
@@ -27,8 +28,12 @@ class UserController {
     }
 
     def profilePage() {
-        render(view: "profile", model: [bookmarksCount: "no count yet"])
+        def user = ApiConsumer.getTextAsJson(grailsApplication.config.aas.url.toString() ,'/aas/persons/' + params.id, null, true)
+        if("Not found".equals(user)){
+            throw new UserNotFoundException()
+        }
+
+        render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
     }
-
-
+    
 }

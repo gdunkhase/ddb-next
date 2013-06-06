@@ -81,11 +81,14 @@ class ApiConsumer {
         return postText(baseUrl, path, query, Method.GET)
     }
 
-    static def getTextAsJson(String baseUrl, String path, query, method = Method.GET) {
+    static def getTextAsJson(String baseUrl, String path, query, httpAuth = false, method = Method.GET) {
         try {
             path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
+            if (httpAuth) {
+                setAuthHeader(http)
+            }
 
             def timestampStart = System.currentTimeMillis()
             http.request(method, JSON) {
@@ -323,6 +326,15 @@ class ApiConsumer {
         try {
             req.getParams().setParameter("http.connection.timeout", new Integer(BINARY_BACKEND_TIMEOUT));
             req.getParams().setParameter("http.socket.timeout", new Integer(BINARY_BACKEND_TIMEOUT))
+        } catch(Exception e) {
+            log.error "setTimeout(): Could not set the timeout to the binary request"
+        }
+    }
+
+    static def setAuthHeader(http){
+        try {
+            //TODO: take values from sticky session
+            http.auth.basic 'admin', 'admin'
         } catch(Exception e) {
             log.error "setTimeout(): Could not set the timeout to the binary request"
         }
