@@ -219,7 +219,8 @@ class ApiConsumer {
             def responseBrowser,
             String defaultExpirationDate,
             String defaultCacheExpires,
-            String fileNamePath) {
+            String fileNamePath,
+            String userAgent) {
         try {
             path = checkContext(baseUrl, path)
             def http = new HTTPBuilder(baseUrl)
@@ -253,9 +254,41 @@ class ApiConsumer {
                         responseBrowser.setHeader("Cache-Control", defaultCacheExpires)
                     }
 
-                    responseBrowser.setContentType(resp.headers.'Content-Type')
-                    responseBrowser.setContentLength(resp.headers.'Content-Length'.toInteger())
+                    def contentTypeHeaderBackend = resp.headers.'Content-Type'
+                    if(fileNamePath.endsWith(".mp4") && !contentTypeHeaderBackend.contains("video/mp4")){
+                        log.error "getBinaryContent(): Backend provides content-type '"+contentTypeHeaderBackend+"', but a file ending with '.mp4' was requested. The content-type now gets explicitly set to 'video/mp4' as a workaround."
+                        responseBrowser.setContentType("video/mp4")
+                    }else if(fileNamePath.endsWith(".mp4") && contentTypeHeaderBackend.contains("charset")){
+                        log.error "getBinaryContent(): Backend provides content-type '"+contentTypeHeaderBackend+"', but a file ending with '.mp4' was requested. The content-type now gets explicitly set to 'video/mp4' as a workaround."
+                        responseBrowser.setContentType("video/mp4")
+                    }else if(contentTypeHeaderBackend){
+                        responseBrowser.setContentType(contentTypeHeaderBackend)
+                    }
+
+                    def contentLengthHeaderBackend = resp.headers.'Content-Length'
+                    if(contentLengthHeaderBackend){
+                        responseBrowser.setContentLength(contentLengthHeaderBackend.toInteger())
+                    }
+
                     responseBrowser.setHeader("Content-Disposition", "inline; filename="+fileNamePath)
+
+                    def connectionBackendHeader = resp.headers.'Connection'
+                    if(connectionBackendHeader){
+                        responseBrowser.setHeader("Connection", connectionBackendHeader)
+                    }
+
+                    // Attention! With Accept-Ranges commented in, it won't run in Chrome!
+                    if(!userAgent.contains("Chrome") && !userAgent.contains("MSIE 7.0")){
+                        def acceptRangesBackendHeader = resp.headers.'Accept-Ranges'
+                        if(acceptRangesBackendHeader){
+                            responseBrowser.setHeader("Accept-Ranges", acceptRangesBackendHeader)
+                        }
+                    }
+
+                    def proxyConnectionBackendHeader = resp.headers.'Proxy-Connection'
+                    if(proxyConnectionBackendHeader){
+                        responseBrowser.setHeader("Proxy-Connection", proxyConnectionBackendHeader)
+                    }
 
 
                     try{
