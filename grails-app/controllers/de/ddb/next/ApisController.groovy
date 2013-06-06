@@ -44,19 +44,14 @@ class ApisController {
             String subtitle
             def thumbnail
             def media = []
-
-            def htmlParser = slurper.parseText(it.preview.toString())
-
-            title = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'title' }*.getBody()}
-            subtitle = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'subtitle' }*.getBody()}
-
-            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>/
-            if (thumbnailMatch)
-                thumbnail= thumbnailMatch[0][2]
-
-            def mediaMatch = it.preview.toString() =~ /(?m)<div (.*?)data-media="(.*?)"/
-            if (mediaMatch)
-                mediaMatch[0][2].split (",").each{ media.add(it) }
+            
+            title = (it.title instanceof JSONNull)?"":it.title
+            subtitle = (it.subtitle instanceof JSONNull)?"":it.subtitle
+            
+            thumbnail = (it.thumbnail instanceof JSONNull)?"":it.thumbnail
+            if(!(it.media instanceof JSONNull)){
+                it.media.split (",").each{ media.add(it) }
+            }
 
             tmpResult["id"] = it.id
 
