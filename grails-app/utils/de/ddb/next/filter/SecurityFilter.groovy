@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next
+package de.ddb.next.filter
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -31,9 +31,9 @@ import de.ddb.next.exception.InvalidUrlException;
  * 
  * @author hla
  */
-class DdbSecurityFilter implements Filter {
+class SecurityFilter implements Filter {
 
-    private DdbSecurityHelper ddbSecurityHelper = new DdbSecurityHelper()
+    private SecurityHelper ddbSecurityHelper = new SecurityHelper()
 
     @Override
     public void destroy() {
@@ -42,7 +42,7 @@ class DdbSecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            DdbServletRequestWrapper requestWrapper = new DdbServletRequestWrapper(request)
+            ServletRequestWrapper requestWrapper = new ServletRequestWrapper(request)
             HttpServletResponse httpResponse = (HttpServletResponse)response
 
             // Skip check of this static content
