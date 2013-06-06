@@ -94,7 +94,7 @@ class InstitutionController {
             render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl])
         } 
         else {
-           forward controller: 'error', action: "notfound"
+           forward controller: 'error', action: "notFound"
         }
         
     }

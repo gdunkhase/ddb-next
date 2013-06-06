@@ -62,15 +62,15 @@ class ContentController {
                 if (params.id!=null){
                     path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl+".html"
                 }
-                def query = [ client: "DDB-NEXT" ]
-                //Submit a request via GET
 
-                response = ApiConsumer.getText(url, path, query)
-                if (response != "Not found"){
-                    break
-                }else if( i==prioritySortedLocales.size()-1 ){ // A 404 was returned for EVERY supported language
-                    throw new ItemNotFoundException()
+                def apiResponse = ApiConsumer1.getText(url, path, false)
+                if(!apiResponse.isOk()){
+                    log.error "Text: Text file was not found"
+                    apiResponse.throwException(request)
                 }
+
+                response = apiResponse.getResponse()
+                break;
             }
 
             def map= retrieveArguments(response)

@@ -150,6 +150,7 @@ class SearchService {
         def res = []
         //We want only the first 10 facets
         urlQuery["facet.limit"] = 10
+
         urlQuery["facet"].each{
             if(it != "grid_preview"){
                 emptyFacets.remove(it)
@@ -157,7 +158,13 @@ class SearchService {
                 tmpUrlQuery["rows"]=1
                 tmpUrlQuery["offset"]=0
                 tmpUrlQuery.remove(it)
-                ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', tmpUrlQuery).facets.each{ facet->
+                def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, tmpUrlQuery)
+                if(!apiResponse.isOk()){
+                    log.error "Json: Json file was not found"
+                    throw apiResponse.getException()
+                }
+                def jsonResp = apiResponse.getResponse()
+                jsonResp.facets.each{ facet->
                     if(facet.field==it){
                         res.add(facet)
                     }

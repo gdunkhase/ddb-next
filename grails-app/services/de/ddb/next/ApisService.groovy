@@ -163,7 +163,7 @@ class ApisService {
                 def http = new AsyncHTTPBuilder(
                         poolSize: threadNumber,
                         uri: baseUrl)
-                ApiConsumer.setProxy(http, baseUrl)
+                ApiConsumer1.setProxy(http, baseUrl)
                 def itemsPropertiesResponses = []
                 docs.each {
                     def currentItem = it

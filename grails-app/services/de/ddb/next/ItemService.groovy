@@ -45,7 +45,7 @@ class ItemService {
 
     def findItemById(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer1.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -85,7 +85,7 @@ class ItemService {
 
     private getItemTitle(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer1.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -165,7 +165,7 @@ class ItemService {
     private def fetchBinaryList(id) {
 
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer1.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
         http.parser.'application/json' = http.parser.'application/xml'
         final def binariesPath= "/access/" + id + "/components/binaries"
 
@@ -271,12 +271,22 @@ class ItemService {
 
     def getParent(itemId){
         final def parentsPath = "/hierarchy/" + itemId + "/parent/"
-        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), parentsPath, [:]);
+        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.backend.url.toString(), parentsPath)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            throw apiResponse.getException()
+        }
+        return apiResponse.getResponse()
     }
 
     def getChildren(itemId){
         final def childrenPath = "/hierarchy/" + itemId + "/children/"
-        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), childrenPath, [:]);
+        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.backend.url.toString(), childrenPath)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            throw apiResponse.getException()
+        }
+        return apiResponse.getResponse()
     }
 
     private def log(list) {
