@@ -59,6 +59,8 @@ class ItemService {
             uri.path = viewPath
 
             response.success = { resp, xml ->
+                log.info "findItemById(): Current request uri: 200, "+uri
+
                 institution= xml.institution
                 item = xml.item
 
@@ -97,7 +99,11 @@ class ItemService {
         http.request( GET) { req ->
             uri.path = titlePath
 
-            response.success = { resp, html -> return html }
+            response.success = { resp, html ->
+                log.info "getItemTitle(): Current request uri: 200, "+uri
+
+                return html
+            }
 
             response.'404' = { return '404' }
 
@@ -173,6 +179,7 @@ class ItemService {
             uri.path = binariesPath
 
             response.success = { resp, xml ->
+                log.info "fetchBinaryList(): Current request uri: 200, "+uri
                 def binaries = xml
                 return binaries.binary.list()
             }

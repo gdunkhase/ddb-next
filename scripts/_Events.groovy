@@ -9,12 +9,12 @@ eventWebXmlEnd = {String tmpfile ->
     
     def root = new XmlSlurper().parse(webXmlFile)
     
-    log.info "Adding session listener (de.ddb.next.DdbSessionListener) to web.xml"
+    log.info "Adding security filter (de.ddb.next.filter.SecurityFilter) to web.xml"
     
     root.appendNode {
         'filter' {
             'filter-name' ('DdbSecurityFilter')
-            'filter-class' ('de.ddb.next.DdbSecurityFilter')
+            'filter-class' ('de.ddb.next.filter.SecurityFilter')
         }
     }
     root.appendNode {
@@ -23,7 +23,22 @@ eventWebXmlEnd = {String tmpfile ->
             'url-pattern' ('/*')
         }
     }
+
+    log.info "Adding Loadbalancer response header filter (de.ddb.next.filter.LBHeaderFilter) to web.xml"
     
+    root.appendNode {
+        'filter' {
+            'filter-name' ('LBHeaderFilter')
+            'filter-class' ('de.ddb.next.filter.LBHeaderFilter')
+        }
+    }
+    root.appendNode {
+        'filter-mapping' {
+            'filter-name' ('LBHeaderFilter')
+            'url-pattern' ('/*')
+        }
+    }
+
     
     root.appendNode {
         'listener' {
