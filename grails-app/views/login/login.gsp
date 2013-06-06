@@ -28,7 +28,7 @@ limitations under the License.
     
     <g:form controller="login" action="login">
     
-      <div class="<g:if test="loginSuccess">off</g:if>"><g:message code="ddbnext.Error_Email_Password_Combination" /></div>
+      <div class="<g:if test="${loginSuccess}">off</g:if>"><g:message code="ddbnext.Error_Email_Password_Combination" /></div>
       <br />
       <g:message code="ddbnext.Username" />
       <input type="text" name="email"/>

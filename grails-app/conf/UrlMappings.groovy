@@ -90,6 +90,7 @@ class UrlMappings {
             action="index"
         }
 
+
         "500"(controller: "error", action: "serverError")
         "500"(controller: "error", action: "uncaughtException", exception: Throwable)
 

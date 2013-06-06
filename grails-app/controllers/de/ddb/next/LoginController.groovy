@@ -12,10 +12,18 @@ class LoginController {
         def email = params.email
         def password = params.password
 
+        def EMAILDUMMY = "fiz@fiz.fiz"
+        def PASSWORDDUMMY = "fiz"
+
+        def loginSuccess = false
+        if(email == EMAILDUMMY && password == PASSWORDDUMMY){
+            loginSuccess = true
+        }
+
         println "####################### email: "+email+" / password: "+password
 
         render(view: "login", model: [
-            'loginSuccess': true]
+            'loginSuccess': false]
         )
     }
 }
