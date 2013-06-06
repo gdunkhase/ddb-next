@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title><g:message code="ddbnext.user.profilepage" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="userprofile" />
 <meta name="layout" content="main" />
@@ -24,9 +24,33 @@ limitations under the License.
 
 <body>
   <div class="row search-results-container">
-    <g:message code="ddbnext.Username" />
-    <g:message code="ddbnext.Password" />
-    <g:message code="ddbnext.EMail" />
+    <div>
+        <g:message code="ddbnext.user.name" />${username}
+    </div>
+    <div>
+        <g:message code="ddbnext.user.password" />
+    </div>
+    <div>
+        <g:message code="ddbnext.user.email" />
+    </div>
+    <div>
+       <label class="checkbox"> <input type="checkbox"><g:message code="ddbnext.newsletter.subscription" /></label>
+    </div>
+    <div>
+      <a title="<g:message code="ddbnext.user.showBookmarks" />" class="persist" href="/ddb-next/user/${userId}/bookmarks">
+            <g:message code="ddbnext.user.showBookmarks" />, count: ${bookmarksCount }
+      </a>
+    </div>
+    <div>
+      <a title="<g:message code="ddbnext.user.deleteAccount" />" class="persist" href="/ddb-next/user/${userId}/delete">
+            <g:message code="ddbnext.user.deleteAccount" />
+      </a>
+    </div>
+    <div class="span12 button-group">
+      <button class="submit" type="submit" title="<g:message code="ddbnext.user.saveChanges"/>">
+        <g:message code="ddbnext.user.saveChanges"/>
+      </button>
+    </div>
   </div>
 </body>
 </html>

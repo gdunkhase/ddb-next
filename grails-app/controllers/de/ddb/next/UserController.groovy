@@ -20,26 +20,14 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 class UserController {
 
-    static defaultAction = ""
+    static defaultAction = "defaultAction"
+
+    def defaultAction() {
+        render(view: "profile", model: [bookmarksCount: "no count yet", username: "testuser"])
+    }
 
     def profilePage() {
-        render(view: "profile", model: [
-            title: urlQuery["query"],
-            results: resultsItems,
-            isThumbnailFiltered: params.isThumbnailFiltered,
-            clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-            correctedQuery:resultsItems["correctedQuery"],
-            viewType:  urlQuery["viewType"],
-            facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
-            resultsPaginatorOptions: resultsPaginatorOptions,
-            resultsOverallIndex:resultsOverallIndex,
-            page: page,
-            totalPages: totalPages,
-            paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
-            numberOfResultsFormatted: numberOfResultsFormatted,
-            offset: params["offset"],
-            keepFiltersChecked: keepFiltersChecked
-        ])
+        render(view: "profile", model: [bookmarksCount: "no count yet"])
     }
 
 
