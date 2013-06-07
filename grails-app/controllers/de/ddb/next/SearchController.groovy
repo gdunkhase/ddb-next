@@ -35,7 +35,7 @@ class SearchController {
         def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
         def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
 
-        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, urlQuery)
+        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, urlQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -55,7 +55,7 @@ class SearchController {
             //firstHit
             firstLastQuery["rows"] = 1
             firstLastQuery["offset"] = 0
-            apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, firstLastQuery)
+            apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, firstLastQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
                 apiResponse.throwException(request)

@@ -35,7 +35,7 @@ class InstitutionService {
         def cortexHostPort = grailsApplication.config.ddb.backend.url
 
         def http = new HTTPBuilder(cortexHostPort)
-        ApiConsumer1.setProxy(http, cortexHostPort)
+        ApiConsumer.setProxy(http, cortexHostPort)
 
         def totalInstitution = 0
         def allInstitutions = [data: [:], total: totalInstitution]

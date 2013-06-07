@@ -36,7 +36,7 @@ class ApisController {
 
         slurper.setKeepWhitespace(true)
 
-        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.backend.url.toString(),'/search', false, query)
+        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(),'/search', false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -92,7 +92,7 @@ class ApisController {
     }
 
     def institutionsmap(){
-        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.backend.url.toString(),'/institutions/map', false, params)
+        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(),'/institutions/map', false, params)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -110,7 +110,7 @@ class ApisController {
     def autocomplete (){
         def query = apisService.getQueryParameters(params)
         def callback = apisService.getQueryParameters(params)
-        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.backend.url.toString(),'/search/suggest', false, query)
+        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(),'/search/suggest', false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -128,7 +128,7 @@ class ApisController {
      * @return OutPutStream
      */
     synchronized def binary(){
-        def apiResponse = ApiConsumer1.getBinaryStreaming(getBinaryServerUrl(), getFileNamePath(), response.outputStream)
+        def apiResponse = ApiConsumer.getBinaryStreaming(getBinaryServerUrl(), getFileNamePath(), response.outputStream)
 
         if(!apiResponse.isOk()){
             log.error "binary(): binary content was not found"
@@ -153,7 +153,7 @@ class ApisController {
     }
 
     def staticFiles() {
-        def apiResponse = ApiConsumer1.getBinaryStreaming(
+        def apiResponse = ApiConsumer.getBinaryStreaming(
             grailsApplication.config.ddb.static.url, 
             '/static/' + getFileNamePath(), 
             response.outputStream)

@@ -24,7 +24,7 @@ import grails.util.Environment
  */
 class ErrorController {
 
-    //def configurationService
+    def configurationService
 
     def uncaughtException() {
         log.error "uncaughtException(): An uncaught exception occured in the frontend."
@@ -60,10 +60,8 @@ class ErrorController {
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
-//        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
-//        def encodingFromConfig = configurationService.getEncoding()
-        def contentTypeFromConfig = "text/html"
-        def encodingFromConfig = "UTF-8"
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
 
         // Return the view dependent on the configured environment (PROD vs DEV)
         if ( Environment.PRODUCTION == Environment.getCurrent() ) {
@@ -101,10 +99,8 @@ class ErrorController {
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
-//        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
-//        def encodingFromConfig = configurationService.getEncoding()
-        def contentTypeFromConfig = "text/html"
-        def encodingFromConfig = "UTF-8"
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
 
         // Return the view dependent on the configured environment (PROD vs DEV)
         if ( Environment.PRODUCTION == Environment.getCurrent() ) {
@@ -118,7 +114,6 @@ class ErrorController {
             // Not it production? show an ugly, developer-focused error message
             log.error "notFound(): Return view '404_development'"
             return render(view:'404_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
-            //return render(view:'404_development', model: ["message": "Justsomemessage", "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
             
         }
         

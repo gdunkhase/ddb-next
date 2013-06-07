@@ -21,6 +21,8 @@ import static groovyx.net.http.Method.GET
 import static groovyx.net.http.ContentType.JSON
 import net.sf.json.JSONArray
 
+import org.codehaus.groovy.grails.web.util.WebUtils;
+
 /**
  * Get facetted searchfields and values for facet from Backend.
  * 
@@ -44,10 +46,10 @@ public class FacetsService {
         def filtersForFacetName = getFiltersForFacetName(facetName, allFacetFilters)
         def res = []
         int i = 0
-        def apiResponse = ApiConsumer1.getJson(url ,'/search/facets/' + facetName)
+        def apiResponse = ApiConsumer.getJson(url ,'/search/facets/' + facetName)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
-            throw apiResponse.getException()
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         def json = apiResponse.getResponse()
         json.facetValues.each{
@@ -73,10 +75,10 @@ public class FacetsService {
      */
     public List getExtendedFacets() throws IOException {
         def res = [];
-        def apiResponse = ApiConsumer1.getJson(url ,'/search/facets/', false, [type:'EXTENDED'])
+        def apiResponse = ApiConsumer.getJson(url ,'/search/facets/', false, [type:'EXTENDED'])
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
-            throw apiResponse.getException()
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         def json = apiResponse.getResponse()
         json.each{

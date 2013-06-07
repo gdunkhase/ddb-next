@@ -36,7 +36,7 @@ class IndexController {
 
         def query = [ client: "DDB-NEXT" ]
         // Submit a request via GET
-        def apiResponse = ApiConsumer1.getText(staticUrl, path, false, query)
+        def apiResponse = ApiConsumer.getText(staticUrl, path, false, query)
         if(!apiResponse.isOk()){
             log.error "text: Text file was not found"
             apiResponse.throwException(request)

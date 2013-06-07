@@ -63,7 +63,7 @@ class ContentController {
                     path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl+".html"
                 }
 
-                def apiResponse = ApiConsumer1.getText(url, path, false)
+                def apiResponse = ApiConsumer.getText(url, path, false)
                 if(!apiResponse.isOk()){
                     log.error "Text: Text file was not found"
                     apiResponse.throwException(request)

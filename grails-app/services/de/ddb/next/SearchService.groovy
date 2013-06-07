@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletRequest
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.codehaus.groovy.grails.web.util.WebUtils;
+
 import org.springframework.context.i18n.LocaleContextHolder
 
 /**
@@ -158,10 +160,10 @@ class SearchService {
                 tmpUrlQuery["rows"]=1
                 tmpUrlQuery["offset"]=0
                 tmpUrlQuery.remove(it)
-                def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, tmpUrlQuery)
+                def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, tmpUrlQuery)
                 if(!apiResponse.isOk()){
                     log.error "Json: Json file was not found"
-                    throw apiResponse.getException()
+                    apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
                 }
                 def jsonResp = apiResponse.getResponse()
                 jsonResp.facets.each{ facet->

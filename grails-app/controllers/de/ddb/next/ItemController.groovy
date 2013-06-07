@@ -29,7 +29,7 @@ class ItemController {
 
 
     def children() {
-        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.backend.url.toString(),
+        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(),
                 "/hierarchy/" + params.id + "/children", false,
                 ["rows":501])
         if(!apiResponse.isOk()){
@@ -121,7 +121,7 @@ class ItemController {
     }
 
     def parents() {
-        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent")
+        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent")
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -161,7 +161,7 @@ class ItemController {
             else {
                 urlQuery["offset"] = 0
             }
-            def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, urlQuery)
+            def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
                 apiResponse.throwException(request)

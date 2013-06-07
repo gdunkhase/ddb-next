@@ -17,6 +17,7 @@ package de.ddb.next
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.codehaus.groovy.grails.web.util.WebUtils;
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
@@ -45,7 +46,7 @@ class ItemService {
 
     def findItemById(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer1.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -85,7 +86,7 @@ class ItemService {
 
     private getItemTitle(id) {
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer1.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -165,7 +166,7 @@ class ItemService {
     private def fetchBinaryList(id) {
 
         def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer1.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
         http.parser.'application/json' = http.parser.'application/xml'
         final def binariesPath= "/access/" + id + "/components/binaries"
 
@@ -271,20 +272,20 @@ class ItemService {
 
     def getParent(itemId){
         final def parentsPath = "/hierarchy/" + itemId + "/parent/"
-        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.backend.url.toString(), parentsPath)
+        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(), parentsPath)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
-            throw apiResponse.getException()
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         return apiResponse.getResponse()
     }
 
     def getChildren(itemId){
         final def childrenPath = "/hierarchy/" + itemId + "/children/"
-        def apiResponse = ApiConsumer1.getJson(grailsApplication.config.ddb.backend.url.toString(), childrenPath)
+        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(), childrenPath)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
-            throw apiResponse.getException()
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         return apiResponse.getResponse()
     }

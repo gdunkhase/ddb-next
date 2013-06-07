@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title><g:message code="error.notfound.title"/> - <g:message code="apd.ArchivportalD"/></title>
+    <title><g:message code="error.notfound.title"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     
     <meta name="page" content="404" />
     <meta name="layout" content="main" />
