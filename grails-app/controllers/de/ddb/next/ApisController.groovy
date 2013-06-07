@@ -129,7 +129,7 @@ class ApisController {
      * @return OutPutStream
      */
     synchronized def binary(){
-        def apiResponse = ApiConsumer.getBinaryStreaming(getBinaryServerUrl(), getFileNamePath(), response.outputStream)
+        def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBackendUrl() + "/binary/", getFileNamePath(), response.outputStream)
 
         if(!apiResponse.isOk()){
             log.error "binary(): binary content was not found"
@@ -144,13 +144,6 @@ class ApisController {
         response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
         response.setContentType(responseObject.get("Content-Type"))
         response.setContentLength(responseObject.get("Content-Length").toInteger())
-    }
-
-    private def getBinaryServerUrl(){
-        def url = configurationService.getBackendUrl()
-        assert url instanceof String, "This is not a string"
-        url = url + "/binary/"
-        return url
     }
 
     def staticFiles() {
