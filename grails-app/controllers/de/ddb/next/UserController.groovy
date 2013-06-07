@@ -79,13 +79,7 @@ class UserController {
     }
 
     def profilePage() {
-        def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl() ,'/aas/persons/' + params.id, true)
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
-        }
-        def user = apiResponse.getResponse()
-
+        def user = AasService.getPerson(params.id);
         render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
     }
     
