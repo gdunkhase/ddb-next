@@ -70,6 +70,22 @@ class UserController {
             'loginStatus': 0]
         )
     }
+    
+    //Favorites page
+    def favorites(){
+        
+        if(isUserInSession()){
+            //1. Call to fetch the list of favorites items#
+            //2. Get the items from the backend
+            //3. Render the results in the page
+            
+            redirect(controller:"index")
+        }
+        else{
+            redirect(controller:"index")
+        }
+        
+    }
 
     def registration() {
 

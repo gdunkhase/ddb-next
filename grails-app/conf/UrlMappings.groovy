@@ -94,6 +94,11 @@ class UrlMappings {
             controller="user"
             action="registration"
         }
+        
+        "/favorites" {
+            controller="user"
+            action="favorites"
+        }
 
 
         "500"(controller: "error", action: "serverError")
