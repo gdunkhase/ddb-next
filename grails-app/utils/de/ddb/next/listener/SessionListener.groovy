@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next
+package de.ddb.next.listener
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
@@ -21,23 +21,22 @@ import javax.servlet.http.HttpSessionListener;
 import org.apache.log4j.Logger;
 
 
-class DdbSessionListener implements HttpSessionListener {
+class SessionListener implements HttpSessionListener {
 
     private Logger log = Logger.getLogger(this.getClass())
+    private static long totalSessionCount = 0
 
     // called by servlet container upon session creation
     void sessionCreated(HttpSessionEvent event) {
         HttpSession session = event.getSession()
-        log.error "A serverside session was created. This should not happen!"
-        def stackElements = Thread.currentThread().getStackTrace()
-        for(stackElement in stackElements){
-            log.error "Stack: "+stackElement.getClassName()+"."+stackElement.getMethodName()+" ["+stackElement.getLineNumber()+"]"
-        }
+
+        totalSessionCount = totalSessionCount + 1
+        log.info "sessionCreated(): A session was created. Total session count on node: " + totalSessionCount
     }
 
     // called by servlet container upon session destruction
     void sessionDestroyed(HttpSessionEvent event) {
-        HttpSession session = event.getSession()
-        log.info "A serverside session was destroyed."
+        totalSessionCount = totalSessionCount - 1
+        log.info "sessionCreated(): A session was destroyed. Total session count on node: " + totalSessionCount
     }
 }

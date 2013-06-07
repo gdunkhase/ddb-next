@@ -201,6 +201,17 @@ limitations under the License.
             </div>
           </div>
           <div class="span5 toolbar">
+            <g:isNotLoggedIn>
+              <div class="login-wrapper">
+                <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
+              </div>
+            </g:isNotLoggedIn>
+            <g:isLoggedIn>
+              <div class="login-wrapper">
+                <g:message code="ddbnext.You_are_currently_logged_in_as" /> <g:getUserName />,
+                <g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link>
+              </div>
+            </g:isLoggedIn>
             <div class="language-wrapper">
               <a href="#"> <g:currentLanguage />
               </a>

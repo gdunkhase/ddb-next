@@ -5,6 +5,7 @@ import groovy.xml.StreamingMarkupBuilder
 
 eventWebXmlEnd = {String tmpfile ->
     def log = Logger.getLogger(this.getClass());
+    
     log.info "Dynamically adjusting web.xml in /scripts/_Events.groovy"
     
     def root = new XmlSlurper().parse(webXmlFile)
@@ -39,11 +40,12 @@ eventWebXmlEnd = {String tmpfile ->
         }
     }
 
+    log.info "Adding session listener (de.ddb.next.listener.SessionListener) to web.xml"
     
     root.appendNode {
         'listener' {
             'listener-class' (
-            'de.ddb.next.DdbSessionListener'
+            'de.ddb.next.listener.SessionListener'
             )
         }
     }
