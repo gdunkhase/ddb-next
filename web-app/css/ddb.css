@@ -437,7 +437,7 @@ header .language-wrapper >a,.header .language-wrapper >a {
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 46px -42px;
 }
 
-header .login-wrapper {
+header .login-wrapper,.header .login-wrapper {
   position: relative;
   display: inline-block;
   cursor: pointer;
