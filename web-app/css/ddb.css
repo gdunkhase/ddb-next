@@ -13,6 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+.openid_facebook {
+  background: transparent url("../images/icons/openid.png") no-repeat 0px 0px;
+  width: 42px;
+  height: 42px;
+}
+
+.openid_twitter {
+  background: transparent url("../images/icons/openid.png") no-repeat 0px -50px;
+  width: 42px;
+  height: 42px;
+} 
+
+.openid_google {
+  background: transparent url("../images/icons/openid.png") no-repeat 0px -100px;
+  width: 42px;
+  height: 42px;
+}
+
+.openid_yahoo {
+  background: transparent url("../images/icons/openid.png") no-repeat 0px -150px;
+  width: 42px;
+  height: 42px;
+}
+
+
 @font-face {
   font-family: KarbidWeb;
   src: url("fonts/KarbidWeb.eot")

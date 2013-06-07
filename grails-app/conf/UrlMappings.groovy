@@ -90,6 +90,27 @@ class UrlMappings {
             action="index"
         }
 
+        "/login/doLogin" {
+            controller="user"
+            action="doLogin"
+        }
+
+        "/login/doLogout" {
+            controller="user"
+            action="doLogout"
+        }
+
+        "/login/openId" {
+            controller="user"
+            action="requestOpenIdLogin"
+        }
+
+        "/login/doOpenIdLogin" {
+            controller="user"
+            action="doOpenIdLogin"
+        }
+
+
         "/registration" {
             controller="user"
             action="registration"
