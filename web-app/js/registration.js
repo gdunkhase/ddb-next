@@ -16,25 +16,55 @@
 $(document).ready(function(){
 
   $("#registration-form").validate({
+
     rules:{
-      fname:"required",
-      lname:"required",
+      fname:{
+        required:true,
+        minlength:2
+      },
+      lname:{
+        required:true,
+        minlength:2
+      },
       email:{
-      required:true,
-      email: true
-    },
-    passwd:{
-      required:true,
-      minlength: 8
-    },
+        required:true,
+        email: true
+      },
+      passwd:{
+        required:true,
+        minlength: 8
+      },
       conpasswd:{
-      required:true,
-      equalTo: "#passwd"
+        required:true,
+        equalTo: "#passwd"
+      },
+      errorClass: "help-inline"
     },
-    gender:"required"
-    },
+    messages: {
 
-    errorClass: "help-inline"
+      fname: {
+        required: $("#error-messages").children('li').eq(0).children('a').text(),
+        minlength: $("#error-messages").children('li').eq(1).children('a').text()
+      },
+      lname: {
+        required: $("#error-messages").children('li').eq(0).children('a').text(),
+        minlength: $("#error-messages").children('li').eq(1).children('a').text()
+      },
+      email: {
+        required: $("#error-messages").children('li').eq(0).children('a').text(),
+        email: $("#error-messages").children('li').eq(3).children('a').text()
+      },
+      passwd: {
+        required: $("#error-messages").children('li').eq(0).children('a').text(),
+        minlength: $("#error-messages").children('li').eq(2).children('a').text()
+      },
+      conpasswd: {
+        required: $("#error-messages").children('li').eq(0).children('a').text(),
+        equalTo: $("#error-messages").children('li').eq(4).children('a').text()
+      }
 
-    });
+    }
+
+  });
+
 });

@@ -24,7 +24,7 @@ limitations under the License.
 <body>
   <div class="container">
     <div class="well">
-      <g:form method="post" id="registration-form" class="form-horizontal" url="[controller:'registration', action:'signup']" >
+      <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'registration', action:'signup']" >
 
         <div class="reg-title"><g:message code="ddbnext.Sign_up_here" /></div>
 
@@ -84,7 +84,13 @@ limitations under the License.
             <button type="submit" class="btn-padding">Create My Account</button>
           </div>
         </div>
-
+        <ul id="error-messages" class="off">
+          <li><a><g:message code="ddbnext.Field_Required" /></a></li>
+          <li><a><g:message code="ddbnext.Name_Compulsory_Characters_Number" /></a></li>
+          <li><a><g:message code="ddbnext.Password_Compulsory_Characters_Number" /></a></li>
+          <li><a><g:message code="ddbnext.Enter_A_Valid_Email" /></a></li>
+          <li><a><g:message code="ddbnext.Insert_Again_The_Password" /></a></li>
+        </ul>
       </g:form>
     </div>
   </div>

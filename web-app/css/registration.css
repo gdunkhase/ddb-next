@@ -29,3 +29,12 @@
   line-height: 40px;
   border-bottom: 1px solid #e5e5e5;
 }
+
+.control-group label.error {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.control-group .error {
+  margin-left: 0;
+}
