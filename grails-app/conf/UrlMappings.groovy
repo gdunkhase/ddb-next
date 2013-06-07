@@ -100,11 +100,12 @@ class UrlMappings {
             action="favorites"
         }
 
-
-        "500"(controller: "error", action: "serverError")
-        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
-
         "404"(controller: "error", action: "notFound")
+
+        "500"(controller: "error", action: "notFound", exception: de.ddb.next.exception.ItemNotFoundException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
+        "500"(controller: "error", action: "serverError")
 
     }
 }

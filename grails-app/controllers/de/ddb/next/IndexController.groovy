@@ -20,11 +20,13 @@ import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 class IndexController {
 
     LinkGenerator grailsLinkGenerator
+    
+    def configurationService
 
     def index() {
         def path
 
-        def staticUrl = grailsApplication.config.ddb.static.url
+        def staticUrl = configurationService.getStaticUrl()
         def locale = RCU.getLocale(request)
 
         // fetch the DDB news from static server.
@@ -36,12 +38,12 @@ class IndexController {
 
         def query = [ client: "DDB-NEXT" ]
         // Submit a request via GET
-        def response = ApiConsumer.getText(staticUrl, path, query)
-
-        if (response == "Not found"){
-            forward controller: "error", action: "notFound"
-            return
+        def apiResponse = ApiConsumer.getText(staticUrl, path, false, query)
+        if(!apiResponse.isOk()){
+            log.error "text: Text file was not found"
+            apiResponse.throwException(request)
         }
+        def response = apiResponse.getResponse()
 
         def articles = retrieveArguments(response)
 

@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.ddb.next.exception
 
-class ItemNotFoundException extends Exception {
-    ItemNotFoundException() {
+/**
+ * Exception indication that a configuration entry was not found or invalid.
+ * 
+ * @author hla
+ */
+class ConfigurationException extends Exception {
+
+    ConfigurationException() {
         super()
     }
 
-    ItemNotFoundException(String description) {
+    ConfigurationException(String description) {
         super(description)
     }
 }

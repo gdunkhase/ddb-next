@@ -23,6 +23,8 @@ import de.ddb.next.exception.ItemNotFoundException;
 
 class ContentController {
     static defaultAction = "staticcontent"
+    
+    def configurationService
 
     def staticcontent(){
         try{
@@ -56,19 +58,19 @@ class ContentController {
                 def it = prioritySortedLocales.get(i)
 
                 def secondLvl = getSecLvl();
-                def url = getStaticUrl()
+                def url = configurationService.getStaticUrl()
                 def lang = it.getISO2()
                 def path = "/static/"+lang+"/"+firstLvl+"/index.html"
                 if (params.id!=null){
                     path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl+".html"
                 }
-                def query = [ client: "DDB-NEXT" ]
-                //Submit a request via GET
 
-                response = ApiConsumer.getText(url, path, query)
-                if (response != "Not found"){
-                    break
-                }else if( i==prioritySortedLocales.size()-1 ){ // A 404 was returned for EVERY supported language
+                def apiResponse = ApiConsumer.getText(url, path, false)
+                if(apiResponse.isOk()){
+                    response = apiResponse.getResponse()
+                    break;
+                }
+                else if (i == prioritySortedLocales.size()-1) { //A 404 was returned for EVERY supported language
                     throw new ItemNotFoundException()
                 }
             }
@@ -100,12 +102,6 @@ class ContentController {
             return "de"
         }
         return "en"
-    }
-
-    private def getStaticUrl(){
-        def url = grailsApplication.config.ddb.static.url
-        assert url instanceof String, "This is not a string"
-        return url;
     }
 
     private def retrieveArguments(def content){
