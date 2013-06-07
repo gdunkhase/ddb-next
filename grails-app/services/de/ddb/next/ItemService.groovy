@@ -17,6 +17,7 @@ package de.ddb.next
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.codehaus.groovy.grails.web.util.WebUtils;
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
@@ -41,11 +42,12 @@ class ItemService {
 
     def transactional = false
     def grailsApplication
+    def configurationService
     LinkGenerator grailsLinkGenerator
 
     def findItemById(id) {
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -59,6 +61,8 @@ class ItemService {
             uri.path = viewPath
 
             response.success = { resp, xml ->
+                log.info "findItemById(): Current request uri: 200, "+uri
+
                 institution= xml.institution
                 item = xml.item
 
@@ -84,8 +88,8 @@ class ItemService {
     }
 
     private getItemTitle(id) {
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -97,7 +101,11 @@ class ItemService {
         http.request( GET) { req ->
             uri.path = titlePath
 
-            response.success = { resp, html -> return html }
+            response.success = { resp, html ->
+                log.info "getItemTitle(): Current request uri: 200, "+uri
+
+                return html
+            }
 
             response.'404' = { return '404' }
 
@@ -143,7 +151,7 @@ class ItemService {
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
-            def binaryServerUrl = grailsApplication.config.ddb.binary.url
+            def binaryServerUrl = configurationService.getBinaryUrl()
 
             //Security check: if the binaryServerUrl is configured with an ending ".../binary/", this has to be removed
             int firstOccuranceOfBinaryString = binaryServerUrl.indexOf("/binary/")
@@ -164,8 +172,8 @@ class ItemService {
 
     private def fetchBinaryList(id) {
 
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
         http.parser.'application/json' = http.parser.'application/xml'
         final def binariesPath= "/access/" + id + "/components/binaries"
 
@@ -173,6 +181,7 @@ class ItemService {
             uri.path = binariesPath
 
             response.success = { resp, xml ->
+                log.info "fetchBinaryList(): Current request uri: 200, "+uri
                 def binaries = xml
                 return binaries.binary.list()
             }
@@ -271,12 +280,22 @@ class ItemService {
 
     def getParent(itemId){
         final def parentsPath = "/hierarchy/" + itemId + "/parent/"
-        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), parentsPath, [:]);
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), parentsPath)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return apiResponse.getResponse()
     }
 
     def getChildren(itemId){
         final def childrenPath = "/hierarchy/" + itemId + "/children/"
-        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), childrenPath, [:]);
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), childrenPath)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return apiResponse.getResponse()
     }
 
     private def log(list) {

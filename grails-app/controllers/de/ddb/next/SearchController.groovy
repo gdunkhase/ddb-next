@@ -23,6 +23,7 @@ class SearchController {
     static defaultAction = "results"
 
     def searchService
+    def configurationService
 
     def results() {
 
@@ -35,7 +36,12 @@ class SearchController {
         def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
         def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
 
-        def resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
+        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def resultsItems = apiResponse.getResponse()
 
         if(resultsItems["randomSeed"]){
             urlQuery["randomSeed"] = resultsItems["randomSeed"]
@@ -50,7 +56,12 @@ class SearchController {
             //firstHit
             firstLastQuery["rows"] = 1
             firstLastQuery["offset"] = 0
-            def firstHit = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', firstLastQuery)
+            apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, firstLastQuery)
+            if(!apiResponse.isOk()){
+                log.error "Json: Json file was not found"
+                apiResponse.throwException(request)
+            }
+            def firstHit = apiResponse.getResponse()
             if (firstHit != null && firstHit["numberOfResults"] != null && (Integer)firstHit["numberOfResults"] > 0) {
                 params["firstHit"] = firstHit["results"]["docs"][0].id
             }
@@ -60,11 +71,6 @@ class SearchController {
             //Set id to "lasthit" to signal ItemController to find id of lasthit.
             params["lastHit"] = "lasthit"
 
-            //                firstLastQuery["offset"] = resultsItems["numberOfResults"] - 1
-            //                def lastHit = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', firstLastQuery)
-            //                if (lastHit != null && lastHit["numberOfResults"] != null && (Integer)lastHit["numberOfResults"] > 0) {
-            //                    params["lastHit"] = lastHit["results"]["docs"][0].id
-            //                }
         }
 
         //create cookie with search parameters

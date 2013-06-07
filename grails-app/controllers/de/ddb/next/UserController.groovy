@@ -15,25 +15,82 @@
  */
 package de.ddb.next
 
-import de.ddb.next.exception.UserNotFoundException
-import org.springframework.web.servlet.support.RequestContextUtils;
+import javax.servlet.http.HttpSession;
 
+import de.ddb.next.beans.User;
 
 class UserController {
+    
+    def configurationService
 
-    static defaultAction = "defaultAction"
+    def index() {
 
-    def defaultAction() {
-        render(view: "profile", model: [bookmarksCount: "no count yet", username: "testuser"])
+        render(view: "login", model: [
+            'loginStatus': 0]
+        )
+    }
+
+    def doLogin() {
+
+        def loginStatus = 0 // -1 == login failed / 0 == undefined or already logged in /  1 == login success
+
+        // Only perfom login if user is not already logged in
+        if(!isUserInSession()){
+            def email = params.email
+            def password = params.password
+
+            def USERNAMEDUMMY = "FIZ"
+            def EMAILDUMMY = "fiz@fiz.fiz"
+            def PASSWORDDUMMY = "fiz"
+
+            if(email == EMAILDUMMY && password == PASSWORDDUMMY){
+                loginStatus = 1
+            }else{
+                loginStatus = -1
+            }
+
+            if(loginStatus == 1){
+                User user = new User() // TODO get from AAS
+                user.setUsername(USERNAMEDUMMY)
+                user.setEmail(EMAILDUMMY)
+                user.setPassword(PASSWORDDUMMY)
+                session.setAttribute(User.SESSION_USER, user)
+            }
+        }
+
+        render(view: "login", model: [
+            'loginStatus': loginStatus]
+        )
+    }
+
+    def doLogout() {
+
+        session.removeAttribute(User.SESSION_USER)
+        session.invalidate()
+
+        render(view: "login", model: [
+            'loginStatus': 0]
+        )
+    }
+
+    def registration() {
+
+        //TODO
     }
 
     def profilePage() {
-        def user = ApiConsumer.getTextAsJson(grailsApplication.config.aas.url.toString() ,'/aas/persons/' + params.id, null, true)
-        if("Not found".equals(user)){
-            throw new UserNotFoundException()
+        def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl() ,'/aas/persons/' + params.id, true)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
         }
+        def user = apiResponse.getResponse()
 
         render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
     }
     
+    private boolean isUserInSession() {
+        HttpSession sessionObject = request.getSession(false)
+        return sessionObject && sessionObject.getAttribute(User.SESSION_USER)
+    }
 }

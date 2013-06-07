@@ -28,7 +28,7 @@ public class ServiceWrapper {
     public static def getData(uri) {
         def config = org.codehaus.groovy.grails.commons.ConfigurationHolder.config
         def backendUrl = config.ddb.backend.url
-        def json = ApiConsumer.getTextAsJson(backendUrl , uri, null)
+        def json = ApiConsumer.getJson(backendUrl , uri)
         return json
     }
 }
@@ -58,7 +58,7 @@ Maybe you have to implement new methods in this class.
 -all path + query-parameters come in variable params (params.id = something, params.test=eins ...)
 
 From there we can execute requests to the backend via Class ApiConsumer:
-eg:  def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search', query)
+eg:  def jsonResp = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(),'/search', query)
 
 grailsApplication.config.ddb.backend.url references the property ddb.backend.url in the file ddb-next.properties in Folder .grails
 
