@@ -37,6 +37,7 @@ class ApisService {
 
     //Autowire the grails application bean
     def grailsApplication
+    def configurationService
 
     def transactional=false
 
@@ -158,7 +159,7 @@ class ApisService {
     def fetchItemsProperties(docs){
         if(docs && docs.size() > 0){
             def threadNumber = (docs.size()<20)?docs.size():20
-            def baseUrl = grailsApplication.config.ddb.backend.url.toString()
+            def baseUrl = configurationService.getBackendUrl().toString()
             try {
                 def http = new AsyncHTTPBuilder(
                         poolSize: threadNumber,

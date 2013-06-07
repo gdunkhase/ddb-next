@@ -34,6 +34,7 @@ class AdvancedsearchController {
     static defaultAction = "fillValues"
 
     def messageSource
+    def configurationService
 
 
     /**
@@ -42,9 +43,9 @@ class AdvancedsearchController {
      * @return
      */
     def fillValues() {
-        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
-        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
-        String url = grailsApplication.config.ddb.backend.url
+        int searchGroupCount = configurationService.getSearchGroupCount().toInteger()
+        int searchFieldCount = configurationService.getSearchFieldCount().toInteger()
+        String url = configurationService.getBackendUrl()
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
@@ -66,11 +67,11 @@ class AdvancedsearchController {
      */
     def executeSearch() throws IOException {
 
-        int searchGroupCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchGroupCount)
-        int searchFieldCount = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.searchFieldCount)
-        int offset = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultOffset)
-        int rows = Integer.parseInt(grailsApplication.config.ddb.advancedSearch.defaultRows)
-        def url = grailsApplication.config.ddb.backend.url
+        int searchGroupCount = configurationService.getSearchGroupCount().toInteger()
+        int searchFieldCount = configurationService.getSearchFieldCount().toInteger()
+        int offset = configurationService.getSearchOffset().toInteger()
+        int rows = configurationService.getSearchRows().toInteger()
+        def url = configurationService.getBackendUrl()
         def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
 
         AdvancedSearchFormToQueryConverter converter =
@@ -86,8 +87,8 @@ class AdvancedsearchController {
      */
     private Map getFacetValues(facetSearchfields) {
         def facetValuesMap = [:]
-        def url = grailsApplication.config.ddb.backend.url
-        def allFacetFilters = grailsApplication.config.ddb.backend.facets.filter
+        def url = configurationService.getBackendUrl()
+        def allFacetFilters = configurationService.getFacetsFilter()
         def facetsRequester = new FacetsService(url:url)
         for ( facetSearchfield in facetSearchfields ) {
             if (facetSearchfield.searchType.equals(enumSearchType)) {

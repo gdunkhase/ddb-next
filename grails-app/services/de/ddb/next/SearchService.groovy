@@ -41,6 +41,8 @@ class SearchService {
 
     //Autowire the grails application bean
     def grailsApplication
+    
+    def configurationService
 
     //CharacterEncoding of query-String
     private characterEncoding = "UTF-8"
@@ -160,7 +162,7 @@ class SearchService {
                 tmpUrlQuery["rows"]=1
                 tmpUrlQuery["offset"]=0
                 tmpUrlQuery.remove(it)
-                def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', false, tmpUrlQuery)
+                def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl().toString() ,'/apis/search', false, tmpUrlQuery)
                 if(!apiResponse.isOk()){
                     log.error "Json: Json file was not found"
                     apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
@@ -442,7 +444,7 @@ class SearchService {
      */
     def getSelectedFacetValues(List facets, String fctName, int numberOfElements, String matcher, Locale locale){
         def res = [type: fctName, values: []]
-        def allFacetFilters = grailsApplication.config.ddb.backend.facets.filter
+        def allFacetFilters = configurationService.getFacetsFilter()
 
         facets.each{
             if(it.field==fctName){

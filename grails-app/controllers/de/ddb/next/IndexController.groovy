@@ -20,11 +20,13 @@ import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 class IndexController {
 
     LinkGenerator grailsLinkGenerator
+    
+    def configurationService
 
     def index() {
         def path
 
-        def staticUrl = grailsApplication.config.ddb.static.url
+        def staticUrl = configurationService.getStaticUrl()
         def locale = RCU.getLocale(request)
 
         // fetch the DDB news from static server.

@@ -42,11 +42,12 @@ class ItemService {
 
     def transactional = false
     def grailsApplication
+    def configurationService
     LinkGenerator grailsLinkGenerator
 
     def findItemById(id) {
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl().toString())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl().toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -85,8 +86,8 @@ class ItemService {
     }
 
     private getItemTitle(id) {
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl().toString())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl().toString())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -144,7 +145,7 @@ class ItemService {
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
-            def binaryServerUrl = grailsApplication.config.ddb.binary.url
+            def binaryServerUrl = configurationService.getBinaryUrl()
 
             //Security check: if the binaryServerUrl is configured with an ending ".../binary/", this has to be removed
             int firstOccuranceOfBinaryString = binaryServerUrl.indexOf("/binary/")
@@ -165,8 +166,8 @@ class ItemService {
 
     private def fetchBinaryList(id) {
 
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl().toString())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl().toString())
         http.parser.'application/json' = http.parser.'application/xml'
         final def binariesPath= "/access/" + id + "/components/binaries"
 
@@ -272,7 +273,7 @@ class ItemService {
 
     def getParent(itemId){
         final def parentsPath = "/hierarchy/" + itemId + "/parent/"
-        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(), parentsPath)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl().toString(), parentsPath)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
@@ -282,7 +283,7 @@ class ItemService {
 
     def getChildren(itemId){
         final def childrenPath = "/hierarchy/" + itemId + "/children/"
-        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.backend.url.toString(), childrenPath)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl().toString(), childrenPath)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())

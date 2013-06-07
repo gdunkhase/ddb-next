@@ -23,6 +23,8 @@ import de.ddb.next.exception.ItemNotFoundException;
 
 class ContentController {
     static defaultAction = "staticcontent"
+    
+    def configurationService
 
     def staticcontent(){
         try{
@@ -103,7 +105,7 @@ class ContentController {
     }
 
     private def getStaticUrl(){
-        def url = grailsApplication.config.ddb.static.url
+        def url = configurationService.getStaticUrl()
         assert url instanceof String, "This is not a string"
         return url;
     }

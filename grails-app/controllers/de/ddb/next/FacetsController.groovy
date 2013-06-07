@@ -29,12 +29,13 @@ class FacetsController {
     static defaultAction = "facets"
 
     def searchService
+    def configurationService
 
 
     def facetsList() {
         def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params)
 
-        def apiResponse = ApiConsumer.getJson(grailsApplication.config.ddb.apis.url.toString(),'/apis/search', false, urlQuery)
+        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl().toString(),'/apis/search', false, urlQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)

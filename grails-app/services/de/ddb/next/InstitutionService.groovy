@@ -30,9 +30,11 @@ class InstitutionService {
     def grailsApplication
 
     def grailsLinkGenerator
+    
+    def configurationService
 
     def findAll() {
-        def cortexHostPort = grailsApplication.config.ddb.backend.url
+        def cortexHostPort = configurationService.getBackendUrl()
 
         def http = new HTTPBuilder(cortexHostPort)
         ApiConsumer.setProxy(http, cortexHostPort)
