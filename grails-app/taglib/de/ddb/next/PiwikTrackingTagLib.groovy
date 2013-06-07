@@ -27,6 +27,7 @@ import grails.util.Environment;
 class PiwikTrackingTagLib {
 
     def static trackingCodeCache = null
+    def configurationService
 
     /**
      * Tag closure <g:piwik />, this tag has no attributes. 
@@ -35,7 +36,7 @@ class PiwikTrackingTagLib {
 
         //Only load the piwik tracking code one
         if(trackingCodeCache == null){
-            def piwikFile = grailsApplication.config.ddb.tracking.piwikfile
+            def piwikFile = configurationService.getPiwikTrackingFile()
 
             try {
                 trackingCodeCache = grailsApplication.getParentContext().getResource("file:"+piwikFile).inputStream.text
