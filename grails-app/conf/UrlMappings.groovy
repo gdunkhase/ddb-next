@@ -86,8 +86,13 @@ class UrlMappings {
         }
 
         "/login" {
-            controller="login"
+            controller="user"
             action="index"
+        }
+
+        "/registration" {
+            controller="user"
+            action="registration"
         }
 
 

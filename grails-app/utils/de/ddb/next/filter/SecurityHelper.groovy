@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.ddb.next
+package de.ddb.next.filter
 
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
@@ -32,7 +32,7 @@ import de.ddb.next.exception.InvalidUrlException;
  * 
  * @author hla
  */
-class DdbSecurityHelper {
+class SecurityHelper {
 
     private def log = LogFactory.getLog(this.class)
 
@@ -42,7 +42,7 @@ class DdbSecurityHelper {
      * 
      * @param request The wrapped request object
      */
-    void sanitizeRequest(DdbServletRequestWrapper request, HttpServletResponse response){
+    void sanitizeRequest(ServletRequestWrapper request, HttpServletResponse response){
         Parser tagsoupParser = new Parser()
         XmlSlurper slurper = new XmlSlurper(tagsoupParser)
 
@@ -52,7 +52,7 @@ class DdbSecurityHelper {
         sanitizeRequestHeaders(request)
     }
 
-    private void sanitizeRequestUrl(DdbServletRequestWrapper request, HttpServletResponse response) {
+    private void sanitizeRequestUrl(ServletRequestWrapper request, HttpServletResponse response) {
         String requestUri = request.getRequestURI()
 
         if(requestUri.contains("<") ||
@@ -70,7 +70,7 @@ class DdbSecurityHelper {
      * 
      * @param request The wrapped request object
      */
-    private void sanitizeRequestHeaders(DdbServletRequestWrapper request) {
+    private void sanitizeRequestHeaders(ServletRequestWrapper request) {
         request.getHeaderNames().each {
             if(it.toLowerCase() == "host"){
                 String header = request.getHeader(it)
@@ -107,7 +107,7 @@ class DdbSecurityHelper {
      * @param parameterMap The parameter map
      * @param slurper The XmlSlurper instance
      */
-    private void sanitizeRequestParameters(DdbServletRequestWrapper request, XmlSlurper slurper){
+    private void sanitizeRequestParameters(ServletRequestWrapper request, XmlSlurper slurper){
         Map<String,String[]> parameterMap = request.getParameterMap()
 
         String[] keys = parameterMap.keySet().toArray()
@@ -134,7 +134,7 @@ class DdbSecurityHelper {
      * @param cookies
      * @param slurper The cookie array
      */
-    private void sanitizeRequestCookies(DdbServletRequestWrapper request, XmlSlurper slurper){
+    private void sanitizeRequestCookies(ServletRequestWrapper request, XmlSlurper slurper){
         Cookie[] cookies = request.getCookies()
 
         if(cookies){
