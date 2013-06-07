@@ -43,8 +43,8 @@ class AdvancedsearchController {
      * @return
      */
     def fillValues() {
-        int searchGroupCount = configurationService.getSearchGroupCount().toInteger()
-        int searchFieldCount = configurationService.getSearchFieldCount().toInteger()
+        int searchGroupCount = configurationService.getSearchGroupCount()
+        int searchFieldCount = configurationService.getSearchFieldCount()
         String url = configurationService.getBackendUrl()
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
         Map facetValuesMap = getFacetValues(facetSearchfields)
@@ -67,10 +67,10 @@ class AdvancedsearchController {
      */
     def executeSearch() throws IOException {
 
-        int searchGroupCount = configurationService.getSearchGroupCount().toInteger()
-        int searchFieldCount = configurationService.getSearchFieldCount().toInteger()
-        int offset = configurationService.getSearchOffset().toInteger()
-        int rows = configurationService.getSearchRows().toInteger()
+        int searchGroupCount = configurationService.getSearchGroupCount()
+        int searchFieldCount = configurationService.getSearchFieldCount()
+        int offset = configurationService.getSearchOffset()
+        int rows = configurationService.getSearchRows()
         def url = configurationService.getBackendUrl()
         def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
 

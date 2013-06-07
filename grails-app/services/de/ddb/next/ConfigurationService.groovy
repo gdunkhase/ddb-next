@@ -89,6 +89,7 @@ class ConfigurationService {
         if(!filepath){
             throw new ConfigurationException("getPiwikTrackingFile(): Configuration entry does not exist -> ddb.tracking.piwikfile")
         }
+        filepath = new String(filepath.toString());
         if(!(filepath instanceof String)){
             throw new ConfigurationException("getPiwikTrackingFile(): ddb.tracking.piwikfile is not a String")
         }
@@ -132,6 +133,13 @@ ddb.advancedSearch.defaultRows=20
             throw new ConfigurationException("""getSearchGroupCount(): ddb.advancedSearch.searchGroupCount is not
                 a String""")
         }
+        try {
+            searchGroupCount = new Integer(Integer.parseInt(searchGroupCount));
+        }
+        catch (NumberFormatException e) {
+            throw new ConfigurationException("""getSearchGroupCount(): ddb.advancedSearch.searchGroupCount is not
+                an Integer""")
+        }
         searchGroupCount
     }
 
@@ -144,6 +152,13 @@ ddb.advancedSearch.defaultRows=20
         if(!(searchFieldCount instanceof String)){
             throw new ConfigurationException("""getSearchFieldCount(): ddb.advancedSearch.searchFieldCount is not
                 a String""")
+        }
+        try {
+            searchFieldCount = new Integer(Integer.parseInt(searchFieldCount));
+        }
+        catch (NumberFormatException e) {
+            throw new ConfigurationException("""getSearchFieldCount(): ddb.advancedSearch.searchFieldCount is not
+                an Integer""")
         }
         searchFieldCount
     }
@@ -158,6 +173,13 @@ ddb.advancedSearch.defaultRows=20
             throw new ConfigurationException("""getSearchOffset(): ddb.advancedSearch.defaultOffset is not
                 a String""")
         }
+        try {
+            offset = new Integer(Integer.parseInt(offset));
+        }
+        catch (NumberFormatException e) {
+            throw new ConfigurationException("""getSearchOffset(): ddb.advancedSearch.defaultOffset is not
+                an Integer""")
+        }
         offset
     }
 
@@ -170,6 +192,13 @@ ddb.advancedSearch.defaultRows=20
         if(!(rows instanceof String)){
             throw new ConfigurationException("""getSearchRows(): ddb.advancedSearch.defaultRows is not
                 a String""")
+        }
+        try {
+            rows = new Integer(Integer.parseInt(rows));
+        }
+        catch (NumberFormatException e) {
+            throw new ConfigurationException("""getSearchRows(): ddb.advancedSearch.defaultRows is not
+                an Integer""")
         }
         rows
     }

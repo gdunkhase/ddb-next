@@ -159,7 +159,7 @@ class ApisService {
     def fetchItemsProperties(docs){
         if(docs && docs.size() > 0){
             def threadNumber = (docs.size()<20)?docs.size():20
-            def baseUrl = configurationService.getBackendUrl().toString()
+            def baseUrl = configurationService.getBackendUrl()
             try {
                 def http = new AsyncHTTPBuilder(
                         poolSize: threadNumber,

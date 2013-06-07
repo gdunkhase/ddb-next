@@ -162,7 +162,7 @@ class SearchService {
                 tmpUrlQuery["rows"]=1
                 tmpUrlQuery["offset"]=0
                 tmpUrlQuery.remove(it)
-                def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl().toString() ,'/apis/search', false, tmpUrlQuery)
+                def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, tmpUrlQuery)
                 if(!apiResponse.isOk()){
                     log.error "Json: Json file was not found"
                     apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())

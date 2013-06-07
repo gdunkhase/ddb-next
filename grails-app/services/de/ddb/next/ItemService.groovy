@@ -46,8 +46,8 @@ class ItemService {
     LinkGenerator grailsLinkGenerator
 
     def findItemById(id) {
-        def http = new HTTPBuilder(configurationService.getBackendUrl().toString())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl().toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -86,8 +86,8 @@ class ItemService {
     }
 
     private getItemTitle(id) {
-        def http = new HTTPBuilder(configurationService.getBackendUrl().toString())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl().toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -166,8 +166,8 @@ class ItemService {
 
     private def fetchBinaryList(id) {
 
-        def http = new HTTPBuilder(configurationService.getBackendUrl().toString())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl().toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
         http.parser.'application/json' = http.parser.'application/xml'
         final def binariesPath= "/access/" + id + "/components/binaries"
 
@@ -273,7 +273,7 @@ class ItemService {
 
     def getParent(itemId){
         final def parentsPath = "/hierarchy/" + itemId + "/parent/"
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl().toString(), parentsPath)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), parentsPath)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
@@ -283,7 +283,7 @@ class ItemService {
 
     def getChildren(itemId){
         final def childrenPath = "/hierarchy/" + itemId + "/children/"
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl().toString(), childrenPath)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), childrenPath)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())

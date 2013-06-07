@@ -35,7 +35,7 @@ class FacetsController {
     def facetsList() {
         def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params)
 
-        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl().toString(),'/apis/search', false, urlQuery)
+        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl(),'/apis/search', false, urlQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)

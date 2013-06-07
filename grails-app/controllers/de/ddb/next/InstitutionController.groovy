@@ -65,10 +65,10 @@ class InstitutionController {
         def itemId = id;
         def vApiInstitution = new ApiInstitution();
         log.debug("read insitution by item id: ${id}");
-        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl().toString());
+        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
         def pageUrl = "http://www.deutsche-digitale-bibliothek.de"+request.forwardURI;
         if (selectedOrgXML) {
-            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl().toString())
+            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
             if (jsonOrgParentHierarchy.size() == 1) {
                 if (jsonOrgParentHierarchy[0].id != id) {
@@ -80,9 +80,9 @@ class InstitutionController {
                 itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
             }
             log.debug("root itemId = ${itemId}");
-            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl().toString())
+            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
             log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
-            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl().toString())
+            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
             int countObjectsForProv = 0;
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {

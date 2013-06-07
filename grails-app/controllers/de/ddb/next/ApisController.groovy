@@ -37,7 +37,7 @@ class ApisController {
 
         slurper.setKeepWhitespace(true)
 
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl().toString(),'/search', false, query)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -93,7 +93,7 @@ class ApisController {
     }
 
     def institutionsmap(){
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl().toString(),'/institutions/map', false, params)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, params)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -111,7 +111,7 @@ class ApisController {
     def autocomplete (){
         def query = apisService.getQueryParameters(params)
         def callback = apisService.getQueryParameters(params)
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl().toString(),'/search/suggest', false, query)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/suggest', false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
