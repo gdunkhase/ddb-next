@@ -58,7 +58,7 @@ class ContentController {
                 def it = prioritySortedLocales.get(i)
 
                 def secondLvl = getSecLvl();
-                def url = getStaticUrl()
+                def url = configurationService.getStaticUrl()
                 def lang = it.getISO2()
                 def path = "/static/"+lang+"/"+firstLvl+"/index.html"
                 if (params.id!=null){
@@ -66,13 +66,13 @@ class ContentController {
                 }
 
                 def apiResponse = ApiConsumer.getText(url, path, false)
-                if(!apiResponse.isOk()){
-                    log.error "Text: Text file was not found"
-                    apiResponse.throwException(request)
+                if(apiResponse.isOk()){
+                    response = apiResponse.getResponse()
+                    break;
                 }
-
-                response = apiResponse.getResponse()
-                break;
+                else if (i == prioritySortedLocales.size()-1) { //A 404 was returned for EVERY supported language
+                    throw new ItemNotFoundException()
+                }
             }
 
             def map= retrieveArguments(response)
@@ -102,12 +102,6 @@ class ContentController {
             return "de"
         }
         return "en"
-    }
-
-    private def getStaticUrl(){
-        def url = configurationService.getStaticUrl()
-        assert url instanceof String, "This is not a string"
-        return url;
     }
 
     private def retrieveArguments(def content){
