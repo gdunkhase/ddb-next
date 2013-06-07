@@ -29,7 +29,7 @@ class ConfigurationService {
 
     def transactional=false
     
-    def getBinaryUrl(){
+    public String getBinaryUrl(){
         def url = grailsApplication.config.ddb?.binary?.url
         if(!url){
             throw new ConfigurationException("getBinaryBackendUrl(): Configuration entry does not exist -> apd.binary.backend.url")
@@ -40,7 +40,7 @@ class ConfigurationService {
         return url
     }
 
-    def getStaticUrl(){
+    public String getStaticUrl(){
         def url = grailsApplication.config.ddb?.static?.url
         if(!url){
             throw new ConfigurationException("getStaticUrl(): Configuration entry does not exist -> apd.static.url")
@@ -51,7 +51,7 @@ class ConfigurationService {
         return url
     }
 
-    def getApisUrl(){
+    public String getApisUrl(){
         def url = grailsApplication.config.ddb?.apis?.url
         if(!url){
             throw new ConfigurationException("getApisUrl(): Configuration entry does not exist -> apd.apis.url")
@@ -62,7 +62,7 @@ class ConfigurationService {
         return url
     }
 
-    def getBackendUrl(){
+    public String getBackendUrl(){
         def url = grailsApplication.config.ddb?.backend?.url
         if(!url){
             throw new ConfigurationException("getBackendUrl(): Configuration entry does not exist -> apd.backend.url")
@@ -73,7 +73,7 @@ class ConfigurationService {
         return url
     }
 
-    def getFacetsFilter(){
+    public List getFacetsFilter(){
         def filter = grailsApplication.config.ddb?.backend?.facets?.filter
         if(!filter){
             throw new ConfigurationException("getFacetsFilter(): Configuration entry does not exist -> ddb.backend.facets.filter")
@@ -84,7 +84,7 @@ class ConfigurationService {
         return filter
     }
 
-    def getPiwikTrackingFile(){
+    public String getPiwikTrackingFile(){
         def filepath = grailsApplication.config.ddb?.tracking?.piwikfile
         if(!filepath){
             throw new ConfigurationException("getPiwikTrackingFile(): Configuration entry does not exist -> ddb.tracking.piwikfile")
@@ -96,7 +96,7 @@ class ConfigurationService {
         return filepath
     }
 
-    def getEncoding(){
+    public String getEncoding(){
         def encoding = grailsApplication.config.grails?.views?.gsp?.encoding
         if(!encoding){
             throw new ConfigurationException("getEncoding(): Configuration entry does not exist -> grails.views.gsp.encoding")
@@ -107,7 +107,7 @@ class ConfigurationService {
         return encoding
     }
 
-    def getMimeTypeHtml(){
+    public String getMimeTypeHtml(){
         def mimeTypeHtml = grailsApplication.config.grails?.mime?.types["html"][0]
         if(!mimeTypeHtml){
             throw new ConfigurationException("getMimeTypeHtml(): Configuration entry does not exist -> grails.mime.types['html'][0]")
@@ -123,7 +123,7 @@ ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
 */
 
-    def getSearchGroupCount() {
+    public int getSearchGroupCount() {
         def searchGroupCount = grailsApplication.config.ddb?.advancedSearch?.searchGroupCount
         if(!searchGroupCount ){
             throw new ConfigurationException("""getSearchGroupCount(): Configuration entry does not exist ->
@@ -143,7 +143,7 @@ ddb.advancedSearch.defaultRows=20
         searchGroupCount
     }
 
-    def getSearchFieldCount() {
+    public int getSearchFieldCount() {
         def searchFieldCount= grailsApplication.config.ddb.advancedSearch?.searchFieldCount
         if(!searchFieldCount){
             throw new ConfigurationException("""getSearchFieldCount(): Configuration entry does not exist ->
@@ -163,7 +163,7 @@ ddb.advancedSearch.defaultRows=20
         searchFieldCount
     }
 
-    def getSearchOffset() {
+    public int getSearchOffset() {
         def offset = grailsApplication.config.ddb.advancedSearch?.defaultOffset
         if(!offset){
             throw new ConfigurationException("""getSearchOffset(): Configuration entry does not exist ->
@@ -183,7 +183,7 @@ ddb.advancedSearch.defaultRows=20
         offset
     }
 
-    def getSearchRows() {
+    public int getSearchRows() {
         def rows = grailsApplication.config.ddb?.advancedSearch?.defaultRows
         if(!rows){
             throw new ConfigurationException("""getSearchRows(): Configuration entry does not exist ->
