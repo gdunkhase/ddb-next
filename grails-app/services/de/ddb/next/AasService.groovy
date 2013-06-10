@@ -17,6 +17,7 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import de.ddb.next.beans.User
+import de.ddb.next.exception.BackendErrorException
 import groovy.json.*
 import groovyx.net.http.Method
 
@@ -72,7 +73,7 @@ class AasService {
      * @param id id of person to retrieve
      * @return person as JSON object
      */
-    public JSONObject createPerson(String json) {
+    public JSONObject createPerson(JSONObject json) {
         return request(PERSON_URI, Method.POST, json)
     }
 
@@ -82,8 +83,17 @@ class AasService {
      * @param user user-object
      * @return person as JSON object
      */
-    public JSONObject updatePerson(String id, String json) {
+    public JSONObject updatePerson(String id, JSONObject json) {
         return request(PERSON_URI + id, Method.PUT, json)
+    }
+
+    /**
+     * 
+     * @param id id of person to delete
+     * @return person as JSON object
+     */
+    public void deletePerson(String id) {
+        request(PERSON_URI + id, Method.DELETE)
     }
 
     /**
@@ -92,16 +102,22 @@ class AasService {
      * @param url url of request
      * @return JSON-response
      */
-    private JSONObject request(String url, Method method = Method.GET, String postParameter = null) {
+    private JSONObject request(String url, Method method = Method.GET, JSONObject postParameter = null) {
         def apiResponse
         if (method.equals(Method.GET)) {
             apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), url, true)
         }
         else if (method.equals(Method.POST)) {
-            apiResponse = ApiConsumer.postJson(configurationService.getAasUrl(), url, true)
+            apiResponse = ApiConsumer.postJson(configurationService.getAasUrl(), url, true, postParameter)
         }
         else if (method.equals(Method.PUT)) {
-            apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), url, true)
+            apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), url, true, postParameter)
+        }
+        else if (method.equals(Method.DELETE)) {
+            apiResponse = ApiConsumer.delete(configurationService.getAasUrl(), url, true)
+        }
+        else {
+            throw new BackendErrorException("No method for request defined");
         }
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"

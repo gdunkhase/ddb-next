@@ -17,20 +17,31 @@ package de.ddb.next.beans
 
 import java.util.Map;
 
-class User {
+class AasUser {
 
-    public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
-
-    String username
+    String id
+    String title
+    String salutation
+    String foreName
+    String surName
+    String telephoneNumber
+    String faxNumber
     String email
-    String password
 
-    User(Map userMap){
-        username = userMap.id
-        email = userMap.email
+    AasUser(Map aasUserMap){
+        if (aasUserMap != null) {
+            id = userMap.id
+            title = userMap.title
+            salutation = userMap.salutation
+            foreName = userMap.foreName
+            surName = userMap.surName
+            telephoneNumber = userMap.telephoneNumber
+            faxNumber = userMap.faxNumber
+            email = userMap.email
+        }
     }
 
-    User(){
+    AasUser(){
     }
 
 }

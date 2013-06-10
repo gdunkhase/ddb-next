@@ -87,7 +87,11 @@ class UrlMappings {
         
         "/user/$id/profile" {
             controller="user"
-            action="profilePage"
+            action="profile"
+        }
+        "/user/$id/delete" {
+            controller="user"
+            action="delete"
         }
 
         "/login" {
@@ -101,7 +105,8 @@ class UrlMappings {
         }
 
         "404"(controller: "error", action: "notFound")
-
+        "401"(controller: "error", action: "auth")
+        
         "500"(controller: "error", action: "notFound", exception: de.ddb.next.exception.ItemNotFoundException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)

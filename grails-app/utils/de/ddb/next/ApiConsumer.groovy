@@ -27,6 +27,7 @@ import org.apache.catalina.connector.ClientAbortException
 import org.apache.commons.io.IOUtils
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.next.beans.User
@@ -89,8 +90,8 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def postJson(String baseUrl, String path, boolean httpAuth = false, String postParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.POST, ContentType.JSON, postParameter, httpAuth, optionalHeaders, false, null)
+    static def postJson(String baseUrl, String path, boolean httpAuth = false, JSONObject postParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.POST, ContentType.JSON, postParameter.toString(), httpAuth, optionalHeaders, false, null)
     }
 
     /**
@@ -101,8 +102,20 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def putJson(String baseUrl, String path, boolean httpAuth = false, String putParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.PUT, ContentType.JSON, putParameter, httpAuth, optionalHeaders, false, null)
+    static def putJson(String baseUrl, String path, boolean httpAuth = false, JSONObject putParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.PUT, ContentType.JSON, putParameter.toString(), httpAuth, optionalHeaders, false, null)
+    }
+
+    /**
+     * Sends a request to the backend by calling PUT
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @param putParameter body of the PUT-Request
+     * @param optionalHeaders Optional request headers to add to the request
+     * @return An ApiResponse object containing the server response
+     */
+    static def delete(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.DELETE, ContentType.JSON, null, httpAuth, optionalHeaders, false, null)
     }
 
     /**
@@ -153,7 +166,7 @@ class ApiConsumer {
      * @param streamingOutputStream The gsp OutputStream needed for streaming binary resources
      * @return An ApiResponse object containing the server response
      */
-    private static def requestServer(baseUrl, path, query, method, content, reqBody, boolean httpAuth = false, optionalHeaders, fixWrongContentTypeHeader, OutputStream streamingOutputStream) {
+    private static def requestServer(baseUrl, path, query, method, content, requestBody, boolean httpAuth = false, optionalHeaders, fixWrongContentTypeHeader, OutputStream streamingOutputStream) {
         def timestampStart = System.currentTimeMillis();
         path = checkContext(baseUrl, path)
         
@@ -166,8 +179,8 @@ class ApiConsumer {
 
             http.request(method, content) { req ->
                 
-                if (reqBody != null) {
-                    body = reqBody
+                if (requestBody != null) {
+                    body = requestBody
                 }
 
                 if(content == ContentType.BINARY){

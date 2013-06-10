@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import javax.servlet.http.HttpSession
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
@@ -59,8 +60,7 @@ class UserController {
 
     def doLogout() {
 
-        session.removeAttribute(User.SESSION_USER)
-        session.invalidate()
+        removeUserFromSession()
 
         render(view: "login", model: [
             'loginStatus': 0]
@@ -72,10 +72,38 @@ class UserController {
         //TODO
     }
 
-    def profilePage() {
+    def profile() {
         def user
         try {
             user = aasService.getPerson(params.id)
+        }
+        catch (AuthorizationException e) {
+            forward controller: "error", action: "auth"
+        }
+        render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
+    }
+    
+    def save() {
+        JSONObject user
+        try {
+            user = aasService.getPerson(params.id)
+        }
+        catch (AuthorizationException e) {
+            forward controller: "error", action: "auth"
+        }
+        user.email = params.email
+        try {
+            user = aasService.updatePerson(params.id, user)
+        }
+        catch (AuthorizationException e) {
+            forward controller: "error", action: "auth"
+        }
+        render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
+    }
+    
+    def delete() {
+        try {
+            aasService.deletePerson(params.id)
         }
         catch (AuthorizationException e) {
             forward controller: "error", action: "auth"
