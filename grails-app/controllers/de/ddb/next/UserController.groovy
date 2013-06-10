@@ -15,14 +15,16 @@
  */
 package de.ddb.next
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession
 
-import de.ddb.next.beans.User;
+import de.ddb.next.beans.User
+import de.ddb.next.exception.AuthorizationException
+import de.ddb.next.AasService
 
 class UserController {
     
-    def configurationService
-
+    def aasService
+    
     def index() {
 
         render(view: "login", model: [
@@ -39,23 +41,15 @@ class UserController {
             def email = params.email
             def password = params.password
 
-            def USERNAMEDUMMY = "FIZ"
-            def EMAILDUMMY = "fiz@fiz.fiz"
-            def PASSWORDDUMMY = "fiz"
+            User user = aasService.login(email, password)
 
-            if(email == EMAILDUMMY && password == PASSWORDDUMMY){
+            if(user != null){
                 loginStatus = 1
+                putUserInSession(user)
             }else{
                 loginStatus = -1
             }
 
-            if(loginStatus == 1){
-                User user = new User() // TODO get from AAS
-                user.setUsername(USERNAMEDUMMY)
-                user.setEmail(EMAILDUMMY)
-                user.setPassword(PASSWORDDUMMY)
-                session.setAttribute(User.SESSION_USER, user)
-            }
         }
 
         render(view: "login", model: [
@@ -79,12 +73,27 @@ class UserController {
     }
 
     def profilePage() {
-        def user = AasService.getPerson(params.id);
+        def user
+        try {
+            user = aasService.getPerson(params.id)
+        }
+        catch (AuthorizationException e) {
+            forward controller: "error", action: "auth"
+        }
         render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
     }
     
     private boolean isUserInSession() {
         HttpSession sessionObject = request.getSession(false)
         return sessionObject && sessionObject.getAttribute(User.SESSION_USER)
+    }
+
+    private void putUserInSession(user) {
+        session.setAttribute(User.SESSION_USER, user)
+    }
+    
+    private boolean removeUserFromSession() {
+        session.removeAttribute(User.SESSION_USER)
+        session.invalidate()
     }
 }
