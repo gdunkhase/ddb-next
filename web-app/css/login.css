@@ -15,26 +15,68 @@
  */
  
 .openid_facebook {
-  background: transparent url("../images/icons/openid.png") no-repeat 0px 0px;
-  width: 42px;
-  height: 42px;
+  background: transparent url("../images/icons/openid.png") no-repeat -80px 0px;
+  width: 150px;
+  height: 50px;
 }
 
 .openid_twitter {
-  background: transparent url("../images/icons/openid.png") no-repeat 0px -50px;
-  width: 42px;
-  height: 42px;
+  background: transparent url("../images/icons/openid.png") no-repeat -80px -50px;
+  width: 150px;
+  height: 50px;
 } 
 
 .openid_google {
-  background: transparent url("../images/icons/openid.png") no-repeat 0px -100px;
-  width: 42px;
-  height: 42px;
+  background: transparent url("../images/icons/openid.png") no-repeat -80px -100px;
+  width: 150px;
+  height: 50px;
 }
 
 .openid_yahoo {
-  background: transparent url("../images/icons/openid.png") no-repeat 0px -150px;
-  width: 42px;
-  height: 42px;
+  background: transparent url("../images/icons/openid.png") no-repeat -80px -150px;
+  width: 150px;
+  height: 50px;
 }
 
+.login .spacer_vertical {
+  margin-top: 15px;
+}
+
+@media (min-width: 768px) {
+  .login .dialog {
+    border-right: 1px solid #3e3a37;
+    margin-left: 0px;
+  }
+}
+@media (max-width: 767px) {
+  .login .dialog {
+    margin-bottom: 40px;
+    margin-left: 0px;
+  }
+}
+
+.login .feedback {
+  margin-left: 0px;
+}
+
+.login .openid {
+}
+
+.login #login_username {
+  width: 200px;
+}
+
+.login #login_password {
+  width: 200px;
+}
+
+.login .login_button {
+  width: 100px;
+}
+
+.login .login_link {
+  padding-left: 17px;
+  height: 25px;
+  line-height: 20px;
+  background: url(../images/icons/list_arrows.png) no-repeat 0px 1px;
+}

@@ -161,28 +161,34 @@ class UserController {
 
                 def username = null
                 def email = null
+                def identifier = null
 
                 if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
                     def firstName = params["openid.ext1.value.FirstName"]
                     def lastName = params["openid.ext1.value.LastName"]
                     username = firstName + " " + lastName
                     email = params["openid.ext1.value.Email"]
+                    identifier = verified.getIdentifier()
                 }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
                     username = params["openid.ax.value.fullname"]
                     email = params["openid.ax.value.email"]
+                    identifier = verified.getIdentifier()
                 }else{
                     //TODO handle invalid provider
                 }
 
+                log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
+
                 // Create new session, because the old one might be corrupt due to the redirect to the OpenID provider
                 session.invalidate()
+                HttpSession newSession = request.getSession(true)
 
                 User user = new User()
                 user.setEmail(email)
                 user.setUsername(username)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                session.setAttribute(User.SESSION_USER, user)
+                newSession.setAttribute(User.SESSION_USER, user)
 
                 loginStatus = LoginStatus.SUCCESS
 

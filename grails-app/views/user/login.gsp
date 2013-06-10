@@ -25,48 +25,99 @@ limitations under the License.
   
   </head>
   <body>
+    <div class="row login">
+      <div class="span12">
+        <div class="row heading">
+          <div class="span6">
+            <div class="fl"><h1><g:message code="ddbnext.Login"/></h1></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span12">
+          
+            <g:isNotLoggedIn>
+              
+              <div class="span4 dialog">
+                <g:form controller="user" action="doLogin">
+                
+                  <div class="<g:if test="${loginStatus != LoginStatus.FAILURE}">off</g:if>"><g:message code="ddbnext.Error_Email_Password_Combination" /></div>
+                  <div class="row">
+                    <div class="span4"> 
+                      <label for="login_username"><g:message code="ddbnext.Username" />:</label>
+                    </div>  
+                  </div>
+                  <div class="row">
+                    <div class="span4"> 
+                      <input id="login_username" type="text" name="email" value="fiz@fiz.fiz"/>
+                    </div>
+                  </div>
+                  <div class="row spacer_vertical">
+                    <div class="span4">                 
+                      <label for="login_password"><g:message code="ddbnext.Your_Password" />:</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="span4"> 
+                      <input id="login_password" type="password" name="password" value="fiz"/>
+                    </div>
+                  </div>
+                  <div class="row spacer_vertical">
+                    <div class="span4">    
+                      <button type="submit" class="login_button">       
+                        <g:message code="ddbnext.Login_Button" />
+                      </button>       
+                    </div>
+                  </div>
+                  <div class="row spacer_vertical">
+                    <div class="span4">                  
+                      <g:link controller="user" action="registration" class="login_link"><g:message code="ddbnext.Register" /></g:link>  
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="span4">                  
+                      <g:link controller="user" action="recoverPassword" class="login_link"><g:message code="ddbnext.Fogot_Password" /></g:link>  
+                    </div>
+                  </div>
+                
+                </g:form>
+              </div>
+              <div class="span4 openid" >
+                <div class="row">
+                  <div class="span4">                  
+                    <g:message code="ddbnext.Login_OpenID" />
+                  </div>
+                </div>
+                <div class="row spacer_vertical">
+                  <div class="span4">                  
+                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.GOOGLE]}"><div class="openid_google"></div></g:link>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="span4">                  
+                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.YAHOO]}"><div class="openid_yahoo"></div></g:link>
+                  </div>
+                </div>
+              </div>
+              
+            </g:isNotLoggedIn>
+        
+            <g:isLoggedIn>
+              <div class="span4 feedback">
+                <g:if test="${loginStatus == LoginStatus.SUCCESS}">
+                  <g:message code="ddbnext.Login_Success" />
+                </g:if>
+                <g:else>
+                  <g:message code="ddbnext.Already_Logged_In" />
+                </g:else>
+              </div>
+            
+            </g:isLoggedIn>
+                
+          </div>
+        </div>           
+      </div>
+    </div>  
   
-    <g:isNotLoggedIn>
-      <g:message code="ddbnext.Please_Login" />
-      <br />
-      
-      <g:form controller="user" action="doLogin">
-      
-        <div class="<g:if test="${loginStatus != LoginStatus.FAILURE}">off</g:if>"><g:message code="ddbnext.Error_Email_Password_Combination" /></div>
-        <br />
-        <g:message code="ddbnext.Username" />
-        <input type="text" name="email" value="fiz@fiz.fiz"/>
-        <br />
-        <g:message code="ddbnext.Your_Password" />
-        <input type="password" name="password" value="fiz"/>
-        <br />
-        <input type="submit" value="<g:message code="ddbnext.Login_Button" />" />
-      
-      </g:form>
-  
-      <br />
-      <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.GOOGLE]}"><div class="openid_google"></div></g:link>
-      <br />
-      <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.YAHOO]}"><div class="openid_yahoo"></div></g:link>
-      <br />
-  
-      <g:link controller="user" action="registration" ><g:message code="ddbnext.Register" /></g:link>  
-      <br />
-      <g:link controller="user" action="recovery" ><g:message code="ddbnext.Fogot_Password" /></g:link>  
-      <br />
-      
-      
-    </g:isNotLoggedIn>
-
-    <g:isLoggedIn>
-      <g:if test="${loginStatus == LoginStatus.SUCCESS}">
-        <g:message code="ddbnext.Login_Success" />
-      </g:if>
-      <g:else>
-        <g:message code="ddbnext.Already_Logged_In" />
-      </g:else>
-    
-    </g:isLoggedIn>
   
   </body>
 </html>
