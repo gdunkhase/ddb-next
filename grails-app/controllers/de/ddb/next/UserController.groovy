@@ -73,7 +73,12 @@ class UserController {
 
     def registration() {
 
-        //TODO
+        render(view: "registration", model: [])
+
+    }
+
+    def signup() {
+//        TODO
     }
 
     private boolean isUserInSession() {
