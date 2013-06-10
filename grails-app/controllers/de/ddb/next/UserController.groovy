@@ -74,12 +74,12 @@ class UserController {
     //Favorites page
     def favorites(){
         
-        if(isUserInSession()){
+        if(isUserInSession() || true){
             //1. Call to fetch the list of favorites items#
             //2. Get the items from the backend
             //3. Render the results in the page
             
-            redirect(controller:"index")
+            render(view:"favorites")
         }
         else{
             redirect(controller:"index")

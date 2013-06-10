@@ -15,42 +15,43 @@
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 $(function() {
-
-  // workaround for ffox + ie click focus - prevents links that load dynamic
-  // content to be focussed/active.
-  $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
-
-  // Fix for back-button problem with the searchfield: DDBNEXT-389
-  if($.browser.msie){
-    var queryCache = $("#querycache");
-    var queryString = "";
-    if(queryCache.length > 0){
-      queryString = queryCache.val();
+  if (jsPageName == "results") {
+    // workaround for ffox + ie click focus - prevents links that load dynamic
+    // content to be focussed/active.
+    $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
+  
+    // Fix for back-button problem with the searchfield: DDBNEXT-389
+    if($.browser.msie){
+      var queryCache = $("#querycache");
+      var queryString = "";
+      if(queryCache.length > 0){
+        queryString = queryCache.val();
+      }
+      $("#form-search-header .query").val(queryString);
     }
-    $("#form-search-header .query").val(queryString);
-  }
-
-  if (window.history && history.pushState) {
-    historyedited = false;
-    historySupport = true;
-    $(window).bind('popstate', function(e) {
-     if (historyedited) {
-      stateManager(location.pathname + location.search);
-     }
-    });
-  }else{
-      historySupport = false;
-      // Utilized for browser that doesn't supports pushState.
-      // It will be used as reference URL for all the ajax actions
-      globalUrl = location.search.substring(1);
-  }
   
-  searchResultsInitializer();
-  
-  function stateManager(url){
-    $('#main-container').load(url+' .search-results-container', function(){
-      searchResultsInitializer();
-    });
+    if (window.history && history.pushState) {
+      historyedited = false;
+      historySupport = true;
+      $(window).bind('popstate', function(e) {
+       if (historyedited) {
+        stateManager(location.pathname + location.search);
+       }
+      });
+    }else{
+        historySupport = false;
+        // Utilized for browser that doesn't supports pushState.
+        // It will be used as reference URL for all the ajax actions
+        globalUrl = location.search.substring(1);
+    }
+    
+    searchResultsInitializer();
+    
+    function stateManager(url){
+      $('#main-container').load(url+' .search-results-container', function(){
+        searchResultsInitializer();
+      });
+    }
   }
 
 });
