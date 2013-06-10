@@ -13,14 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.beans
+package de.ddb.next
 
-class User {
+public enum SupportedOpenIdProviders {
 
-    public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
-
-    String username
-    String email
-    String password
-    boolean openIdUser
+    GOOGLE, YAHOO
 }
