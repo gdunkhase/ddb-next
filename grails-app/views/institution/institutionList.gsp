@@ -25,7 +25,6 @@ limitations under the License.
 </head>
 <body>
   <h1><g:message code="ddbnext.Institutions" /></h1>
-  
   <div class="row">
     <div class="view-type-switch span12 off">
       <div>
@@ -47,6 +46,7 @@ limitations under the License.
     <noscript>
       </div>
     </noscript>
+    <g:render template="filterPhone" />
     <g:render template="pagination" />
       <div id="no-match-message">
         <g:message code="ddbnext.InstitutionPage_NoMatches" />

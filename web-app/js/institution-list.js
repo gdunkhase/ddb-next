@@ -416,9 +416,31 @@
 
   $(function() {
     var institutionList = $('#institution-list');
+    
+    $('.multiselect').multiselect({
+      buttonClass: 'btn btn-small',
+      buttonWidth: 'auto',
+      maxHeight: false,
+      buttonText: function(options) {
+        if (options.length == 0) {
+        return 'None selected <b class="caret"></b>';
+        }
+        else if (options.length > 2) {
+        return options.length + ' selected <b class="caret"></b>';
+        }
+        else {
+          var selected = '';
+          options.each(function() {
+            selected += $(this).text() + ', ';
+          });
+          return selected.substr(0, selected.length -2) + ' <b class="caret"></b>';
+          }
+        }
+    });
 
     // Only execute the script when the user is in the institution list page.
     if (institutionList.length) {
+      
      // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
       ddb.$index = $('#first-letter-index').clone(true, true);
       ddb.$institutionList = institutionList.clone();
