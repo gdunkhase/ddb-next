@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@ page import="de.ddb.next.LoginStatus" %>
+<%@ page import="de.ddb.next.SupportedOpenIdProviders" %>
+
 <html>
   <head>
     <title><g:message code="ddbnext.Login" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -43,23 +45,29 @@ limitations under the License.
       </g:form>
   
       <br />
-      <g:link controller="user" action="requestOpenIdLogin" params="${["provider": "google"]}"><div class="openid_google"></div></g:link>
+      <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.GOOGLE]}"><div class="openid_google"></div></g:link>
       <br />
-      <g:link controller="user" action="requestOpenIdLogin" params="${["provider": "yahoo"]}"><div class="openid_yahoo"></div></g:link>
+      <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.YAHOO]}"><div class="openid_yahoo"></div></g:link>
       <br />
   
       <g:link controller="user" action="registration" ><g:message code="ddbnext.Register" /></g:link>  
+      <br />
+      <g:link controller="user" action="recovery" ><g:message code="ddbnext.Fogot_Password" /></g:link>  
+      <br />
+      
+      
     </g:isNotLoggedIn>
 
     <g:isLoggedIn>
       <g:if test="${loginStatus == LoginStatus.SUCCESS}">
-        Sie haben sich erfolgreich eingeloggt
+        <g:message code="ddbnext.Login_Success" />
       </g:if>
       <g:else>
-        Sie sind bereits eingeloggt
+        <g:message code="ddbnext.Already_Logged_In" />
       </g:else>
     
     </g:isLoggedIn>
   
   </body>
 </html>
+

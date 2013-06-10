@@ -91,22 +91,25 @@ class UserController {
         //TODO
     }
 
+    def recoverPassword(){
+
+        //TODO
+    }
+
     def requestOpenIdLogin() {
         def provider = params.provider
-        println "########################## requestOpenIdLogin(): provider="+provider
 
         String discoveryUrl = ""
 
         FetchRequest fetch = FetchRequest.createFetchRequest();
 
-
-        if(provider == "google"){
+        if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
             discoveryUrl = "https://www.google.com/accounts/o8/id"
             fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true);
             fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true);
             fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true);
             fetch.setCount("openid.ext1.value.Email", 1);
-        }else if(provider == "yahoo"){
+        }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
             discoveryUrl = "https://me.yahoo.com"
             fetch.addAttribute("Email", "http://axschema.org/contact/email", true);
             fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true);
@@ -114,7 +117,6 @@ class UserController {
             //TODO handle invalid provider
         }
 
-        println "########################## requestOpenIdLogin(): setting proxy"
         // --- Forward proxy setup (only if needed) ---
         ProxyProperties proxyProps = new ProxyProperties();
         proxyProps.setProxyHostName("proxy.fiz-karlsruhe.de");
@@ -122,88 +124,58 @@ class UserController {
         HttpClientFactory.setProxyProperties(proxyProps);
 
 
-        println "########################## requestOpenIdLogin(): discoveryUrl="+discoveryUrl
+        log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
         ConsumerManager manager = new ConsumerManager();
         session.setAttribute(SESSION_CONSUMER_MANAGER, manager)
         session.setAttribute(SESSION_OPENID_PROVIDER, provider)
 
         String returnURL = OPENID_REENTRY_POINT;
 
-        // perform discovery on the user-supplied identifier
         List discoveries = manager.discover(discoveryUrl);
-        println "########################## requestOpenIdLogin(): 1"
-
-        // attempt to associate with the OpenID provider
-        // and retrieve one service endpoint for authentication
         DiscoveryInformation discovered = manager.associate(discoveries);
-        println "########################## requestOpenIdLogin(): 2"
-
-        // store the discovery information in the user's session for later use
-        // leave out for stateless operation / if there is no session
-        //session.setAttribute("discovered", discovered);
-
-        // obtain a AuthRequest message to be sent to the OpenID provider
         AuthRequest authReq = manager.authenticate(discovered, returnURL);
         authReq.addExtension(fetch);
-        println "########################## requestOpenIdLogin(): authReq.getDestinationUrl="+authReq.getDestinationUrl(true)
 
+        // Leave DDB for login on OpenID-provider
         redirect(url: authReq.getDestinationUrl(true))
 
-        //        render(view: "login", model: [
-        //            'loginStatus': 0]
-        //        )
     }
 
     def doOpenIdLogin() {
-        println "########################## doOpenIdLogin(): params="+params
-
         def loginStatus = LoginStatus.LOGGED_OUT
+
+        log.info "doOpenIdLogin(): got OpenID login request"
 
         ConsumerManager manager = session.getAttribute(SESSION_CONSUMER_MANAGER)
         if(manager){
             def provider = session.getAttribute(SESSION_OPENID_PROVIDER)
 
-            // extract the parameters from the authentication response
-            // (which comes in as a HTTP request from the OpenID provider)
             ParameterList openidResp = new ParameterList(request.getParameterMap());
-            println "########################## doOpenIdLogin(): get parameter list"
-
-            // retrieve the previously stored discovery information
             DiscoveryInformation discovered = (DiscoveryInformation) session.getAttribute("discovered");
-            println "########################## doOpenIdLogin(): discovery"
-
-            // extract the receiving URL from the HTTP request
             String receivingURL =  OPENID_REENTRY_POINT + "?" + request.getQueryString();
-
-            println "########################## doOpenIdLogin(): receivingURL="+receivingURL
-            // verify the response
             VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered);
-            println "########################## doOpenIdLogin(): verification"
-
-            // examine the verification result and extract the verified identifier
             Identifier verified = verification.getVerifiedId();
 
             if (verified != null) {
-                println "########################## doOpenIdLogin(): success verified="+verified
-                // success, use the verified identifier to identify the user
-                println "########################## doOpenIdLogin(): identifier="+verified.getIdentifier()
+                log.info "doOpenIdLogin(): success verification"
 
                 def username = null
                 def email = null
 
-                if(provider == "google"){
+                if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
                     def firstName = params["openid.ext1.value.FirstName"]
                     def lastName = params["openid.ext1.value.LastName"]
                     username = firstName + " " + lastName
                     email = params["openid.ext1.value.Email"]
-                }else if(provider == "yahoo"){
+                }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
                     username = params["openid.ax.value.fullname"]
                     email = params["openid.ax.value.email"]
+                }else{
+                    //TODO handle invalid provider
                 }
 
-                println "########################## doOpenIdLogin(): "+username+" / "+email
-
-
+                // Create new session, because the old one might be corrupt due to the redirect to the OpenID provider
+                session.invalidate()
 
                 User user = new User()
                 user.setEmail(email)
@@ -215,8 +187,7 @@ class UserController {
                 loginStatus = LoginStatus.SUCCESS
 
             }else {
-                println "########################## doOpenIdLogin(): failure verification"
-                // OpenID authentication failed
+                log.info "doOpenIdLogin(): failure verification"
                 loginStatus = LoginStatus.FAILURE
             }
         }

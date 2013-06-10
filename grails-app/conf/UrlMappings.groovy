@@ -110,10 +110,14 @@ class UrlMappings {
             action="doOpenIdLogin"
         }
 
-
         "/registration" {
             controller="user"
             action="registration"
+        }
+
+        "/recovery" {
+            controller="user"
+            action="recoverPassword"
         }
 
         "404"(controller: "error", action: "notFound")
