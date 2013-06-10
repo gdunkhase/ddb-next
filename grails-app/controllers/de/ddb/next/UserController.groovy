@@ -17,6 +17,7 @@ package de.ddb.next
 
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator;
 import org.openid4java.consumer.ConsumerManager;
 import org.openid4java.consumer.VerificationResult;
 import org.openid4java.discovery.DiscoveryInformation;
@@ -33,7 +34,8 @@ class UserController {
 
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
-    private final static String OPENID_REENTRY_POINT = "http://localhost:8080/ddb-next/login/doOpenIdLogin"
+
+    LinkGenerator grailsLinkGenerator
 
     def index() {
 
@@ -128,9 +130,7 @@ class UserController {
         ConsumerManager manager = new ConsumerManager();
         session.setAttribute(SESSION_CONSUMER_MANAGER, manager)
         session.setAttribute(SESSION_OPENID_PROVIDER, provider)
-
-        String returnURL = OPENID_REENTRY_POINT;
-
+        String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
         List discoveries = manager.discover(discoveryUrl);
         DiscoveryInformation discovered = manager.associate(discoveries);
         AuthRequest authReq = manager.authenticate(discovered, returnURL);
@@ -152,7 +152,8 @@ class UserController {
 
             ParameterList openidResp = new ParameterList(request.getParameterMap());
             DiscoveryInformation discovered = (DiscoveryInformation) session.getAttribute("discovered");
-            String receivingURL =  OPENID_REENTRY_POINT + "?" + request.getQueryString();
+            String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
+            String receivingURL =  returnURL + "?" + request.getQueryString();
             VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered);
             Identifier verified = verification.getVerifiedId();
 

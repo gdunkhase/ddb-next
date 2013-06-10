@@ -19,8 +19,8 @@ class User {
 
     public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
 
-    String username = null
-    String email = null
-    String password = null
-    boolean openIdUser = false
+    String username
+    String email
+    String password
+    boolean openIdUser
 }

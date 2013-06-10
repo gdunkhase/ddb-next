@@ -40,42 +40,48 @@ limitations under the License.
               <div class="span4 dialog">
                 <g:form controller="user" action="doLogin">
                 
-                  <div class="<g:if test="${loginStatus != LoginStatus.FAILURE}">off</g:if>"><g:message code="ddbnext.Error_Email_Password_Combination" /></div>
+                  <g:if test="${loginStatus == LoginStatus.FAILURE}">
+                    <div class="row login-error">
+                      <div class="span4"> 
+                        <g:message code="ddbnext.Error_Email_Password_Combination" />
+                      </div>  
+                    </div>
+                  </g:if>
                   <div class="row">
                     <div class="span4"> 
-                      <label for="login_username"><g:message code="ddbnext.Username" />:</label>
+                      <label for="login-username"><g:message code="ddbnext.Username" />:</label>
                     </div>  
                   </div>
                   <div class="row">
                     <div class="span4"> 
-                      <input id="login_username" type="text" name="email" value="fiz@fiz.fiz"/>
+                      <input id="login-username" type="text" name="email" value="fiz@fiz.fiz"/>
                     </div>
                   </div>
-                  <div class="row spacer_vertical">
+                  <div class="row spacer-vertical">
                     <div class="span4">                 
-                      <label for="login_password"><g:message code="ddbnext.Your_Password" />:</label>
+                      <label for="login-password"><g:message code="ddbnext.Your_Password" />:</label>
                     </div>
                   </div>
                   <div class="row">
                     <div class="span4"> 
-                      <input id="login_password" type="password" name="password" value="fiz"/>
+                      <input id="login-password" type="password" name="password" value="fiz"/>
                     </div>
                   </div>
-                  <div class="row spacer_vertical">
+                  <div class="row spacer-vertical">
                     <div class="span4">    
-                      <button type="submit" class="login_button">       
+                      <button type="submit" class="login-button">       
                         <g:message code="ddbnext.Login_Button" />
                       </button>       
                     </div>
                   </div>
-                  <div class="row spacer_vertical">
+                  <div class="row spacer-vertical">
                     <div class="span4">                  
-                      <g:link controller="user" action="registration" class="login_link"><g:message code="ddbnext.Register" /></g:link>  
+                      <g:link controller="user" action="registration" class="login-link"><g:message code="ddbnext.Register" /></g:link>  
                     </div>
                   </div>
                   <div class="row">
                     <div class="span4">                  
-                      <g:link controller="user" action="recoverPassword" class="login_link"><g:message code="ddbnext.Fogot_Password" /></g:link>  
+                      <g:link controller="user" action="recoverPassword" class="login-link"><g:message code="ddbnext.Fogot_Password" /></g:link>  
                     </div>
                   </div>
                 
@@ -87,14 +93,14 @@ limitations under the License.
                     <g:message code="ddbnext.Login_OpenID" />
                   </div>
                 </div>
-                <div class="row spacer_vertical">
+                <div class="row spacer-vertical">
                   <div class="span4">                  
-                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.GOOGLE]}"><div class="openid_google"></div></g:link>
+                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.GOOGLE]}"><div class="openid-google"></div></g:link>
                   </div>
                 </div>
                 <div class="row">
                   <div class="span4">                  
-                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.YAHOO]}"><div class="openid_yahoo"></div></g:link>
+                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.YAHOO]}"><div class="openid-yahoo"></div></g:link>
                   </div>
                 </div>
               </div>
