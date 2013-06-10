@@ -437,6 +437,13 @@ header .language-wrapper >a,.header .language-wrapper >a {
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 46px -42px;
 }
 
+header .login-wrapper,.header .login-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
 #form-search-header .link-adv-search {
   font-size: 0.938em;
   display: inline-block;
@@ -564,6 +571,7 @@ header .language-wrapper >a,.header .language-wrapper >a {
 .language-wrapper .nopointer {
   background-color: #EEEEEE !important;
 }
+
 
 header .selector,.header .selector {
   display: none;

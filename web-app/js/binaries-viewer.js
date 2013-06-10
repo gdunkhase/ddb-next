@@ -93,6 +93,7 @@ $(document).ready(function() {
       'width': width,
       'height': height,
       'primary': 'html5',
+      'startparam': 'starttime', 
       'events': {
         onError: onErrorCallback,
         onReady: onReadyCallback

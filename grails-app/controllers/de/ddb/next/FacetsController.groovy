@@ -29,14 +29,18 @@ class FacetsController {
     static defaultAction = "facets"
 
     def searchService
+    def configurationService
 
 
     def facetsList() {
-        def resultsItems
-
         def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params)
 
-        resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery).facets
+        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl(),'/apis/search', false, urlQuery)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def resultsItems = apiResponse.getResponse().facets
 
         def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
 

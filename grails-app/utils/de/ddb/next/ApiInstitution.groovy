@@ -17,6 +17,7 @@ package de.ddb.next
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.json.JSONArray;
+import org.codehaus.groovy.grails.web.util.WebUtils;
 
 import groovy.json.JsonLexer;
 import groovy.json.JsonSlurper;
@@ -32,23 +33,36 @@ class ApiInstitution {
     def getInstitutionViewByItemId(String id, String url) {
         log.debug("get insitution view by item id: ${id}")
         def uriPath = "/access/" + id + "/components/view"
-        return ApiConsumer.getTextAsXml(url, uriPath, null);
+        def apiResponse = ApiConsumer.getXml(url, uriPath)
+        if(!apiResponse.isOk()){
+            log.error "Xml: xml file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return apiResponse.getResponse()
     }
     
     def getChildrenOfInstitutionByItemId(String id, String url) {
         log.debug("get chlildren of institution by item id: ${id}")
         def jsonResult;
         def uriPath = "/hierarchy/" + id + "/children"
-        jsonResult = ApiConsumer.getTextAsJson(url, uriPath, null)
-        return jsonResult;
+        def apiResponse = ApiConsumer.getJson(url, uriPath)
+        if(!apiResponse.isOk()){
+            log.error "Json: json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return apiResponse.getResponse()
     }
     
     def getParentsOfInstitutionByItemId(String id, String url) {
         log.debug("get parent of institution by item id: ${id}")
         def jsonResult;
         def uriPath = "/hierarchy/" + id + "/parent"
-        jsonResult = ApiConsumer.getTextAsJson(url, uriPath, null)
-        return jsonResult;
+        def apiResponse = ApiConsumer.getJson(url, uriPath)
+        if(!apiResponse.isOk()){
+            log.error "Json: json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return apiResponse.getResponse()
     }
     
     def getFacetValuesX(String provName, String url) {
@@ -58,8 +72,12 @@ class ApiInstitution {
         String shortQuery = (provName.length() > shortLength ? provName.substring(0, shortLength) : provName);
         def uriPath = "/search/facets/provider_fct"
         def query = ['query':"${shortQuery}" ]
-        jsonResult = ApiConsumer.getTextAsJson(url, uriPath, query)
-        return jsonResult;
+        def apiResponse = ApiConsumer.getJson(url, uriPath, false, query)
+        if(!apiResponse.isOk()){
+            log.error "Json: json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return apiResponse.getResponse()
     }
     
     def getFacetValues(String provName, String url) {
@@ -68,7 +86,12 @@ class ApiInstitution {
         def uriPath = "/search"
         def query = ['query':"*","facet":"provider_fct", "provider_fct":"${provName}","rows":"0" ]
         log.debug("query = '" + query + "'");
-        jsonResult = ApiConsumer.getTextAsJson(url, uriPath, query);
+        def apiResponse = ApiConsumer.getJson(url, uriPath, false, query)
+        if(!apiResponse.isOk()){
+            log.error "Json: json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        jsonResult = apiResponse.getResponse()
         log.debug("jsonResult = " + jsonResult.toString());
         log.debug("jsonResult.numberOfResults = " + jsonResult.numberOfResults);
         log.debug("jsonResult.facets[5] = " + (jsonResult.facets.size() >= 6 ? jsonResult.facets[5] : "null"));

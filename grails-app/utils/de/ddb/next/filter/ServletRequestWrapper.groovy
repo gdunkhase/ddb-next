@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.ddb.next
+package de.ddb.next.filter
 
 import java.io.BufferedReader
 import java.io.IOException
@@ -48,13 +48,13 @@ import javax.servlet.http.Part
  * 
  * @author hla
  */
-class DdbServletRequestWrapper extends HttpServletRequestWrapper {
+class ServletRequestWrapper extends HttpServletRequestWrapper {
 
     private Map<String, String[]> sanitizedParameterMap = new LinkedHashMap<String, String[]>()
     private Map<String, String> sanitizedHeadersMap = new LinkedHashMap<String, String>()
     private HttpServletRequest request
 
-    public DdbServletRequestWrapper(ServletRequest request) {
+    public ServletRequestWrapper(ServletRequest request) {
         super((HttpServletRequest) request)
         this.request = (HttpServletRequest) request
         this.setParameterMap()

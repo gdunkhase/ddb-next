@@ -26,13 +26,20 @@ class ItemController {
     def itemService
     def searchService
     def grailsLinkGenerator
+    def configurationService
 
 
     def children() {
-        render(contentType:"application/json",
-        text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),
-        "/hierarchy/" + params.id + "/children",
-        ["rows":501]))
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
+                "/hierarchy/" + params.id + "/children", false,
+                ["rows":501])
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def jsonResp = apiResponse.getResponse()
+
+        render(contentType:"application/json", text: jsonResp)
     }
 
     def findById() {
@@ -115,7 +122,13 @@ class ItemController {
     }
 
     def parents() {
-        render(contentType:"application/json", text:ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), "/hierarchy/" + params.id + "/parent", null))
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/hierarchy/" + params.id + "/parent")
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def jsonResp = apiResponse.getResponse()
+        render(contentType:"application/json", text: jsonResp)
     }
 
     /**
@@ -149,8 +162,13 @@ class ItemController {
             else {
                 urlQuery["offset"] = 0
             }
-            resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery)
-
+            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+            if(!apiResponse.isOk()){
+                log.error "Json: Json file was not found"
+                apiResponse.throwException(request)
+            }
+            resultsItems = apiResponse.getResponse()
+    
             //Workaround for last-hit (Performance-issue)
             if (reqParameters.id && reqParameters.id.equals("lasthit")) {
                 reqParameters.id = resultsItems.results["docs"][1].id

@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.ddb.next.exception
 
-class ItemNotFoundException extends Exception {
-    ItemNotFoundException() {
+/**
+ * Exception indication that a call to the backend failed (maybe a 404 or 500 response).
+ * 
+ * @author hla
+ */
+class BackendErrorException extends Exception {
+
+    BackendErrorException() {
         super()
     }
 
-    ItemNotFoundException(String description) {
+    BackendErrorException(String description) {
         super(description)
     }
 }

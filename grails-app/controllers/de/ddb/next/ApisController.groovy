@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat
 class ApisController {
 
     def apisService
+    def configurationService
 
     def search(){
 
@@ -36,7 +37,12 @@ class ApisController {
 
         slurper.setKeepWhitespace(true)
 
-        def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search', query)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, query)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def jsonResp = apiResponse.getResponse()
         jsonResp.results["docs"].get(0).each{
 
             def tmpResult = [:]
@@ -44,19 +50,14 @@ class ApisController {
             String subtitle
             def thumbnail
             def media = []
-
-            def htmlParser = slurper.parseText(it.preview.toString())
-
-            title = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'title' }*.getBody()}
-            subtitle = new groovy.xml.StreamingMarkupBuilder().bind{ mkp.yield htmlParser.'**'.find{ it.@class == 'subtitle' }*.getBody()}
-
-            def thumbnailMatch = it.preview.toString() =~ /(?m)<img (.*?)src="(.*?)"(.*?)\/>/
-            if (thumbnailMatch)
-                thumbnail= thumbnailMatch[0][2]
-
-            def mediaMatch = it.preview.toString() =~ /(?m)<div (.*?)data-media="(.*?)"/
-            if (mediaMatch)
-                mediaMatch[0][2].split (",").each{ media.add(it) }
+            
+            title = (it.title instanceof JSONNull)?"":it.title
+            subtitle = (it.subtitle instanceof JSONNull)?"":it.subtitle
+            
+            thumbnail = (it.thumbnail instanceof JSONNull)?"":it.thumbnail
+            if(!(it.media instanceof JSONNull)){
+                it.media.split (",").each{ media.add(it) }
+            }
 
             tmpResult["id"] = it.id
 
@@ -87,7 +88,12 @@ class ApisController {
     }
 
     def institutionsmap(){
-        def jsonResp = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/institutions/map', params)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, params)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def jsonResp = apiResponse.getResponse()
         render (contentType:"text/json"){jsonResp}
     }
 
@@ -100,7 +106,12 @@ class ApisController {
     def autocomplete (){
         def query = apisService.getQueryParameters(params)
         def callback = apisService.getQueryParameters(params)
-        def result = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(),'/search/suggest', query)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/suggest', false, query)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def result = apiResponse.getResponse()
         if (callback) {
             render "${params.callback}(${result as JSON})"
         } else {
@@ -113,48 +124,43 @@ class ApisController {
      * @return OutPutStream
      */
     synchronized def binary(){
-        def cacheExpiryInDays = 1 // example 1 for 1 day
+        def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBackendUrl() + "/binary/", getFileNamePath(), response.outputStream)
 
-        String defaultExpirationDate = formatDateForExpiresHeader(cacheExpiryInDays).toString()
-        String defaultCacheExpires = "max-age="+cacheExpiryInDays * 24 * 60 *60
-        String fileNamePath = getFileNamePath().tokenize('/')[-1]
+        if(!apiResponse.isOk()){
+            log.error "binary(): binary content was not found"
+            apiResponse.throwException(request)
+        }
 
-        def query = [ client: "DDB-NEXT" ]
-        def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(),
-                getFileNamePath(),
-                query,
-                response,
-                defaultExpirationDate,
-                defaultCacheExpires,
-                fileNamePath)
+        def responseObject = apiResponse.getResponse()
 
-    }
-
-    private def getBinaryServerUrl(){
-        def url = grailsApplication.config.ddb.backend.url
-        assert url instanceof String, "This is not a string"
-        url = url + "/binary/"
-        return url
+        def cacheExpiryInDays = 1
+        response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
+        response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+        response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
+        response.setContentType(responseObject.get("Content-Type"))
+        response.setContentLength(responseObject.get("Content-Length").toInteger())
     }
 
     def staticFiles() {
-        def query = [ client: "DDB-NEXT" ]
+        def apiResponse = ApiConsumer.getBinaryStreaming(
+            configurationService.getStaticUrl(), 
+            '/static/' + getFileNamePath(), 
+            response.outputStream)
 
-        def cacheExpiryInDays = 1 // example 1 for 1 day
+        if(!apiResponse.isOk()){
+            log.error "binary(): binary content was not found"
+            apiResponse.throwException(request)
+        }
 
-        String defaultExpirationDate = formatDateForExpiresHeader(cacheExpiryInDays).toString()
-        String defaultCacheExpires = "max-age="+cacheExpiryInDays * 24 * 60 *60
-        String fileNamePath = getFileNamePath().tokenize('/')[-1]
+        def responseObject = apiResponse.getResponse()
 
-        def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
-                '/static/' + getFileNamePath(),
-                query,
-                response,
-                defaultExpirationDate,
-                defaultCacheExpires,
-                fileNamePath)
-
-    }
+        def cacheExpiryInDays = 1
+        response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
+        response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+        response.setHeader("Content-Disposition", "inline; filename=" + ('/static/' + getFileNamePath()).tokenize('/')[-1])
+        response.setContentType(responseObject.get("Content-Type"))
+        response.setContentLength(responseObject.get("Content-Length").toInteger())
+            }
     /**
      *  Format RFC 2822 date
      *  @parameters daysfromtoday, how many days from today do you want the date to be shifted
