@@ -123,7 +123,7 @@ class ApisController {
         def query = [ client: "DDB-NEXT" ]
 
         if (USE_REDIRECT_FOR_BINARIES) {
-            redirect(uri: getBinaryServerUrl() + getFileNamePath() + "?" + query.collect { it }.join('&'))
+            redirect(uri: grailsApplication.config.ddb.binary.url + getFileNamePath() + "?" + query.collect { it }.join('&'))
         } else {
             def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(),
                     getFileNamePath(),
