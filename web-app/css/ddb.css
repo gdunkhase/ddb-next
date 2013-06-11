@@ -442,7 +442,6 @@ header .language-wrapper >a,.header .language-wrapper >a {
 header .login-wrapper,.header .login-wrapper {
   position: relative;
   display: inline-block;
-  cursor: pointer;
   margin-right: 20px;
 }
 
