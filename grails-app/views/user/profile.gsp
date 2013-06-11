@@ -23,59 +23,75 @@ limitations under the License.
 </head>
 
 <body>
-  <div class="row">
-    <g:form method="post" id="user-profile-form" url="[controller:'user', action:'save']" >
+  <div class="container row">
+    <g:form method="post" id="user-profile-form" name="user-profile-form" class="form-horizontal" url="[controller:'user', action:'save']" >
         <input type="hidden" name="id" value="${ user.id }"/>
-        <div class="row heading bb">
-            <div class="span6">
-                <div class="fl"><h1><g:message code="ddbnext.userprofile"/>  ${ user.id }</h1></div>
-                <span 
-                    class="contextual-help fl hidden-phone hidden-tablet" 
-                        title="<g:message code="ddbnext.UserProfile_Hint" 
-                        args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'user-profile']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                        default="ddbnext.UserProfile_Hint"/>" 
-                        data-content="<g:message code="ddbnext.UserProfile_Hint" 
-                        args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'user-profile']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-                        default="ddbnext.UserProfile_Hint"/>">
-                </span>
-                <div class="tooltip" style="display: none;" />
+        <div class="row well">
+            <div class="profile-nav">
+                <div class="profile-title"><g:message code="ddbnext.userprofile"/>  ${ user.id }</div>
+                <div class="profile-links">
+                    <a class="profile-link" title="<g:message code="ddbnext.user.showBookmarks" />" class="persist" href="${createLink(controller="user",action: 'bookmarks', params:[:])}">
+                        <g:message code="ddbnext.user.showBookmarks" />, count: ${bookmarksCount }
+                    </a>
+                    <a class="profile-link" title="<g:message code="ddbnext.user.deleteAccount" />" class="persist" href="${createLink(controller="user",action: 'delete', params:[id:user.id])}">
+                        <g:message code="ddbnext.user.deleteAccount" />
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="span12 page-filter">
-                <g:message code="ddbnext.user.name" />
-                <input type="text" name="name" class="page-input" maxlength="50" value="${ user.id }"/>
+
+            <div class="span12 control-group">
+              <label class="control-label"><g:message code="ddbnext.user.name" /></label>
+              <div class="controls">
+                <div class="input-prepend">
+                  <span class="add-on"><i class="icon-user"></i></span>
+                  <input type="text" class="profile-input" id="name" name="name" value="${ user.id }">
+                </div>
+              </div>
             </div>
-            <div class="span12">
-                <g:message code="ddbnext.user.email" />
-                <input type="text" name="email" class="page-input" maxlength="50" value="${user.email}"/>
+            <div class="span12 control-group">
+              <label class="control-label"><g:message code="ddbnext.Email" /></label>
+              <div class="controls">
+                <div class="input-prepend">
+                  <span class="add-on"><i class="icon-envelope"></i></span>
+                  <input type="text" class="profile-input" id="email" name="email" value="${user.email}">
+                </div>
+              </div>
             </div>
-            <div class="span12">
-                <g:message code="ddbnext.user.password" />
-                <input type="text" name="password" class="page-input" maxlength="50" value="${password}"/>
+
+            <div class="span12 control-group">
+              <label class="control-label"><g:message code="ddbnext.Your_Password" /></label>
+              <div class="controls">
+                <div class="input-prepend">
+                  <span class="add-on"><i class="icon-lock"></i></span>
+                  <input type="Password" id="password" class="profile-input" name="password" placeholder="<g:message code="ddbnext.Your_Password" />">
+                </div>
+              </div>
             </div>
-            <div class="span12">
-                <g:message code="ddbnext.user.password" />
-                <input type="text" name="password1" class="page-input" maxlength="50" value="${password}"/>
+    
+            <div class="span12 control-group">
+              <label class="control-label"><g:message code="ddbnext.Confirm_password" /></label>
+              <div class="controls">
+                <div class="input-prepend">
+                  <span class="add-on"><i class="icon-lock"></i></span>
+                  <input type="Password" id="confpassword" class="profile-input" name="confpassword" placeholder="<g:message code="ddbnext.Confirm_password" />">
+                </div>
+              </div>
             </div>
-            <div class="span12">
-               <label class="checkbox"> <input type="checkbox" name="newsletter"><g:message code="ddbnext.newsletter.subscription" /></label>
+
+            <div class="span12 control-group">
+              <label class="control-label"><g:message code="ddbnext.newsletter.subscription" /></label>
+              <div class="controls">
+                <div class="input-prepend">
+                  <input type="checkbox" id="newsletter" class="profile-input" name="newsletter">
+                </div>
+              </div>
             </div>
-            <div class="span12">
-              <a title="<g:message code="ddbnext.user.showBookmarks" />" class="persist" href="${createLink(controller="user",action: 'bookmarks', params:[:])}">
-                <g:message code="ddbnext.user.showBookmarks" />, count: ${bookmarksCount }
-              </a>
+
+            <div class="span12 control-group">
+              <div class="controls">
+                <button type="submit" class="btn-padding" title="<g:message code="ddbnext.user.saveChanges"/>"><g:message code="ddbnext.Save"/></button>
+              </div>
             </div>
-            <div class="span12">
-              <a title="<g:message code="ddbnext.user.deleteAccount" />" class="persist" href="${createLink(controller="user",action: 'delete', params:[id:user.id])}">
-                    <g:message code="ddbnext.user.deleteAccount" />
-              </a>
-            </div>
-            <div class="span12 button-group">
-              <button class="submit" type="submit" title="<g:message code="ddbnext.user.saveChanges"/>">
-                <g:message code="ddbnext.user.saveChanges"/>
-              </button>
-          </div>
         </div>
     </g:form>
   </div>
