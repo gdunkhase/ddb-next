@@ -101,6 +101,14 @@ limitations under the License.
               </li>              
             </ul>
           </li>
+          <li class="">
+            <g:isNotLoggedIn>
+              <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
+            </g:isNotLoggedIn>
+            <g:isLoggedIn>
+              <g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link>
+            </g:isLoggedIn>
+          </li>
         </ul>
       </div>
     </div>

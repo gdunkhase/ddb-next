@@ -99,9 +99,34 @@ class UrlMappings {
             action="index"
         }
 
+        "/login/doLogin" {
+            controller="user"
+            action="doLogin"
+        }
+
+        "/login/doLogout" {
+            controller="user"
+            action="doLogout"
+        }
+
+        "/login/openId" {
+            controller="user"
+            action="requestOpenIdLogin"
+        }
+
+        "/login/doOpenIdLogin" {
+            controller="user"
+            action="doOpenIdLogin"
+        }
+
         "/registration" {
             controller="user"
             action="registration"
+        }
+
+        "/recovery" {
+            controller="user"
+            action="recoverPassword"
         }
 
         "404"(controller: "error", action: "notFound")
@@ -111,6 +136,7 @@ class UrlMappings {
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
         "500"(controller: "error", action: "serverError")
+        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
 
     }
 }

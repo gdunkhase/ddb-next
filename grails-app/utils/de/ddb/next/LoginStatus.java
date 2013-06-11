@@ -13,25 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.beans
+package de.ddb.next;
 
-import java.util.Map;
+public enum LoginStatus {
 
-class User {
-
-    public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
-
-    String username
-    String email
-    String password
-    boolean openIdUser
-    
-    User(Map userMap){
-        username = userMap.id
-        email = userMap.email
-    }
-
-    User(){
-    }
+    SUCCESS, ALREADY_LOGGED_IN, FAILURE, LOGGED_OUT
 
 }
