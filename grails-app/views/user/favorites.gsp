@@ -65,17 +65,28 @@ limitations under the License.
         </div>
         <div class="span9">
           <g:form controller="favorites" action="remove" id="${bookmarkID}" name="favorites-remove">
-            <div class="row favorites-results-controls">
-              <div class="span9">
+            <div class="favorites-results-controls">
+              <div class="results-pagination">
                 <button type="submit" class="submit"><span><g:message code="ddbnext.Delete"></g:message></span></button>
                 <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
               </div>
-            </div>
-            <div class="row">
-              <div class="span9">
-                <div class="favorites-results">
+              <div class="results-sorter">
+                <div class="row">
+                  <div class="span6">
+                    <span><input type="checkbox" class="select-all"></span>
+                    <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
+                    <span>
+                      <a href="#"><i class="icon-arrow-up"></i></a>
+                      <a href="#"><i class="icon-arrow-down"></i></a>
+                   </span>
+                  </div>
+                  <div class="span3 added-on">
+                    <span><g:message code="ddbnext.Added_On"></g:message></span>
+                  </div>
                 </div>
               </div>
+            </div>
+            <div class="favorites-results">
             </div>
           </g:form>
         </div>
