@@ -21,6 +21,7 @@ import grails.converters.JSON
 import java.text.SimpleDateFormat
 
 class ApisController {
+    private static final boolean USE_REDIRECT_FOR_BINARIES = true
 
     def apisService
 
@@ -120,14 +121,18 @@ class ApisController {
         String fileNamePath = getFileNamePath().tokenize('/')[-1]
 
         def query = [ client: "DDB-NEXT" ]
-        def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(),
-                getFileNamePath(),
-                query,
-                response,
-                defaultExpirationDate,
-                defaultCacheExpires,
-                fileNamePath)
 
+        if (USE_REDIRECT_FOR_BINARIES) {
+            redirect(uri: getBinaryServerUrl() + getFileNamePath() + "?" + query.collect { it }.join('&'))
+        } else {
+            def urlResponse = ApiConsumer.getBinaryContent(getBinaryServerUrl(),
+                    getFileNamePath(),
+                    query,
+                    response,
+                    defaultExpirationDate,
+                    defaultCacheExpires,
+                    fileNamePath)
+        }
     }
 
     private def getBinaryServerUrl(){
@@ -146,14 +151,18 @@ class ApisController {
         String defaultCacheExpires = "max-age="+cacheExpiryInDays * 24 * 60 *60
         String fileNamePath = getFileNamePath().tokenize('/')[-1]
 
-        def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
-                '/static/' + getFileNamePath(),
-                query,
-                response,
-                defaultExpirationDate,
-                defaultCacheExpires,
-                fileNamePath)
-
+        if (USE_REDIRECT_FOR_BINARIES) {
+            redirect(uri: grailsApplication.config.ddb.static.url + "/static/" + getFileNamePath() + "?"
+            + query.collect { it }.join('&'))
+        } else {
+            def urlResponse = ApiConsumer.getBinaryContent(grailsApplication.config.ddb.static.url,
+                    '/static/' + getFileNamePath(),
+                    query,
+                    response,
+                    defaultExpirationDate,
+                    defaultCacheExpires,
+                    fileNamePath)
+        }
     }
     /**
      *  Format RFC 2822 date
