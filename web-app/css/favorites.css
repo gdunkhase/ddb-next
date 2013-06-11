@@ -19,6 +19,7 @@ hr {
 }
 
 .bookmarks-lists {
+  margin-top: 8px;
   margin-bottom: 10px;
   position: relative;
 }
@@ -46,28 +47,35 @@ hr {
 .bookmarks-list>a.h3 {
   z-index: 10;
   display: block;
-  padding: 0 65px 0 10px;
+  padding: 0 35% 0 10px;
 }
 
-.bookmarks-list-envelope, .bookmarks-list-edit{
+.bookmarks-list-envelope, .bookmarks-list-edit, .bookmarks-list-number{
   position:absolute;
   top:0;
+  right:0;
+}
+
+.bookmarks-list-number {
+  text-align: center;
+  padding-right: 70px;
 }
 
 .bookmarks-list-envelope{
-  right:35px;
+  padding-right: 30px;
 }
 
 .bookmarks-list-edit{
-  right: 10px;
+  padding-right: 10px;
 }
 
 .bookmarks-list-envelope i, .bookmarks-list-edit i{
   margin-top: 3px;
 }
 
-.bookmarks-lists .bookmarks-list:hover {
-  background-color: #f6f5f3;
+.bookmarks-lists .bookmarks-list a:hover {
+  text-decoration: underline;
+  color: #a5003b;
 }
 
 .bookmarks-lists .bookmarks-list.mouseout {
@@ -153,6 +161,10 @@ hr {
   text-align:center;
   margin-bottom:3px;
   vertical-align: middle;
+}
+
+#favorites-remove .favorites-results-controls .submit{
+  margin-top:8px;
 }
 
 .keep-filters {

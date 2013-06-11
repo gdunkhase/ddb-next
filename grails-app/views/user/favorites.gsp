@@ -18,6 +18,7 @@ limitations under the License.
 </g:if>
 <%-- Set dummy variables --%>
 <g:set var="bookmarks" value="${[bookmarksLists: [[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false, items:[[id: '913f4d70-cdf6-11e2-8b8b-0800200c9a66', itemId: 'YV736GVWYNHQAF5GT2WPO36JAOXK3TMV', createdAt: '2012-11-10T06:42:55Z'], [id: 'a36413f0-cdf6-11e2-8b8b-0800200c9a66', itemId: 'TIPOUOBUDBR472NWI27L4N6TXPQ2T6PF', createdAt: '2012-11-10T06:43:15Z']]]], bookmarksListSelectedID: '8b26a230-cdf6-11e2-8b8b-0800200c9a67']}"></g:set>
+<g:set var="navigationData" value="${[paginationURL: [firstPg: '#', lastPg: '#', prevPg: '#', nextPg: '#'], page: '1', totalPages: '120' ]}"></g:set>
 <html>
   <head>
     <title>- <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -53,8 +54,9 @@ limitations under the License.
             <g:each in="${bookmarks.bookmarksLists}">
               <li class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br">
                 <a class="h3" href="#" data-fctName="#">
-                  ${it.name} (${it.items.size()})
+                  ${it.name}
                 </a>
+                <span class="bookmarks-list-number">${it.items.size()}</span>
                 <a class="bookmarks-list-envelope" href="#"><i class="icon-envelope"></i></a>
                 <a class="bookmarks-list-edit" href="#"><i class="icon-edit"></i></a>
               </li>
@@ -63,9 +65,10 @@ limitations under the License.
         </div>
         <div class="span9">
           <g:form controller="favorites" action="remove" id="${bookmarkID}" name="favorites-remove">
-            <div class="row">
+            <div class="row favorites-results-controls">
               <div class="span9">
-                <%-- Render The pageIndoNavRender --%>
+                <button type="submit" class="submit"><span><g:message code="ddbnext.Delete"></g:message></span></button>
+                <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
               </div>
             </div>
             <div class="row">
