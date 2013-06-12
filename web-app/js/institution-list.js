@@ -24,8 +24,8 @@
  */
 /* global jsContextPath: false */
 
-(function(){
-  "use strict";
+(function() {
+  'use strict';
 
   // TODO: remove `use strict` via automate script in the production mode.
   // SEE: http://scriptogr.am/micmath/post/should-you-use-strict-in-your-production-javascript
@@ -71,7 +71,7 @@
     findElements: function(list) {
       var idList = _.pluck(list, 'id');
       return $('li.institution-listitem').filter(function() {
-        var institutionId = $(this).data('institution-id')
+        var institutionId = $(this).data('institution-id');
         return _.contains(idList, $(this).data('institution-id'));
       });
     },
@@ -103,11 +103,14 @@
          * button and if they performed the sector filters before.
          */
 
-        // get the selected sector filters.
-        var isChecked = $('input:checkbox').filter(':checked').length;
+        if ($('.multiselect').is(':visible')) {
+          var isChecked = $('.multiselect option:selected').filter(':selected').length;
+        } else {
+          var isChecked = $('.sector-facet input:checked').filter(':checked').length;
+        }
 
         // apply the filter, if the filters is not empty.
-        if(isChecked) {
+        if (isChecked) {
           ddb.applyFilter();
         }
       } else {
@@ -116,7 +119,6 @@
     },
 
     onFilterSelect: function() {
-      // TODO: add id
       $('input:checkbox').click(function() {
         ddb.applyFilter();
       });
@@ -185,11 +187,24 @@
       }
     },
 
+    /*
+    * get an array of selected sectors, for example: [sec_1, sec_3]
+    */
     getSelectedSectors: function() {
-      // TODO: check, if there is more efficient way to formulate the selector.
-      var allSelectedSectors = $('.sector-facet input:checked');
+      /*
+       * Now we have two sector widgets. Based on the screen resolution,
+       * we show either the checkboxes or multiselect.
+       *
+       * Depends on which widget is visible, we get the selected values.
+       */
+      if ($('.multiselect').is(':visible')) {
+        var allSelectedSectors = $('.multiselect option:selected');
+      } else {
+        var allSelectedSectors = $('.sector-facet input:checked');
+      }
+
       return _.reduce(allSelectedSectors, function(sectors, el) {
-        sectors.push($(el).data('sector'));
+        sectors.push($(el).val());
         return sectors;
       }, []);
     },
@@ -376,7 +391,7 @@
     },
 
     onIndexClick: function() {
-      // we catch the click event on index, does *not* when the user goes directyly
+      // we catch the click event on index, does *not* when the user goes directly
       // to a page with #{first-character}, for example: //institutions#A
       var $firstCharLinks = $('#first-letter-index a');
       $firstCharLinks.click(function(event) {
@@ -416,31 +431,29 @@
 
   $(function() {
     var institutionList = $('#institution-list');
-    
+
     $('.multiselect').multiselect({
       buttonClass: 'btn btn-small',
       buttonWidth: 'auto',
       maxHeight: false,
       buttonText: function(options) {
-        if (options.length == 0) {
-        return 'None selected <b class="caret"></b>';
-        }
-        else if (options.length > 2) {
-        return options.length + ' selected <b class="caret"></b>';
-        }
-        else {
+        if (options.length === 0) {
+          return 'None selected <b class="caret"></b>';
+        } else if (options.length > 4) {
+          return options.length + ' selected <b class="caret"></b>';
+        } else {
           var selected = '';
           options.each(function() {
             selected += $(this).text() + ', ';
           });
-          return selected.substr(0, selected.length -2) + ' <b class="caret"></b>';
+          return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
           }
         }
     });
 
     // Only execute the script when the user is in the institution list page.
     if (institutionList.length) {
-      
+
      // When the User Agent enables JS, shows the `filter by sector` Check Boxes.
       ddb.$index = $('#first-letter-index').clone(true, true);
       ddb.$institutionList = institutionList.clone();
