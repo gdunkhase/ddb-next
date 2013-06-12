@@ -18,13 +18,9 @@ $(document).ready(function(){
   $("#registration-form").validate({
 
     rules:{
-      fname:{
+      username:{
         required:true,
-        minlength:2
-      },
-      lname:{
-        required:true,
-        minlength:2
+        minlength:2 //TODO change the minimum if different
       },
       email:{
         required:true,
@@ -32,7 +28,7 @@ $(document).ready(function(){
       },
       passwd:{
         required:true,
-        minlength: 8
+        minlength: 8 //TODO change the minimum if different
       },
       conpasswd:{
         required:true,
@@ -42,11 +38,7 @@ $(document).ready(function(){
     },
     messages: {
 
-      fname: {
-        required: $("#error-messages").children('li').eq(0).children('a').text(),
-        minlength: $("#error-messages").children('li').eq(1).children('a').text()
-      },
-      lname: {
+      username: {
         required: $("#error-messages").children('li').eq(0).children('a').text(),
         minlength: $("#error-messages").children('li').eq(1).children('a').text()
       },
