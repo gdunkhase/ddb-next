@@ -15,6 +15,11 @@
  */
 package de.ddb.next
 
+import java.security.NoSuchAlgorithmException;
+
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
@@ -27,6 +32,7 @@ class ItemController {
     def searchService
     def grailsLinkGenerator
     def configurationService
+    def messageSource
 
 
     def children() {
@@ -66,6 +72,40 @@ class ItemController {
                 item.pageLabel= itemService.getItemTitle(id)
             }
 
+            println "######################## 2 "+item.item.license
+            println "######################## 3 "+item.item.license["@url"]
+            println "######################## 4 "+item.item.license["@img"]
+            println "######################## 5 "+item.item.license["@resource"]
+
+            def licenseInformation
+            if(item.item.license){
+                licenseInformation = [:]
+                licenseInformation.id = item.item.license.toString()
+                licenseInformation.img = item.item.license["@img"]
+
+                def name
+                def text
+                def url
+                try{
+                    def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                    name = messageSource.getMessage("ddbnext.license.name."+licenseInformation.id, null, locale)
+                    text = messageSource.getMessage("ddbnext.license.text."+licenseInformation.id, null, locale)
+                    url = messageSource.getMessage("ddbnext.license.url."+licenseInformation.id, null, locale)
+                }catch(NoSuchMessageException e){
+                    log.error "findById(): no I18N information for license '"+licenseInformation.id+"' in license.properties"
+                }
+                if(!name){
+                    name = licenseInformation.id
+                }
+                if(!url){
+                    url = item.item.license["@url"]
+                }
+
+                licenseInformation.name = name
+                licenseInformation.text = text
+                licenseInformation.url = url
+            }
+
             // TODO: handle 404 and failure separately. HTTP Status Code 404, should
             // to `not found` page _and_ Internal Error should go to `internal server
             // error` page. We should send also the HTTP Status Code 404 or 500 to the
@@ -81,14 +121,14 @@ class ItemController {
                         'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
                         binaryList: binaryList, pageLabel: item.pageLabel,
                         firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation],
+                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation],
                     filename: "Item-Detail.pdf")
                 }else{
                     render(view: "item", model: [itemUri: itemUri, viewerUri: item.viewerUri,
                         'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
                         binaryList: binaryList, pageLabel: item.pageLabel,
                         firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
+                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation])
 
                 }
             }
@@ -168,7 +208,7 @@ class ItemController {
                 apiResponse.throwException(request)
             }
             resultsItems = apiResponse.getResponse()
-    
+
             //Workaround for last-hit (Performance-issue)
             if (reqParameters.id && reqParameters.id.equals("lasthit")) {
                 reqParameters.id = resultsItems.results["docs"][1].id

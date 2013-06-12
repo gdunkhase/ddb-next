@@ -46,74 +46,101 @@ class ItemService {
     LinkGenerator grailsLinkGenerator
 
     def findItemById(id) {
-        def http = new HTTPBuilder(configurationService.getBackendUrl())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
 
-        /* TODO remove this hack, once the server deliver the right content
-         type*/
-        http.parser.'application/json' = http.parser.'application/xml'
-
-        final def componentsPath = "/access/" + id + "/components/"
+        final def componentsPath = "/items/" + id + "/"
         final def viewPath = componentsPath + "view"
 
-        def institution, item, title, fields, viewerUri, pageLabel
-        http.request( GET) { req ->
-            uri.path = viewPath
-
-            response.success = { resp, xml ->
-                log.info "findItemById(): Current request uri: 200, "+uri
-
-                institution= xml.institution
-                item = xml.item
-
-                title = shortenTitle(id, item)
-
-                fields = xml.item.fields.field.findAll()
-                viewerUri = buildViewerUri(item, componentsPath)
-
-                return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
-                    'fields': fields, pageLabel: xml.pagelabel]
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp ->
-                log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """
-                return response
-            }
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), viewPath)
+        if(!apiResponse.isOk()){
+            log.error "findItemById: xml file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
+        def xml = apiResponse.getResponse()
+
+        def institution= xml.institution
+        def item = xml.item
+
+        def title = shortenTitle(id, item)
+
+        def fields = xml.item.fields.field.findAll()
+        def viewerUri = buildViewerUri(item, componentsPath)
+
+        return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
+            'fields': fields, pageLabel: xml.pagelabel]
+
+
+        //        def institution, item, title, fields, viewerUri, pageLabel
+        //        http.request( GET) { req ->
+        //            uri.path = viewPath
+        //
+        //            response.success = { resp, xml ->
+        //                log.info "findItemById(): Current request uri: 200, "+uri
+        //
+        //                institution= xml.institution
+        //                item = xml.item
+        //
+        //                title = shortenTitle(id, item)
+        //
+        //                fields = xml.item.fields.field.findAll()
+        //                viewerUri = buildViewerUri(item, componentsPath)
+        //
+        //                return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
+        //                    'fields': fields, pageLabel: xml.pagelabel]
+        //            }
+        //
+        //        response.'404' = { return '404' }
+        //
+        //        //TODO: handle other failure such as '500'
+        //        response.failure = { resp ->
+        //            log.warn """
+        //                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
+        //                """
+        //            return response
+        //        }
+        //    }
     }
 
     private getItemTitle(id) {
-        def http = new HTTPBuilder(configurationService.getBackendUrl())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
+        //        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        //        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
+        //
+        //        /* TODO remove this hack, once the server deliver the right content
+        //         type*/
+        //        http.parser.'application/json' = http.parser.'text/html'
+        //
+        //        final def componentsPath = "/items/" + id + "/"
+        //        final def titlePath = componentsPath + "title"
+        //
+        //        http.request( GET) { req ->
+        //            uri.path = titlePath
+        //
+        //            response.success = { resp, html ->
+        //                log.info "getItemTitle(): Current request uri: 200, "+uri
+        //
+        //                return html
+        //            }
+        //
+        //            response.'404' = { return '404' }
+        //
+        //            //TODO: handle other failure such as '500'
+        //            response.failure = { resp -> log.warn """
+        //                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
+        //                """ }
+        //        }
 
-        /* TODO remove this hack, once the server deliver the right content
-         type*/
-        http.parser.'application/json' = http.parser.'text/html'
+        //        final def componentsPath = "/items/" + id + "/"
+        //        final def titlePath = componentsPath + "title"
+        //
+        //        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), titlePath)
+        //        if(!apiResponse.isOk()){
+        //            log.error "getItemTitle: xml file was not found"
+        //            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        //        }
+        //
+        //        return apiResponse.getResponse()
+        //
 
-        final def componentsPath = "/access/" + id + "/components/"
-        final def titlePath = componentsPath + "title"
-
-        http.request( GET) { req ->
-            uri.path = titlePath
-
-            response.success = { resp, html ->
-                log.info "getItemTitle(): Current request uri: 200, "+uri
-
-                return html
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
-        }
+        return findItemById(id).title
     }
 
     private shortenTitle(id, item) {
@@ -172,27 +199,38 @@ class ItemService {
 
     private def fetchBinaryList(id) {
 
-        def http = new HTTPBuilder(configurationService.getBackendUrl())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
-        http.parser.'application/json' = http.parser.'application/xml'
-        final def binariesPath= "/access/" + id + "/components/binaries"
+        //        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        //        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
+        //        http.parser.'application/json' = http.parser.'application/xml'
+        //        final def binariesPath= "/items/" + id + "/binaries"
+        //
+        //        http.request( GET) { req ->
+        //            uri.path = binariesPath
+        //
+        //            response.success = { resp, xml ->
+        //                log.info "fetchBinaryList(): Current request uri: 200, "+uri
+        //                def binaries = xml
+        //                return binaries.binary.list()
+        //            }
+        //
+        //            response.'404' = { return '404' }
+        //
+        //            //TODO: handle other failure such as '500'
+        //            response.failure = { resp -> log.warn """
+        //                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
+        //                """ }
+        //        }
 
-        http.request( GET) { req ->
-            uri.path = binariesPath
+        final def binariesPath= "/items/" + id + "/binaries"
 
-            response.success = { resp, xml ->
-                log.info "fetchBinaryList(): Current request uri: 200, "+uri
-                def binaries = xml
-                return binaries.binary.list()
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), binariesPath)
+        if(!apiResponse.isOk()){
+            log.error "fetchBinaryList: xml file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
+
+        return apiResponse.getResponse().binary.list()
+
     }
 
     private def parse(binaries) {
