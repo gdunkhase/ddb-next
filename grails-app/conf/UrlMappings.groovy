@@ -85,7 +85,7 @@ class UrlMappings {
             action="staticFiles"
         }
         
-        "/user/$id/profile" {
+        "/user/profile" {
             controller="user"
             action="profile"
         }

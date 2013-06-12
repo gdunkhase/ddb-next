@@ -96,7 +96,7 @@ class UserController {
     def profile() {
         def user
         try {
-            user = aasService.getPerson(params.id)
+            user = aasService.getPerson("current")
         }
         catch (AuthorizationException e) {
             forward controller: "error", action: "auth"
