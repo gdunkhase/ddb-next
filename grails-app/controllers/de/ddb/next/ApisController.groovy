@@ -50,10 +50,10 @@ class ApisController {
             String subtitle
             def thumbnail
             def media = []
-            
+
             title = (it.title instanceof JSONNull)?"":it.title
             subtitle = (it.subtitle instanceof JSONNull)?"":it.subtitle
-            
+
             thumbnail = (it.thumbnail instanceof JSONNull)?"":it.thumbnail
             if(!(it.media instanceof JSONNull)){
                 it.media.split (",").each{ media.add(it) }
@@ -143,9 +143,9 @@ class ApisController {
 
     def staticFiles() {
         def apiResponse = ApiConsumer.getBinaryStreaming(
-            configurationService.getStaticUrl(), 
-            '/static/' + getFileNamePath(), 
-            response.outputStream)
+                configurationService.getStaticUrl(),
+                '/static/' + getFileNamePath(),
+                response.outputStream)
 
         if(!apiResponse.isOk()){
             log.error "binary(): binary content was not found"
@@ -160,7 +160,8 @@ class ApisController {
         response.setHeader("Content-Disposition", "inline; filename=" + ('/static/' + getFileNamePath()).tokenize('/')[-1])
         response.setContentType(responseObject.get("Content-Type"))
         response.setContentLength(responseObject.get("Content-Length").toInteger())
-            }
+    }
+
     /**
      *  Format RFC 2822 date
      *  @parameters daysfromtoday, how many days from today do you want the date to be shifted
@@ -174,6 +175,7 @@ class ApisController {
         Date date = format.parse(tomorrowString);
         return date
     }
+
     private def getFileNamePath() {
         return cleanHtml(params.filename, 'none')
     }

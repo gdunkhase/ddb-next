@@ -22,8 +22,11 @@ import groovyx.net.http.AsyncHTTPBuilder
 import static groovyx.net.http.ContentType.*
 
 import groovy.json.*
+import groovy.util.slurpersupport.NodeChild;
+import groovy.xml.XmlUtil;
 import groovyx.net.http.ContentType
 import org.apache.commons.logging.LogFactory
+
 import groovyx.net.http.Method
 
 /**
@@ -50,9 +53,9 @@ class ApisService {
 
         if(queryParameters.rows)
             query["rows"] = queryParameters.rows
-			
-		if(queryParameters.callback)
-			query["callback"] = queryParameters.callback
+
+        if(queryParameters.callback)
+            query["callback"] = queryParameters.callback
 
         if(queryParameters.facet){
             if(queryParameters.facet.getClass().isArray()){
@@ -158,44 +161,82 @@ class ApisService {
      */
     def fetchItemsProperties(docs){
         if(docs && docs.size() > 0){
-            def threadNumber = (docs.size()<20)?docs.size():20
+            def threadNumber = (docs.size() < 20) ? docs.size() : 20
+
             def baseUrl = configurationService.getBackendUrl()
             try {
-                def http = new AsyncHTTPBuilder(
-                        poolSize: threadNumber,
-                        uri: baseUrl)
+                def http = new AsyncHTTPBuilder(poolSize: threadNumber, uri: baseUrl)
+
                 ApiConsumer.setProxy(http, baseUrl)
                 def itemsPropertiesResponses = []
                 docs.each {
                     def currentItem = it
                     itemsPropertiesResponses << http.request(Method.GET, XML){
-                        uri.path = '/access/'+currentItem.id+'/components/indexing-profile'
+                        //uri.path = '/access/'+currentItem.id+'/components/indexing-profile'
+                        uri.path = '/items/'+currentItem.id+'/indexing-profile'
                         headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
                         response.success = { resp, xml ->
-                            def jsonSubresp = new JsonSlurper().parseText(xml.toString())
 
-                            def timeFct = (jsonSubresp.properties.time_fct)? jsonSubresp.properties.time_fct: ""
-                            def placeFct = (jsonSubresp.properties.place_fct)? jsonSubresp.properties.place_fct: ""
-                            def affiliateFct = (jsonSubresp.properties.affiliate_fct)? jsonSubresp.properties.affiliate_fct: ""
-                            def keywordsFct = (jsonSubresp.properties.keywords_fct)?jsonSubresp.properties.keywords_fct: ""
-                            def typeFct = (jsonSubresp.properties.type_fct)?jsonSubresp.properties.type_fct: ""
-                            def sectorFct = (jsonSubresp.properties.sector_fct)?jsonSubresp.properties.sector_fct: ""
-                            def providerFct = (jsonSubresp.properties.provider_fct)?jsonSubresp.properties.provider_fct: ""
+                            log.info "ApiResponse: HTTP_200 / GET / "+uri
 
-                            def properties = [time_fct: timeFct, place_fct: placeFct, affiliate_fct:affiliateFct, keywords_fct:keywordsFct, type_fct:typeFct, sector_fct:sectorFct, provider_fct:providerFct, last_update: jsonSubresp.properties.last_update ]
+                            //                            def timeFct = (jsonSubresp.properties.time_fct)? jsonSubresp.properties.time_fct: ""
+                            //                            def placeFct = (jsonSubresp.properties.place_fct)? jsonSubresp.properties.place_fct: ""
+                            //                            def affiliateFct = (jsonSubresp.properties.affiliate_fct)? jsonSubresp.properties.affiliate_fct: ""
+                            //                            def keywordsFct = (jsonSubresp.properties.keywords_fct)?jsonSubresp.properties.keywords_fct: ""
+                            //                            def typeFct = (jsonSubresp.properties.type_fct)?jsonSubresp.properties.type_fct: ""
+                            //                            def sectorFct = (jsonSubresp.properties.sector_fct)?jsonSubresp.properties.sector_fct: ""
+                            //                            def providerFct = (jsonSubresp.properties.provider_fct)?jsonSubresp.properties.provider_fct: ""
+
+                            def timeFctXml = xml.facet.findAll{it.'@name' == 'time_fct'}
+                            def timeFct = !timeFctXml.isEmpty() ? timeFctXml[0] : ""
+
+                            def placeFctXml = xml.facet.findAll{it.'@name' == 'placeFct'}
+                            def placeFct = !placeFctXml.isEmpty() ? placeFctXml[0] : ""
+
+                            def affiliateFctXml = xml.facet.findAll{it.'@name' == 'affiliate_fct'}
+                            def affiliateFct = !affiliateFctXml.isEmpty() ? affiliateFctXml[0] : ""
+
+                            def keywordsFctXml = xml.facet.findAll{it.'@name' == 'keywords_fct'}
+                            def keywordsFct = !keywordsFctXml.isEmpty() ? keywordsFctXml[0] : ""
+
+                            def typeFctXml = xml.facet.findAll{it.'@name' == 'type_fct'}
+                            def typeFct = !typeFctXml.isEmpty() ? typeFctXml[0] : ""
+
+                            def sectorFctXml = xml.facet.findAll{it.'@name' == 'sector_fct'}
+                            def sectorFct = !sectorFctXml.isEmpty() ? sectorFctXml[0] : ""
+
+                            def providerFctXml = xml.facet.findAll{it.'@name' == 'provider_fct'}
+                            def providerFct = !providerFctXml.isEmpty() ? providerFctXml[0] : ""
+
+                            def lastUpdateFctXml = xml.facet.findAll{it.'@name' == 'last_update'}
+                            def lastUpdateFct = !lastUpdateFctXml.isEmpty() ? lastUpdateFctXml[0] : ""
+
+                            def properties = [time_fct: timeFct, place_fct: placeFct, affiliate_fct:affiliateFct, keywords_fct:keywordsFct, type_fct:typeFct, sector_fct:sectorFct, provider_fct:providerFct, last_update: lastUpdateFct.value ]
 
                             return properties
                         }
+
+                        response.'404' = { resp ->
+                            log.error "ApiResponse: HTTP_404 / GET / "+uri
+                        }
+
+                        response.failure = { resp ->
+                            log.error "ApiResponse: HTTP_500 / GET / "+uri
+                        }
                     }
                 }
-                def timeout = 60000
-                def time = 0
+                def time = System.currentTimeMillis()
+                def timeout = time + 60000
                 def result = []
                 while ( true ) {
-                    if ( itemsPropertiesResponses.every{ it.done ? it.get() : 0 } ) break
-                        Thread.sleep 1
-                    time += 1
-                    if ( time > timeout ) return result
+                    if ( itemsPropertiesResponses.every{ it.done ? it.get() : 0 } ) {
+                        break
+                    }
+                    Thread.sleep 50
+                    time = System.currentTimeMillis()
+                    if ( time > timeout ) {
+                        return result
+                    }
                 }
                 itemsPropertiesResponses.each{
                     result.add(it.get())

@@ -36,8 +36,11 @@ class ItemController {
 
 
     def children() {
+        //        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
+        //                "/hierarchy/" + params.id + "/children", false,
+        //                ["rows":501])
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
-                "/hierarchy/" + params.id + "/children", false,
+                "/items/" + params.id + "/children", false,
                 ["rows":501])
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
@@ -69,16 +72,12 @@ class ItemController {
             flashInformation.videos = [binariesCounter.videos]
 
             if (item.pageLabel?.isEmpty()) {
-                item.pageLabel= itemService.getItemTitle(id)
+                item.pageLabel = item.title
             }
 
-            println "######################## 2 "+item.item.license
-            println "######################## 3 "+item.item.license["@url"]
-            println "######################## 4 "+item.item.license["@img"]
-            println "######################## 5 "+item.item.license["@resource"]
-
             def licenseInformation
-            if(item.item.license){
+
+            if(item.item?.license && !item.item.license.isEmpty()){
                 licenseInformation = [:]
                 licenseInformation.id = item.item.license.toString()
                 licenseInformation.img = item.item.license["@img"]
@@ -118,14 +117,14 @@ class ItemController {
 
                 if(params.print){
                     renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
+                        'title': item.title, item: item.item, itemId: id, institution : item.institution, institutionImage: item.institutionImage, originUrl: item.originUrl , fields: fields,
                         binaryList: binaryList, pageLabel: item.pageLabel,
                         firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
                         hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation],
                     filename: "Item-Detail.pdf")
                 }else{
                     render(view: "item", model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
+                        'title': item.title, item: item.item, itemId: id, institution : item.institution, institutionImage: item.institutionImage, originUrl: item.originUrl, fields: fields,
                         binaryList: binaryList, pageLabel: item.pageLabel,
                         firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
                         hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation])

@@ -21,7 +21,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils;
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
-
+import org.ccil.cowan.tagsoup.Parser;
 import groovyx.net.http.HTTPBuilder
 
 class ItemService {
@@ -57,7 +57,14 @@ class ItemService {
         }
         def xml = apiResponse.getResponse()
 
-        def institution= xml.institution
+        //def institution= xml.institution
+        def institution= xml.item.institution
+
+        Parser tagsoupParser = new Parser()
+        XmlSlurper slurper = new XmlSlurper(tagsoupParser)
+        String institutionLogoUrl = slurper.parseText(xml.item.institution.logo.toString()).text()
+        String originUrl = slurper.parseText(xml.item.origin.toString()).text()
+
         def item = xml.item
 
         def title = shortenTitle(id, item)
@@ -66,7 +73,7 @@ class ItemService {
         def viewerUri = buildViewerUri(item, componentsPath)
 
         return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
-            'fields': fields, pageLabel: xml.pagelabel]
+            'fields': fields, pageLabel: xml.pagelabel, 'institutionImage': institutionLogoUrl, 'originUrl': originUrl]
 
 
         //        def institution, item, title, fields, viewerUri, pageLabel
@@ -100,48 +107,6 @@ class ItemService {
         //    }
     }
 
-    private getItemTitle(id) {
-        //        def http = new HTTPBuilder(configurationService.getBackendUrl())
-        //        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
-        //
-        //        /* TODO remove this hack, once the server deliver the right content
-        //         type*/
-        //        http.parser.'application/json' = http.parser.'text/html'
-        //
-        //        final def componentsPath = "/items/" + id + "/"
-        //        final def titlePath = componentsPath + "title"
-        //
-        //        http.request( GET) { req ->
-        //            uri.path = titlePath
-        //
-        //            response.success = { resp, html ->
-        //                log.info "getItemTitle(): Current request uri: 200, "+uri
-        //
-        //                return html
-        //            }
-        //
-        //            response.'404' = { return '404' }
-        //
-        //            //TODO: handle other failure such as '500'
-        //            response.failure = { resp -> log.warn """
-        //                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-        //                """ }
-        //        }
-
-        //        final def componentsPath = "/items/" + id + "/"
-        //        final def titlePath = componentsPath + "title"
-        //
-        //        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), titlePath)
-        //        if(!apiResponse.isOk()){
-        //            log.error "getItemTitle: xml file was not found"
-        //            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        //        }
-        //
-        //        return apiResponse.getResponse()
-        //
-
-        return findItemById(id).title
-    }
 
     private shortenTitle(id, item) {
 
@@ -226,7 +191,8 @@ class ItemService {
         def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), binariesPath)
         if(!apiResponse.isOk()){
             log.error "fetchBinaryList: xml file was not found"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+            //apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+            return []
         }
 
         return apiResponse.getResponse().binary.list()

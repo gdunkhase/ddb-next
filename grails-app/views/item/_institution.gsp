@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+
 <div class="row item-detail">
   <div class="span12 institution">
     <div class="row">
@@ -21,11 +22,11 @@ limitations under the License.
             <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
             ${institution.name}
             </g:link>
-            <a class="institution-link" href="${institution.uri}">${institution.uri}</a>
-            <g:if test="${!item.origin?.toString().isEmpty() || !viewerUri?.isEmpty()}">
+            <a class="institution-link" href="${institution.url}">${institution.url}</a>
+            <g:if test="${!originUrl?.toString().isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
-                  <g:if test="${!item.origin?.toString().isEmpty()}">
-                          <a target="_blank" class="show-origin" href="${item.origin.a}" title="<g:message code="ddbnext.stat_008" />">
+                  <g:if test="${!originUrl?.toString().isEmpty()}">
+                          <a target="_blank" class="show-origin" href="${originUrl}" title="<g:message code="ddbnext.stat_008" />">
                           <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
                           </a>
                   </g:if>
@@ -39,7 +40,7 @@ limitations under the License.
             </g:if>
         </div>
         <div class="span3" >
-            <img alt="${institution.name}" src="${institution.logo.a}"/>
+            <img alt="${institution.name}" src="${institutionImage}"/>
         </div>
     </div>
   </div>

@@ -40,7 +40,7 @@ limitations under the License.
           <span class="institution-name">
             ${institution.name}
           </span>
-          <span class="institution-link">${institution.uri}</span>
+          <span class="institution-link">${institution.url}</span>
         </div>
         <div class="institution_logo">
           <img alt="${institution.name}" src="${institution.logo.a}" />
