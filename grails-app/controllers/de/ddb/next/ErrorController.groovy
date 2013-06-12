@@ -77,7 +77,7 @@ class ErrorController {
     }
 
     /**
-     * Handler method for error 400 situations
+     * Handler method for error 404 situations
      * @return The notfound view
      */
     def notFound() {
@@ -94,7 +94,7 @@ class ErrorController {
 
         apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
 
-        // Return response code 400
+        // Return response code 404
         response.status = 404
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
@@ -120,8 +120,8 @@ class ErrorController {
     }
 
         /**
-     * Handler method for error 400 situations
-     * @return The notfound view
+     * Handler method for error 401 situations
+     * @return The auth view
      */
     def auth() {
 
@@ -135,7 +135,7 @@ class ErrorController {
 
         apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
 
-        // Return response code 400
+        // Return response code 401
         response.status = 401
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime

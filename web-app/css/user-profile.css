@@ -33,10 +33,6 @@
     display: inline-block;
 }
 
-.profile-links {
-    float: right;
-}
-
 .profile-link {
     margin-left: 30px !important;
 }

@@ -28,13 +28,13 @@ limitations under the License.
         <input type="hidden" name="id" value="${ user.id }"/>
         <div class="row well">
             <div class="profile-nav">
-                <div class="profile-title"><g:message code="ddbnext.userprofile"/>  ${ user.id }</div>
-                <div class="profile-links">
-                    <a class="profile-link" title="<g:message code="ddbnext.user.showBookmarks" />" class="persist" href="${createLink(controller="user",action: 'bookmarks', params:[:])}">
-                        <g:message code="ddbnext.user.showBookmarks" />, count: ${bookmarksCount }
+                <div class="profile-title"><g:message code="ddbnext.User_Profile"/>  ${ user.id }</div>
+                <div class="fr profile-links">
+                    <a class="profile-link" title="<g:message code="ddbnext.User.Show_Bookmarks" />" class="persist" href="${createLink(controller="user",action: 'bookmarks', params:[:])}">
+                        <g:message code="ddbnext.User.Show_Bookmarks" />, count: ${bookmarksCount }
                     </a>
-                    <a class="profile-link" title="<g:message code="ddbnext.user.deleteAccount" />" class="persist" href="${createLink(controller="user",action: 'delete', params:[id:user.id])}">
-                        <g:message code="ddbnext.user.deleteAccount" />
+                    <a class="profile-link" title="<g:message code="ddbnext.User.Delete_Account" />" class="persist" href="${createLink(controller="user",action: 'delete', params:[id:user.id])}">
+                        <g:message code="ddbnext.User.Delete_Account" />
                     </a>
                 </div>
             </div>
@@ -79,7 +79,7 @@ limitations under the License.
             </div>
 
             <div class="span12 control-group">
-              <label class="control-label"><g:message code="ddbnext.newsletter.subscription" /></label>
+              <label class="control-label"><g:message code="ddbnext.Newsletter_Subscription" /></label>
               <div class="controls">
                 <div class="input-prepend">
                   <input type="checkbox" id="newsletter" class="profile-input" name="newsletter">
