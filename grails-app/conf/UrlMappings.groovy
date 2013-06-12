@@ -89,7 +89,7 @@ class UrlMappings {
             controller="user"
             action="profile"
         }
-        "/user/$id/delete" {
+        "/user/delete" {
             controller="user"
             action="delete"
         }

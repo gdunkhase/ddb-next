@@ -123,13 +123,15 @@ class UserController {
     }
     
     def delete() {
+        def user
         try {
-            aasService.deletePerson(params.id)
+            user = aasService.getPerson("current")
+            aasService.deletePerson(user.id)
         }
         catch (AuthorizationException e) {
             forward controller: "error", action: "auth"
         }
-        render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
+        doLogout()
     }
     
     def requestOpenIdLogin() {

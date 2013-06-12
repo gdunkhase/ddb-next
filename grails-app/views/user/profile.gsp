@@ -33,7 +33,7 @@ limitations under the License.
                     <a class="profile-link" title="<g:message code="ddbnext.User.Show_Bookmarks" />" class="persist" href="${createLink(controller="user",action: 'bookmarks', params:[:])}">
                         <g:message code="ddbnext.User.Show_Bookmarks" />, count: ${bookmarksCount }
                     </a>
-                    <a class="profile-link" title="<g:message code="ddbnext.User.Delete_Account" />" class="persist" href="${createLink(controller="user",action: 'delete', params:[id:user.id])}">
+                    <a class="profile-link" title="<g:message code="ddbnext.User.Delete_Account" />" class="persist" href="${createLink(controller="user",action: 'delete')}">
                         <g:message code="ddbnext.User.Delete_Account" />
                     </a>
                 </div>
