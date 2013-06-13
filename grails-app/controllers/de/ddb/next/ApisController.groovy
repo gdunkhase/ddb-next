@@ -43,6 +43,8 @@ class ApisController {
             apiResponse.throwException(request)
         }
         def jsonResp = apiResponse.getResponse()
+
+
         jsonResp.results["docs"].get(0).each{
 
             def tmpResult = [:]

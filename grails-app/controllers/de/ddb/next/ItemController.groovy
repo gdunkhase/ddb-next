@@ -161,7 +161,8 @@ class ItemController {
     }
 
     def parents() {
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/hierarchy/" + params.id + "/parent")
+        //        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/hierarchy/" + params.id + "/parent")
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/items/" + params.id + "/parent")
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
