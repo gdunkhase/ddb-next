@@ -186,3 +186,9 @@ background-position: right -40px;
     max-width: 724px;
   }
 }
+
+.license-icon {
+  height: 16px;
+  margin: -2px 10px 0 0;
+  display: inline-block;
+}

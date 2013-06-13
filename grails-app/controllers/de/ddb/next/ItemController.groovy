@@ -75,35 +75,7 @@ class ItemController {
                 item.pageLabel = item.title
             }
 
-            def licenseInformation
-
-            if(item.item?.license && !item.item.license.isEmpty()){
-                licenseInformation = [:]
-                licenseInformation.id = item.item.license.toString()
-                licenseInformation.img = item.item.license["@img"]
-
-                def name
-                def text
-                def url
-                try{
-                    def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-                    name = messageSource.getMessage("ddbnext.license.name."+licenseInformation.id, null, locale)
-                    text = messageSource.getMessage("ddbnext.license.text."+licenseInformation.id, null, locale)
-                    url = messageSource.getMessage("ddbnext.license.url."+licenseInformation.id, null, locale)
-                }catch(NoSuchMessageException e){
-                    log.error "findById(): no I18N information for license '"+licenseInformation.id+"' in license.properties"
-                }
-                if(!name){
-                    name = licenseInformation.id
-                }
-                if(!url){
-                    url = item.item.license["@url"]
-                }
-
-                licenseInformation.name = name
-                licenseInformation.text = text
-                licenseInformation.url = url
-            }
+            def licenseInformation = buildLicenseInformation(item)
 
             // TODO: handle 404 and failure separately. HTTP Status Code 404, should
             // to `not found` page _and_ Internal Error should go to `internal server
@@ -169,6 +141,40 @@ class ItemController {
         }
         def jsonResp = apiResponse.getResponse()
         render(contentType:"application/json", text: jsonResp)
+    }
+
+    private def buildLicenseInformation(def item){
+        def licenseInformation
+
+        if(item.item?.license && !item.item.license.isEmpty()){
+            licenseInformation = [:]
+            licenseInformation.id = item.item.license.toString()
+            licenseInformation.img = item.item.license["@img"]
+
+            def name
+            def text
+            def url
+            try{
+                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                name = messageSource.getMessage("ddbnext.license.name."+licenseInformation.id, null, locale)
+                text = messageSource.getMessage("ddbnext.license.text."+licenseInformation.id, null, locale)
+                url = messageSource.getMessage("ddbnext.license.url."+licenseInformation.id, null, locale)
+            }catch(NoSuchMessageException e){
+                log.error "findById(): no I18N information for license '"+licenseInformation.id+"' in license.properties"
+            }
+            if(!name){
+                name = item.item.license.toString()
+            }
+            if(!url){
+                url = item.item.license["@url"]
+            }
+
+            licenseInformation.name = name
+            licenseInformation.text = text
+            licenseInformation.url = url
+        }
+
+        return licenseInformation
     }
 
     /**
