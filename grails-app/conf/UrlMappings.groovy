@@ -84,7 +84,7 @@ class UrlMappings {
             controller="apis"
             action="staticFiles"
         }
-        
+
         "/user/profile" {
             controller="user"
             action="profile"
@@ -129,9 +129,19 @@ class UrlMappings {
             action="recoverPassword"
         }
 
+        "/profile" {
+            controller="user"
+            action="profile"
+        }
+
+        "/favorites" {
+            controller="user"
+            action="favorites"
+        }
+
         "404"(controller: "error", action: "notFound")
         "401"(controller: "error", action: "auth")
-        
+
         "500"(controller: "error", action: "notFound", exception: de.ddb.next.exception.ItemNotFoundException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)

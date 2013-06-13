@@ -439,11 +439,36 @@ header .language-wrapper >a,.header .language-wrapper >a {
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 46px -42px;
 }
 
+
+header .login-wrapper:hover .selector,.header .login-wrapper:hover .selector {
+  display: block;
+  margin-right: 15px;
+}
+
 header .login-wrapper,.header .login-wrapper {
   position: relative;
   display: inline-block;
-  margin-right: 20px;
 }
+
+header .login-username,.header .login-username {
+  display: inline-block;
+}
+
+header .login-dropdown,.header .login-dropdown {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 3px -40px;
+}
+
+header .header-spacer,.header .header-spacer {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  margin: 0px 10px 0 10px;
+  border-right: 2px solid #e9e5e2;
+}
+
 
 #form-search-header .link-adv-search {
   font-size: 0.938em;

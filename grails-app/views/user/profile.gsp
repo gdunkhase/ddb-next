@@ -14,13 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <html>
-<head>
-<title><g:message code="ddbnext.user.profilepage" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+  <head>
 
-<meta name="page" content="userprofile" />
-<meta name="layout" content="main" />
-
-</head>
+    <g:redirectIfNotLoggedIn />
+  
+    <title><g:message code="ddbnext.Profile" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    
+    <meta name="page" content="userprofile" />
+    <meta name="layout" content="main" />
+  
+  </head>
 
 <body>
   <div class="container row">

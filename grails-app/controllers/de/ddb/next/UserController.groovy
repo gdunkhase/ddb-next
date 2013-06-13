@@ -64,18 +64,16 @@ class UserController {
             }
         }
 
-        render(view: "login", model: [
-            'loginStatus': loginStatus]
-        )
+        redirect(controller: 'user', action: 'favorites')
+
     }
 
     def doLogout() {
 
         removeUserFromSession()
 
-        render(view: "login", model: [
-            'loginStatus': LoginStatus.LOGGED_OUT]
-        )
+        redirect(controller: 'index', action: 'index')
+
     }
 
     def registration() {
@@ -85,7 +83,7 @@ class UserController {
     }
 
     def signup() {
-//        TODO
+        //        TODO
     }
 
     def recoverPassword(){
@@ -103,7 +101,7 @@ class UserController {
         }
         render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
     }
-    
+
     def save() {
         JSONObject user
         try {
@@ -121,7 +119,7 @@ class UserController {
         }
         render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
     }
-    
+
     def delete() {
         def user
         try {
@@ -133,7 +131,11 @@ class UserController {
         }
         doLogout()
     }
-    
+
+    def favorites() {
+        render(view: "favorites", model: [:])
+    }
+
     def requestOpenIdLogin() {
         def provider = params.provider
 
@@ -155,12 +157,7 @@ class UserController {
             //TODO handle invalid provider
         }
 
-        // --- Forward proxy setup (only if needed) ---
-        ProxyProperties proxyProps = new ProxyProperties();
-        proxyProps.setProxyHostName("proxy.fiz-karlsruhe.de");
-        proxyProps.setProxyPort(8888);
-        HttpClientFactory.setProxyProperties(proxyProps);
-
+        setProxy()
 
         log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
         ConsumerManager manager = new ConsumerManager();
@@ -235,9 +232,30 @@ class UserController {
             }
         }
 
-        render(view: "login", model: [
-            'loginStatus': loginStatus]
-        )
+        redirect(controller: 'user', action: 'favorites')
+
+    }
+
+    private def setProxy(){
+
+        def proxyHost = System.getProperty("http.proxyHost")
+        def proxyPortString = System.getProperty("http.proxyPort")
+        int proxyPort = 80
+
+        if (proxyHost) {
+            if (proxyPortString && !proxyPortString.isEmpty()) {
+                try{
+                    proxyPort = Integer.parseInt(proxyPortString)
+                }catch(NumberFormatException e){
+                    log.error "setProxy(): The proxyport of the system properties cannot be cast to an int: '"+proxyPortString"'"
+                }
+            }
+
+            ProxyProperties proxyProps = new ProxyProperties();
+            proxyProps.setProxyHostName(proxyHost);
+            proxyProps.setProxyPort(proxyPort);
+            HttpClientFactory.setProxyProperties(proxyProps);
+        }
 
     }
 
@@ -249,7 +267,7 @@ class UserController {
     private void putUserInSession(user) {
         session.setAttribute(User.SESSION_USER, user)
     }
-    
+
     private boolean removeUserFromSession() {
         session.removeAttribute(User.SESSION_USER)
         session.invalidate()

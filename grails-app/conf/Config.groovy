@@ -141,6 +141,7 @@ ddb.advancedSearch.searchGroupCount=3
 ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
+ddb.session.timeout=1800 // in sec -> 30min
 
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
