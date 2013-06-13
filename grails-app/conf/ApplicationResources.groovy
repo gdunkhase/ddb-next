@@ -64,6 +64,7 @@ modules = {
         resource url:'/js/vendor/bootstrap-collapse.js'
         resource url:'/js/vendor/bootstrap-button.js'
         resource url:'/js/vendor/jquery.validate.min.js'
+        resource url:'/js/vendor/respond.src.js'
         resource url:'/js/jquery.fancybox.pack.js'
         resource url:'/js/underscore-min.js'
         resource url:'/jwplayer/jwplayer.js'
