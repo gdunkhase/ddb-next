@@ -146,30 +146,44 @@ class ItemController {
     private def buildLicenseInformation(def item){
         def licenseInformation
 
+        def knownLicense1 = ""
+        def knownLicense2 = ""
+        def knownLicense3 = ""
+        def knownLicense4 = ""
+        def knownLicense5 = ""
+        def knownLicense6 = ""
+        def knownLicense7 = ""
+        def knownLicense8 = ""
+        def knownLicense9 = ""
+
+
         if(item.item?.license && !item.item.license.isEmpty()){
+            def licenseId = item.item.license["@ns3:resource"]
+
+            def propertyId = convertUriToProperties(licenseId)
+
+            println "############################## 2 "+propertyId
+
+
             licenseInformation = [:]
-            licenseInformation.id = item.item.license.toString()
             licenseInformation.img = item.item.license["@img"]
 
-            def name
             def text
             def url
             try{
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-                name = messageSource.getMessage("ddbnext.license.name."+licenseInformation.id, null, locale)
-                text = messageSource.getMessage("ddbnext.license.text."+licenseInformation.id, null, locale)
-                url = messageSource.getMessage("ddbnext.license.url."+licenseInformation.id, null, locale)
+                text = messageSource.getMessage("ddbnext.license.text."+propertyId, null, locale)
+                url = messageSource.getMessage("ddbnext.license.url."+propertyId, null, locale)
             }catch(NoSuchMessageException e){
                 log.error "findById(): no I18N information for license '"+licenseInformation.id+"' in license.properties"
             }
-            if(!name){
-                name = item.item.license.toString()
+            if(!text){
+                text = item.item.license.toString()
             }
             if(!url){
                 url = item.item.license["@url"]
             }
 
-            licenseInformation.name = name
             licenseInformation.text = text
             licenseInformation.url = url
         }
@@ -234,5 +248,25 @@ class ItemController {
         searchResultParameters["searchParametersMap"] = searchParametersMap
 
         return searchResultParameters
+    }
+
+    def convertUriToProperties(def uri){
+        if(uri){
+            // http://creativecommons.org/licenses/by-nc-nd/3.0/de/
+
+            def converted = uri.toString()
+            converted = converted.replaceAll("http://","")
+            converted = converted.replaceAll("https://","")
+            converted = converted.replaceAll("[^A-Za-z0-9]", ".")
+            if(converted.startsWith(".")){
+                converted = converted.substring(1)
+            }
+            if(converted.endsWith(".")){
+                converted = converted.substring(0, converted.size()-1)
+            }
+            return converted
+        }else{
+            return ""
+        }
     }
 }
