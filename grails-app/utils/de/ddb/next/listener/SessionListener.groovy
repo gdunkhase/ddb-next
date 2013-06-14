@@ -15,6 +15,8 @@
  */
 package de.ddb.next.listener
 
+import grails.util.GrailsWebUtil;
+
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -30,8 +32,13 @@ class SessionListener implements HttpSessionListener {
     void sessionCreated(HttpSessionEvent event) {
         HttpSession session = event.getSession()
 
+        def grailsApplication = GrailsWebUtil.lookupApplication(event.getSession().getServletContext())
+        def sessionTimeout = grailsApplication.config.ddb.session.timeout
+
+        session.setMaxInactiveInterval(sessionTimeout)
+
         totalSessionCount = totalSessionCount + 1
-        log.info "sessionCreated(): A session was created. Total session count on node: " + totalSessionCount
+        log.info "sessionCreated(): A session was created with timeout="+sessionTimeout+"s. Total session count on node: " + totalSessionCount
     }
 
     // called by servlet container upon session destruction

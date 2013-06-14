@@ -28,7 +28,7 @@ class ConfigurationService {
     def grailsApplication
 
     def transactional=false
-    
+
     public String getBinaryUrl(){
         def url = grailsApplication.config.ddb?.binary?.url
         if(!url){
@@ -129,10 +129,10 @@ class ConfigurationService {
         return mimeTypeHtml
     }
 
-/*
-ddb.advancedSearch.defaultOffset=0
-ddb.advancedSearch.defaultRows=20
-*/
+    /*
+     ddb.advancedSearch.defaultOffset=0
+     ddb.advancedSearch.defaultRows=20
+     */
 
     public int getSearchGroupCount() {
         def searchGroupCount = grailsApplication.config.ddb?.advancedSearch?.searchGroupCount
@@ -151,7 +151,7 @@ ddb.advancedSearch.defaultRows=20
             throw new ConfigurationException("""getSearchGroupCount(): ddb.advancedSearch.searchGroupCount is not
                 an Integer""")
         }
-        searchGroupCount
+        return searchGroupCount
     }
 
     public int getSearchFieldCount() {
@@ -171,7 +171,7 @@ ddb.advancedSearch.defaultRows=20
             throw new ConfigurationException("""getSearchFieldCount(): ddb.advancedSearch.searchFieldCount is not
                 an Integer""")
         }
-        searchFieldCount
+        return searchFieldCount
     }
 
     public int getSearchOffset() {
@@ -191,7 +191,7 @@ ddb.advancedSearch.defaultRows=20
             throw new ConfigurationException("""getSearchOffset(): ddb.advancedSearch.defaultOffset is not
                 an Integer""")
         }
-        offset
+        return offset
     }
 
     public int getSearchRows() {
@@ -211,7 +211,26 @@ ddb.advancedSearch.defaultRows=20
             throw new ConfigurationException("""getSearchRows(): ddb.advancedSearch.defaultRows is not
                 an Integer""")
         }
-        rows
+        return rows
     }
 
+    public int getSessionTimeout() {
+        def timeout = grailsApplication.config.ddb?.session?.timeout
+        if(!timeout){
+            throw new ConfigurationException("""getSessionTimeout(): Configuration entry does not exist ->
+                ddb.session.timeout""")
+        }
+        if(!(timeout instanceof String)){
+            throw new ConfigurationException("""getSessionTimeout(): ddb.session.timeout is not
+                a String""")
+        }
+        try {
+            timeout = new Integer(Integer.parseInt(timeout));
+        }
+        catch (NumberFormatException e) {
+            throw new ConfigurationException("""getSessionTimeout(): ddb.session.timeout is not
+                an Integer""")
+        }
+        return timeout
+    }
 }
