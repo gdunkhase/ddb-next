@@ -25,13 +25,16 @@ class User {
     String email
     String password
     boolean openIdUser
-    
+
+    User(){
+    }
+
     User(Map userMap){
         username = userMap.id
         email = userMap.email
     }
 
-    User(){
+    public String toString() {
+        return "User[username="+username+", email="+email+", openIdUser="+openIdUser+"]"
     }
-
 }

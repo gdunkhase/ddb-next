@@ -54,7 +54,7 @@ limitations under the License.
                   </div>
                   <div class="row">
                     <div class="span4"> 
-                      <input id="login-username" type="text" name="email" value="fiz@fiz.fiz"/>
+                      <input id="login-username" type="text" name="email" value=""/>
                     </div>
                   </div>
                   <div class="row spacer-vertical">
@@ -64,7 +64,7 @@ limitations under the License.
                   </div>
                   <div class="row">
                     <div class="span4"> 
-                      <input id="login-password" type="password" name="password" value="fiz"/>
+                      <input id="login-password" type="password" name="password" value=""/>
                     </div>
                   </div>
                   <div class="row spacer-vertical">

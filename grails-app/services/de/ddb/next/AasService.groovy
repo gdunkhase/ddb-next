@@ -52,6 +52,7 @@ class AasService {
         if(apiResponse.isOk()){
             User user = new User(apiResponse.getResponse())
             user.setPassword(password)
+            user.setOpenIdUser(false)
             return user
         }
         else {
