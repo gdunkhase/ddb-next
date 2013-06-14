@@ -119,7 +119,7 @@ class ItemController {
                 it.name = translated
             } else {
                 it.name = it.name.toString().capitalize()
-                log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
+                log.warn 'translate(): can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
             }
         }
     }
@@ -146,30 +146,17 @@ class ItemController {
     private def buildLicenseInformation(def item){
         def licenseInformation
 
-        def knownLicense1 = ""
-        def knownLicense2 = ""
-        def knownLicense3 = ""
-        def knownLicense4 = ""
-        def knownLicense5 = ""
-        def knownLicense6 = ""
-        def knownLicense7 = ""
-        def knownLicense8 = ""
-        def knownLicense9 = ""
-
-
         if(item.item?.license && !item.item.license.isEmpty()){
-            def licenseId = item.item.license["@ns3:resource"]
+            def licenseId = item.item.license["@ns3:resource"].toString()
 
             def propertyId = convertUriToProperties(licenseId)
 
-            println "############################## 2 "+propertyId
-
-
             licenseInformation = [:]
-            licenseInformation.img = item.item.license["@img"]
+
 
             def text
             def url
+            def img = item.item.license["@img"].toString()
             try{
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 text = messageSource.getMessage("ddbnext.license.text."+propertyId, null, locale)
@@ -181,11 +168,20 @@ class ItemController {
                 text = item.item.license.toString()
             }
             if(!url){
-                url = item.item.license["@url"]
+                url = item.item.license["@url"].toString()
+            }
+            if(img){
+                img = img.replaceAll("'", "");
+                img = img.replaceAll("\"", "");
+            }
+            if(!img || img?.isEmpty()){
+                img = null
             }
 
             licenseInformation.text = text
             licenseInformation.url = url
+            licenseInformation.img = img
+
         }
 
         return licenseInformation
