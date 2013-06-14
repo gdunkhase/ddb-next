@@ -29,10 +29,12 @@ class User {
     User(){
     }
 
-    User(Map userMap){
-        username = userMap.id
-        email = userMap.email
-    }
+    // ALERT: This is dangerous, because Groovy creates an implicit constructor with a map as parameter for every bean.
+    //
+    //    User(Map userMap){
+    //        this.username = userMap.id
+    //        this.email = userMap.email
+    //    }
 
     public String toString() {
         return "User[username="+username+", email="+email+", openIdUser="+openIdUser+"]"
