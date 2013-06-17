@@ -81,12 +81,14 @@ class SearchController {
                 ((urlQuery["offset"].toInteger()+
                 urlQuery["rows"].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery["offset"].toInteger()+urlQuery["rows"].toInteger())
 
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
         //Calculating results pagination (previous page, next page, first page, and last page)
         def page = ((urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()
         def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
+        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
 
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
 
         def queryString = request.getQueryString()
@@ -102,7 +104,7 @@ class SearchController {
                 resultsPaginatorOptions: resultsPaginatorOptions,
                 resultsOverallIndex:resultsOverallIndex,
                 page: page,
-                totalPages: totalPages,
+                totalPages: totalPagesFormatted,
                 paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                 numberOfResults: numberOfResultsFormatted,
                 offset: params["offset"]
