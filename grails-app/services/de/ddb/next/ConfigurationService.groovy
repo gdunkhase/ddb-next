@@ -169,27 +169,30 @@ class ConfigurationService {
      */
 
     public int getSearchGroupCount() {
-        def searchGroupCount = grailsApplication.config.ddb?.advancedSearch?.searchGroupCount
+        def searchGroupCount = grailsApplication.config.ddb?.advancedSearch?.searchGroupCount?.toString()
         if(!searchGroupCount ){
             throw new ConfigurationException("""getSearchGroupCount(): Configuration entry does not exist ->
                 ddb.advancedSearch.searchGroupCount""")
         }
+
         if(!(searchGroupCount instanceof String)){
             throw new ConfigurationException("""getSearchGroupCount(): ddb.advancedSearch.searchGroupCount is not
                 a String""")
         }
+
         try {
-            searchGroupCount = new Integer(Integer.parseInt(searchGroupCount));
+            searchGroupCount = Integer.parseInt(searchGroupCount);
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchGroupCount(): ddb.advancedSearch.searchGroupCount is not
                 an Integer""")
         }
+
         return searchGroupCount
     }
 
     public int getSearchFieldCount() {
-        def searchFieldCount= grailsApplication.config.ddb.advancedSearch?.searchFieldCount
+        def searchFieldCount= grailsApplication.config.ddb.advancedSearch?.searchFieldCount?.toString()
         if(!searchFieldCount){
             throw new ConfigurationException("""getSearchFieldCount(): Configuration entry does not exist ->
                 ddb.advancedSearch.searchFieldCount""")
@@ -199,7 +202,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            searchFieldCount = new Integer(Integer.parseInt(searchFieldCount));
+            searchFieldCount = Integer.parseInt(searchFieldCount);
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchFieldCount(): ddb.advancedSearch.searchFieldCount is not
@@ -209,7 +212,7 @@ class ConfigurationService {
     }
 
     public int getSearchOffset() {
-        def offset = grailsApplication.config.ddb.advancedSearch?.defaultOffset
+        def offset = grailsApplication.config.ddb.advancedSearch?.defaultOffset?.toString()
         if(!offset){
             throw new ConfigurationException("""getSearchOffset(): Configuration entry does not exist ->
                 ddb.advancedSearch.defaultOffset""")
@@ -219,7 +222,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            offset = new Integer(Integer.parseInt(offset));
+            offset = Integer.parseInt(offset);
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchOffset(): ddb.advancedSearch.defaultOffset is not
@@ -229,7 +232,7 @@ class ConfigurationService {
     }
 
     public int getSearchRows() {
-        def rows = grailsApplication.config.ddb?.advancedSearch?.defaultRows
+        def rows = grailsApplication.config.ddb?.advancedSearch?.defaultRows?.toString()
         if(!rows){
             throw new ConfigurationException("""getSearchRows(): Configuration entry does not exist ->
                 ddb.advancedSearch.defaultRows""")
@@ -239,7 +242,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            rows = new Integer(Integer.parseInt(rows));
+            rows = Integer.parseInt(rows);
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchRows(): ddb.advancedSearch.defaultRows is not
@@ -249,7 +252,7 @@ class ConfigurationService {
     }
 
     public int getSessionTimeout() {
-        def timeout = grailsApplication.config.ddb?.session?.timeout
+        def timeout = grailsApplication.config.ddb?.session?.timeout?.toString()
         if(!timeout){
             throw new ConfigurationException("""getSessionTimeout(): Configuration entry does not exist ->
                 ddb.session.timeout""")
@@ -259,7 +262,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            timeout = new Integer(Integer.parseInt(timeout));
+            timeout = Integer.parseInt(timeout);
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSessionTimeout(): ddb.session.timeout is not
