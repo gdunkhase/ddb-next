@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.beans
+package de.ddb.next.exception
 
-class User {
+class AuthorizationException extends Exception {
+    AuthorizationException() {
+        super()
+    }
 
-    public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
-
-    String username
-    String email
-    String password
+    AuthorizationException(String description) {
+        super(description)
+    }
 }

@@ -40,6 +40,8 @@ modules = {
         resource url:'/css/advancedsearch.css', bundle: 'screen'
         resource url:'/css/entity.css', bundle: 'screen'
         resource url:'/css/registration.css', bundle: 'screen'
+        resource url:'/css/user-profile.css', bundle: 'screen'
+        resource url:'/css/login.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
     }
@@ -62,6 +64,7 @@ modules = {
         resource url:'/js/vendor/bootstrap-collapse.js'
         resource url:'/js/vendor/bootstrap-button.js'
         resource url:'/js/vendor/jquery.validate.min.js'
+        resource url:'/js/vendor/respond.src.js'
         resource url:'/js/jquery.fancybox.pack.js'
         resource url:'/js/underscore-min.js'
         resource url:'/jwplayer/jwplayer.js'

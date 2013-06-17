@@ -15,23 +15,25 @@
  */
 package de.ddb.next
 
-import java.util.regex.Pattern
-
 import grails.util.Holders
 import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
-import groovyx.net.http.HttpResponseDecorator.HeadersDecorator;
 
-import org.apache.catalina.connector.ClientAbortException;
-import org.apache.commons.io.IOUtils;
+import java.util.regex.Pattern
+
+import org.apache.catalina.connector.ClientAbortException
+import org.apache.commons.io.IOUtils
 import org.apache.commons.logging.LogFactory
-
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
+import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.util.WebUtils
 
-import de.ddb.next.exception.BackendErrorException;
-import de.ddb.next.exception.ItemNotFoundException;
+import de.ddb.next.beans.User
+import de.ddb.next.exception.AuthorizationException
+import de.ddb.next.exception.BackendErrorException
+import de.ddb.next.exception.ItemNotFoundException
 
 
 /**
@@ -63,9 +65,9 @@ class ApiConsumer {
      */
     static def getText(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], fixWrongContentTypeHeader = false) {
         if(fixWrongContentTypeHeader){
-            return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, httpAuth, optionalHeaders, true, null)
+            return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, null, httpAuth, optionalHeaders, true, null)
         }else{
-            return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.TEXT, httpAuth, optionalHeaders, false, null)
+            return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.TEXT, null, httpAuth, optionalHeaders, false, null)
         }
     }
 
@@ -77,7 +79,43 @@ class ApiConsumer {
      * @return An ApiResponse object containing the server response
      */
     static def getJson(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, httpAuth, optionalHeaders, false, null)
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, null, httpAuth, optionalHeaders, false, null)
+    }
+
+    /**
+     * Sends a request to the backend by calling POST
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @param postParameter body of the POST-Request
+     * @param optionalHeaders Optional request headers to add to the request
+     * @return An ApiResponse object containing the server response
+     */
+    static def postJson(String baseUrl, String path, boolean httpAuth = false, JSONObject postParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.POST, ContentType.JSON, postParameter.toString(), httpAuth, optionalHeaders, false, null)
+    }
+
+    /**
+     * Sends a request to the backend by calling PUT
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @param putParameter body of the PUT-Request
+     * @param optionalHeaders Optional request headers to add to the request
+     * @return An ApiResponse object containing the server response
+     */
+    static def putJson(String baseUrl, String path, boolean httpAuth = false, JSONObject putParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.PUT, ContentType.JSON, putParameter.toString(), httpAuth, optionalHeaders, false, null)
+    }
+
+    /**
+     * Sends a request to the backend by calling PUT
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @param putParameter body of the PUT-Request
+     * @param optionalHeaders Optional request headers to add to the request
+     * @return An ApiResponse object containing the server response
+     */
+    static def delete(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:]) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.DELETE, ContentType.JSON, null, httpAuth, optionalHeaders, false, null)
     }
 
     /**
@@ -88,7 +126,7 @@ class ApiConsumer {
      * @return An ApiResponse object containing the server response
      */
     static def getXml(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.XML, httpAuth, optionalHeaders, false, null)
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.XML, null, httpAuth, optionalHeaders, false, null)
     }
 
     /**
@@ -99,7 +137,7 @@ class ApiConsumer {
      * @return An ApiResponse object containing the server response
      */
     static def getBinaryBlock(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, httpAuth, optionalHeaders, false, null)
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, null, httpAuth, optionalHeaders, false, null)
     }
 
     /**
@@ -111,7 +149,7 @@ class ApiConsumer {
      * @return An ApiResponse object containing the server response
      */
     static def getBinaryStreaming(String baseUrl, String path, boolean httpAuth = false, OutputStream streamingOutputStream, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, httpAuth, optionalHeaders, false, streamingOutputStream)
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, null, httpAuth, optionalHeaders, false, streamingOutputStream)
     }
 
     /**
@@ -128,7 +166,7 @@ class ApiConsumer {
      * @param streamingOutputStream The gsp OutputStream needed for streaming binary resources
      * @return An ApiResponse object containing the server response
      */
-    private static def requestServer(baseUrl, path, query, method, content, boolean httpAuth = false, optionalHeaders, fixWrongContentTypeHeader, OutputStream streamingOutputStream) {
+    private static def requestServer(baseUrl, path, query, method, content, requestBody, boolean httpAuth = false, optionalHeaders, fixWrongContentTypeHeader, OutputStream streamingOutputStream) {
         def timestampStart = System.currentTimeMillis();
         path = checkContext(baseUrl, path)
         
@@ -140,6 +178,10 @@ class ApiConsumer {
             }
 
             http.request(method, content) { req ->
+                
+                if (requestBody != null) {
+                    body = requestBody
+                }
 
                 if(content == ContentType.BINARY){
                     setTimeout(req)
@@ -194,6 +236,9 @@ class ApiConsumer {
                             return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output)
                     }
                 }
+                response.'401' = { resp ->
+                    return build401Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 401 -> " + uri.toString())
+                }
                 response.'404' = { resp ->
                     return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 404 -> " + uri.toString())
                 }
@@ -226,6 +271,24 @@ class ApiConsumer {
     private static def build200Response(timestampStart, calledUrl, method, content, responseHeader, responseObject){
         def duration = System.currentTimeMillis()-timestampStart
         def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, null, ApiResponse.HttpStatus.HTTP_200, responseHeader)
+        log.info response.toString()
+        return response
+    }
+
+    /**
+     * Utility method to build the ApiResponse object for 401 responses
+     * @param timestampStart The timestamp when the request was send
+     * @param calledUrl The complete URL that was called
+     * @param method The request method (Method.GET, Method.POST)
+     * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param responseHeader The headers of the response
+     * @param exceptionDescription The text for the ItemNotFoundException that will be attached but not thrown
+     * @return An ApiResponse object containing the response information
+     */
+    private static def build401Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription){
+        def duration = System.currentTimeMillis()-timestampStart
+        def exception = new AuthorizationException(exceptionDescription)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_401, responseHeader)
         log.info response.toString()
         return response
     }
@@ -339,10 +402,13 @@ class ApiConsumer {
 
     static def setAuthHeader(http){
         try {
-            //TODO: take values from sticky session
-            http.auth.basic 'admin', 'admin'
+            User user = WebUtils.retrieveGrailsWebRequest().getSession().getAttribute(User.SESSION_USER);
+            if (user != null) {
+                http.auth.basic user.username, user.password
+                
+            }
         } catch(Exception e) {
-            log.error "setTimeout(): Could not set the timeout to the binary request"
+            log.error "setAuthHeader(): Could not get haeder-data from session"
         }
     }
 

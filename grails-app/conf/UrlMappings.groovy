@@ -85,9 +85,38 @@ class UrlMappings {
             action="staticFiles"
         }
 
+        "/user/profile" {
+            controller="user"
+            action="profile"
+        }
+        "/user/delete" {
+            controller="user"
+            action="delete"
+        }
+
         "/login" {
             controller="user"
             action="index"
+        }
+
+        "/login/doLogin" {
+            controller="user"
+            action="doLogin"
+        }
+
+        "/login/doLogout" {
+            controller="user"
+            action="doLogout"
+        }
+
+        "/login/openId" {
+            controller="user"
+            action="requestOpenIdLogin"
+        }
+
+        "/login/doOpenIdLogin" {
+            controller="user"
+            action="doOpenIdLogin"
         }
 
         "/registration" {
@@ -95,15 +124,29 @@ class UrlMappings {
             action="registration"
         }
 
-        "500"(controller: "error", action: "serverError")
-        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
+        "/recovery" {
+            controller="user"
+            action="recoverPassword"
+        }
+
+        "/profile" {
+            controller="user"
+            action="profile"
+        }
+
+        "/favorites" {
+            controller="user"
+            action="favorites"
+        }
 
         "404"(controller: "error", action: "notFound")
+        "401"(controller: "error", action: "auth")
 
         "500"(controller: "error", action: "notFound", exception: de.ddb.next.exception.ItemNotFoundException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
         "500"(controller: "error", action: "serverError")
+        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
 
     }
 }

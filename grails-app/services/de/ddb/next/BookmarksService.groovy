@@ -13,15 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package de.ddb.next
 
-class BootStrap {
+import static groovyx.net.http.ContentType.*
+import de.ddb.next.beans.User
+import de.ddb.next.exception.BackendErrorException
+import groovy.json.*
+import groovyx.net.http.Method
+
+import org.apache.commons.logging.LogFactory
+import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.util.WebUtils
+
+/**
+ * Set of Methods that encapsulate REST-calls to the BookmarksService
+ * 
+ * @author mih
+ *
+ */
+
+class BookmarksService {
 
     def configurationService
+    def transactional = false
 
-    def init = { servletContext ->
-        configurationService.logConfigurationSettings()
-    }
-
-    def destroy = {
-    }
 }
