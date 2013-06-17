@@ -46,7 +46,7 @@ class UserController {
     }
 
     def doLogin() {
-
+        log.info "doLogin(): login user "
         def loginStatus = LoginStatus.LOGGED_OUT
 
         // Only perfom login if user is not already logged in
@@ -58,7 +58,7 @@ class UserController {
 
             if(user != null){
                 loginStatus = LoginStatus.SUCCESS
-                putUserInSession(session, user)
+                putUserInSession(getSessionObject(true), user)
             }else{
                 loginStatus = LoginStatus.FAILURE
             }
@@ -72,6 +72,7 @@ class UserController {
     }
 
     def doLogout() {
+        log.info "doLogout(): logout user "
 
         removeUserFromSession()
 
@@ -167,8 +168,8 @@ class UserController {
 
         log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
         ConsumerManager manager = new ConsumerManager();
-        session.setAttribute(SESSION_CONSUMER_MANAGER, manager)
-        session.setAttribute(SESSION_OPENID_PROVIDER, provider)
+        getSessionObject(false)?.setAttribute(SESSION_CONSUMER_MANAGER, manager)
+        getSessionObject(false)?.setAttribute(SESSION_OPENID_PROVIDER, provider)
         String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
         List discoveries = manager.discover(discoveryUrl);
         DiscoveryInformation discovered = manager.associate(discoveries);
@@ -185,12 +186,12 @@ class UserController {
 
         log.info "doOpenIdLogin(): got OpenID login request"
 
-        ConsumerManager manager = session.getAttribute(SESSION_CONSUMER_MANAGER)
+        ConsumerManager manager = getSessionObject(false)?.getAttribute(SESSION_CONSUMER_MANAGER)
         if(manager){
-            def provider = session.getAttribute(SESSION_OPENID_PROVIDER)
+            def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
 
             ParameterList openidResp = new ParameterList(request.getParameterMap());
-            DiscoveryInformation discovered = (DiscoveryInformation) session.getAttribute("discovered");
+            DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
             String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
             String receivingURL =  returnURL + "?" + request.getQueryString();
             VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered);
@@ -223,8 +224,8 @@ class UserController {
                 log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
 
                 // Create new session, because the old one might be corrupt due to the redirect to the OpenID provider
-                session.invalidate()
-                HttpSession newSession = request.getSession(true)
+                getSessionObject(false)?.invalidate()
+                HttpSession newSession = getSessionObject(true)
 
                 User user = new User()
                 user.setEmail(email)
@@ -274,7 +275,7 @@ class UserController {
     }
 
     private boolean isUserInSession() {
-        HttpSession sessionObject = request.getSession(false)
+        HttpSession sessionObject = getSessionObject(false)
         return sessionObject && sessionObject.getAttribute(User.SESSION_USER)
     }
 
@@ -282,8 +283,16 @@ class UserController {
         sessionObject.setAttribute(User.SESSION_USER, user)
     }
 
+    private User getUserFromSession() {
+        return getSessionObject(false)?.getAttribute(User.SESSION_USER)
+    }
+
     private boolean removeUserFromSession() {
-        session.removeAttribute(User.SESSION_USER)
-        session.invalidate()
+        getSessionObject(false)?.removeAttribute(User.SESSION_USER)
+        getSessionObject(false)?.invalidate()
+    }
+
+    private HttpSession getSessionObject(boolean createNewSession){
+        return request.getSession(createNewSession)
     }
 }
