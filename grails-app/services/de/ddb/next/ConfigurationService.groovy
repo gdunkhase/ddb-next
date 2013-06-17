@@ -129,6 +129,40 @@ class ConfigurationService {
         return mimeTypeHtml
     }
 
+    public String getLoggingFolder(){
+        def loggingFolder = grailsApplication.config.ddb?.logging?.folder
+        if(!loggingFolder){
+            throw new ConfigurationException("getLoggingFolder(): Configuration entry does not exist -> ddb.logging.folder")
+        }
+        if(!(loggingFolder instanceof String)){
+            throw new ConfigurationException("getLoggingFolder(): ddb.logging.folder is not a String")
+        }
+        return loggingFolder
+    }
+
+    public String getLoadbalancerHeaderName(){
+        def loadbalancerHeaderName = grailsApplication.config.ddb?.loadbalancer?.header?.name
+        if(!loadbalancerHeaderName){
+            throw new ConfigurationException("getLoadbalancerHeaderName(): Configuration entry does not exist -> ddb.loadbalancer.header.name")
+        }
+        if(!(loadbalancerHeaderName instanceof String)){
+            throw new ConfigurationException("getLoadbalancerHeaderName(): ddb.loadbalancer.header.name is not a String")
+        }
+        return loadbalancerHeaderName
+    }
+
+    public String getLoadbalancerHeaderValue(){
+        def loadbalancerHeaderValue = grailsApplication.config.ddb?.loadbalancer?.header?.value
+        if(!loadbalancerHeaderValue){
+            throw new ConfigurationException("getLoadbalancerHeaderName(): Configuration entry does not exist -> ddb.loadbalancer.header.value")
+        }
+        if(!(loadbalancerHeaderValue instanceof String)){
+            throw new ConfigurationException("getLoadbalancerHeaderName(): ddb.loadbalancer.header.value is not a String")
+        }
+        return loadbalancerHeaderValue
+    }
+
+
     /*
      ddb.advancedSearch.defaultOffset=0
      ddb.advancedSearch.defaultRows=20
@@ -232,5 +266,25 @@ class ConfigurationService {
                 an Integer""")
         }
         return timeout
+    }
+
+    public def logConfigurationSettings() {
+        log.info "ddb.binary.url = " + getBinaryUrl()
+        log.info "ddb.static.url = " + getStaticUrl()
+        log.info "ddb.apis.url = " + getApisUrl()
+        log.info "ddb.backend.url = " + getBackendUrl()
+        log.info "ddb.aas.url = " + getAasUrl()
+        log.info "ddb.backend.facets.filter = " + getFacetsFilter()
+        log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
+        log.info "grails.views.gsp.encoding = " + getEncoding()
+        log.info "grails.mime.types['html'][0] = " + getMimeTypeHtml()
+        log.info "ddb.advancedSearch.searchGroupCount = " + getSearchGroupCount()
+        log.info "ddb.advancedSearch.searchFieldCount = " + getSearchFieldCount()
+        log.info "ddb.advancedSearch.defaultOffset = " + getSearchOffset()
+        log.info "ddb.advancedSearch.defaultRows = " + getSearchRows()
+        log.info "ddb.session.timeout = " + getSessionTimeout()
+        log.info "ddb.logging.folder = " + getLoggingFolder()
+        log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
+        log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
     }
 }

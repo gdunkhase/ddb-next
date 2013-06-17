@@ -50,8 +50,14 @@ class AasService {
         String auth = id + ":" + password;
         def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), PERSON_URI + id, false, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
         if(apiResponse.isOk()){
-            User user = new User(apiResponse.getResponse())
+            def aasResponse = apiResponse.getResponse()
+
+            User user = new User()
+            user.setUsername(aasResponse.id)
+            user.setEmail(aasResponse.email)
             user.setPassword(password)
+            user.setOpenIdUser(false)
+
             return user
         }
         else {

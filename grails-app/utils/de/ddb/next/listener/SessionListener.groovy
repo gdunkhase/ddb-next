@@ -21,6 +21,9 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import org.apache.log4j.Logger;
+import org.codehaus.groovy.grails.commons.GrailsApplication;
+
+import de.ddb.next.ConfigurationService;
 
 
 class SessionListener implements HttpSessionListener {
@@ -32,8 +35,10 @@ class SessionListener implements HttpSessionListener {
     void sessionCreated(HttpSessionEvent event) {
         HttpSession session = event.getSession()
 
-        def grailsApplication = GrailsWebUtil.lookupApplication(event.getSession().getServletContext())
-        def sessionTimeout = grailsApplication.config.ddb.session.timeout
+        GrailsApplication grailsApplication = GrailsWebUtil.lookupApplication(event.getSession().getServletContext())
+        ConfigurationService configurationService = (ConfigurationService)(grailsApplication.getMainContext().getBean("configurationService"))
+
+        def sessionTimeout = configurationService.getSessionTimeout()
 
         session.setMaxInactiveInterval(sessionTimeout)
 
@@ -44,6 +49,12 @@ class SessionListener implements HttpSessionListener {
     // called by servlet container upon session destruction
     void sessionDestroyed(HttpSessionEvent event) {
         totalSessionCount = totalSessionCount - 1
+
+        //Just a fix for dynamic application reloading in Eclipse
+        if(totalSessionCount < 0){
+            totalSessionCount = 0
+        }
+
         log.info "sessionCreated(): A session was destroyed. Total session count on node: " + totalSessionCount
     }
 }

@@ -58,14 +58,17 @@ class UserController {
 
             if(user != null){
                 loginStatus = LoginStatus.SUCCESS
-                putUserInSession(user)
+                putUserInSession(session, user)
             }else{
                 loginStatus = LoginStatus.FAILURE
             }
         }
 
-        redirect(controller: 'user', action: 'favorites')
-
+        if(loginStatus == LoginStatus.SUCCESS){
+            redirect(controller: 'user', action: 'favorites')
+        }else{
+            render(view: "login", model: ['loginStatus': loginStatus])
+        }
     }
 
     def doLogout() {
@@ -154,7 +157,10 @@ class UserController {
             fetch.addAttribute("Email", "http://axschema.org/contact/email", true);
             fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true);
         }else{
-            //TODO handle invalid provider
+            render(view: "login", model: [
+                'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
+            )
+            return
         }
 
         setProxy()
@@ -208,7 +214,10 @@ class UserController {
                     email = params["openid.ax.value.email"]
                     identifier = verified.getIdentifier()
                 }else{
-                    //TODO handle invalid provider
+                    render(view: "login", model: [
+                        'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
+                    )
+                    return
                 }
 
                 log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
@@ -222,17 +231,22 @@ class UserController {
                 user.setUsername(username)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                newSession.setAttribute(User.SESSION_USER, user)
+
+                putUserInSession(newSession, user)
 
                 loginStatus = LoginStatus.SUCCESS
 
             }else {
                 log.info "doOpenIdLogin(): failure verification"
-                loginStatus = LoginStatus.FAILURE
+                loginStatus = LoginStatus.AUTH_PROVIDER_DENIED
             }
         }
 
-        redirect(controller: 'user', action: 'favorites')
+        if(loginStatus == LoginStatus.SUCCESS){
+            redirect(controller: 'user', action: 'favorites')
+        }else{
+            render(view: "login", model: ['loginStatus': loginStatus])
+        }
 
     }
 
@@ -264,8 +278,8 @@ class UserController {
         return sessionObject && sessionObject.getAttribute(User.SESSION_USER)
     }
 
-    private void putUserInSession(user) {
-        session.setAttribute(User.SESSION_USER, user)
+    private void putUserInSession(HttpSession sessionObject, User user) {
+        sessionObject.setAttribute(User.SESSION_USER, user)
     }
 
     private boolean removeUserFromSession() {
