@@ -80,6 +80,7 @@ modules = {
         resource url:'/js/advanced-search-page.js'
         resource url:'/js/search-results.js'
         resource url:'/js/registration.js'
+        resource url:'/js/changeFavorite.js'
     }
 
     autocomplete {

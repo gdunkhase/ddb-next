@@ -54,7 +54,12 @@ class UrlMappings {
             controller="item"
             action="findById"
         }
-
+        
+        "/item/$id/changeItemState" {
+            controller="item"
+            action="changeItemState"
+        }
+        
         "/about-us/institutions" {
             controller="institution"
             action="show"

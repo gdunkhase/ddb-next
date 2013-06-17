@@ -15,10 +15,13 @@
  */
 package de.ddb.next
 
+import javax.servlet.http.HttpSession;
+import de.ddb.next.beans.User;
+
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
-
+    
     private static final def HTTP ='http://'
     private static final def HTTPS ='https://'
     static defaultAction = "findById"
@@ -28,6 +31,9 @@ class ItemController {
     def grailsLinkGenerator
     def configurationService
 
+    def setFavorit(aid) {
+        
+    }
 
     def children() {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
@@ -188,5 +194,32 @@ class ItemController {
         searchResultParameters["searchParametersMap"] = searchParametersMap
 
         return searchResultParameters
+    }
+    
+    def changeItemState() {
+        def itemId = params.id;
+        HttpSession sessionObject = request.getSession(false)
+        User vUser = null;
+        if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
+            log.info("Favorite: change itemState User-Email: " + vUser.getEmail() + ", item: " + itemId);
+            FavoritesService vFavService = FavoritesService.getFevoritesService();
+            if (vFavService != null) {
+                if (vFavService.isFavorit(vUser.getEmail(), itemId)) {
+                    log.info("add to favorits: ${itemId}");
+                    vFavService.deleteFromFavoritesList(vUser.getEmail(), itemId);
+                }
+                else {
+                    log.info("delete from favorits list: ${itemId}");
+                    vFavService.addToFavorites(vUser.getEmail(), itemId);
+                }
+            }
+            else {
+                log.error("Favorites-Services not found");
+            }
+        }
+        println "################## render - START"
+        render (view: 'item', model: [id: itemId]);
+        println "################## render - STOP"
+        
     }
 }
