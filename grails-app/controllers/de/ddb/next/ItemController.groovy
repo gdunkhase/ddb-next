@@ -21,7 +21,7 @@ import de.ddb.next.beans.User;
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
-    
+
     private static final def HTTP ='http://'
     private static final def HTTPS ='https://'
     static defaultAction = "findById"
@@ -31,9 +31,6 @@ class ItemController {
     def grailsLinkGenerator
     def configurationService
 
-    def setFavorit(aid) {
-        
-    }
 
     def children() {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
@@ -81,6 +78,7 @@ class ItemController {
             } else {
                 def itemUri = request.forwardURI
                 def fields = translate(item.fields, convertToHtmlLink)
+                fields = makeLinksBlank(fields)
 
                 if(params.print){
                     renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
@@ -101,6 +99,19 @@ class ItemController {
         } catch(ItemNotFoundException infe){
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
             forward controller: "error", action: "notFound"
+        }
+    }
+
+    def makeLinksBlank(fields){
+        fields.each {
+            def value = it.value?.toString()
+
+            int indexOfHref = value.indexOf(" href=")
+            if(indexOfHref > 0){
+                def prefix = value.substring(0,indexOfHref)
+                def suffix = value.substring(indexOfHref, value.length())
+                it.value = prefix + " target=\"_blank\"" + suffix
+            }
         }
     }
 
@@ -174,7 +185,7 @@ class ItemController {
                 apiResponse.throwException(request)
             }
             resultsItems = apiResponse.getResponse()
-    
+
             //Workaround for last-hit (Performance-issue)
             if (reqParameters.id && reqParameters.id.equals("lasthit")) {
                 reqParameters.id = resultsItems.results["docs"][1].id
@@ -195,7 +206,7 @@ class ItemController {
 
         return searchResultParameters
     }
-    
+
     def changeItemState() {
         def itemId = params.id;
         HttpSession sessionObject = request.getSession(false)
