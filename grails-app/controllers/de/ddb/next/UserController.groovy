@@ -168,8 +168,8 @@ class UserController {
 
         log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
         ConsumerManager manager = new ConsumerManager();
-        getSessionObject(false)?.setAttribute(SESSION_CONSUMER_MANAGER, manager)
-        getSessionObject(false)?.setAttribute(SESSION_OPENID_PROVIDER, provider)
+        getSessionObject(true)?.setAttribute(SESSION_CONSUMER_MANAGER, manager)
+        getSessionObject(true)?.setAttribute(SESSION_OPENID_PROVIDER, provider)
         String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
         List discoveries = manager.discover(discoveryUrl);
         DiscoveryInformation discovered = manager.associate(discoveries);
