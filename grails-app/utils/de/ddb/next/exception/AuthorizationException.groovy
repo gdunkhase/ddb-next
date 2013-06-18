@@ -16,6 +16,7 @@
 package de.ddb.next.exception
 
 class AuthorizationException extends Exception {
+
     AuthorizationException() {
         super()
     }
