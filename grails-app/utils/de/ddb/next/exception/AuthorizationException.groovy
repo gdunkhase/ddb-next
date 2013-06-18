@@ -15,7 +15,7 @@
  */
 package de.ddb.next.exception
 
-class AuthorizationException extends Exception {
+class AuthorizationException extends BackendErrorException {
 
     AuthorizationException() {
         super()
