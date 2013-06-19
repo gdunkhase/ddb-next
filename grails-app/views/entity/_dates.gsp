@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="dates">
-  <div>Geboren: 28. August 1749, <a href="">Frankfurt am Main</a></div>
-  <div>Gestorben: 28. August 1832, <a href="">Weimar</a></div>
+
+  <div><g:message code="ddbnext.Entity_Birth" />: ${entity.dateOfBirth}, <a href="">${entity.placeOfBirth}</a></div>
+  <div><g:message code="ddbnext.Entity_Death" />: ${entity.dateOfDeath}, <a href="">${entity.placeOfDeath}</a></div>
 </div>

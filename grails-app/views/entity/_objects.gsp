@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="objects">
+<div class="objects todo">
   <h3>Objekte:</h3>
   <div>
     <a href="">Alle Bilder (XX)</a> |

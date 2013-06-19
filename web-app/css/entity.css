@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- .icon-work {
+.entity-page .icon-work {
   background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
 }
 
-.icon-theme {
+.entity-page .icon-theme {
   background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
 }
 
-.icon-ddb-search {
-  background: url(../images/icons/search.png) no-repeat -15px -122px;
+.entity-page .todo {
+  background-color: #FFDDDD;
 }
+
+.entity-page .search-icon {
+  background: url(../images/icons/search.png) no-repeat -0px -145px;
+  padding: 0 0 0 35px;
+}
+

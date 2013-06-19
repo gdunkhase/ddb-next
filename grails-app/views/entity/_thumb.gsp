@@ -15,6 +15,26 @@ limitations under the License.
 --%>
 <div class="thumb">
   <div class="thumbinner">
+
+    <a href="${entity.thumbnail.link}" class="image">
+      <!-- TODO: refactor to use figure element -->
+      <!-- TODO: remove width and height, use CSS -->
+      <!-- TODO srcset is not a valid attribute -->
+      <img alt="${entity.title}"
+      src="${entity.thumbnail.link}"
+      width="220" height="271" class="thumbimage"
+      srcset="${entity.thumbnail.link}
+      1.5x,
+      ${entity.thumbnail.link}
+      2x">
+    </a>
+    <div class="thumbcaption">
+      <i>${entity.title}</i>
+      <br>
+      ${entity.thumbnail.caption}
+    </div>
+
+    <%--   
     <a href="//commons.wikimedia.org/wiki/File:Goethe_(Stieler_1828).jpg" class="image">
       <!-- TODO: refactor to use figure element -->
       <!-- TODO: remove width and height, use CSS -->
@@ -31,5 +51,6 @@ limitations under the License.
       <i>Johann Wolfgang von Goethe</i>,<br>
       Ölgemälde von Joseph Karl Stieler, 1828
     </div>
+    --%>
   </div>
 </div>

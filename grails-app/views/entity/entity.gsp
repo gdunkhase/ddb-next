@@ -23,7 +23,7 @@ limitations under the License.
 </head> 
 <body>
   <g:render template="controls" />
-  <div class="row">
+  <div class="row entity-page">
     <div class="span9">
       <g:render template="name" />
       <g:render template="dates" />
