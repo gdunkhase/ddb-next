@@ -30,6 +30,7 @@ modules = {
         resource url:'/css/institution.css', bundle: 'screen'
         resource url:'/css/institution-map.css', bundle: 'screen'
         resource url:'/css/results.css', bundle: 'screen'
+        resource url:'/css/favorites.css', bundle: 'screen'
         resource url:'/css/staticcontent.css', bundle: 'screen'
         resource url:'/css/error.css', bundle: 'screen'
         resource url:'/css/institution.css', bundle: 'screen'
@@ -83,6 +84,7 @@ modules = {
         resource url:'/js/binaries-viewer.js'
         resource url:'/js/advanced-search-page.js'
         resource url:'/js/search-results.js'
+        resource url:'/js/favorites.js'
         resource url:'/js/registration.js'
     }
 

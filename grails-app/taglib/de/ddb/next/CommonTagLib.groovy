@@ -13,15 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.exception
+package de.ddb.next
 
-class AuthorizationException extends Exception {
-
-    AuthorizationException() {
-        super()
-    }
-
-    AuthorizationException(String description) {
-        super(description)
-    }
+class CommonTagLib {  
+  /**
+   * Renders the paginator bar for the results.
+   *
+   * @attrs navData REQUIRED data for paginator
+   */
+  
+  def paginationControlsRender = { attrs, body ->
+      out << render(template:"/common/pageNavigationControls", model:[navData: attrs.navData])
+  }
+  
+  /**
+   * Renders the media types icons.
+   *
+   * @attrs mediaTypesArray REQUIRED media types array
+   */
+  
+  def mediaTypesListRender = { attrs, body ->
+      out << render(template:"/common/mediaTypesIcons", model:[mediaTypesArray: attrs.mediaTypesArray])
+  }
 }

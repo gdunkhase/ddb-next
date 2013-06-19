@@ -92,7 +92,7 @@ limitations under the License.
         <div class="control-group">
           <label class="control-label"></label>
           <div class="controls">
-            <button type="submit" class="btn-padding">Create My Account</button>
+            <button type="submit" class="btn-padding"><g:message code="ddbnext.User.Create_Account" /></button>
           </div>
         </div>
         <ul id="error-messages" class="off">

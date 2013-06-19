@@ -169,7 +169,7 @@ class ApiConsumer {
     private static def requestServer(baseUrl, path, query, method, content, requestBody, boolean httpAuth = false, optionalHeaders, fixWrongContentTypeHeader, OutputStream streamingOutputStream) {
         def timestampStart = System.currentTimeMillis();
         path = checkContext(baseUrl, path)
-        
+
         try {
             def http = new HTTPBuilder(baseUrl)
             setProxy(http, baseUrl)
@@ -178,7 +178,7 @@ class ApiConsumer {
             }
 
             http.request(method, content) { req ->
-                
+
                 if (requestBody != null) {
                     body = requestBody
                 }
@@ -287,7 +287,7 @@ class ApiConsumer {
      */
     private static def build401Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription){
         def duration = System.currentTimeMillis()-timestampStart
-        def exception = new AuthorizationException(exceptionDescription)
+        AuthorizationException exception = new AuthorizationException(exceptionDescription)
         def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_401, responseHeader)
         log.info response.toString()
         return response
@@ -305,7 +305,7 @@ class ApiConsumer {
      */
     private static def build404Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription){
         def duration = System.currentTimeMillis()-timestampStart
-        def exception = new ItemNotFoundException(exceptionDescription)
+        ItemNotFoundException exception = new ItemNotFoundException(exceptionDescription)
         def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_404, responseHeader)
         log.info response.toString()
         return response
@@ -323,7 +323,7 @@ class ApiConsumer {
      */
     private static def build500Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription){
         def duration = System.currentTimeMillis()-timestampStart
-        def exception = new BackendErrorException(exceptionDescription)
+        BackendErrorException exception = new BackendErrorException(exceptionDescription)
         def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500, responseHeader)
         log.info response.toString()
         return response
@@ -405,7 +405,7 @@ class ApiConsumer {
             User user = WebUtils.retrieveGrailsWebRequest().getSession().getAttribute(User.SESSION_USER);
             if (user != null) {
                 http.auth.basic user.username, user.password
-                
+
             }
         } catch(Exception e) {
             log.error "setAuthHeader(): Could not get haeder-data from session"

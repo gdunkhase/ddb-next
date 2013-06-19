@@ -130,6 +130,9 @@ background-position: right -40px;
 .item-nav .last-item  {
   padding-right: 5px;
 }
+.item-nav .last-item-noicon {
+  padding-right: 8px;
+}
 .item-nav .last-item a {
   padding-right: 14px;
   background-position: right 0px;

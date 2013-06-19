@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.exception
+package de.ddb.next
 
-class AuthorizationException extends Exception {
-
-    AuthorizationException() {
-        super()
-    }
-
-    AuthorizationException(String description) {
-        super(description)
-    }
+class FavoritesTagLib {  
+  /**
+   * Renders the favorites results list.
+   *
+   * @attrs items REQUIRED data for paginator
+   */
+  
+  def favoritesResultsRender = { attrs, body ->
+      out << render(template:"/user/resultsList", model:[results: attrs.results])
+  }
 }
