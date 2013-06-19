@@ -40,6 +40,9 @@ modules = {
         resource url:'/css/modalDialog.css', bundle: 'screen'
         resource url:'/css/advancedsearch.css', bundle: 'screen'
         resource url:'/css/entity.css', bundle: 'screen'
+        resource url:'/css/registration.css', bundle: 'screen'
+        resource url:'/css/user-profile.css', bundle: 'screen'
+        resource url:'/css/login.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
     }
@@ -59,7 +62,12 @@ modules = {
         resource url:'/js/jquery.cookies.2.2.0.min.js'
         resource url:'/js/jquery.dotdotdot-1.5.1.js'
         resource url:'/js/jquery.carouFredSel-6.2.0-packed.js'
+        resource url:'/js/vendor/bootstrap.js'
         resource url:'/js/vendor/bootstrap-collapse.js'
+        resource url:'/js/vendor/bootstrap-button.js'
+        resource url:'/js/vendor/bootstrap-multiselect.js'
+        resource url:'/js/vendor/jquery.validate.min.js'
+        resource url:'/js/vendor/respond.src.js'
         resource url:'/js/jquery.fancybox.pack.js'
         resource url:'/js/underscore-min.js'
         resource url:'/jwplayer/jwplayer.js'
@@ -77,6 +85,7 @@ modules = {
         resource url:'/js/advanced-search-page.js'
         resource url:'/js/search-results.js'
         resource url:'/js/favorites.js'
+        resource url:'/js/registration.js'
     }
 
     autocomplete {

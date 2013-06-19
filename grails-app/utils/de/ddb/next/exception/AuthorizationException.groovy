@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package de.ddb.next.exception
 
-class BootStrap {
+class AuthorizationException extends Exception {
 
-    def configurationService
-
-    def init = { servletContext ->
-        configurationService.logConfigurationSettings()
+    AuthorizationException() {
+        super()
     }
 
-    def destroy = {
+    AuthorizationException(String description) {
+        super(description)
     }
 }

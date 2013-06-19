@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package de.ddb.next;
 
-class BootStrap {
+public enum LoginStatus {
 
-    def configurationService
+    SUCCESS, ALREADY_LOGGED_IN, FAILURE, LOGGED_OUT, AUTH_PROVIDER_UNKNOWN, AUTH_PROVIDER_DENIED
 
-    def init = { servletContext ->
-        configurationService.logConfigurationSettings()
-    }
-
-    def destroy = {
-    }
 }

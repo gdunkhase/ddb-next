@@ -77,7 +77,7 @@ class ErrorController {
     }
 
     /**
-     * Handler method for error 400 situations
+     * Handler method for error 404 situations
      * @return The notfound view
      */
     def notFound() {
@@ -94,7 +94,7 @@ class ErrorController {
 
         apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
 
-        // Return response code 400
+        // Return response code 404
         response.status = 404
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
@@ -114,6 +114,47 @@ class ErrorController {
             // Not it production? show an ugly, developer-focused error message
             log.error "notFound(): Return view '404_development'"
             return render(view:'404_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+            
+        }
+        
+    }
+
+        /**
+     * Handler method for error 401 situations
+     * @return The auth view
+     */
+    def auth() {
+
+        def exceptionMessage = ""
+        def apiResponse
+
+        // Does it come from a automatically handled backend request?
+        if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
+        }
+
+        apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
+
+        // Return response code 401
+        response.status = 401
+
+        // The content type and encoding of the error page (should be explicitly set, otherwise the mime
+        // could be text/json if an API was called and the layout would be messed up
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
+
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Return the 404 view
+            log.error "auth(): Return view '401'"
+            return render(view:'401_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        } else {
+
+            // Not it production? show an ugly, developer-focused error message
+            log.error "auth(): Return view '401_development'"
+            return render(view:'401_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
             
         }
         

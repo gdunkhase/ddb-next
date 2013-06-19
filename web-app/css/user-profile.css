@@ -13,13 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.beans
-
-class User {
-
-    public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
-
-    String username
-    String email
-    String password
+.profile-input {
+  height: 30px !important;
+  padding: 4px 6px !important;
 }
+
+.profile-title {
+  font-size: 1.375em;
+}
+
+.profile-nav {
+  margin-bottom: 20px;
+  line-height: 40px;
+  border-bottom: 1px solid #e5e5e5;
+  display: block;
+}
+
+.profile-title, .profile-links{
+    display: inline-block;
+}
+
+.profile-link {
+    margin-left: 30px !important;
+}
+

@@ -13,15 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package de.ddb.next.exception
 
-class BootStrap {
-
-    def configurationService
-
-    def init = { servletContext ->
-        configurationService.logConfigurationSettings()
-    }
-
-    def destroy = {
-    }
+class UserNotFoundException extends Exception {
 }

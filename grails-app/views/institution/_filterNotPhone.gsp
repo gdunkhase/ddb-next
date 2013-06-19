@@ -13,9 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="filter">
+<div id="sector-facet-phone" class="filter hidden-phone">
   <g:render template="sectorFacet" />
 </div>
 <aside>
-<g:message code="ddbnext.InstitutionsPage_SummaryText" args="${ [ total ] }" />
+  <g:message code="ddbnext.InstitutionsPage_SummaryText" args="${ [ total ] }" />
 </aside>

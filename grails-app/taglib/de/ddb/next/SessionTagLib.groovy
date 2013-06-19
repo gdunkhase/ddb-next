@@ -69,4 +69,15 @@ class SessionTagLib {
             out << ""
         }
     }
+
+    /**
+     * Redirects the page to a defined endpoint when the user is not logged in
+     */
+    def redirectIfNotLoggedIn = { attrs, body ->
+        def isLoggedIn = isUserInSession()
+
+        if(!isLoggedIn){
+            response.sendRedirect(request.contextPath)
+        }
+    }
 }

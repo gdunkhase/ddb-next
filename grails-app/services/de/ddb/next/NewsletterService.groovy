@@ -15,17 +15,26 @@
  */
 package de.ddb.next
 
+import static groovyx.net.http.ContentType.*
+import de.ddb.next.beans.User
+import de.ddb.next.exception.BackendErrorException
+import groovy.json.*
+import groovyx.net.http.Method
+
+import org.apache.commons.logging.LogFactory
+import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 /**
- * This class has currently the only purpose to prevent Eclipse and/or Git 
- * to remove the otherwise empty "domain" folder of Grails and therefor 
- * causing build path errors.
+ * Set of Methods that encapsulate REST-calls to the NewsletterService
  * 
- * If there are other domain classes available, this one can be deleted.
- * @author hla
+ * @author mih
+ *
  */
-class Content {
 
-    static constraints = {
-    }
+class NewsletterService {
+
+    def configurationService
+    def transactional = false
+
 }

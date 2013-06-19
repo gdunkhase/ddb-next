@@ -13,15 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package de.ddb.next.beans
 
-class BootStrap {
+import java.util.Map;
 
-    def configurationService
+class User {
 
-    def init = { servletContext ->
-        configurationService.logConfigurationSettings()
+    public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
+
+    String username
+    String email
+    String password
+    boolean openIdUser
+
+    User(){
     }
 
-    def destroy = {
+    // ALERT: This is dangerous, because Groovy creates an implicit constructor with a map as parameter for every bean.
+    //
+    //    User(Map userMap){
+    //        this.username = userMap.id
+    //        this.email = userMap.email
+    //    }
+
+    public String toString() {
+        return "User[username="+username+", email="+email+", openIdUser="+openIdUser+"]"
     }
 }

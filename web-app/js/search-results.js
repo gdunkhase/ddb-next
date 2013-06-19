@@ -218,6 +218,7 @@ function updateLanguageSwitch(params) {
   
   $('.page-nav-result').click(function(){
     fetchResultsList(this.href);
+    $('html, body').animate({scrollTop: 0}, 1000) ;
     return false;
   });
   $('#form-search-header button').click(function(){
