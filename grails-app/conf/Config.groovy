@@ -42,7 +42,8 @@ grails.mime.types = [
     js:            'text/javascript',
     json:          [
         'application/json',
-        'text/json'
+        'text/json',
+        'application/vnd.api+json'
     ],
     multipartForm: 'multipart/form-data',
     rss:           'application/rss+xml',

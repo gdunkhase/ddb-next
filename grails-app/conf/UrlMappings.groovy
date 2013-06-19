@@ -143,6 +143,27 @@ class UrlMappings {
             controller="user"
             action="favorites"
         }
+        //Start Bookmark endpoint
+        "/bookmarks/user/$uid/bookmarks" {
+            controller="bookmarkendpoint"
+            action = [GET: "listfolders", POST: "newfolder"]
+        }
+        
+        "/bookmarks/users/$uid/bookmarks/$bid" {
+            controller="bookmarkendpoint"
+            action = [GET: "listitemsinfolder", PUT: "newitemsinfolder", PATCH:"updatefolder",DELETE:"removefolder"]
+        }
+        
+        "/bookmarks/users/$uid/bookmarks/$bid/items" {
+            controller="bookmarkendpoint"
+            action = [POST: "additeminfolder"]
+        }
+        
+        "/bookmarks/users/$uid/bookmarks/$bid/items/$iid" {
+            controller="bookmarkendpoint"
+            action = [DELETE: "removeiteminfolder"]
+        }
+        //End Bookmark endpoint section
 
         "404"(controller: "error", action: "notFound")
         "401"(controller: "error", action: "auth")
