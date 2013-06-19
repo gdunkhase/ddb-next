@@ -79,6 +79,21 @@ class UserController {
         redirect(controller: 'index', action: 'index')
 
     }
+    
+    //Favorites page
+    def favorites(){
+        
+        if(isUserInSession() || true){
+            //1. Call to fetch the list of favorites items#
+            //2. Get the items from the backend
+            //3. Render the results in the page
+            render(view:"favorites")
+        }
+        else{
+            redirect(controller:"index")
+        }
+        
+    }
 
     def registration() {
 
@@ -134,10 +149,6 @@ class UserController {
             forward controller: "error", action: "auth"
         }
         doLogout()
-    }
-
-    def favorites() {
-        render(view: "favorites", model: [:])
     }
 
     def requestOpenIdLogin() {

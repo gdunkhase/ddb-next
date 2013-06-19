@@ -123,6 +123,11 @@ class UrlMappings {
             controller="user"
             action="registration"
         }
+        
+        "/favorites" {
+            controller="user"
+            action="favorites"
+        }
 
         "/recovery" {
             controller="user"
