@@ -16,21 +16,21 @@
 package de.ddb.next
 
 import javax.servlet.http.HttpSession
+
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.openid4java.consumer.ConsumerManager
+import org.openid4java.consumer.VerificationResult
+import org.openid4java.discovery.DiscoveryInformation
+import org.openid4java.discovery.Identifier
+import org.openid4java.message.AuthRequest
+import org.openid4java.message.ParameterList
+import org.openid4java.message.ax.FetchRequest
+import org.openid4java.util.HttpClientFactory
+import org.openid4java.util.ProxyProperties
 
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
-import de.ddb.next.AasService
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator;
-import org.openid4java.consumer.ConsumerManager;
-import org.openid4java.consumer.VerificationResult;
-import org.openid4java.discovery.DiscoveryInformation;
-import org.openid4java.discovery.Identifier;
-import org.openid4java.message.AuthRequest;
-import org.openid4java.message.ParameterList;
-import org.openid4java.message.ax.FetchRequest;
-import org.openid4java.util.HttpClientFactory;
-import org.openid4java.util.ProxyProperties;
 
 class UserController {
     def aasService
@@ -49,7 +49,7 @@ class UserController {
         log.info "doLogin(): login user "
         def loginStatus = LoginStatus.LOGGED_OUT
 
-        // Only perfom login if user is not already logged in
+        // Only perform login if user is not already logged in
         if(!isUserInSession()){
             def email = params.email
             def password = params.password
@@ -79,10 +79,9 @@ class UserController {
         redirect(controller: 'index', action: 'index')
 
     }
-    
+
     //Favorites page
     def favorites(){
-        
         if(isUserInSession() || true){
             //1. Call to fetch the list of favorites items#
             //2. Get the items from the backend
@@ -92,7 +91,6 @@ class UserController {
         else{
             redirect(controller:"index")
         }
-        
     }
 
     def registration() {
@@ -156,18 +154,18 @@ class UserController {
 
         String discoveryUrl = ""
 
-        FetchRequest fetch = FetchRequest.createFetchRequest();
+        FetchRequest fetch = FetchRequest.createFetchRequest()
 
         if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
             discoveryUrl = "https://www.google.com/accounts/o8/id"
-            fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true);
-            fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true);
-            fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true);
-            fetch.setCount("openid.ext1.value.Email", 1);
+            fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
+            fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
+            fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true)
+            fetch.setCount("openid.ext1.value.Email", 1)
         }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
             discoveryUrl = "https://me.yahoo.com"
-            fetch.addAttribute("Email", "http://axschema.org/contact/email", true);
-            fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true);
+            fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
+            fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
         }else{
             render(view: "login", model: [
                 'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
@@ -178,14 +176,14 @@ class UserController {
         setProxy()
 
         log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
-        ConsumerManager manager = new ConsumerManager();
+        ConsumerManager manager = new ConsumerManager()
         getSessionObject(true)?.setAttribute(SESSION_CONSUMER_MANAGER, manager)
         getSessionObject(true)?.setAttribute(SESSION_OPENID_PROVIDER, provider)
-        String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
-        List discoveries = manager.discover(discoveryUrl);
-        DiscoveryInformation discovered = manager.associate(discoveries);
-        AuthRequest authReq = manager.authenticate(discovered, returnURL);
-        authReq.addExtension(fetch);
+        String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+        List discoveries = manager.discover(discoveryUrl)
+        DiscoveryInformation discovered = manager.associate(discoveries)
+        AuthRequest authReq = manager.authenticate(discovered, returnURL)
+        authReq.addExtension(fetch)
 
         // Leave DDB for login on OpenID-provider
         redirect(url: authReq.getDestinationUrl(true))
@@ -201,12 +199,12 @@ class UserController {
         if(manager){
             def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
 
-            ParameterList openidResp = new ParameterList(request.getParameterMap());
-            DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
-            String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
-            String receivingURL =  returnURL + "?" + request.getQueryString();
-            VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered);
-            Identifier verified = verification.getVerifiedId();
+            ParameterList openidResp = new ParameterList(request.getParameterMap())
+            DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered")
+            String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+            String receivingURL =  returnURL + "?" + request.getQueryString()
+            VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered)
+            Identifier verified = verification.getVerifiedId()
 
             if (verified != null) {
                 log.info "doOpenIdLogin(): success verification"
@@ -277,10 +275,10 @@ class UserController {
                 }
             }
 
-            ProxyProperties proxyProps = new ProxyProperties();
-            proxyProps.setProxyHostName(proxyHost);
-            proxyProps.setProxyPort(proxyPort);
-            HttpClientFactory.setProxyProperties(proxyProps);
+            ProxyProperties proxyProps = new ProxyProperties()
+            proxyProps.setProxyHostName(proxyHost)
+            proxyProps.setProxyPort(proxyPort)
+            HttpClientFactory.setProxyProperties(proxyProps)
         }
 
     }
