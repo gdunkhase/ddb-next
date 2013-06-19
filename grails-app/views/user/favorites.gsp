@@ -33,6 +33,13 @@ limitations under the License.
         <div class="span8">
           <h1><g:message code="ddbnext.Favorites_Header"/></h1>
         </div>
+        <div class="print-header">
+          <h1>
+            <g:message code="ddbnext.Favorites_List_Of" 
+                       args="${[userName, dateString]}" 
+                       default="ddbnext.Favorites_List_Of"/>
+          </h1>
+        </div>
         <div class="span4 results-paginator-options off">
           <div class="page-filter">
             <label><g:message code="ddbnext.SearchResultsPagination_Display" /></label>
