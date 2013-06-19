@@ -15,24 +15,14 @@
  */
 package de.ddb.next
 
-class CommonTagLib {  
+class FavoritesTagLib {  
   /**
-   * Renders the paginator bar for the results.
+   * Renders the favorites results list.
    *
-   * @attrs navData REQUIRED data for paginator
+   * @attrs items REQUIRED data for paginator
    */
   
-  def paginationControlsRender = { attrs, body ->
-      out << render(template:"/common/pageNavigationControls", model:[navData: attrs.navData])
-  }
-  
-  /**
-   * Renders the media types icons.
-   *
-   * @attrs mediaTypesArray REQUIRED media types array
-   */
-  
-  def mediaTypesListRender = { attrs, body ->
-      out << render(template:"/common/mediaTypesIcons", model:[mediaTypesArray: attrs.mediaTypesArray])
+  def favoritesResultsRender = { attrs, body ->
+      out << render(template:"/user/resultsList", model:[results: attrs.results])
   }
 }

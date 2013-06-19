@@ -17,8 +17,9 @@ limitations under the License.
   <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
 </g:if>
 <%-- Set dummy variables --%>
-<g:set var="bookmarks" value="${[bookmarksLists: [[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false, items:[[id: '913f4d70-cdf6-11e2-8b8b-0800200c9a66', itemId: 'YV736GVWYNHQAF5GT2WPO36JAOXK3TMV', createdAt: '2012-11-10T06:42:55Z'], [id: 'a36413f0-cdf6-11e2-8b8b-0800200c9a66', itemId: 'TIPOUOBUDBR472NWI27L4N6TXPQ2T6PF', createdAt: '2012-11-10T06:43:15Z']]]], bookmarksListSelectedID: '8b26a230-cdf6-11e2-8b8b-0800200c9a67']}"></g:set>
+<g:set var="bookmarks" value="${[bookmarksLists: [[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false, items:[[id: '913f4d70-cdf6-11e2-8b8b-0800200c9a66', itemId: 'YV736GVWYNHQAF5GT2WPO36JAOXK3TMV', createdAt: '2012-11-10T06:42:55Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]], [id: 'a36413f0-cdf6-11e2-8b8b-0800200c9a66', itemId: 'TIPOUOBUDBR472NWI27L4N6TXPQ2T6PF', createdAt: '2012-11-10T06:43:15Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]]]]], bookmarksListSelectedID: '8b26a230-cdf6-11e2-8b8b-0800200c9a67']}"></g:set>
 <g:set var="navigationData" value="${[paginationURL: [firstPg: '#', lastPg: '#', prevPg: '#', nextPg: '#'], page: '1', totalPages: '120' ]}"></g:set>
+<g:set var="confBinary" value="/ddb-next"></g:set>
 <html>
   <head>
     <title>- <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -53,7 +54,7 @@ limitations under the License.
           <ul class="bookmarks-lists unstyled">
             <g:each in="${bookmarks.bookmarksLists}">
               <li class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br">
-                <a class="h3" href="#" data-fctName="#">
+                <a class="h3" href="#">
                   ${it.name}
                 </a>
                 <span class="bookmarks-list-number">${it.items.size()}</span>
@@ -63,7 +64,7 @@ limitations under the License.
             </g:each>
           </ul>
         </div>
-        <div class="span9">
+        <div class="span9 favorites-results-content">
           <g:form controller="favorites" action="remove" id="${bookmarkID}" name="favorites-remove">
             <div class="favorites-results-controls">
               <div class="results-pagination">
@@ -87,6 +88,7 @@ limitations under the License.
               </div>
             </div>
             <div class="favorites-results">
+              <g:favoritesResultsRender results="${bookmarks.bookmarksLists[0].items}"></g:favoritesResultsRender>
             </div>
           </g:form>
         </div>
