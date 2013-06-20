@@ -29,6 +29,11 @@ class UrlMappings {
             controller="facets"
             action="facetsList"
         }
+        
+        "/informationitem/$id"{
+            controller="search"
+            action="informationItem"
+        }
 
         "/content/$dir/$id?" {
             controller="content"

@@ -478,65 +478,6 @@ hr {
   font-weight:bold;
 }
 
-.information:hover .hovercard-info-item{
-  display: block;
-}
-
-.information .hovercard-info-item:hover{
-  display: none;
-}
-
-.information .hovercard-info-item {
-  background: #fff;
-  border: 1px solid #a7a7a6;
-  width: 523px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-  color: #3e3a37;
-  font-size: 0.875em;
-  font-family: Calibri,Arial,sans-serif;
-  z-index: 1;
-  line-height: 1em;
-  text-align: left;
-  position: absolute;
-  right: 0;
-  top: 20px;
-  display: none;
-}
-
-.information .hovercard-info-item h4 {
-  background-color: #efebe8;
-  margin: 0;
-  padding: 6px 5px 5px 20px;
-  font-size: 1em;
-  font-weight: bold;
-}
-
-.information .hovercard-info-item .fieldName{
-  margin-left: 20px;
-  font-weight: bold;
-  width: 150px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.information .hovercard-info-item .fieldContent{
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  line-height: 25px;
-  margin: 0;
-  word-wrap: normal;
-  width: 340px;
-}
-
-.hovercard-info-item ul span {
-  display: block;
-  float: left;
-  line-height: 25px;
-}
-
 .bookmarks-container .tooltip{
   font-size: 0.813em;
   left: 50%;
