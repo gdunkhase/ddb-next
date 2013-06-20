@@ -29,6 +29,9 @@ limitations under the License.
         <div><h1><g:message code="ddbnext.Sign_up_here" /></h1></div>
         <div class="reg-subtitle bt"><h3><g:message code="ddbnext.Mandatory" /></h3></div>
 
+        <g:if test="${errors != null && errors.size()>0}">
+          <g:renderErrors errors="${errors}"></g:renderErrors>
+        </g:if>
         <div class="control-group">
           <label class="control-label"><g:message code="ddbnext.Username" />*</label>
           <div class="controls">
