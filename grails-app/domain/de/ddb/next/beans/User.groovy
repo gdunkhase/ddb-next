@@ -22,6 +22,8 @@ class User {
     public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
 
     String username
+    String firstname
+    String lastname
     String email
     String password
     boolean openIdUser
@@ -39,4 +41,20 @@ class User {
     public String toString() {
         return "User[username="+username+", email="+email+", openIdUser="+openIdUser+"]"
     }
+
+    // Utility method to get first name and last name if present or username if not
+    public String getFirstnameAndLastnameOrNickname() {
+      if (firstname || lastname) {
+        if (!lastname) {
+          return firstname
+        } else if (!firstname) {
+            return lastname
+        } else {
+            return firstname+" "+lastname
+        }
+      } else {
+        return username
+      }
+    }
+
 }

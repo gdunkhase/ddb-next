@@ -90,12 +90,12 @@ class UserController {
 
             // Date info for the print view
             def dateTime = new Date()
-            def dateString = dateTime.getDateString()
+            dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
 
             // User info for the print view
-            def userName = session.getAttribute(User.SESSION_USER).getUsername()
+            def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
 
-            render(view:"favorites", model: ['userName': userName, 'dateString': dateString])
+            render(view:"favorites", model: ['userName': userName, 'dateString': dateTime])
         }
         else{
             redirect(controller:"index")
