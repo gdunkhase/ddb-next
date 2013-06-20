@@ -40,22 +40,23 @@ class BookmarkendpointController {
 
         //If not found
         def notfound = false
-        if (!notfound){
+        if (notfound){
             status = 404
             message="Not found"
         }
         
         //render(text = 'some text', contentType: "application/vnd.api+json", encoding: "UTF-8")
-        render(contentType: "text/json", status: status) {
-            bookmarks = message
-        }
+//        render(contentType: "application/vnd.api+json", status: status) {
+//            bookmarks = message
+//        }
+        render(contentType: "application/vnd.api+json", text: [message: 'some text', foo: 'bar'])
     }
     /**
      * Create a new bookmark folder
      * Will be invoked only on POST
      * The newly created resource will be referenced by the URI(s) returned in the entity of the response
      * See URL Routing
-     * PUT /users/{id}/bookmarks 
+     * POST /users/{id}/bookmarks 
      * 
      * @param JSONObject
      * @return
