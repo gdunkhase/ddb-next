@@ -15,6 +15,14 @@ limitations under the License.
 --%>
 <div class="dates">
 
-  <div><g:message code="ddbnext.Entity_Birth" />: ${entity.dateOfBirth}, <a href="">${entity.placeOfBirth}</a></div>
-  <div><g:message code="ddbnext.Entity_Death" />: ${entity.dateOfDeath}, <a href="">${entity.placeOfDeath}</a></div>
+  <div><g:message code="ddbnext.Entity_Birth" />: ${entity.dateOfBirth}
+    <g:if test="${entity.placeOfBirth}"> 
+      , <a href="">${entity.placeOfBirth}</a>
+    </g:if>
+  </div>
+  <div><g:message code="ddbnext.Entity_Death" />: ${entity.dateOfDeath}
+    <g:if test="${entity.placeOfDeath}"> 
+      , <a href="">${entity.placeOfDeath}</a>
+    </g:if>
+  </div>
 </div>

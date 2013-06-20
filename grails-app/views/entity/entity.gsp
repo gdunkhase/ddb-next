@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-  <title>${pageLabel} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+  <title>${entity.title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
   <meta name="page" content="entity" />
   <meta name="layout" content="main" />
@@ -23,6 +23,7 @@ limitations under the License.
 </head> 
 <body>
   <g:render template="controls" />
+  <div id="entity-title" class="off">${entity.title}</div>
   <div class="row entity-page">
     <div class="span9">
       <g:render template="name" />

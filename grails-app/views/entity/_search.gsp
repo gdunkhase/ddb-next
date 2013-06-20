@@ -22,7 +22,7 @@ limitations under the License.
     <input id="prependedInput" type="text" class="span3" value="${title}">
     --%>
     
-    <div class="search-icon">   
+    <div class="search-entity">   
       <div>
         <g:link controller="search" action="results" params="${["query":entity.title] }">
           "<i>${entity.title}</i>" <g:message code="ddbnext.Entity_Search_DDB" />

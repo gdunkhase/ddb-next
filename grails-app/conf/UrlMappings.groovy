@@ -75,6 +75,11 @@ class UrlMappings {
             action="show"
         }
 
+        "/entity/ajax/searchresults" {
+            controller="entity"
+            action="getAjaxSearchResultsAsJson"
+        }
+
         "/binary/$filename**" {
             controller="apis"
             action="binary"
@@ -138,6 +143,7 @@ class UrlMappings {
             controller="user"
             action="favorites"
         }
+
 
         "404"(controller: "error", action: "notFound")
         "401"(controller: "error", action: "auth")
