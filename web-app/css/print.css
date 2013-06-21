@@ -64,7 +64,7 @@ footer, .footer,
 .results-list.grid .item {
   display: inline-block;
   margin-left: 0px;
-  min-height: 180px;
+  min-height: 200px;
   width: 214px !important;
   page-break-inside: avoid;
   padding: 15px 0 15px 0 !important;
@@ -82,7 +82,7 @@ footer, .footer,
 }
 
 .results-list.grid .summary-main-wrapper h2 {
-  max-height: 70px !important;
+  max-height: 78px !important;
 }
 
 .results-list.grid .extra {
