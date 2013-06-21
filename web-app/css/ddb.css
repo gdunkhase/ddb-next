@@ -1340,3 +1340,17 @@ select {
   background-color: #fff;
 }
 /* genaral rules - end */
+
+/* errors */
+.errors-container {
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: red 1px solid;
+}
+.errors-container ul {
+  margin:0;
+}
+.errors-container i {
+  margin: 3px 5px 0 0;
+}
+/* errors - end */

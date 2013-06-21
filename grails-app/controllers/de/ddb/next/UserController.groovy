@@ -102,7 +102,21 @@ class UserController {
     }
 
     def signup() {
+
         //        TODO
+
+        def errors = []
+        // check variable
+        def nextStep = false
+        // dummy error added to try the form validation
+        errors.add(message(code: "error.500.body"))
+
+        if(!nextStep){
+            render(view: "registration" , model: [errors: errors])
+            return
+        }else{
+            //        TODO
+        }
     }
 
     def recoverPassword(){
