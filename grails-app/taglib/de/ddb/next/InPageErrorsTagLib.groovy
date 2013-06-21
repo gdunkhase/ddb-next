@@ -13,38 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.btn-padding {
-  padding-left: 10px;
-  padding-right: 10px;
-}
+package de.ddb.next
 
-.reg-input {
-  height: 30px !important;
-  padding: 4px 6px !important;
-}
-
-#registration-form .bt {
-  border-top: solid 1px #fff;
-}
-
-#registration-form .errors-container {
-  width: 465px;
-}
-
-.reg-subtitle {
-  margin-bottom: 30px;
-}
-
-.control-group label.error {
-  font-size: 16px;
-  margin-left: 10px;
-  color: #A5003B;;
-}
-
-.control-group .error {
-  margin-left: 0;
-}
-
-.well {
-  background-color: #EFEBE8;
+class InPageErrorsTagLib {
+    /**
+     * Renders the in page errors in a list
+     *
+     * @attr errors REQUIRED errors list
+     */
+    def renderErrors = { attrs, body ->
+       out << render(template:"/error/inPageErrors", model:[errors: attrs.errors])
+    }
 }

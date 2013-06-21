@@ -28,7 +28,9 @@ limitations under the License.
   
   <h3><g:message code="ddbnext.Entity_Objects" />:</h3>
   <div class="preview">
-    <g:link controller="entity" action="index" params="${["id": entity.id, "query": entity.title, "offset": previousOffset, "rows": rows]}" class="preview-item-previous">
+    <g:link controller="entity" action="index" 
+      params="${["id": entity.id, "query": entity.title, "offset": previousOffset, "rows": rows]}" 
+      class="preview-item-previous">
       <span><g:message code="ddbnext.Previous_Label" /></span>
     </g:link>
     
@@ -36,25 +38,33 @@ limitations under the License.
       <g:render template="searchResults" />
     </ul>
     
-    <g:link controller="entity" action="index" params="${["id": entity.id, "query": entity.title, "offset": nextOffset, "rows": rows]}" class="preview-item-next">
+    <g:link controller="entity" action="index" 
+      params="${["id": entity.id, "query": entity.title, "offset": nextOffset, "rows": rows]}" 
+      class="preview-item-next">
       <span><g:message code="ddbnext.Next_Label" /></span>
     </g:link>
   </div>
   <div>
     <g:if test="${showPictures}">
-      <g:link controller="search" action="results" params="${["query": entity.title, "facet": "type_fct", "type_fct": "mediatype_002"]}"><g:message code="ddbnext.Entity_All_Pictures" /> (${entity.searchPreview.pictureCount})</g:link>  
+      <g:link controller="search" action="results" 
+        params="${["query": entity.title, "facet": "type_fct", "type_fct": "mediatype_002"]}"
+        ><g:message code="ddbnext.Entity_All_Pictures" /> (${entity.searchPreview.pictureCount})</g:link>  
     </g:if>
     <g:if test="${(showPictures && showVideos) || (showPictures && showAudios)}">
       |
     </g:if>
     <g:if test="${showVideos}">
-      <g:link controller="search" action="results" params="${["query": entity.title, "facet": "type_fct", "type_fct": "mediatype_005"]}"><g:message code="ddbnext.Entity_All_Videos" /> (${entity.searchPreview.videoCount})</g:link> 
+      <g:link controller="search" action="results" 
+        params="${["query": entity.title, "facet": "type_fct", "type_fct": "mediatype_005"]}"
+        ><g:message code="ddbnext.Entity_All_Videos" /> (${entity.searchPreview.videoCount})</g:link> 
     </g:if>
     <g:if test="${(showVideos && showAudios)}">
       |
     </g:if>
     <g:if test="${showAudios}">
-      <g:link controller="search" action="results" params="${["query": entity.title, "facet": "type_fct", "type_fct": "mediatype_001"]}"><g:message code="ddbnext.Entity_All_Audios" /> (${entity.searchPreview.audioCount})</g:link>
+      <g:link controller="search" action="results" 
+        params="${["query": entity.title, "facet": "type_fct", "type_fct": "mediatype_001"]}"
+        ><g:message code="ddbnext.Entity_All_Audios" /> (${entity.searchPreview.audioCount})</g:link>
     </g:if>
   </div>
 </div>

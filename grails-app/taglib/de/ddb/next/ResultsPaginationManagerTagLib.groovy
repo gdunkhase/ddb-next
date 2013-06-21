@@ -19,7 +19,7 @@ class ResultsPaginationManagerTagLib {
   /**
    * Renders the navigation bar for the results.
    *
-   * @attr navData REQUIRED data for page navigation
+   * @attrs navData REQUIRED data for page navigation
    */
 
   def pageInfoNavRender = { attrs, body ->
@@ -29,7 +29,7 @@ class ResultsPaginationManagerTagLib {
   /**
    * Renders the navigation bar for the item detail view.
    *
-   * @attr navData REQUIRED data for page navigation
+   * @attrs navData REQUIRED data for page navigation
    */
 
   def itemDetailInfoNavRender = { attrs, body ->
@@ -39,7 +39,7 @@ class ResultsPaginationManagerTagLib {
   /**
    * Renders the paginator bar for the results.
    *
-   * @attr paginatorData REQUIRED data for paginator
+   * @attrs paginatorData REQUIRED data for paginator
    */
   
   def resultsPaginatorOptionsRender = { attrs, body ->

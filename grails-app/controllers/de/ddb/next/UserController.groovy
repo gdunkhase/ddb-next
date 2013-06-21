@@ -79,6 +79,29 @@ class UserController {
         redirect(controller: 'index', action: 'index')
 
     }
+    
+    //Favorites page
+    def favorites(){
+        
+        if(isUserInSession() || true){
+            //1. Call to fetch the list of favorites items#
+            //2. Get the items from the backend
+            //3. Render the results in the page
+
+            // Date info for the print view
+            def dateTime = new Date()
+            dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+
+            // User info for the print view
+            def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
+
+            render(view:"favorites", model: ['userName': userName, 'dateString': dateTime])
+        }
+        else{
+            redirect(controller:"index")
+        }
+        
+    }
 
     def registration() {
 
@@ -87,7 +110,21 @@ class UserController {
     }
 
     def signup() {
+
         //        TODO
+
+        def errors = []
+        // check variable
+        def nextStep = false
+        // dummy error added to try the form validation
+        errors.add(message(code: "error.500.body"))
+
+        if(!nextStep){
+            render(view: "registration" , model: [errors: errors])
+            return
+        }else{
+            //        TODO
+        }
     }
 
     def recoverPassword(){
@@ -134,10 +171,6 @@ class UserController {
             forward controller: "error", action: "auth"
         }
         doLogout()
-    }
-
-    def favorites() {
-        render(view: "favorites", model: [:])
     }
 
     def requestOpenIdLogin() {

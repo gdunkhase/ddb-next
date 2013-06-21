@@ -29,6 +29,11 @@ class UrlMappings {
             controller="facets"
             action="facetsList"
         }
+        
+        "/informationitem/$id"{
+            controller="search"
+            action="informationItem"
+        }
 
         "/content/$dir/$id?" {
             controller="content"
@@ -127,6 +132,11 @@ class UrlMappings {
         "/registration" {
             controller="user"
             action="registration"
+        }
+        
+        "/favorites" {
+            controller="user"
+            action="favorites"
         }
 
         "/recovery" {
