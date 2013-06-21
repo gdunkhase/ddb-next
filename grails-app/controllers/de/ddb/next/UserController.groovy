@@ -87,7 +87,15 @@ class UserController {
             //1. Call to fetch the list of favorites items#
             //2. Get the items from the backend
             //3. Render the results in the page
-            render(view:"favorites")
+
+            // Date info for the print view
+            def dateTime = new Date()
+            dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+
+            // User info for the print view
+            def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
+
+            render(view:"favorites", model: ['userName': userName, 'dateString': dateTime])
         }
         else{
             redirect(controller:"index")
