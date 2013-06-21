@@ -20,45 +20,55 @@ class EntityController {
     def cultureGraphService
     def configurationService
 
-    def show() {
+
+    def index() {
 
         def entityId = params.id
+        def rows = params.rows
+        def offset = params.offset
 
-        if(!entityId){
-            entityId = "118540238"
+        if(!rows) {
+            rows = 4
         }
+        if(rows < 1){
+            rows = 1
+        }
+
+        if(!offset) {
+            offset = 0
+        }
+        if(offset < 0){
+            offset = 0
+        }
+
 
         def jsonGraph = cultureGraphService.getCultureGraph(entityId)
         def xmlDnb = cultureGraphService.getDNBInformation(entityId)
 
+        def entityUri = request.forwardURI
+
         def entity = [:]
 
-        println "########################### 1 " + jsonGraph
-        println "########################### 2 " + xmlDnb
+
+        //------------------------- Entity id -------------------------------
+
+        entity["id"] = entityId
 
         //------------------------- External links -------------------------------
 
         entity["externalLinks"] = jsonGraph.seeAlso
 
-        println "########################### 3 " + entity["externalLinks"]
-
         //------------------------- Thumbnail information -------------------------------
 
         entity["thumbnail"] = jsonGraph.thumbnail
-
-        println "########################### 4 " + entity["thumbnail"]
 
         //------------------------- Entity type (person, etc) -------------------------------
 
         def entityType = jsonGraph.type
 
-        println "########################### 5 " + entityType
-
         //------------------------- Titel (Name of entity) -------------------------------
 
         entity["title"] = jsonGraph[entityType].name
-
-        println "########################### 6 " + entity["title"]
 
         //------------------------- Birth/Death date -------------------------------
 
@@ -89,9 +99,6 @@ class EntityController {
             }[0].text()
         }
 
-        println "########################### 11 " + entity["placeOfBirth"]
-        println "########################### 12 " + entity["placeOfDeath"]
-
         //------------------------- Professions -------------------------------
 
         def dnbProfessionUrls = xmlDnb.breadthFirst().findAll {it.name() == "professionOrOccupation"}."@rdf:resource".collect {it.text()}
@@ -106,47 +113,32 @@ class EntityController {
 
         entity["professions"] = professions.join(', ')
 
-        println "########################### 13 " + dnbProfessionUrls
-        println "########################### 14 " + dnbProfessionIds
-        println "########################### 15 " + entity["professions"]
-
         //------------------------- Search preview -------------------------------
 
         def searchPreview = [:]
 
-        def searchQuery = ["query": entity["title"], "rows": 4, "offset": 0, "sort": "RELEVANCE", "facet": "type_fct", "type_fct": "mediatype_002"]
+        def searchQuery = ["query": entity["title"], "rows": rows, "offset": offset, "sort": "RELEVANCE", "facet": "type_fct", "type_fct": "mediatype_002"]
         ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
         if(!apiResponseSearch.isOk()){
-            log.error "show(): Search response contained error"
+            log.error "index(): Search response contained error"
             apiResponseSearch.throwException(request)
         }
         def jsonSearchResult = apiResponseSearch.getResponse()
 
-        println "########################### 16 " + jsonSearchResult
-
         searchPreview["items"] = jsonSearchResult.results.docs
         searchPreview["resultCount"] = jsonSearchResult.numberOfResults
-
-        println "########################### 17 " + entity["searchPreviews"]
-        println "########################### 18 " + entity["searchPreviewCount"]
 
         //------------------------- Search preview media type count -------------------------------
 
         searchPreview["pictureCount"] = getResultCountsForFacetType(entity["title"], "mediatype_002")
 
-        println "########################### 19 " + searchPreview["pictureCount"]
-
         searchPreview["videoCount"] = getResultCountsForFacetType(entity["title"], "mediatype_005")
-
-        println "########################### 20 " + searchPreview["videoCount"]
 
         searchPreview["audioCount"] = getResultCountsForFacetType(entity["title"], "mediatype_001")
 
-        println "########################### 21 " + searchPreview["audioCount"]
-
         entity["searchPreview"] = searchPreview
 
-        render(view: 'entity', model: ["entity": entity])
+        render(view: 'entity', model: ["entity": entity, "entityUri": entityUri])
     }
 
     public def getAjaxSearchResultsAsJson() {
@@ -155,7 +147,23 @@ class EntityController {
         def offset = params.offset
         def rows = params.rows
 
-        println "###################### 1b "+query+" / "+offset+" / "+rows
+        if(!rows) {
+            rows = 4
+        }
+        if(rows < 1){
+            rows = 1
+        }
+
+        if(!offset) {
+            offset = 0
+        }
+        if(offset < 0){
+            offset = 0
+        }
+
+        def entity = [:]
+
+        def searchPreview = [:]
 
         def searchQuery = ["query": query, "rows": rows, "offset": offset, "sort": "RELEVANCE"]
         ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
@@ -164,22 +172,18 @@ class EntityController {
             apiResponseSearch.throwException(request)
         }
 
-        def results = []
+        def jsonSearchResult = apiResponseSearch.getResponse()
 
-        def backendResult = apiResponseSearch.getResponse()
-        backendResult.results.docs.each {
-            def item = [:]
-            item["thumbnail"] = it.preview.thumbnail
-            item["label"] = it.label
-            item["id"] = it.id
+        searchPreview["items"] = jsonSearchResult.results.docs
+        searchPreview["resultCount"] = jsonSearchResult.numberOfResults
 
-            results.add(item)
-        }
+        entity["searchPreview"] = searchPreview
 
-        println "###################### 2b "+results
+        def resultsHTML = g.render(template:"/entity/searchResults", model:["entity": entity]).replaceAll("\r\n", '')
 
+        def result = ["html": resultsHTML]
 
-        render (contentType:"text/json"){results}
+        render (contentType:"text/json"){result}
     }
 
     private def getResultCountsForFacetType(def searchString, def facetType) {

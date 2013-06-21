@@ -18,31 +18,27 @@ limitations under the License.
   <g:set var="showPictures" value="${entity.searchPreview.pictureCount > 0}" />
   <g:set var="showVideos" value="${entity.searchPreview.videoCount > 0}" />
   <g:set var="showAudios" value="${entity.searchPreview.audioCount > 0}" />
+  <g:set var="offset" value="${params.offset.toInteger()}" />
+  <g:set var="rows" value="${params.rows.toInteger()}" />
+  <g:set var="nextOffset" value="${offset + rows}" />
+  <g:set var="previousOffset" value="${offset - rows}" />
+  <g:if test="${previousOffset < 0}">
+    <g:set var="previousOffset" value="${0}" />
+  </g:if>
   
   <h3><g:message code="ddbnext.Entity_Objects" />:</h3>
   <div class="preview">
-    <a href="#" class="preview-item-previous">
+    <g:link controller="entity" action="index" params="${["id": entity.id, "query": entity.title, "offset": previousOffset, "rows": rows]}" class="preview-item-previous">
       <span><g:message code="ddbnext.Previous_Label" /></span>
-    </a>
+    </g:link>
+    
     <ul class="preview-item-container">
-      <g:each var="item" in="${entity.searchPreview.items}">
-        <li class="preview-item">
-          <div class="preview-item-image">
-            <g:link controller="item" action="findById" params="${["id": item.id]}">
-              <img src="${request.getContextPath() + item.preview.thumbnail}" alt="${item.label}" />
-            </g:link>
-          </div>
-          <div class="preview-item-label">
-            <g:link controller="item" action="findById" params="${["id": item.id]}">
-              ${item.label}
-            </g:link>
-          </div>
-        </li>
-      </g:each>
+      <g:render template="searchResults" />
     </ul>
-    <a href="#" class="preview-item-next">
+    
+    <g:link controller="entity" action="index" params="${["id": entity.id, "query": entity.title, "offset": nextOffset, "rows": rows]}" class="preview-item-next">
       <span><g:message code="ddbnext.Next_Label" /></span>
-    </a>
+    </g:link>
   </div>
   <div>
     <g:if test="${showPictures}">

@@ -88,9 +88,17 @@
   text-align: center;
 }
 
+.entity-page .preview-item-image img {
+  margin: 0px;
+}
+
 .entity-page .preview-item-label {
 }
 
 .entity-page .objects {
   padding-bottom: 20px;
+}
+
+.entity-page .popup-dialog-wrapper {
+  margin-left: 0px !important;
 }

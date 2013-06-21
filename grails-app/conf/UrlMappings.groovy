@@ -72,7 +72,7 @@ class UrlMappings {
 
         "/entity/$id" {
             controller="entity"
-            action="show"
+            action="index"
         }
 
         "/entity/ajax/searchresults" {

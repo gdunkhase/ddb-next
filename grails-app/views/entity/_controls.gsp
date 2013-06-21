@@ -16,9 +16,10 @@ limitations under the License.
 <div class="row object-controls">
   <!-- buttons -->
   <div class="span6">
-    <a class="page-link" href="${itemUri}" 
-       title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+
+    <a class="page-link page-link-popup-anchor" href="${entityUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
       <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
     </a>
+
   </div>
 </div>
