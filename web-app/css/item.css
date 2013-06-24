@@ -92,6 +92,26 @@
 .has-origin {
   font-size: 0.938em;
 }
+
+.favorite {
+  margin-top: 20px;
+}
+.favorite-actions {
+  padding-left: 17px;
+  background: url(../images/icons/favorite_actions_sprite.png) no-repeat ;
+  background-position: -2px -80px;
+  margin-right: 10px;
+}
+.favorite-actions #isfav {
+  background-position: -2px -160px;
+}
+.favorite-actions #addtofav {
+  background-position: -2px -80px;
+}
+.favorite-actions #addtofav:hover {
+  background-position: -2px -100px;
+}
+
 .item-nav {
   line-height: 30px;
 }

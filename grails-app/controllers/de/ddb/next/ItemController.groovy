@@ -16,6 +16,9 @@
 package de.ddb.next
 
 import javax.servlet.http.HttpSession;
+
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 import de.ddb.next.beans.User;
 
 import de.ddb.next.exception.ItemNotFoundException
@@ -209,6 +212,10 @@ class ItemController {
 
     def changeItemState() {
         def itemId = params.id;
+        def reqType = params.reqType;
+        int favStatus = 0;
+        println "################## itemdId = " + itemId;
+        println "################## reqType = " + reqType;
         HttpSession sessionObject = request.getSession(false)
         User vUser = null;
         if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
@@ -216,21 +223,34 @@ class ItemController {
             FavoritesService vFavService = FavoritesService.getFevoritesService();
             if (vFavService != null) {
                 if (vFavService.isFavorit(vUser.getEmail(), itemId)) {
-                    log.info("add to favorits: ${itemId}");
-                    vFavService.deleteFromFavoritesList(vUser.getEmail(), itemId);
+                    log.info("delete from favorits list: ${itemId}");
+                    if (vFavService.deleteFromFavoritesList(vUser.getEmail(), itemId)) {
+                        favStatus = 1;
+                    }
                 }
                 else {
-                    log.info("delete from favorits list: ${itemId}");
-                    vFavService.addToFavorites(vUser.getEmail(), itemId);
+                    log.info("add to favorits: ${itemId}");
+                    if (vFavService.addToFavorites(vUser.getEmail(), itemId)) {
+                        favStatus = 2;
+                    }
                 }
             }
             else {
                 log.error("Favorites-Services not found");
             }
         }
+        
         println "################## render - START"
         //render (view: 'item', model: [id: itemId]);
-        findById()
+        if (reqType == null) {
+            findById()
+        }
+        else {
+            println "################## render - AJAX-AJAX-AJAX"
+            //def jsonResp = apiResponse.getResponse()
+            def jsonResp = '{"favStatus":"' + favStatus + '"}';
+            render(contentType:"application/json", text: jsonResp)
+        }
         println "################## render - STOP"
         
     }

@@ -48,7 +48,8 @@ limitations under the License.
             </g:if>
         </div>
         <div class="span3">
-            <div class="origin" style="text-align: right;">
+        
+            <div class="favorite" style="text-align: right;">
                 <g:isNotLoggedIn>
                     <g:link controller="user" >
                         <span title="<g:message code='ddbnext.stat_010' />">
@@ -58,14 +59,14 @@ limitations under the License.
                 </g:isNotLoggedIn>
                 <g:isLoggedIn>
                 
-                    <g:link controller="item" action="changeItemState" params="${params}">
+                    <g:link controller="item" action="changeItemState" params="${params}" class="favorite-actions">
                         <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
-                            <span title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: red;">
+                            <span itemid="${itemId}" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: red;">
                                 <g:message code="ddbnext.favorit" />
                             </span>
                         </g:if>
                         <g:else>
-                            <span title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: green;">
+                            <span itemid="${itemId}" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: green;">
                                 <g:message code="ddbnext.favorit" />
                             </span>
                         </g:else>
