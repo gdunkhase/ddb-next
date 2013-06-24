@@ -37,3 +37,13 @@
       
     });
   }
+  /*
+  $("#idFavorite").parent().click(function(event) {
+    event.preventDefault();  
+    
+    alert("!!!!!");
+    
+    return false;
+    
+  });
+    */

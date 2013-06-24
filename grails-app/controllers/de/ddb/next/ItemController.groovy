@@ -229,7 +229,8 @@ class ItemController {
             }
         }
         println "################## render - START"
-        render (view: 'item', model: [id: itemId]);
+        //render (view: 'item', model: [id: itemId]);
+        findById()
         println "################## render - STOP"
         
     }

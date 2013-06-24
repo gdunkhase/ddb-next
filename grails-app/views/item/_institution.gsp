@@ -57,6 +57,7 @@ limitations under the License.
                     </g:link>
                 </g:isNotLoggedIn>
                 <g:isLoggedIn>
+                
                     <g:link controller="item" action="changeItemState" params="${params}">
                         <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
                             <span title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: red;">
@@ -68,7 +69,8 @@ limitations under the License.
                                 <g:message code="ddbnext.favorit" />
                             </span>
                         </g:else>
-                    </g:link> 
+                    </g:link>
+                    
                 </g:isLoggedIn>
             </div>
         </div>
