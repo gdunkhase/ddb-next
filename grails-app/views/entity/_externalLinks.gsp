@@ -14,8 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="external-links">
-  <h3>Externe Links</h3>
+  <h3><g:message code="ddbnext.External_Links" />:</h3>
   <ul class="unstyled">
+  
+    <g:each var="link" in="${entity.externalLinks}">
+      <li class="external-link">
+        <a href="${link.url}"
+          rel="external">
+          <i class="icon-globe"></i>
+          ${link.name}
+        </a>
+      </li>
+    </g:each>
+  
+    <%--
     <li class="external-link">
       <a href="https://de.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe"
         rel="external">
@@ -58,5 +70,7 @@ limitations under the License.
         Virtual International Authority File (VIAF)
       </a>
     </li>
+    
+    --%>
   </ul>
 </div>

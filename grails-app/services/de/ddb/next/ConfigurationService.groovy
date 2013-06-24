@@ -35,7 +35,7 @@ class ConfigurationService {
             throw new ConfigurationException("getBinaryBackendUrl(): Configuration entry does not exist -> ddb.binary.backend.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getBinaryBackendUrl(): apd.binary.backend.url is not a String")
+            throw new ConfigurationException("getBinaryBackendUrl(): ddb.binary.backend.url is not a String")
         }
         return url
     }
@@ -46,7 +46,7 @@ class ConfigurationService {
             throw new ConfigurationException("getStaticUrl(): Configuration entry does not exist -> ddb.static.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getStaticUrl(): apd.static.url is not a String")
+            throw new ConfigurationException("getStaticUrl(): ddb.static.url is not a String")
         }
         return url
     }
@@ -57,7 +57,7 @@ class ConfigurationService {
             throw new ConfigurationException("getApisUrl(): Configuration entry does not exist -> ddb.apis.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getApisUrl(): apd.apis.url is not a String")
+            throw new ConfigurationException("getApisUrl(): ddb.apis.url is not a String")
         }
         return url
     }
@@ -68,7 +68,7 @@ class ConfigurationService {
             throw new ConfigurationException("getBackendUrl(): Configuration entry does not exist -> ddb.backend.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getBackendUrl(): apd.backend.url is not a String")
+            throw new ConfigurationException("getBackendUrl(): ddb.backend.url is not a String")
         }
         return url
     }
@@ -79,7 +79,29 @@ class ConfigurationService {
             throw new ConfigurationException("getAasUrl(): Configuration entry does not exist -> ddb.aas.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getAasUrl(): apd.backend.url is not a String")
+            throw new ConfigurationException("getAasUrl(): ddb.aas.url is not a String")
+        }
+        return url
+    }
+
+    public String getCulturegraphUrl(){
+        def url = grailsApplication.config.ddb?.culturegraph?.url
+        if(!url){
+            throw new ConfigurationException("getCulturegraphUrl(): Configuration entry does not exist -> ddb.culturegraph.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getCulturegraphUrl(): ddb.culturegraph.url is not a String")
+        }
+        return url
+    }
+
+    public String getDnbUrl(){
+        def url = grailsApplication.config.ddb?.dnb?.url
+        if(!url){
+            throw new ConfigurationException("getDnbUrl(): Configuration entry does not exist -> ddb.dnb.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getDnbUrl(): ddb.dnb.url is not a String")
         }
         return url
     }
@@ -277,6 +299,8 @@ class ConfigurationService {
         log.info "ddb.apis.url = " + getApisUrl()
         log.info "ddb.backend.url = " + getBackendUrl()
         log.info "ddb.aas.url = " + getAasUrl()
+        log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
+        log.info "ddb.dnb.url = " + getDnbUrl()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()
         log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
         log.info "grails.views.gsp.encoding = " + getEncoding()
