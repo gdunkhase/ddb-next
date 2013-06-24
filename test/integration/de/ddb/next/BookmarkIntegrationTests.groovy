@@ -4,7 +4,6 @@ import static org.junit.Assert.*
 
 import org.junit.*
 
-import de.ddb.next.beans.Bookmark
 
 class BookmarkIntegrationTests {
 
@@ -20,18 +19,41 @@ class BookmarkIntegrationTests {
         // Tear down logic here
     }
 
-    @Test
-    void shouldSaveBookmarkToFavoriteFolder() {
-        // The user 'crh'
+//    @Test
+    void shouldListAllFolders() {
+        // The user ID 'crh'
+        def userId = 'crh'
+
+        bookmarksService.findAllFolders(nickname)
+    }
+
+//    @Test
+    void shouldFindFolderByName() {
+        // The user email 'crh'
         def nickname = 'crh'
+
+        bookmarksService.findFolderByName(nickname)
+    }
+
+//    @Test
+    void shouldSaveBookmarkToFavoriteFolder() {
+        // The userId 'crh'
+        def userId = 'crh'
 
         // The id of a folder with the title 'Favorites', which belongs to the user crh
         def folderId = 'XYZ'
 
-        // The item `crh` wants to save as a bookmark in their `Favorites` folder
-        def pizzaUndMarmelade = new Bookmark(itemId:'WWJDRDG73T4U6QK7G34M6Y5U6WEPSDEI')
-
         // TODO: should save the bookmark to the folder 'Favorites' which belongs to the user crh
-        bookmarksService.save(nickname, folderId, pizzaUndMarmelade)
+        bookmarksService.save(userId, folderId, pizzaUndMarmelade)
+    }
+
+    @Test
+    void shouldBeAbleToCreateFolder() {
+        // The userId 'crh'
+        def userId = 'crh'
+
+        def folderTitle= 'Favorite'
+
+        def folderId = bookmarksService.newFolder(userId, folderTitle)
     }
 }

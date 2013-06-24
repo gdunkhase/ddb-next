@@ -112,13 +112,19 @@ ddb {
     }
 }
 
+elasticSearch {
+    client.hosts = [
+        [host:'localhost', port:9200]
+    ]
+}
+
 environments {
     development {
         grails.logging.jul.usebridge = true
         grails.config.locations = [
             "file:${userHome}/.grails/${appName}.properties"
         ]
-
+        elasticSearch.client.mode = 'transport'
     }
     production {
         grails.logging.jul.usebridge = false
@@ -128,6 +134,7 @@ environments {
     }
 }
 
+
 //DDB SPECIFIC Configuration variables
 //The variables can be overwritten by defining local configurations, see below environments
 ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
@@ -135,6 +142,7 @@ ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
 ddb.apis.url="http://localhost:8080"
 ddb.backend.url="http://backend-p2.deutsche-digitale-bibliothek.de:9998"
 ddb.aas.url="http://whddbapp10.fiz-karlsruhe.de:8081"
+ddb.bookmark.url="http://whvmescidev6.fiz-karlsruhe.de:9200"
 ddb.logging.folder="target/logs"
 ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
 ddb.advancedSearch.searchGroupCount=3

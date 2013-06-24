@@ -34,6 +34,7 @@ import de.ddb.next.exception.AuthorizationException
 
 class UserController {
     def aasService
+    def bookmarksService
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
     LinkGenerator grailsLinkGenerator
@@ -86,12 +87,48 @@ class UserController {
             //1. Call to fetch the list of favorites items#
             //2. Get the items from the backend
             //3. Render the results in the page
+
+            // createNewFolder()
+            // getAllFolder()
+            saveBookmarkInFolder()
+
             render(view:"favorites")
         }
         else{
             redirect(controller:"index")
         }
     }
+
+    def createNewFolder() {
+        def userId = 'crh'
+        def folderTitle= 'folderTitle'
+        def folderId = bookmarksService.newFolder(userId, folderTitle)
+        log.info "Created a bookmark folder with the ID: ${folderId}"
+    }
+
+    def getAllFolder() {
+        def userId = 'crh'
+        def folderList = bookmarksService.findAllFolders(userId)
+        if(folderList) {
+            folderList.each {
+                log.info "folder: ${it._source}"
+            }
+        } else {
+            log.info 'empty folder.'
+        }
+    }
+
+
+    def saveBookmarkInFolder() {
+        def userId = 'crh'
+        def folderId = 'Shhh5YpoRlKW3bIiDjh8hA'
+        def itemId = 'bar'
+        def creationDate =  new Date().getTime().toString()
+        log.info "creation date: ${creationDate}"
+        def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId, creationDate)
+        log.info 'bookmark is saved, ID is: ' + bookmarkId
+    }
+
 
     def registration() {
 

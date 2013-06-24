@@ -15,19 +15,15 @@
  */
 package de.ddb.next
 
-import static groovyx.net.http.ContentType.*
-import de.ddb.next.beans.User
-import de.ddb.next.exception.BackendErrorException
-import groovy.json.*
-import groovyx.net.http.Method
 
-import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.web.json.JSONObject
-import org.codehaus.groovy.grails.web.util.WebUtils
+import groovy.json.*
+import groovyx.net.http.ContentType
+import groovyx.net.http.HTTPBuilder
+import groovyx.net.http.Method
 
 /**
  * Set of Methods that encapsulate REST-calls to the BookmarksService
- * 
+ *
  * @author mih
  *
  */
@@ -36,5 +32,59 @@ class BookmarksService {
 
     def configurationService
     def transactional = false
+
+    def newFolder(userId, title) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder")
+        http.request(Method.POST, ContentType.JSON) { req ->
+           body = [
+             user: userId,
+             title : title,
+             isPublic : false
+           ]
+
+           def folderId
+           response.success = { resp, json ->
+               folderId = json._id
+           }
+           folderId
+       }
+    }
+
+    def findAllFolders(userId) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}")
+        http.request(Method.GET, ContentType.JSON) { req ->
+           response.success = { resp, json ->
+               def resultList = json.hits.hits
+               return resultList
+           }
+       }
+    }
+
+    def saveBookmark(userId, folderId, itemId, creationDate) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark")
+        http.request(Method.POST, ContentType.JSON) { req ->
+           body = [
+             user: userId,
+             folder: folderId,
+             item: itemId,
+             createdAt: creationDate
+           ]
+
+           def bookmarkId = ''
+           response.success = { resp, json ->
+               log.info "JSON: ${json}"
+               bookmarkId = json._id
+           }
+          bookmarkId
+       }
+    }
+
+    def findBookmarks(userId, idList) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}")
+    }
+
+    def deleteBookmarks(userId, idList) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}")
+    }
 
 }
