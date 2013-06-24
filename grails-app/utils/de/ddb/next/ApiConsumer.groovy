@@ -23,6 +23,9 @@ import groovyx.net.http.Method
 
 import java.util.regex.Pattern
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.catalina.connector.ClientAbortException
 import org.apache.commons.io.IOUtils
 import org.apache.commons.logging.LogFactory
@@ -402,10 +405,13 @@ class ApiConsumer {
 
     static def setAuthHeader(http){
         try {
-            User user = WebUtils.retrieveGrailsWebRequest().getSession().getAttribute(User.SESSION_USER);
-            if (user != null) {
-                http.auth.basic user.username, user.password
-
+            HttpServletRequest request = WebUtils.retrieveGrailsWebRequest().getCurrentRequest()
+            HttpSession session = request.getSession(false)
+            if(session) {
+                User user = session.getAttribute(User.SESSION_USER);
+                if (user != null) {
+                    http.auth.basic user.username, user.password
+                }
             }
         } catch(Exception e) {
             log.error "setAuthHeader(): Could not get haeder-data from session"
