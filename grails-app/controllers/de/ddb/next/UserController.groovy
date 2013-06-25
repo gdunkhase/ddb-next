@@ -88,72 +88,12 @@ class UserController {
             //2. Get the items from the backend
             //3. Render the results in the page
 
-            //createNewFolder()
-            // folder id:
-            // bookmark id: 1mu_4BGDSJidJmuHExnBrA
-            // getAllFolder()
-            saveBookmarkInFolder()
-            //findListOfBookmarks()
-
-            /* TODO:
-             * we can not use elasticsearch id for bulk delete. Alternatives:
-             * - delete one by one using deleteByQuery
-             * - use other URI for bookmark
-             */
-            // bookmarksService.deleteBookmarks('crh',['8630SH0lQiytmaoE60r5pA','6OXVaccHTKyuB61QRItVaw','qSp_NNrpRWGX93yyz_w3YA'])
-
-            // getAllBookmarksInFavorites()
-
             render(view:"favorites")
         }
         else{
             redirect(controller:"index")
         }
     }
-
-    def saveBookmarkInFolder() {
-        def userId = 'crh'
-        def folderId =  '_iJu0VO7SsuGnDHiN5ng2w'
-        def itemId = 'nudel'
-        def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId)
-        log.info 'bookmark is saved, ID is: ' + bookmarkId
-    }
-
-    def getAllBookmarksInFavorites() {
-       def bookmarks = bookmarksService.findBookmarksByFolderId('crh', '_iJu0VO7SsuGnDHiN5ng2w')
-       log.info "all: ${bookmarks}"
-    }
-
-    def createNewFolder() {
-        def userId = 'crh'
-        def folderTitle= 'Favorites'
-        def folderId = bookmarksService.newFolder(userId, folderTitle, false)
-        log.info "Created a bookmark folder with the ID: ${folderId}"
-    }
-
-    def findListOfBookmarks() {
-        def userId = 'crh'
-        def ids = ['foo', 'bar','nudel']
-        def found = bookmarksService.findBookmarkedItems(userId, ids)
-        log.info "found: ${found}"
-    }
-
-    /*
-    def getAllFolder() {
-        def userId = 'crh'
-        def folderList = bookmarksService.findAllFolders(userId)
-        if(folderList) {
-            folderList.each {
-                log.info "folder: ${it.toString()}"
-            }
-        } else {
-            log.info 'empty folder.'
-        }
-    }
-
-    */
-
-
 
     def registration() {
         render(view: "registration", model: [])
