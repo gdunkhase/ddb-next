@@ -88,8 +88,8 @@ class UserController {
             //2. Get the items from the backend
             //3. Render the results in the page
 
-            //createNewFolder()
-            //getAllFolder()
+            // createNewFolder()
+            getAllFolder()
             //saveBookmarkInFolder()
             //findBookmarks()
 
@@ -98,7 +98,7 @@ class UserController {
              * - delete one by one using deleteByQuery
              * - use other URI for bookmark
              */
-            bookmarksService.deleteBookmarks('crh',['8630SH0lQiytmaoE60r5pA','6OXVaccHTKyuB61QRItVaw','qSp_NNrpRWGX93yyz_w3YA'])
+            // bookmarksService.deleteBookmarks('crh',['8630SH0lQiytmaoE60r5pA','6OXVaccHTKyuB61QRItVaw','qSp_NNrpRWGX93yyz_w3YA'])
 
             render(view:"favorites")
         }
@@ -117,7 +117,7 @@ class UserController {
     def createNewFolder() {
         def userId = 'crh'
         def folderTitle= 'Favorites'
-        def folderId = bookmarksService.newFolder(userId, folderTitle)
+        def folderId = bookmarksService.newFolder(userId, folderTitle, false)
         log.info "Created a bookmark folder with the ID: ${folderId}"
     }
 
@@ -126,7 +126,7 @@ class UserController {
         def folderList = bookmarksService.findAllFolders(userId)
         if(folderList) {
             folderList.each {
-                log.info "folder: ${it._source}"
+                log.info "folder: ${it.toString()}"
             }
         } else {
             log.info 'empty folder.'

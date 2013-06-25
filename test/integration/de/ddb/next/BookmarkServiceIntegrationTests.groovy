@@ -11,16 +11,6 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
     def userId = 'crh'
 
-    @Before
-    void setUp() {
-        // Setup logic here
-    }
-
-    @After
-    void tearDown() {
-        // Tear down logic here
-    }
-
     @Test void shouldCreateNewFolder() {
         def folderId = createNewFolder()
         assertNotNull folderId
@@ -39,8 +29,8 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assertTrue folderList.size() >0
 
         if(folderList) {
-            folderList.each {
-                log.info "folder: ${it._source}"
+            folderList.each { it ->
+                log.info "found folder: ${it}"
             }
         } else {
             log.info 'empty folder.'
@@ -58,7 +48,14 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info 'bookmark is saved, ID is: ' + bookmarkId
     }
 
-    @Test void shouldFindBookmarks() {}
+    @Test void shouldFindBookmarks() {
+        def folderId = createNewFolder()
+        def itemId = 'foobarbaz'
+        def creationDate =  new Date().getTime().toString()
+        def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId, creationDate)
+        def bookmarks = bookmarksService.findAllBookmarks(userId,folderId)
+        assertTrue bookmarks[0].bookmarkId = bookmarkId
+    }
     @Test void shouldBulkDeleteBookmarks(){
        // { "delete" : { "_index" : "ddb", "_type" : "bookmark", "_id" : "Oq3T4o34TWO_D-cJ4ok2hA" } }
     }

@@ -20,6 +20,7 @@ import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+import de.ddb.next.beans.Folder
 
 
 /**
@@ -56,7 +57,24 @@ class BookmarksService {
         http.request(Method.GET, ContentType.JSON) { req ->
            response.success = { resp, json ->
                def resultList = json.hits.hits
-               return resultList
+               log.info "list: ${resultList}"
+               def folderList = []
+               resultList.each {it ->
+
+                   log.info 'it: ' + it
+
+                    def folder = new Folder(
+                       folderId: it._id,
+                       userId: it._source.user,
+                       title: it._source.title,
+                       isPublic: it._source.isPublic
+                   )
+
+                   log.info 'id: ' + folder.folderId
+
+                   folderList.add(folder)
+               }
+               return folderList
            }
        }
     }
