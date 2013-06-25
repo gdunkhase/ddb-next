@@ -25,6 +25,10 @@
   background-color: #FFDDDD;
 }
 
+.entity-page .todo-gnd {
+  background-color: #DDFFDD;
+}
+
 .entity-page .search-entity {
   background: url(../images/icons/search.png) no-repeat -0px -145px;
   min-height: 35px;

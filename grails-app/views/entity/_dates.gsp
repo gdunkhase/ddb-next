@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="dates">
+<div class="dates todo-gnd">
 
   <div><g:message code="ddbnext.Entity_Birth" />: ${entity.dateOfBirth}
     <g:if test="${entity.placeOfBirth}"> 
