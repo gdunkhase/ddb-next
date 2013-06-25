@@ -213,15 +213,17 @@ class ItemController {
     def changeItemState() {
         def itemId = params.id;
         def reqType = params.reqType;
+        def reqActn = params.reqActn;
         int favStatus = 0;
         println "################## itemdId = " + itemId;
         println "################## reqType = " + reqType;
+        println "################## reqActn = " + reqActn;
         HttpSession sessionObject = request.getSession(false)
         User vUser = null;
         if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
             log.info("Favorite: change itemState User-Email: " + vUser.getEmail() + ", item: " + itemId);
             FavoritesService vFavService = FavoritesService.getFevoritesService();
-            if (vFavService != null) {
+            if ((vFavService != null)) {
                 if (vFavService.isFavorit(vUser.getEmail(), itemId)) {
                     log.info("delete from favorits list: ${itemId}");
                     if (vFavService.deleteFromFavoritesList(vUser.getEmail(), itemId)) {

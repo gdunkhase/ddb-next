@@ -26,22 +26,35 @@
         //alert("data.responseText = " + data.responseText);
         var JSONresponse = jQuery.parseJSON(data.responseText);
         //alert("JSONresponse.favStatus = " + JSONresponse.favStatus);
-        var elemFavorite = document.getElementById("idFavorite");
-        if (elemFavorite == null) {
+        //var elemFavorite = document.getElementById("idFavorite");
+        var jElemFavorite = $("#idFavorite");
+        if (jElemFavorite == null) {
             alert("Elemt 'idFavorite' not find!");
         }
-        if (JSONresponse && elemFavorite) {
+        if (JSONresponse && jElemFavorite) {
             if (JSONresponse.favStatus == 0) {
-                elemFavorite.style.color = 'silver';
-                elemFavorite.parent.style.backgroundPosition="-2px -0px";
+                //elemFavorite.style.color = 'silver';
+                jElemFavorite.css("color","silver");
+                //elemFavorite.parent.style.backgroundPosition = "-2px -0px";
+                jElemFavorite.parent().removeClass("favorite-selected");
+                jElemFavorite.parent().removeClass("favorite-add");
+                jElemFavorite.parent().css("backgroundPosition","-2px -0px");
             }
             else if (JSONresponse.favStatus == 1) {
-                elemFavorite.style.color = 'green';
-                elemFavorite.parent.style.backgroundPosition="-2px -80px";
+                //elemFavorite.style.color = 'green';
+                jElemFavorite.css("color","green");
+                //elemFavorite.parent.style.backgroundPosition = "-2px -80px";
+                //jElemFavorite.parent().css("backgroundPosition","-2px -80px");
+                jElemFavorite.parent().removeClass("favorite-selected");
+                jElemFavorite.parent().addClass("favorite-add");
             }
             else if (JSONresponse.favStatus == 2) {
-                elemFavorite.style.color = 'red';
-                elemFavorite.parent.style.backgroundPosition="-2px -100px";
+                //elemFavorite.style.color = 'red';
+                jElemFavorite.css("color","red");
+                //elemFavorite.parent.style.backgroundPosition = "-2px -140px";
+                //jElemFavorite.parent().css("backgroundPosition","-2px -140px");
+                jElemFavorite.parent().removeClass("favorite-add");
+                jElemFavorite.parent().addClass("favorite-selected");
             }
         }
       }

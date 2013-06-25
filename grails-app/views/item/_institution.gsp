@@ -51,7 +51,7 @@ limitations under the License.
         
             <div class="favorite" style="text-align: right;">
                 <g:isNotLoggedIn>
-                    <g:link controller="user" >
+                    <g:link controller="user" class="favorite-actions">
                         <span title="<g:message code='ddbnext.stat_010' />">
                             <g:message code="ddbnext.favorit" />
                         </span>
@@ -59,18 +59,21 @@ limitations under the License.
                 </g:isNotLoggedIn>
                 <g:isLoggedIn>
                 
-                    <g:link controller="item" action="changeItemState" params="${params}" class="favorite-actions">
-                        <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
+                    <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
+                        <g:link controller="item" action="changeItemState" params="${params}" class="favorite-actions favorite-selected">
                             <span itemid="${itemId}" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: red;">
                                 <g:message code="ddbnext.favorit" />
                             </span>
-                        </g:if>
-                        <g:else>
+                        </g:link>
+                    </g:if>
+                    <g:else>
+                        <g:link controller="item" action="changeItemState" params="${params}" class="favorite-actions favorite-add">
                             <span itemid="${itemId}" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: green;">
                                 <g:message code="ddbnext.favorit" />
                             </span>
-                        </g:else>
-                    </g:link>
+                        </g:link>
+                    </g:else>
+                    
                     
                 </g:isLoggedIn>
             </div>
