@@ -18,8 +18,14 @@ limitations under the License.
   <g:set var="showPictures" value="${entity.searchPreview.pictureCount > 0}" />
   <g:set var="showVideos" value="${entity.searchPreview.videoCount > 0}" />
   <g:set var="showAudios" value="${entity.searchPreview.audioCount > 0}" />
-  <g:set var="offset" value="${params.offset.toInteger()}" />
-  <g:set var="rows" value="${params.rows.toInteger()}" />
+  <g:set var="offset" value="${params.offset?.toInteger()}" />
+  <g:if test="${!offset}" >
+    <g:set var="offset" value="${0}" />
+  </g:if>
+  <g:set var="rows" value="${params.rows?.toInteger()}" />
+  <g:if test="${!rows}" >
+    <g:set var="rows" value="${4}" />
+  </g:if>
   <g:set var="nextOffset" value="${offset + rows}" />
   <g:set var="previousOffset" value="${offset - rows}" />
   <g:if test="${previousOffset < 0}">
