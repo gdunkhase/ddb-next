@@ -88,9 +88,17 @@ class UserController {
             //2. Get the items from the backend
             //3. Render the results in the page
 
-            // createNewFolder()
-            // getAllFolder()
-            saveBookmarkInFolder()
+            //createNewFolder()
+            //getAllFolder()
+            //saveBookmarkInFolder()
+            //findBookmarks()
+
+            /* TODO:
+             * we can not use elasticsearch id for bulk delete. Alternatives:
+             * - delete one by one using deleteByQuery
+             * - use other URI for bookmark
+             */
+            bookmarksService.deleteBookmarks('crh',['8630SH0lQiytmaoE60r5pA','6OXVaccHTKyuB61QRItVaw','qSp_NNrpRWGX93yyz_w3YA'])
 
             render(view:"favorites")
         }
@@ -99,9 +107,16 @@ class UserController {
         }
     }
 
+    def findBookmarks() {
+        def userId = 'crh'
+        def ids = ['foo', 'bar']
+        def found = bookmarksService.findBookmarks(userId, ids)
+        log.info "found: ${found}"
+    }
+
     def createNewFolder() {
         def userId = 'crh'
-        def folderTitle= 'folderTitle'
+        def folderTitle= 'Favorites'
         def folderId = bookmarksService.newFolder(userId, folderTitle)
         log.info "Created a bookmark folder with the ID: ${folderId}"
     }
@@ -118,11 +133,10 @@ class UserController {
         }
     }
 
-
     def saveBookmarkInFolder() {
         def userId = 'crh'
         def folderId = 'Shhh5YpoRlKW3bIiDjh8hA'
-        def itemId = 'bar'
+        def itemId = 'nudel'
         def creationDate =  new Date().getTime().toString()
         log.info "creation date: ${creationDate}"
         def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId, creationDate)
