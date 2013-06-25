@@ -88,10 +88,12 @@ class UserController {
             //2. Get the items from the backend
             //3. Render the results in the page
 
-            // createNewFolder()
-            getAllFolder()
-            //saveBookmarkInFolder()
-            //findBookmarks()
+            //createNewFolder()
+            // folder id:
+            // bookmark id: 1mu_4BGDSJidJmuHExnBrA
+            // getAllFolder()
+            saveBookmarkInFolder()
+            //findListOfBookmarks()
 
             /* TODO:
              * we can not use elasticsearch id for bulk delete. Alternatives:
@@ -100,6 +102,8 @@ class UserController {
              */
             // bookmarksService.deleteBookmarks('crh',['8630SH0lQiytmaoE60r5pA','6OXVaccHTKyuB61QRItVaw','qSp_NNrpRWGX93yyz_w3YA'])
 
+            // getAllBookmarksInFavorites()
+
             render(view:"favorites")
         }
         else{
@@ -107,11 +111,17 @@ class UserController {
         }
     }
 
-    def findBookmarks() {
+    def saveBookmarkInFolder() {
         def userId = 'crh'
-        def ids = ['foo', 'bar']
-        def found = bookmarksService.findBookmarks(userId, ids)
-        log.info "found: ${found}"
+        def folderId =  '_iJu0VO7SsuGnDHiN5ng2w'
+        def itemId = 'nudel'
+        def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId)
+        log.info 'bookmark is saved, ID is: ' + bookmarkId
+    }
+
+    def getAllBookmarksInFavorites() {
+       def bookmarks = bookmarksService.findBookmarksByFolderId('crh', '_iJu0VO7SsuGnDHiN5ng2w')
+       log.info "all: ${bookmarks}"
     }
 
     def createNewFolder() {
@@ -121,6 +131,14 @@ class UserController {
         log.info "Created a bookmark folder with the ID: ${folderId}"
     }
 
+    def findListOfBookmarks() {
+        def userId = 'crh'
+        def ids = ['foo', 'bar','nudel']
+        def found = bookmarksService.findBookmarkedItems(userId, ids)
+        log.info "found: ${found}"
+    }
+
+    /*
     def getAllFolder() {
         def userId = 'crh'
         def folderList = bookmarksService.findAllFolders(userId)
@@ -133,21 +151,12 @@ class UserController {
         }
     }
 
-    def saveBookmarkInFolder() {
-        def userId = 'crh'
-        def folderId = 'Shhh5YpoRlKW3bIiDjh8hA'
-        def itemId = 'nudel'
-        def creationDate =  new Date().getTime().toString()
-        log.info "creation date: ${creationDate}"
-        def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId, creationDate)
-        log.info 'bookmark is saved, ID is: ' + bookmarkId
-    }
+    */
+
 
 
     def registration() {
-
         render(view: "registration", model: [])
-
     }
 
     def signup() {
