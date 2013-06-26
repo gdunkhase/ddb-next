@@ -80,7 +80,7 @@ class BookmarksService {
            response.success = { resp, json ->
                def resultList = json.hits.hits
                def folderList = []
-               resultList.each {it ->
+               resultList.each { it ->
                     def folder = new Folder(
                        folderId: it._id,
                        userId: it._source.user,
