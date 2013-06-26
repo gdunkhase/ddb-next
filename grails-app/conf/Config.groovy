@@ -112,19 +112,12 @@ ddb {
     }
 }
 
-elasticSearch {
-    client.hosts = [
-        [host:'localhost', port:9200]
-    ]
-}
-
 environments {
     development {
         grails.logging.jul.usebridge = true
         grails.config.locations = [
             "file:${userHome}/.grails/${appName}.properties"
         ]
-        elasticSearch.client.mode = 'transport'
     }
     production {
         grails.logging.jul.usebridge = false
