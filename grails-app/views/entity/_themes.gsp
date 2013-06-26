@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="themes">
+<div class="themes todo">
   <div class="row">
     <div class="span6">
       <h3>Thema in:</h3>

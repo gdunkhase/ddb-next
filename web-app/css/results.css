@@ -529,14 +529,6 @@ input[type="checkbox"],input[type="radio"] {
   font-weight:bold;
 }
 
-.information:hover .hovercard-info-item{
-  display: block;
-}
-
-.information .hovercard-info-item:hover{
-  display: none;
-}
-
 .information .hovercard-info-item {
   background: #fff;
   border: 1px solid #a7a7a6;
@@ -553,7 +545,7 @@ input[type="checkbox"],input[type="radio"] {
   position: absolute;
   right: 0;
   top: 20px;
-  display: none;
+  display:none;
 }
 
 .information .hovercard-info-item h4 {

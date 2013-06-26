@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
 /* Displaying only the logo as header*/
 .print-logo {
   display: block !important;
@@ -33,7 +34,10 @@ footer, .footer,
 .group-operator, .add-group-button,
 #articles-prev, #articles-next, .link-adv-search, .contextual-help,
 #divOSM .sliderStyle-vertical, #divOSM .mapHome,
-#mapContainerDiv .sliderStyle-vertical, #mapContainerDiv .mapHome {
+#mapContainerDiv .sliderStyle-vertical, #mapContainerDiv .mapHome,
+.favorites-results-container .bookmarks-container, .favorites-results-content .results-pagination, 
+.favorites-results-content .remove-item-check, .favorites-results-content .select-all, .favorites-results-head > .span8,
+.favorites-results-head hr {
   display: none;
 }
 
@@ -41,7 +45,7 @@ footer, .footer,
   float: none !important;
 }
 
-/* Search page*/
+/* Search page */
 .results-list, .matches, #previews-list {
   list-style: none;
 }
@@ -51,23 +55,49 @@ footer, .footer,
   min-height: 120px;
   width: 650px !important;
   page-break-inside: avoid;
+  border-width: 0 0 2px 0 !important;
+}
+.results-list.grid {
+  width: 650px !important;
+  padding: 0px !important;  
 }
 .results-list.grid .item {
-  display: block;
-  margin-left: -40px;
-  min-height: 110px;
-  width: 650px !important;
+  display: inline-block;
+  margin-left: 0px;
+  min-height: 200px;
+  width: 214px !important;
   page-break-inside: avoid;
+  padding: 15px 0 15px 0 !important;
+  border-width: 0 0 2px 0 !important;
 }
 
-.summary-main-wrapper {
+.results-list.grid .thumbnail-wrapper {
+  margin-left: 0px !important;
+  width: 214px !important;
+}
+
+.results-list.grid .summary-main-wrapper {
+  width: 214px !important;
+  top: 120px;
+}
+
+.results-list.grid .summary-main-wrapper h2 {
+  max-height: 78px !important;
+}
+
+.results-list.grid .extra {
+  display: none !important;
+}
+
+.search-results-list .summary-main-wrapper {
   width: 490px;
   position: absolute;
 }
+
 .results-list.grid .item .thumbnail-wrapper {
   margin-left: 0px;
 }
-.thumbnail-wrapper {
+.search-results-list .thumbnail-wrapper {
   width: 160px;
   position: absolute;
   margin-left: 490px !important;
@@ -82,7 +112,6 @@ footer, .footer,
   font-size: 1em;
   line-height: 16px;
 }
-
 .results-list .summary {
   position: relative;
 }
@@ -90,41 +119,38 @@ footer, .footer,
   display: block !important;
   min-height: 20px;
 }
-
 .results-list .extra ul {
   list-style: none outside none;
   margin-left: -40px; 
 }
-
 .page-info-nav .page-info {
   margin-top: 15px;
   line-height: normal;
 }
-
 .results-list .bt {
   border-color: #efebe8;
   border-style: solid;
   border-width: 2px 0 0 0;
 }
 
+.search-results-content .page-info-nav {
+  border-color: #efebe8;
+  border-style: solid;
+  border-width: 0 0 2px 0;
+  padding-bottom: 15px;
+}
+
 .search-results-content .page-info-nav #results-label {
    display: inline;
 }
-
 .search-results-content .page-info-nav .results-overall-index + span {
   display: inline;
 }
-
 .search-results-content .page-info-nav .results-overall-index:after {
   content: "";
 }
 
 /* Search page - end*/
-
-
-
-
-
 
 
 /* Item detail-view page*/
@@ -218,19 +244,11 @@ footer, .footer,
 /* Item detail-view - end*/
 
 
-
-
-
-
-
 /* Advanced search */
 .search-group {
   display: block !important;
 }
 /* Advanced search - end */
-
-
-
 
 
 /* Institution details */
@@ -297,3 +315,38 @@ footer, .footer,
   margin-top: 100px;
 }
 /* Institution details - end */
+
+
+/* Favorites list page */
+
+  .favorites-results .item {
+    display: block;
+    margin-left: -40px;
+    min-height: 140px;
+    width: 650px !important;
+    page-break-inside: avoid;
+  }
+  .results-sorter .span6 {
+    display: inline-block;
+    width: 500px;
+  }
+  .results-sorter .added-on {
+    display: inline-block;
+    width: 110px;
+  }
+  .favorites-results .summary-main-wrapper {
+    width: 380px;
+    position: absolute;
+  }
+  .favorites-results .thumbnail {
+    width: 160px;
+    position: absolute;
+    margin-left: 360px !important;
+  }
+  .favorites-results .created-at {
+    width: 160px;
+    position: absolute;
+    margin-left: 505px !important;
+    margin-top: 10px;
+  }
+/* Favorites list page - end */

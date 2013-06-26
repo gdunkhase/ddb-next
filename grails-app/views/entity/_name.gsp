@@ -14,6 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="name">
-  <h2>Johann Wolfgang von Goethe</h2>
+  <h2>${entity.title}</h2>
+  
+  <%-- 
   <span>Schriftsteller, Politiker, Jurist, Naturwissenschaftler, Maler, Zeichner</span>
+  --%>
+  
+  <span class="todo-gnd">${entity.professions}</span>
+  
 </div>

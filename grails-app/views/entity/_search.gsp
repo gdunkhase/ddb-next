@@ -14,9 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="search">
-  <h3>Suche:<h3>
-  <div class="input-prepend">
+  <h3><g:message code="ddbnext.Search" />:</h3>
+  <div class="">
+    
+    <%-- 
     <span class="add-on"><i class="icon-search"></i></span>		
-    <input id="prependedInput" type="text"  class="span3" value="Johann Wolfgang von Goethe in DDB">
+    <input id="prependedInput" type="text" class="span3" value="${title}">
+    --%>
+    
+    <div class="search-entity">   
+      <div>
+        <g:link controller="search" action="results" params="${["query":entity.title] }">
+          "<i>${entity.title}</i>" <g:message code="ddbnext.Entity_Search_DDB" />
+        </g:link>
+      </div>
+    </div>
+    
   </div>
 </div>

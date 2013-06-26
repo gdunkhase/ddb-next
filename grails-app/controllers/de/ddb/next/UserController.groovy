@@ -33,9 +33,13 @@ import org.openid4java.util.HttpClientFactory;
 import org.openid4java.util.ProxyProperties;
 
 class UserController {
-    def aasService
+
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
+
+    def aasService
+    def sessionService
+
     LinkGenerator grailsLinkGenerator
 
     def index() {
@@ -50,7 +54,7 @@ class UserController {
         def loginStatus = LoginStatus.LOGGED_OUT
 
         // Only perfom login if user is not already logged in
-        if(!isUserInSession()){
+        if(!isUserLoggedIn()){
             def email = params.email
             def password = params.password
 
@@ -58,7 +62,8 @@ class UserController {
 
             if(user != null){
                 loginStatus = LoginStatus.SUCCESS
-                putUserInSession(getSessionObject(true), user)
+                sessionService.createNewSession()
+                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
             }else{
                 loginStatus = LoginStatus.FAILURE
             }
@@ -74,25 +79,33 @@ class UserController {
     def doLogout() {
         log.info "doLogout(): logout user "
 
-        removeUserFromSession()
+        logoutUserFromSession()
 
         redirect(controller: 'index', action: 'index')
 
     }
-    
+
     //Favorites page
     def favorites(){
-        
-        if(isUserInSession() || true){
+
+        if(isUserLoggedIn() || true){
             //1. Call to fetch the list of favorites items#
             //2. Get the items from the backend
             //3. Render the results in the page
-            render(view:"favorites")
+
+            // Date info for the print view
+            def dateTime = new Date()
+            dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+
+            // User info for the print view
+            def userName = getUserFromSession()?.getFirstnameAndLastnameOrNickname()
+
+            render(view:"favorites", model: ['userName': userName, 'dateString': dateTime])
         }
         else{
             redirect(controller:"index")
         }
-        
+
     }
 
     def registration() {
@@ -102,7 +115,21 @@ class UserController {
     }
 
     def signup() {
+
         //        TODO
+
+        def errors = []
+        // check variable
+        def nextStep = false
+        // dummy error added to try the form validation
+        errors.add(message(code: "error.500.body"))
+
+        if(!nextStep){
+            render(view: "registration" , model: [errors: errors])
+            return
+        }else{
+            //        TODO
+        }
     }
 
     def recoverPassword(){
@@ -179,8 +206,11 @@ class UserController {
 
         log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
         ConsumerManager manager = new ConsumerManager();
-        getSessionObject(true)?.setAttribute(SESSION_CONSUMER_MANAGER, manager)
-        getSessionObject(true)?.setAttribute(SESSION_OPENID_PROVIDER, provider)
+
+        sessionService.createNewSession()
+        sessionService.setSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER, provider)
+        sessionService.setSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER, manager)
+
         String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
         List discoveries = manager.discover(discoveryUrl);
         DiscoveryInformation discovered = manager.associate(discoveries);
@@ -197,12 +227,15 @@ class UserController {
 
         log.info "doOpenIdLogin(): got OpenID login request"
 
-        ConsumerManager manager = getSessionObject(false)?.getAttribute(SESSION_CONSUMER_MANAGER)
+        //ConsumerManager manager = getSessionObject(false)?.getAttribute(SESSION_CONSUMER_MANAGER)
+        ConsumerManager manager = sessionService.getSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER)
         if(manager){
-            def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
+            //def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
+            def provider = sessionService.getSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER)
 
             ParameterList openidResp = new ParameterList(request.getParameterMap());
-            DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
+            //DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
+            DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered");
             String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
             String receivingURL =  returnURL + "?" + request.getQueryString();
             VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered);
@@ -235,8 +268,10 @@ class UserController {
                 log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
 
                 // Create new session, because the old one might be corrupt due to the redirect to the OpenID provider
-                getSessionObject(false)?.invalidate()
-                HttpSession newSession = getSessionObject(true)
+                //                getSessionObject(false)?.invalidate()
+                //                HttpSession newSession = getSessionObject(true)
+                sessionService.destroySession()
+                HttpSession newSession = sessionService.createNewSession()
 
                 User user = new User()
                 user.setEmail(email)
@@ -244,7 +279,7 @@ class UserController {
                 user.setPassword(null)
                 user.setOpenIdUser(true)
 
-                putUserInSession(newSession, user)
+                sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
 
                 loginStatus = LoginStatus.SUCCESS
 
@@ -285,25 +320,18 @@ class UserController {
 
     }
 
-    private boolean isUserInSession() {
-        HttpSession sessionObject = getSessionObject(false)
-        return sessionObject && sessionObject.getAttribute(User.SESSION_USER)
-    }
-
-    private void putUserInSession(HttpSession sessionObject, User user) {
-        sessionObject.setAttribute(User.SESSION_USER, user)
+    private boolean isUserLoggedIn() {
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
 
     private User getUserFromSession() {
-        return getSessionObject(false)?.getAttribute(User.SESSION_USER)
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
 
-    private boolean removeUserFromSession() {
-        getSessionObject(false)?.removeAttribute(User.SESSION_USER)
-        getSessionObject(false)?.invalidate()
+    private boolean logoutUserFromSession() {
+        sessionService.removeSessionAttributeIfAvailable(User.SESSION_USER)
+        sessionService.destroySession()
     }
 
-    private HttpSession getSessionObject(boolean createNewSession){
-        return request.getSession(createNewSession)
-    }
+
 }

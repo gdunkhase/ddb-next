@@ -13,7 +13,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="dates">
-  <div>Geboren: 28. August 1749, <a href="">Frankfurt am Main</a></div>
-  <div>Gestorben: 28. August 1832, <a href="">Weimar</a></div>
+<div class="dates todo-gnd">
+
+  <div><g:message code="ddbnext.Entity_Birth" />: ${entity.dateOfBirth}
+    <g:if test="${entity.placeOfBirth}"> 
+      , <a href="">${entity.placeOfBirth}</a>
+    </g:if>
+  </div>
+  <div><g:message code="ddbnext.Entity_Death" />: ${entity.dateOfDeath}
+    <g:if test="${entity.placeOfDeath}"> 
+      , <a href="">${entity.placeOfDeath}</a>
+    </g:if>
+  </div>
 </div>
