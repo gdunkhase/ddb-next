@@ -106,6 +106,39 @@ class ConfigurationService {
         return url
     }
 
+    public String getPasswordResetConfirmationLink(){
+        def link = grailsApplication.config.ddb?.passwordreset?.confirmation
+        if(!link){
+            throw new ConfigurationException("getPasswordResetLink(): Configuration entry does not exist -> ddb.passwordreset.confirmation")
+        }
+        if(!(link instanceof String)){
+            throw new ConfigurationException("getPasswordResetLink(): ddb.passwordreset.confirmation is not a String")
+        }
+        return link
+    }
+
+    public String getEmailUpdateConfirmationLink(){
+        def link = grailsApplication.config.ddb?.emailupdate?.confirmation
+        if(!link){
+            throw new ConfigurationException("getEmailUpdateConfirmationLink(): Configuration entry does not exist -> ddb.emailupdate.confirmation")
+        }
+        if(!(link instanceof String)){
+            throw new ConfigurationException("getEmailUpdateConfirmationLink(): ddb.emailupdate.confirmation is not a String")
+        }
+        return link
+    }
+
+    public String getCreateConfirmationLink(){
+        def link = grailsApplication.config.ddb?.create?.confirmation
+        if(!link){
+            throw new ConfigurationException("getCreateConfirmationLink(): Configuration entry does not exist -> ddb.create.confirmation")
+        }
+        if(!(link instanceof String)){
+            throw new ConfigurationException("getCreateConfirmationLink(): ddb.create.confirmation is not a String")
+        }
+        return link
+    }
+
     public List getFacetsFilter(){
         def filter = grailsApplication.config.ddb?.backend?.facets?.filter
         if(!filter){

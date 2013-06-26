@@ -144,6 +144,9 @@ ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
 ddb.session.timeout=1800 // in sec -> 30min
+ddb.passwordreset.confirmation="http://localhost:8080/ddb-next/confirm/|id|/|confirmationToken|?type=passwordreset"
+ddb.emailupdate.confirmation="http://localhost:8080/ddb-next/confirm/|id|/|confirmationToken|?type=emailupdate"
+ddb.create.confirmation="http://localhost:8080/ddb-next/confirm/|id|/|confirmationToken|?type=create"
 
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"

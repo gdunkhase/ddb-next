@@ -16,21 +16,22 @@
 package de.ddb.next
 
 import javax.servlet.http.HttpSession
+
+import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.openid4java.consumer.ConsumerManager
+import org.openid4java.consumer.VerificationResult
+import org.openid4java.discovery.DiscoveryInformation
+import org.openid4java.discovery.Identifier
+import org.openid4java.message.AuthRequest
+import org.openid4java.message.ParameterList
+import org.openid4java.message.ax.FetchRequest
+import org.openid4java.util.HttpClientFactory
+import org.openid4java.util.ProxyProperties
 
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
-import de.ddb.next.AasService
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator;
-import org.openid4java.consumer.ConsumerManager;
-import org.openid4java.consumer.VerificationResult;
-import org.openid4java.discovery.DiscoveryInformation;
-import org.openid4java.discovery.Identifier;
-import org.openid4java.message.AuthRequest;
-import org.openid4java.message.ParameterList;
-import org.openid4java.message.ax.FetchRequest;
-import org.openid4java.util.HttpClientFactory;
-import org.openid4java.util.ProxyProperties;
 
 class UserController {
 
@@ -39,7 +40,8 @@ class UserController {
 
     def aasService
     def sessionService
-
+    def configurationService
+    
     LinkGenerator grailsLinkGenerator
 
     def index() {
@@ -138,32 +140,104 @@ class UserController {
     }
 
     def profile() {
-        def user
-        try {
-            user = aasService.getPerson("current")
+        if(isUserLoggedIn()){
+            User user = getUserFromSession()
+            render(view: "profile", model: [favoritesCount: "no count yet", user: user])
+
         }
-        catch (AuthorizationException e) {
-            forward controller: "error", action: "auth"
+        else{
+            redirect(controller:"index")
         }
-        render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
     }
 
-    def save() {
-        JSONObject user
-        try {
-            user = aasService.getPerson(params.id)
+    def passwordChange() {
+        if(isUserLoggedIn()){
+            User user = getUserFromSession()
+            render(view: "passwordChange", model: [user: user])
+
         }
-        catch (AuthorizationException e) {
-            forward controller: "error", action: "auth"
+        else{
+            redirect(controller:"index")
         }
-        user.email = params.email
-        try {
-            user = aasService.updatePerson(params.id, user)
+    }
+
+    def saveProfile() {
+        if (isUserLoggedIn()) {
+            List<String> errors = []
+            List<String> messages = []
+            boolean eMailDifference = false
+            boolean profileDifference = false
+            User user = getUserFromSession()
+            if (user == null || StringUtils.isBlank(user.getId())) {
+                forward controller: "error", action: "serverError"
+            }
+            if (StringUtils.isBlank(params.username)) {
+                errors.add("ddbnext.Error_Username_Empty");
+            }
+            if (StringUtils.isBlank(params.email)) {
+                errors.add("ddbnext.Error_Email_Empty");
+            }
+            if (errors == null || errors.isEmpty()) {
+                if (!Validations.validatorEmail(params.email)) {
+                    errors.add("ddbnext.Error_Valid_Email_Address");
+                }
+                if (Validations.isDifferent(user.getFirstname(), params.fname)
+                || Validations.isDifferent(user.getLastname(), params.lname)
+                || Validations.isDifferent(user.getUsername(), params.username)) {
+                    profileDifference = true;
+                }
+                if (Validations.isDifferent(user.getEmail(), params.email)) {
+                    eMailDifference = true;
+                }
+                if (profileDifference) {
+                    //update user in aas
+                    JSONObject aasUser = aasService.getPerson(user.getId());
+                    aasUser.put(AasService.NICKNAME_FIELD, params.username);
+                    aasUser.put(AasService.FIRSTNAME_FIELD, params.fname);
+                    aasUser.put(AasService.LASTNAME_FIELD, params.lname);
+                    aasService.updatePerson(user.getId(), aasUser);
+                    messages.add("ddbnext.User.Profile_Update_Success")
+                    //adapt user-attributes in session
+                    user.setUsername(params.username)
+                    user.setFirstname(params.fname)
+                    user.setLastname(params.lname)
+                    sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+                }
+                if (eMailDifference) {
+                    //update email in aas
+                    aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), null, null));
+                    messages.add("ddbnext.User.Email_Update_Success")
+                }
+            }
+            render(view: "profile", model: [favoritesCount: "no count yet", user: user, errors: errors, messages: messages])
         }
-        catch (AuthorizationException e) {
-            forward controller: "error", action: "auth"
+        else{
+            redirect(controller:"index")
         }
-        render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
+    }
+
+    def changePassword() {
+        if (isUserLoggedIn()) {
+            List<String> errors = []
+            List<String> messages = []
+            User user = getUserFromSession()
+            if (user?.getPassword() == null) {
+                forward controller: "error", action: "serverError"
+            }
+            errors = Validations.validatorPasswordChange(user?.getPassword(), params.oldpassword, params.newpassword, params.confnewpassword)
+            if (errors == null || errors.isEmpty()) {
+                //change password in AAS
+                aasService.changePassword(user?.getId(), aasService.getChangePasswordJson(params.newpassword))
+                messages.add("ddbnext.User.Password_Change_Success")
+                //adapt user-attributes in session
+                user.setPassword(params.newpassword)
+                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+            }
+            render(view: "passwordChange", model: [user: user, errors: errors, messages: messages, oldpassword: params.oldpassword, newpassword: params.newpassword, confnewpassword: params.confnewpassword])
+        }
+        else{
+            redirect(controller:"index")
+        }
     }
 
     def delete() {
@@ -176,6 +250,28 @@ class UserController {
             forward controller: "error", action: "auth"
         }
         doLogout()
+    }
+    
+    def confirm() {
+        def id = params.id
+        def token = params.token
+        def type = params.type
+        List<String> messages = [];
+        List<String> errors = [];
+        aasService.confirm(params.id, params.token);
+        if (StringUtils.isBlank(params.type)) {
+            forward controller: "error", action: "serverError"
+        }
+        if (params.type.equals("emailupdate")) {
+            messages.add("ddbnext.User.Email_Confirm_Success");
+        }
+        else if (params.type.equals("passwordreset")) {
+            messages.add("ddbnext.User.Pwreset_Confirm_Success");
+        }
+        else if (params.type.equals("create")) {
+            messages.add("ddbnext.User.Create_Confirm_Success");
+        }
+        render(view: "confirm", model: [errors: errors, messages: messages])
     }
 
     def requestOpenIdLogin() {
@@ -245,12 +341,14 @@ class UserController {
                 log.info "doOpenIdLogin(): success verification"
 
                 def username = null
+                def firstName = null
+                def lastName = null
                 def email = null
                 def identifier = null
 
                 if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
-                    def firstName = params["openid.ext1.value.FirstName"]
-                    def lastName = params["openid.ext1.value.LastName"]
+                    firstName = params["openid.ext1.value.FirstName"]
+                    lastName = params["openid.ext1.value.LastName"]
                     username = firstName + " " + lastName
                     email = params["openid.ext1.value.Email"]
                     identifier = verified.getIdentifier()
@@ -274,8 +372,11 @@ class UserController {
                 HttpSession newSession = sessionService.createNewSession()
 
                 User user = new User()
+                user.setId(identifier)
                 user.setEmail(email)
                 user.setUsername(username)
+                user.setFirstname(firstName)
+                user.setFirstname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
 

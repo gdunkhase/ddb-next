@@ -99,6 +99,10 @@ class UrlMappings {
             controller="user"
             action="profile"
         }
+        "/user/passwordchange" {
+            controller="user"
+            action="passwordChange"
+        }
         "/user/delete" {
             controller="user"
             action="delete"
@@ -152,6 +156,11 @@ class UrlMappings {
         "/favorites" {
             controller="user"
             action="favorites"
+        }
+
+        "/confirm/$id/$token" {
+            controller="user"
+            action="confirm"
         }
 
 

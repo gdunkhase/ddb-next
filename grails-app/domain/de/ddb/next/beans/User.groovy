@@ -21,6 +21,7 @@ class User {
 
     public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
 
+    String id
     String username
     String firstname
     String lastname
