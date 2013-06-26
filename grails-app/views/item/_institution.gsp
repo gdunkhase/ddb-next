@@ -60,15 +60,15 @@ limitations under the License.
                 <g:isLoggedIn>
                 
                     <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
-                        <g:link controller="item" action="changeItemState" params="${params}" class="favorite-actions favorite-selected">
-                            <span itemid="${itemId}" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: red;">
+                        <g:link controller="item" action="changeItemState" params="${params + [reqActn:'delete']}" class="favorite-actions favorite-selected">
+                            <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: red;">
                                 <g:message code="ddbnext.favorit" />
                             </span>
                         </g:link>
                     </g:if>
                     <g:else>
-                        <g:link controller="item" action="changeItemState" params="${params}" class="favorite-actions favorite-add">
-                            <span itemid="${itemId}" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: green;">
+                        <g:link controller="item" action="changeItemState" params="${params + [reqActn:'add']}" class="favorite-actions favorite-add">
+                            <span data-itemid="${itemId}" data-actn="POST" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: green;">
                                 <g:message code="ddbnext.favorit" />
                             </span>
                         </g:link>
