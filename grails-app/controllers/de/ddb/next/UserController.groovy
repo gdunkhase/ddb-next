@@ -33,7 +33,6 @@ import org.openid4java.util.HttpClientFactory;
 import org.openid4java.util.ProxyProperties;
 
 class UserController {
-
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
 
@@ -87,7 +86,6 @@ class UserController {
 
     //Favorites page
     def favorites(){
-
         if(isUserLoggedIn() || true){
             //1. Call to fetch the list of favorites items#
             //2. Get the items from the backend
@@ -105,13 +103,10 @@ class UserController {
         else{
             redirect(controller:"index")
         }
-
     }
 
     def registration() {
-
         render(view: "registration", model: [])
-
     }
 
     def signup() {
@@ -183,18 +178,18 @@ class UserController {
 
         String discoveryUrl = ""
 
-        FetchRequest fetch = FetchRequest.createFetchRequest();
+        FetchRequest fetch = FetchRequest.createFetchRequest()
 
         if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
             discoveryUrl = "https://www.google.com/accounts/o8/id"
-            fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true);
-            fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true);
-            fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true);
-            fetch.setCount("openid.ext1.value.Email", 1);
+            fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
+            fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
+            fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true)
+            fetch.setCount("openid.ext1.value.Email", 1)
         }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
             discoveryUrl = "https://me.yahoo.com"
-            fetch.addAttribute("Email", "http://axschema.org/contact/email", true);
-            fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true);
+            fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
+            fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
         }else{
             render(view: "login", model: [
                 'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
@@ -205,17 +200,17 @@ class UserController {
         setProxy()
 
         log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
-        ConsumerManager manager = new ConsumerManager();
+        ConsumerManager manager = new ConsumerManager()
 
         sessionService.createNewSession()
         sessionService.setSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER, provider)
         sessionService.setSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER, manager)
 
-        String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
-        List discoveries = manager.discover(discoveryUrl);
-        DiscoveryInformation discovered = manager.associate(discoveries);
-        AuthRequest authReq = manager.authenticate(discovered, returnURL);
-        authReq.addExtension(fetch);
+        String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+        List discoveries = manager.discover(discoveryUrl)
+        DiscoveryInformation discovered = manager.associate(discoveries)
+        AuthRequest authReq = manager.authenticate(discovered, returnURL)
+        authReq.addExtension(fetch)
 
         // Leave DDB for login on OpenID-provider
         redirect(url: authReq.getDestinationUrl(true))
@@ -233,13 +228,13 @@ class UserController {
             //def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
             def provider = sessionService.getSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER)
 
-            ParameterList openidResp = new ParameterList(request.getParameterMap());
+            ParameterList openidResp = new ParameterList(request.getParameterMap())
             //DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
-            DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered");
-            String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
-            String receivingURL =  returnURL + "?" + request.getQueryString();
-            VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered);
-            Identifier verified = verification.getVerifiedId();
+            DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
+            String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+            String receivingURL =  returnURL + "?" + request.getQueryString()
+            VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered)
+            Identifier verified = verification.getVerifiedId()
 
             if (verified != null) {
                 log.info "doOpenIdLogin(): success verification"
@@ -312,10 +307,10 @@ class UserController {
                 }
             }
 
-            ProxyProperties proxyProps = new ProxyProperties();
-            proxyProps.setProxyHostName(proxyHost);
-            proxyProps.setProxyPort(proxyPort);
-            HttpClientFactory.setProxyProperties(proxyProps);
+            ProxyProperties proxyProps = new ProxyProperties()
+            proxyProps.setProxyHostName(proxyHost)
+            proxyProps.setProxyPort(proxyPort)
+            HttpClientFactory.setProxyProperties(proxyProps)
         }
 
     }

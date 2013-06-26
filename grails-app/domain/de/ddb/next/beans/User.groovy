@@ -15,8 +15,6 @@
  */
 package de.ddb.next.beans
 
-import java.util.Map;
-
 class User {
 
     public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
@@ -28,15 +26,9 @@ class User {
     String password
     boolean openIdUser
 
+    // TODO: why do we need to declare a default constructor?
     User(){
     }
-
-    // ALERT: This is dangerous, because Groovy creates an implicit constructor with a map as parameter for every bean.
-    //
-    //    User(Map userMap){
-    //        this.username = userMap.id
-    //        this.email = userMap.email
-    //    }
 
     public String toString() {
         return "User[username="+username+", email="+email+", openIdUser="+openIdUser+"]"

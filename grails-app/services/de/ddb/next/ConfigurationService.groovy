@@ -16,7 +16,7 @@
 
 package de.ddb.next
 
-import de.ddb.next.exception.ConfigurationException;
+import de.ddb.next.exception.ConfigurationException
 
 /**
  * Service for accessing the configuration.
@@ -106,6 +106,17 @@ class ConfigurationService {
         return url
     }
 
+    public String getBookmarkUrl(){
+        def url = grailsApplication.config.ddb?.bookmark?.url
+        if(!url){
+            throw new ConfigurationException("getBookmarkUrl(): Configuration entry does not exist -> ddb.bookmark.url ")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getBookmarkUrl(): ddb.bookmark.url is not a String")
+        }
+        return url
+    }
+
     public List getFacetsFilter(){
         def filter = grailsApplication.config.ddb?.backend?.facets?.filter
         if(!filter){
@@ -122,7 +133,7 @@ class ConfigurationService {
         if(!filepath){
             throw new ConfigurationException("getPiwikTrackingFile(): Configuration entry does not exist -> ddb.tracking.piwikfile")
         }
-        filepath = new String(filepath.toString());
+        filepath = new String(filepath.toString())
         if(!(filepath instanceof String)){
             throw new ConfigurationException("getPiwikTrackingFile(): ddb.tracking.piwikfile is not a String")
         }
@@ -203,7 +214,7 @@ class ConfigurationService {
         }
 
         try {
-            searchGroupCount = Integer.parseInt(searchGroupCount);
+            searchGroupCount = Integer.parseInt(searchGroupCount)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchGroupCount(): ddb.advancedSearch.searchGroupCount is not
@@ -224,7 +235,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            searchFieldCount = Integer.parseInt(searchFieldCount);
+            searchFieldCount = Integer.parseInt(searchFieldCount)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchFieldCount(): ddb.advancedSearch.searchFieldCount is not
@@ -244,7 +255,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            offset = Integer.parseInt(offset);
+            offset = Integer.parseInt(offset)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchOffset(): ddb.advancedSearch.defaultOffset is not
@@ -264,7 +275,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            rows = Integer.parseInt(rows);
+            rows = Integer.parseInt(rows)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchRows(): ddb.advancedSearch.defaultRows is not
@@ -284,7 +295,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            timeout = Integer.parseInt(timeout);
+            timeout = Integer.parseInt(timeout)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSessionTimeout(): ddb.session.timeout is not
