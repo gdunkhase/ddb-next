@@ -64,15 +64,124 @@ function historyManager(path){
   }
 }
 
-//Temporarily removed
-//function setHovercardEvents(){
-//    $('.thumbnail a').mouseenter(function(){
-//        $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').addClass('on');
-//    });
-//    $('.thumbnail a').mouseleave(function(){
-//        $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').removeClass('on');
-//    });
-//}
+function getLocalizedFacetValue(facetField, facetValue){
+  if(facetField=='affiliate_fct' || facetField=='keywords_fct' || facetField=='place_fct' || facetField=='provider_fct'){
+      return facetValue.toString();
+  }
+  if(facetField=='type_fct'){
+      return messages.ddbnext['type_fct_'+facetValue];
+  }
+  if(facetField=='time_fct'){
+      return messages.ddbnext['time_fct_'+facetValue];
+  }
+  if(facetField=='language_fct'){
+      return messages.ddbnext['language_fct_'+facetValue];
+  }
+  if(facetField=='sector_fct'){
+      return messages.ddbnext['sector_fct_'+facetValue];
+  }
+  return '';
+}
+
+function getLocalizedFacetField(facetField){
+  return messages.ddbnext['facet_'+facetField];
+}
+
+//Hovercard Information Item Manager
+HovercardInfoItem = function(element){
+  this.init(element);
+}
+
+$.extend(HovercardInfoItem.prototype,{
+  
+  infoButton: null,
+  hovercard: null,
+  iid:null,
+  
+  opened: false,
+  lock:false,
+  
+  hoverTime: 0,
+  hoverTimeout:300,
+  
+  init: function(element){
+    var currObjInstance = this;
+    this.infoButton = element;
+    this.hovercard = this.infoButton.find('.hovercard-info-item');
+    this.iid = this.hovercard.attr('data-iid');
+    
+    this.infoButton.mouseenter(function(){
+      var d = new Date();
+      currObjInstance.hoverTime = d.getTime();
+      currObjInstance.open();
+    });
+    this.hovercard.mouseenter(function(){
+      currObjInstance.lock = true;
+    });
+    this.hovercard.mouseleave(function(){
+      currObjInstance.close();
+    });
+    this.infoButton.mouseleave(function(){
+      setTimeout(function(){
+          var currentD = new Date();
+          if(!currObjInstance.lock && currObjInstance.hoverTime+currObjInstance.hoverTimeout-100<currentD.getTime())
+              currObjInstance.close();
+      },currObjInstance.hoverTimeout);
+    });
+  },
+  open: function(){
+    if(!this.opened){
+      this.opened = true;
+      this.hovercard.fadeIn('fast');
+      if(this.hovercard.find('.small-loader').length !=0){
+        this.fetchInformationItem();
+      }
+    }
+  },
+  close: function(){
+    this.hovercard.fadeOut('fast');
+    this.opened = false;
+    this.lock = false;
+  },
+  fetchInformationItem: function(){
+    var currObjInstance = this;
+    var request = $.ajax({
+      type: 'GET',
+      dataType: 'json',
+      async: true,
+      url: jsContextPath + '/informationitem/' + this.iid,
+      complete: function(data){
+        var content = currObjInstance.hovercard.find('ul.unstyled')
+        content.empty();
+        var JSONresponse = jQuery.parseJSON(data.responseText);
+        $.each(JSONresponse, function(key, value){
+          if(key !=='last_update'){
+            if(value != ""){
+              var li = $(document.createElement('li'));
+              var fieldName = $(document.createElement('span'));
+              var fieldContent = $(document.createElement('span'));
+              
+              fieldName.addClass('fieldName');
+              fieldContent.addClass('fieldContent');
+              
+              facetValues = new Array();
+              for(i=0;i<value.length;i++){
+                facetValues.push(value[i]);
+              }
+              
+              fieldName.text(getLocalizedFacetField(key));
+              fieldContent.text(facetValues.join());
+
+              li.append(fieldName);
+              li.append(fieldContent);
+              content.append(li);
+            }
+          }
+        });
+      }
+    });
+  }
+});
 
 function searchResultsInitializer(){
   $('.results-paginator-options').removeClass('off');
@@ -81,7 +190,7 @@ function searchResultsInitializer(){
   $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
   
-//  setHovercardEvents();
+  setHovercardEvents();
   
   $('.page-filter select').change(function(){
     var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
@@ -442,7 +551,7 @@ function updateLanguageSwitch(params) {
         divSearchResultsOverlayWaiting.remove();
         divSearchResultsOverlayModal.remove();
         
-//        setHovercardEvents();
+        setHovercardEvents();
         });
       }
     });
@@ -711,7 +820,7 @@ function updateLanguageSwitch(params) {
             currObjInstance.connectedflyoutWidget.buildLeftContainer();
             currObjInstance.connectedflyoutWidget.parentMainElement.find('.input-search-fct-container').hide();
             $.each(fctValues, function(){
-                var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, currObjInstance.getLocalizedValue(fctField, this));
+                var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, getLocalizedFacetValue(fctField, this));
                 
                 selectedFacetValue.find('.facet-remove').click(function(){
                   currObjInstance.unselectFacetValue(selectedFacetValue);
@@ -742,24 +851,6 @@ function updateLanguageSwitch(params) {
     },
     getUrlVar: function(name){
       return this.getUrlVars()[name];
-    },
-    getLocalizedValue: function(facetField, facetValue){
-        if(facetField=='affiliate_fct' || facetField=='keywords_fct' || facetField=='place_fct' || facetField=='provider_fct'){
-            return facetValue.toString();
-        }
-        if(facetField=='type_fct'){
-            return messages.ddbnext['type_fct_'+facetValue];
-        }
-        if(facetField=='time_fct'){
-            return messages.ddbnext['time_fct_'+facetValue];
-        }
-        if(facetField=='language_fct'){
-            return messages.ddbnext['language_fct_'+facetValue];
-        }
-        if(facetField=='sector_fct'){
-            return messages.ddbnext['sector_fct_'+facetValue];
-        }
-        return '';
     }
   });
   
@@ -1094,4 +1185,16 @@ function updateLanguageSwitch(params) {
   }
   initializeFacets();
   // -- End Facet Manager
+  
+  function setHovercardEvents(){
+    //  $('.thumbnail a').mouseenter(function(){
+    //      $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').addClass('on');
+    //  });
+    //  $('.thumbnail a').mouseleave(function(){
+    //      $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').removeClass('on');
+    //  });
+    $('.information').each(function(){
+      new HovercardInfoItem($(this));
+    });
+  }
 };

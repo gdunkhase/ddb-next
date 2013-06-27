@@ -15,7 +15,9 @@
  */
 package de.ddb.next
 
-import org.springframework.web.servlet.support.RequestContextUtils;
+import groovy.json.JsonSlurper
+
+import org.springframework.web.servlet.support.RequestContextUtils
 
 
 class SearchController {
@@ -134,6 +136,64 @@ class SearchController {
         }
 
 
+    }
+
+    def informationItem(){
+        def informationItem = ApiConsumer.getTextAsXml(grailsApplication.config.ddb.backend.url ,'/access/'+params.id+'/components/indexing-profile',null)
+
+        def jsonSubresp = new JsonSlurper().parseText(informationItem.toString())
+
+        def properties = [:]
+
+        if(jsonSubresp.properties.time_fct){
+            properties['time_fct']=[]
+            jsonSubresp.properties.time_fct.each(){
+                properties['time_fct'].add(message(code:"ddbnext.time_fct_"+it))
+            }
+        }
+        if(jsonSubresp.properties.place_fct){
+            properties['place_fct']=[]
+            jsonSubresp.properties.place_fct.each(){
+                properties['place_fct'].add(it)
+            }
+        }
+        if(jsonSubresp.properties.affiliate_fct){
+            properties['affiliate_fct']=[]
+            jsonSubresp.properties.affiliate_fct.each(){
+                properties['affiliate_fct'].add(it)
+            }
+        }
+        if(jsonSubresp.properties.keywords_fct){
+            properties['keywords_fct']=[]
+            jsonSubresp.properties.keywords_fct.each(){
+                properties['keywords_fct'].add(it)
+            }
+        }
+        if(jsonSubresp.properties.type_fct){
+            properties['type_fct']=[]
+            jsonSubresp.properties.type_fct.each(){
+                properties['type_fct'].add(message(code:"ddbnext.type_fct_"+it))
+            }
+        }
+        if(jsonSubresp.properties.sector_fct){
+            properties['sector_fct']=[]
+            jsonSubresp.properties.sector_fct.each(){
+                properties['sector_fct'].add(message(code:"ddbnext.sector_fct_"+it))
+            }
+        }
+        if(jsonSubresp.properties.provider_fct){
+            properties['provider_fct']=[]
+            jsonSubresp.properties.provider_fct.each(){
+                properties['provider_fct'].add(it)
+            }
+        }
+        if(jsonSubresp.properties.language_fct){
+            properties['language_fct']=[]
+            jsonSubresp.properties.language_fct.each(){
+                properties['language_fct'].add(message(code:"ddbnext.language_fct_"+it))
+            }
+        }
+        render (contentType:"text/json"){properties}
     }
 
 

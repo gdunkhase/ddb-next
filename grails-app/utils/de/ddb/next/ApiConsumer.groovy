@@ -17,19 +17,18 @@ package de.ddb.next
 
 import java.util.regex.Pattern
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.web.context.ServletContextHolder
-
-import java.util.regex.Pattern
-
 import static groovyx.net.http.ContentType.*
-
 import grails.util.Holders
 import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+
+import java.util.regex.Pattern
+
+import org.apache.commons.io.IOUtils
+import org.apache.commons.logging.LogFactory
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 
 class ApiConsumer {
