@@ -27,12 +27,12 @@ import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 
 class ApiInstitution {
-   
-   private static final log = LogFactory.getLog(this)
-   
+
+    private static final log = LogFactory.getLog(this)
+
     def getInstitutionViewByItemId(String id, String url) {
         log.debug("get insitution view by item id: ${id}")
-        def uriPath = "/access/" + id + "/components/view"
+        def uriPath = "/items/" + id + "/view"
         def apiResponse = ApiConsumer.getXml(url, uriPath)
         if(!apiResponse.isOk()){
             log.error "Xml: xml file was not found"
@@ -40,7 +40,7 @@ class ApiInstitution {
         }
         return apiResponse.getResponse()
     }
-    
+
     def getChildrenOfInstitutionByItemId(String id, String url) {
         log.debug("get chlildren of institution by item id: ${id}")
         def jsonResult;
@@ -52,7 +52,7 @@ class ApiInstitution {
         }
         return apiResponse.getResponse()
     }
-    
+
     def getParentsOfInstitutionByItemId(String id, String url) {
         log.debug("get parent of institution by item id: ${id}")
         def jsonResult;
@@ -64,7 +64,7 @@ class ApiInstitution {
         }
         return apiResponse.getResponse()
     }
-    
+
     def getFacetValuesX(String provName, String url) {
         log.debug("get facets values for: ${provName}")
         def jsonResult;
@@ -79,7 +79,7 @@ class ApiInstitution {
         }
         return apiResponse.getResponse()
     }
-    
+
     def getFacetValues(String provName, String url) {
         log.debug("get facets values for: ${provName}")
         def jsonResult;
@@ -97,6 +97,4 @@ class ApiInstitution {
         log.debug("jsonResult.facets[5] = " + (jsonResult.facets.size() >= 6 ? jsonResult.facets[5] : "null"));
         return jsonResult.facets[5];
     }
-
-    
 }

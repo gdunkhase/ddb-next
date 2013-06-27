@@ -15,6 +15,9 @@
  */
 package de.ddb.next
 
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
@@ -27,20 +30,7 @@ class ItemController {
     def searchService
     def grailsLinkGenerator
     def configurationService
-
-
-    def children() {
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
-                "/hierarchy/" + params.id + "/children", false,
-                ["rows":501])
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
-        }
-        def jsonResp = apiResponse.getResponse()
-
-        render(contentType:"application/json", text: jsonResp)
-    }
+    def messageSource
 
     def findById() {
         try {
@@ -63,8 +53,10 @@ class ItemController {
             flashInformation.videos = [binariesCounter.videos]
 
             if (item.pageLabel?.isEmpty()) {
-                item.pageLabel= itemService.getItemTitle(id)
+                item.pageLabel = item.title
             }
+
+            def licenseInformation = buildLicenseInformation(item)
 
             // TODO: handle 404 and failure separately. HTTP Status Code 404, should
             // to `not found` page _and_ Internal Error should go to `internal server
@@ -75,21 +67,20 @@ class ItemController {
             } else {
                 def itemUri = request.forwardURI
                 def fields = translate(item.fields, convertToHtmlLink)
-                fields = makeLinksBlank(fields)
 
                 if(params.print){
                     renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
+                        'title': item.title, item: item.item, itemId: id, institution : item.institution, institutionImage: item.institutionImage, originUrl: item.originUrl , fields: fields,
                         binaryList: binaryList, pageLabel: item.pageLabel,
                         firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation],
+                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation],
                     filename: "Item-Detail.pdf")
                 }else{
                     render(view: "item", model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                        'title': item.title, item: item.item, itemId: id, institution : item.institution, fields: fields,
+                        'title': item.title, item: item.item, itemId: id, institution : item.institution, institutionImage: item.institutionImage, originUrl: item.originUrl, fields: fields,
                         binaryList: binaryList, pageLabel: item.pageLabel,
                         firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation])
+                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation])
 
                 }
             }
@@ -98,7 +89,6 @@ class ItemController {
             forward controller: "error", action: "notFound"
         }
     }
-
     def makeLinksBlank(fields){
         fields.each {
             def value = it.value?.toString()
@@ -144,6 +134,20 @@ class ItemController {
         def jsonResp = apiResponse.getResponse()
         render(contentType:"application/json", text: jsonResp)
     }
+
+    def children() {
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
+                "/hierarchy/" + params.id + "/children", false,
+                ["rows":501])
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def jsonResp = apiResponse.getResponse()
+
+        render(contentType:"application/json", text: jsonResp)
+    }
+
 
     /**
      * Get Data to build Search Result Navigation Bar for Item Detail View
@@ -202,5 +206,68 @@ class ItemController {
         searchResultParameters["searchParametersMap"] = searchParametersMap
 
         return searchResultParameters
+    }
+
+    private def buildLicenseInformation(def item){
+        def licenseInformation
+
+        if(item.item?.license && !item.item.license.isEmpty()){
+            def licenseId = item.item.license["@ns3:resource"].toString()
+
+            def propertyId = convertUriToProperties(licenseId)
+
+            licenseInformation = [:]
+
+
+            def text
+            def url
+            def img = item.item.license["@img"].toString()
+            try{
+                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                text = messageSource.getMessage("ddbnext.license.text."+propertyId, null, locale)
+                url = messageSource.getMessage("ddbnext.license.url."+propertyId, null, locale)
+            }catch(NoSuchMessageException e){
+                log.error "findById(): no I18N information for license '"+licenseInformation.id+"' in license.properties"
+            }
+            if(!text){
+                text = item.item.license.toString()
+            }
+            if(!url){
+                url = item.item.license["@url"].toString()
+            }
+            if(img){
+                img = img.replaceAll("'", "");
+                img = img.replaceAll("\"", "");
+            }
+            if(!img || img?.isEmpty()){
+                img = null
+            }
+
+            licenseInformation.text = text
+            licenseInformation.url = url
+            licenseInformation.img = img
+
+        }
+
+        return licenseInformation
+    }
+    def convertUriToProperties(def uri){
+        if(uri){
+            // http://creativecommons.org/licenses/by-nc-nd/3.0/de/
+
+            def converted = uri.toString()
+            converted = converted.replaceAll("http://","")
+            converted = converted.replaceAll("https://","")
+            converted = converted.replaceAll("[^A-Za-z0-9]", ".")
+            if(converted.startsWith(".")){
+                converted = converted.substring(1)
+            }
+            if(converted.endsWith(".")){
+                converted = converted.substring(0, converted.size()-1)
+            }
+            return converted
+        }else{
+            return ""
+        }
     }
 }

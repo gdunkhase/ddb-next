@@ -29,6 +29,7 @@ limitations under the License.
       <h2>${title}</h2>
       <g:render template="fields" />
       <g:render template="rights" />
+      <g:render template="license" />
       <g:render template="origin" />
     </div>
     <g:if test="${binaryList}">
