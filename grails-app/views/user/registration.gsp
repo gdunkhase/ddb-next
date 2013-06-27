@@ -23,21 +23,21 @@ limitations under the License.
 </head>
 <body>
   <div class="container">
+    <g:if test="${errors != null && errors.size()>0}">
+      <g:renderErrors errors="${errors}"></g:renderErrors>
+    </g:if>
     <div class="well">
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
 
         <div><h1><g:message code="ddbnext.Sign_up_here" /></h1></div>
         <div class="reg-subtitle bt"><h3><g:message code="ddbnext.Mandatory" /></h3></div>
 
-        <g:if test="${errors != null && errors.size()>0}">
-          <g:renderErrors errors="${errors}"></g:renderErrors>
-        </g:if>
         <div class="control-group">
           <label class="control-label"><g:message code="ddbnext.Username" />*</label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-user"></i></span>
-              <input type="text" class="reg-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username" />">
+              <input type="text" class="reg-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username" />" value="${params.username}">
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@ limitations under the License.
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-user"></i></span>
-              <input type="text" class="reg-input" id="fname" name="fname" placeholder="<g:message code="ddbnext.User.First_Name" />">
+              <input type="text" class="reg-input" id="fname" name="fname" placeholder="<g:message code="ddbnext.User.First_Name" />" value="${params.fname}">
             </div>
           </div>
         </div>
@@ -57,7 +57,7 @@ limitations under the License.
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-user"></i></span>
-              <input type="text" class="reg-input" id="lname" name="lname" placeholder="<g:message code="ddbnext.User.Last_Name" />">
+              <input type="text" class="reg-input" id="lname" name="lname" placeholder="<g:message code="ddbnext.User.Last_Name" />" value="${params.lname}">
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@ limitations under the License.
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-envelope"></i></span>
-              <input type="text" class="reg-input" id="email" name="email" placeholder="<g:message code="ddbnext.Email" />">
+              <input type="text" class="reg-input" id="email" name="email" placeholder="<g:message code="ddbnext.Email" />" value="${params.email}">
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ limitations under the License.
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-lock"></i></span>
-              <input type="Password" id="passwd" class="reg-input" name="passwd" placeholder="<g:message code="ddbnext.Your_Password" />">
+              <input type="Password" id="passwd" class="reg-input" name="passwd" placeholder="<g:message code="ddbnext.Your_Password" />" value="${params.passwd}">
             </div>
           </div>
         </div>
@@ -87,7 +87,7 @@ limitations under the License.
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-lock"></i></span>
-              <input type="Password" id="conpasswd" class="reg-input" name="conpasswd" placeholder="<g:message code="ddbnext.Confirm_password" />">
+              <input type="Password" id="conpasswd" class="reg-input" name="conpasswd" placeholder="<g:message code="ddbnext.Confirm_password" />" value="${params.conpasswd}">
             </div>
           </div>
         </div>

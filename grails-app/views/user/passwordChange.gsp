@@ -80,6 +80,11 @@ limitations under the License.
               </div>
             </div>
         </div>
+        <ul id="error-messages" class="off">
+          <li><a><g:message code="ddbnext.Field_Required" /></a></li>
+          <li><a><g:message code="ddbnext.Password_Compulsory_Characters_Number" /></a></li>
+          <li><a><g:message code="ddbnext.Insert_Again_The_Password" /></a></li>
+        </ul>
     </g:form>
   </div>
 </body>

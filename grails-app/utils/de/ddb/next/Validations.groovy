@@ -30,22 +30,57 @@ public static List<String> validatorPasswordChange(String userPassword, String a
     if (!userPassword.equals(actualPassword)) {
         errors.add("ddbnext.Error_Password_Provided")
     }
-    if (StringUtils.isEmpty(newPassword) || StringUtils.isEmpty(confirmNewPassword)) {
-        if (StringUtils.isEmpty(newPassword)) {
-            errors.add("ddbnext.Error_Password_New_Empty")
+    errors.addAll(validatorPassword(newPassword, confirmNewPassword));
+    return errors
+}
+
+/**
+ * check password and confirm-password.
+ * @param password
+ * @param cpassword
+ * @return list with errors
+ */
+public static List<String> validatorPassword(String password, String cpassword) {
+    List<String> errors = []
+    if (StringUtils.isBlank(password) || StringUtils.isBlank(cpassword)) {
+        if (StringUtils.isBlank(password)) {
+            errors.add("ddbnext.Error_Password_Empty")
         }
-        if (StringUtils.isEmpty(confirmNewPassword)) {
-            errors.add("ddbnext.Error_Password_New_Empty")
+        if (StringUtils.isBlank(cpassword)) {
+            errors.add("ddbnext.Error_Password_Empty")
         }
     }
     else {
-        if (!newPassword.equals(confirmNewPassword)) {
+        if (!password.equals(cpassword)) {
             errors.add("ddbnext.Error_Password_Match")
         }
-        if (newPassword.trim().length() < 8 || !newPassword.find("[0-9]") ||!newPassword.find("[a-z]") || !newPassword.find("[A-Z]")) {
+//        if (newPassword.trim().length() < 8 || !newPassword.find("[0-9]") ||!newPassword.find("[a-z]") || !newPassword.find("[A-Z]")) {
+        if (password.trim().length() < 8) {
             errors.add("ddbnext.Error_Password_Rules")
         }
     }
+    return errors
+}
+
+/**
+ * check parameters for registration.
+ * @param username
+ * @param firstname
+ * @param lastname
+ * @param email
+ * @param password
+ * @param cpassword
+ * @return list with errors
+ */
+public static List<String> validatorRegistration(String username, String firstname, String lastname, String email, String password, String cpassword) {
+    List<String> errors = []
+    if (StringUtils.isBlank(username) || username.length() < 2) {
+        errors.add("ddbnext.Error_Valid_Username")
+    }
+    if (!validatorEmail(email)) {
+        errors.add("ddbnext.Error_Valid_Email_Address")
+    }
+    errors.addAll(validatorPassword(password, cpassword));
     return errors
 }
 
