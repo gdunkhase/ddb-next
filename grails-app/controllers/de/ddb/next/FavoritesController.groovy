@@ -26,66 +26,145 @@ import de.ddb.next.exception.ItemNotFoundException
 class FavoritesController {
 
     def getFavorite() {
-        println "################## FavoritesController: GET ";
-        changeItemState(1);
-    }
-    def addFavorite() {
-        println "################## FavoritesController: POST ";
-        changeItemState(2);
-    }
-    def delFavorite() {
-        println "################## FavoritesController: DELETE ";
-        changeItemState(3);
-    }
-    
-    def changeItemState(int pActn) {
+        log.info("FavoritesController: isFavorite");
+        int statusCode = response.SC_NOT_FOUND;
+        String statusTxt = null;
         def itemId = params.id;
-        def reqType = params.reqType;
-        def reqActn = params.reqActn;
-        int favStatus = 0;
-        println "################## FavoritesController: itemdId = " + itemId;
-        
         HttpSession sessionObject = request.getSession(false)
         User vUser = null;
         if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
-            log.info("Favorite: change itemState User-Email: " + vUser.getEmail() + ", item: " + itemId);
+            log.info("isFavorite: User: " + vUser.getEmail() + ", itemid: " + itemId);
             FavoritesService vFavService = FavoritesService.getFevoritesService();
             if ((vFavService != null)) {
-                
-                switch (pActn) {
-                case 1:
-                    log.info("get favorit: ${itemId}");
-                    if (vFavService.isFavorit(vUser.getEmail(), itemId)) {
-                        favStatus = 1;
-                    }
-                    break;
-                case 2:
-                    log.info("add to favorits: ${itemId}");
-                    if (vFavService.addToFavorites(vUser.getEmail(), itemId)) {
-                        favStatus = 2;
-                    }
-                    break;
-                case 3:
-                    log.info("delete from favorits list: ${itemId}");
-                    if (vFavService.deleteFromFavoritesList(vUser.getEmail(), itemId)) {
-                        favStatus = 1;
-                    }
-                    break;
-                default:
-                    log.info("Unbekannte Action = ${pActn}, ItemId: ${itemId}");
-                    break;
+                if (vFavService.isFavorit(vUser.getEmail(), itemId)) {
+                    statusTxt = "isFavorit(${vUser.getEmail()}, ${itemId}):${response.SC_OK}";
+                    statusCode = response.SC_OK;
                 }
-                
+                else {
+                    statusTxt = "isFavorit(${vUser.getEmail()}, ${itemId}):${response.SC_NOT_FOUND}";
+                    statusCode = response.SC_NOT_FOUND;
+                }
+                log.info(statusTxt);
             }
             else {
-                log.error("Favorites-Services not found");
+                statusTxt = "Favorites-Service not found";
+                statusCode = response.SC_INTERNAL_SERVER_ERROR;
+                log.error(statusTxt);
             }
         }
-        
-        println "################## FavoritesController: render - START: AJAX-AJAX-AJAX"
-        def jsonResp = '{"favStatus":"' + favStatus + '"}';
-        render(contentType:"application/json", text: jsonResp)
-        println "################## FavoritesController: render - STOP"
-        
+        else {
+            statusTxt = "UNAUTHORIZED";
+            statusCode = response.SC_UNAUTHORIZED;
+            //response.status = response.SC_UNAUTHORIZED;
+            log.error(statusTxt);
+        }
+        //response.flushBuffer();
+        render(status: statusCode, text: statusTxt);
     }
+    
+    
+    def addFavorite() {
+        log.info("FavoritesController: addFavorite");
+        int statusCode = response.SC_BAD_REQUEST;
+        String statusTxt = "";
+        def itemId = params.id;
+        HttpSession sessionObject = request.getSession(false)
+        User vUser = null;
+        if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
+            log.info("addFavorite: User: " + vUser.getEmail() + ", itemid: " + itemId);
+            FavoritesService vFavService = FavoritesService.getFevoritesService();
+            if ((vFavService != null)) {
+                if (vFavService.addToFavorites(vUser.getEmail(), itemId)) {
+                    statusTxt = "add to favorits ${itemId} : ${response.SC_CREATED}";
+                    statusCode = response.SC_CREATED;
+                }
+                else {
+                    statusTxt = "add to favorits ${itemId} : ${response.SC_BAD_REQUEST}";
+                    statusCode = response.SC_BAD_REQUEST;
+                }
+                log.info(statusTxt);
+            }
+            else {
+                statusTxt = "Favorites-Service not found";
+                statusCode = response.SC_INTERNAL_SERVER_ERROR;
+                log.error(statusTxt);
+            }
+        }
+        else {
+            statusTxt = "UNAUTHORIZED";
+            statusCode = response.SC_UNAUTHORIZED;
+            //response.status = response.SC_UNAUTHORIZED;
+            log.error(statusTxt);
+        }
+        //response.flushBuffer();
+        render(status: statusCode, text: statusTxt);
+    }
+    
+    
+    def delFavorite() {
+        log.info("FavoritesController: delFavorite");
+        int statusCode = response.SC_NOT_FOUND;
+        String statusTxt = "";
+        def itemId = params.id;
+        HttpSession sessionObject = request.getSession(false)
+        User vUser = null;
+        if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
+            log.info("delFavorite: User: " + vUser.getEmail() + ", itemid: " + itemId);
+            FavoritesService vFavService = FavoritesService.getFevoritesService();
+            if ((vFavService != null)) {
+                if (vFavService.deleteFromFavoritesList(vUser.getEmail(), itemId)) {
+                    statusTxt = "delete from favorits ${itemId} : ${response.SC_NO_CONTENT}";
+                    statusCode = response.SC_NO_CONTENT;
+                }
+                else {
+                    statusTxt = "delete from favorits ${itemId} : ${response.SC_NOT_FOUND}";
+                    statusCode = response.SC_NOT_FOUND;
+                }
+                log.info(statusTxt);
+            }
+            else {
+                statusTxt = "Favorites-Service not found";
+                statusCode = response.SC_INTERNAL_SERVER_ERROR;
+                log.error(statusTxt);
+            }
+        }
+        else {
+            statusTxt = "UNAUTHORIZED";
+            statusCode = response.SC_UNAUTHORIZED;
+            //response.status = response.SC_UNAUTHORIZED;
+            log.error(statusTxt);
+        }
+        //response.flushBuffer();
+        render(status: statusCode, text: statusTxt);
+    }
+    
+    
+    def changeItemState() {
+        def itemId = params.id;
+        def reqType = params.reqType;
+        def reqActn = params.reqActn;
+        if (reqActn != null) {
+            if ("add".equalsIgnoreCase(reqActn)) {
+                // -- add
+                addFavorite();
+            }
+            else if ("del".equalsIgnoreCase(reqActn)) {
+                // -- delete
+                delFavorite();
+            }
+            else if ("get".equalsIgnoreCase(reqActn)) {
+                // -- delete
+                getFavorite();
+            }
+            else {
+                // -- reload
+                statusTxt = "Favorites-Service not found";
+                statusCode = response.SC_NOT_ACCEPTABLE;
+                log.error(statusTxt);
+                render(status: statusCode, text: statusTxt);
+            }
+        }
+    }
+    
+    
 }
