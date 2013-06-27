@@ -22,6 +22,9 @@ import org.codehaus.groovy.grails.web.util.WebUtils;
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 import org.ccil.cowan.tagsoup.Parser;
+
+import de.ddb.next.exception.BackendErrorException;
+import de.ddb.next.exception.ItemNotFoundException;
 import groovyx.net.http.HTTPBuilder
 
 class ItemService {

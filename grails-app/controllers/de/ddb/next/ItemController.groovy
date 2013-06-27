@@ -35,22 +35,6 @@ class ItemController {
     def messageSource
 
 
-    def children() {
-        //        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
-        //                "/hierarchy/" + params.id + "/children", false,
-        //                ["rows":501])
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
-                "/items/" + params.id + "/children", false,
-                ["rows":501])
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
-        }
-        def jsonResp = apiResponse.getResponse()
-
-        render(contentType:"application/json", text: jsonResp)
-    }
-
     def findById() {
         try {
             //Check if Item-Detail was called from search-result and fill parameters
@@ -132,14 +116,35 @@ class ItemController {
         return field
     }
 
+    def children() {
+        //        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
+        //                "/hierarchy/" + params.id + "/children", false,
+        //                ["rows":501])
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
+                "/items/" + params.id + "/children", false,
+                ["rows":501])
+        def jsonResp = "[]"
+
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found: "+apiResponse.getException()
+        }else{
+            jsonResp = apiResponse.getResponse().hierarchy
+        }
+
+        render(contentType:"application/json", text: jsonResp)
+    }
+
     def parents() {
         //        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/hierarchy/" + params.id + "/parent")
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/items/" + params.id + "/parent")
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/items/" + params.id + "/parents")
+        def jsonResp = "[]"
+
         if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
+            log.error "Json: Json file was not found"+apiResponse.getException()
+        }else{
+            jsonResp = apiResponse.getResponse().hierarchy
         }
-        def jsonResp = apiResponse.getResponse()
+
         render(contentType:"application/json", text: jsonResp)
     }
 
