@@ -2,10 +2,13 @@ package de.ddb.next
 
 import static org.junit.Assert.*
 
+import org.apache.commons.logging.LogFactory
 import org.junit.*
 
 
 class BookmarkServiceIntegrationTests extends GroovyTestCase {
+
+    def log = LogFactory.getLog(getClass())
 
     def bookmarksService
 
@@ -83,4 +86,20 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     @Test void shouldFindBookmarkById() {
         assert false
     }
+
+    // Favorites
+    @Test void shouldAddItemToUserFavorite() {
+        // should add a cultural item to user's favorite list.
+        def userId = UUID.randomUUID() as String
+        log.info "user id: ${userId}"
+        // if the user don't have a favorite list, then the service should create it.
+        assert false
+    }
+
+    @Test void shouldGetAllUserFavorites() {
+        // should get a list of item IDs in user's favorite list.
+        // if the user don't have a favorite list, then the service should create it.
+        assert false
+    }
+
 }
