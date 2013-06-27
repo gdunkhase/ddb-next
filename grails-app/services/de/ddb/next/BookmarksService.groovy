@@ -34,7 +34,7 @@ import de.ddb.next.beans.Folder
 // TODO: use ApiConsumer if possible
 class BookmarksService {
 
-    private static final def FAVORITES = 'Favorites'
+    public static final def FAVORITES = 'Favorites'
     private static final def IS_PUBLIC = false
 
     def configurationService
@@ -224,6 +224,7 @@ class BookmarksService {
              * the title 'Favorites'
              */
             favoriteFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
+            log.info "New Favorites Folder is created: ${favoriteFolderId}"
         } else {
             assert favoritesFolder.folderId != null: 'no folder id'
             favoriteFolderId  = favoritesFolder.folderId
@@ -233,12 +234,20 @@ class BookmarksService {
         return saveBookmark(userId, favoriteFolderId, itemId)
     }
 
-    // TODO: limit to _exact_ title.
-    private def findFoldersByTitle(userId, title) {
-        // The query for example: http://whvmescidev6.fiz-karlsruhe.de:9200/ddb/folder/_search?q=user:crh AND title:Favorites
+    def findFoldersByTitle(userId, title) {
         def http = new HTTPBuilder(
             "${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}%20AND%20title:${title}")
-        http.request(Method.GET, ContentType.JSON) { req ->
+
+        http.request(Method.POST, ContentType.JSON) { req ->
+
+            body = [
+              filter: [
+                script: [
+                  script: '_source.title == \"' + title + '\"'
+                ]
+              ]
+            ]
+
            response.success = { resp, json ->
                def resultList = json.hits.hits
                def all = []
@@ -250,7 +259,6 @@ class BookmarksService {
                         isPublic: it._source.isPublic
                    )
 
-//                   log.info "found folder: ${folder}"
                    all.add(folder)
                }
 

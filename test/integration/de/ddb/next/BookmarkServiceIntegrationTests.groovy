@@ -60,6 +60,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assert bookmarks.size() > 0
     }
 
+    // TODO: fix this
     @Ignore('Can not search immediately after Indexing?')
     @Test void shouldFindBookmarkedItems() {
         def folderId = createNewFolder()
@@ -98,6 +99,19 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId"
     }
 
+    // TODO: fix this
+    @Ignore('Can not search immediately after Indexing?')
+    @Test void shouldFindFoldersByTitle() {
+       def userId = UUID.randomUUID() as String
+       def itemId = UUID.randomUUID() as String
+       // if the user don't have a favorite list, then the service should create it.
+       def favoriteId = bookmarksService.addFavorite(userId, itemId)
+       def fav = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
+       assert fav.size() == 1
+       log.info "The user ${userId} has ${fav.size()} folders with the title `Favorites`"
+    }
+
+    @Ignore('Not Yet Implemented')
     @Test void shouldGetAllUserFavorites() {
         def userId = UUID.randomUUID() as String
         def firstItemId = UUID.randomUUID() as String
