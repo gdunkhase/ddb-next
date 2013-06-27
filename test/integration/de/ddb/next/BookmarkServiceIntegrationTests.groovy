@@ -2,13 +2,11 @@ package de.ddb.next
 
 import static org.junit.Assert.*
 
-import org.apache.commons.logging.LogFactory
 import org.junit.*
 
 
 class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
-    def log = LogFactory.getLog(getClass())
 
     def bookmarksService
 
@@ -34,8 +32,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assertTrue folderList.size() >0
 
         if(folderList) {
+            log.info "The user with the ID: ${userId} has: "
             folderList.each { it ->
-                log.info "found folder: ${it}"
+                log.info "- ${it}"
             }
         } else {
             log.info 'empty folder.'
@@ -89,17 +88,28 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
     // Favorites
     @Test void shouldAddItemToUserFavorite() {
+        log.info "should add item to the user's Favorites"
         // should add a cultural item to user's favorite list.
         def userId = UUID.randomUUID() as String
-        log.info "user id: ${userId}"
+        def itemId = UUID.randomUUID() as String
         // if the user don't have a favorite list, then the service should create it.
-        assert false
+        def favoriteId = bookmarksService.addFavorite(userId, itemId)
+        assert favoriteId != null
+        log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId"
     }
 
     @Test void shouldGetAllUserFavorites() {
-        // should get a list of item IDs in user's favorite list.
+        def userId = UUID.randomUUID() as String
+        def firstItemId = UUID.randomUUID() as String
+        def secondItemId = UUID.randomUUID() as String
+
         // if the user don't have a favorite list, then the service should create it.
-        assert false
+        def firstFav = bookmarksService.addFavorite(userId, firstItemId)
+        def secondFav = bookmarksService.addFavorite(userId, secondItemId)
+        // should get a list of item IDs in user's favorite list.
+        def allFavs = bookmarksService.findFavoritesByUserId(userId)
+        // if the user don't have a favorite list, then the service should create it.
+        assert allFavs.size() > 0
     }
 
 }
