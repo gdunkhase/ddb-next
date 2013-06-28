@@ -100,15 +100,27 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     }
 
     // TODO: fix this
-    @Ignore('Can not search immediately after Indexing?')
+//    @Ignore('Can not search immediately after Indexing?')
     @Test void shouldFindFoldersByTitle() {
+       log.info "the bookmark service should find folders by its title."
        def userId = UUID.randomUUID() as String
-       def itemId = UUID.randomUUID() as String
-       // if the user don't have a favorite list, then the service should create it.
-       def favoriteId = bookmarksService.addFavorite(userId, itemId)
-       def fav = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
-       assert fav.size() == 1
-       log.info "The user ${userId} has ${fav.size()} folders with the title `Favorites`"
+
+       def folderId = bookmarksService.newFolder(userId, BookmarksService.FAVORITES, BookmarksService.IS_PUBLIC)
+       log.info "the bookmark service created a ${BookmarksService.FAVORITES} folder(${folderId}) for a user(${userId})"
+
+       def favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
+       log.info "The user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
+
+       // TODO wait for 3 seconds before second try
+       sleep 3000
+
+       if(!favFolderList) {
+           favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
+           log.info "Second try, the user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
+       }
+
+       assert favFolderList.size() == 1
+       assertEquals favFolderList[0].folderId, folderId
     }
 
     @Ignore('Not Yet Implemented')

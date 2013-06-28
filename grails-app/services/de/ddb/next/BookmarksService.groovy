@@ -35,7 +35,7 @@ import de.ddb.next.beans.Folder
 class BookmarksService {
 
     public static final def FAVORITES = 'Favorites'
-    private static final def IS_PUBLIC = false
+    public static final def IS_PUBLIC = false
 
     def configurationService
     def transactional = false
@@ -60,8 +60,8 @@ class BookmarksService {
            def folderId
            response.success = { resp, json ->
                folderId = json._id
+               folderId
            }
-           folderId
        }
     }
 
@@ -231,10 +231,13 @@ class BookmarksService {
         }
 
         // add a new bookmark to this folder.
-        return saveBookmark(userId, favoriteFolderId, itemId)
+        def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId)
+        log.info "Add a bookmark ${bookmarkId} in Favorites"
+        return bookmarkId
     }
 
     def findFoldersByTitle(userId, title) {
+        log.info "userId: ${userId}"
         def http = new HTTPBuilder(
             "${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}%20AND%20title:${title}")
 
@@ -249,6 +252,7 @@ class BookmarksService {
             ]
 
            response.success = { resp, json ->
+               log.info json
                def resultList = json.hits.hits
                def all = []
                resultList.each { it ->
