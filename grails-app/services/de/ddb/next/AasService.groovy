@@ -85,6 +85,7 @@ class AasService {
             User user = new User()
             user.setId(aasResponse.id)
             user.setUsername(aasResponse.nickname)
+            user.setStatus(aasResponse.status)
             user.setEmail(aasResponse.email)
             user.setFirstname(aasResponse.foreName)
             //workaround for aas default value

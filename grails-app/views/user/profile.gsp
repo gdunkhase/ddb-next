@@ -30,9 +30,13 @@ limitations under the License.
     <g:form method="post" id="user-profile-form" name="user-profile-form" class="form-horizontal" url="[controller:'user', action:'saveProfile']" >
         <g:set var="disableForOpenId"></g:set>
         <g:set var="offForOpenId"></g:set>
+        <g:set var="newsletterCheck"></g:set>
         <g:if test="${user.openIdUser == true}">
             <g:set var="disableForOpenId">disabled</g:set>
             <g:set var="offForOpenId">off</g:set>
+        </g:if>
+        <g:if test="${user.newsletterSubscribed == true}">
+            <g:set var="newsletterCheck">checked="checked"</g:set>
         </g:if>
         <g:if test="${errors != null && errors.size()>0}">
           <g:renderErrors errors="${errors}"></g:renderErrors>
@@ -101,7 +105,7 @@ limitations under the License.
               <label class="control-label"><g:message code="ddbnext.Newsletter_Subscription" /></label>
               <div class="controls">
                 <div class="input-prepend">
-                  <input type="checkbox" id="newsletter" class="profile-input" name="newsletter">
+                  <input type="checkbox" id="newsletter" class="profile-input" name="newsletter" ${newsletterCheck}>
                 </div>
               </div>
             </div>

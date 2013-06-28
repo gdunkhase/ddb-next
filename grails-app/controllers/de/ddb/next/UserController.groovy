@@ -43,7 +43,7 @@ class UserController {
     def aasService
     def sessionService
     def configurationService
-    
+
     LinkGenerator grailsLinkGenerator
 
     def index() {
@@ -58,14 +58,17 @@ class UserController {
         def loginStatus = LoginStatus.LOGGED_OUT
 
         // Only perfom login if user is not already logged in
+        User user = null
         if(!isUserLoggedIn()){
             def email = params.email
             def password = params.password
 
-            User user = aasService.login(email, password)
+            user = aasService.login(email, password)
 
             if(user != null){
                 loginStatus = LoginStatus.SUCCESS
+                //TODO: check Newsletter-Subscription and set attribute newsletterSubscribed.
+
                 sessionService.createNewSession()
                 sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
             }else{
@@ -74,7 +77,14 @@ class UserController {
         }
 
         if(loginStatus == LoginStatus.SUCCESS){
-            redirect(controller: 'user', action: 'favorites')
+            if (user.getStatus().equals(UserStatus.PW_RESET_REQUESTED.toString())) {
+                List<String> messages = []
+                messages.add("ddbnext.User.PasswordReset_Change")
+                render(view: "changepassword", model: [user: user, messages: messages])
+            }
+            else {
+                redirect(controller: 'user', action: 'favorites')
+            }
         }else{
             render(view: "login", model: ['loginStatus': loginStatus])
         }
@@ -113,9 +123,7 @@ class UserController {
     }
 
     def registration() {
-
         render(view: "registration", model: [])
-
     }
 
     def signup() {
@@ -148,9 +156,14 @@ class UserController {
         }
     }
 
-    def recoverPassword(){
+    def resetPasswordPage() {
+        render(view: "resetpassword", model: [])
+    }
 
-        //TODO
+    def resetPassword() {
+        aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), null, null));
+        messages.add("ddbnext.User.PasswordReset_Success");
+        render(view: "resetpassword" , model: [messages: messages, params: params])
     }
 
     def profile() {
@@ -166,7 +179,7 @@ class UserController {
         }
     }
 
-    def passwordChange() {
+    def changePasswordPage() {
         if(isUserLoggedIn()){
             User user = getUserFromSession()
             if (user.isOpenIdUser()) {
@@ -176,8 +189,7 @@ class UserController {
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
-            render(view: "passwordChange", model: [user: user])
-
+            render(view: "changepassword", model: [user: user])
         }
         else{
             redirect(controller:"index")
@@ -190,7 +202,9 @@ class UserController {
             List<String> messages = []
             boolean eMailDifference = false
             boolean profileDifference = false
+            boolean newsletterDifference = false
             User user = getUserFromSession().clone()
+            
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
@@ -200,10 +214,10 @@ class UserController {
             if (StringUtils.isBlank(params.email)) {
                 errors.add("ddbnext.Error_Email_Empty")
             }
+            if (!Validations.validatorEmail(params.email)) {
+                errors.add("ddbnext.Error_Valid_Email_Address");
+            }
             if (errors == null || errors.isEmpty()) {
-                if (!Validations.validatorEmail(params.email)) {
-                    errors.add("ddbnext.Error_Valid_Email_Address");
-                }
                 if (Validations.isDifferent(user.getFirstname(), params.fname)
                 || Validations.isDifferent(user.getLastname(), params.lname)
                 || Validations.isDifferent(user.getUsername(), params.username)) {
@@ -212,6 +226,15 @@ class UserController {
                 if (Validations.isDifferent(user.getEmail(), params.email)) {
                     eMailDifference = true;
                 }
+                if ((params.newsletter && !user.newsletterSubscribed)
+                    || (!params.newsletter && user.newsletterSubscribed)) {
+                    newsletterDifference = true
+                }
+                    
+                if (!profileDifference && !eMailDifference && !newsletterDifference) {
+                    messages.add("ddbnext.User.Profile_NoValuesChanged")
+                }
+
                 if (profileDifference) {
                     //update user in aas
                     JSONObject aasUser = aasService.getPerson(user.getId())
@@ -224,8 +247,6 @@ class UserController {
                         user.setLastname(params.lname)
                         aasService.updatePerson(user.getId(), aasUser);
                         messages.add("ddbnext.User.Profile_Update_Success")
-                        //adapt user-attributes in session
-                        sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
                     }
                     catch (ConflictException e) {
                         errors.add("ddbnext.Conflict_User_Name");
@@ -241,6 +262,26 @@ class UserController {
                         user.setEmail(params.email)
                         errors.add("ddbnext.Conflict_User_Email");
                     }
+                }
+                if (newsletterDifference && (errors == null || errors.isEmpty())) {
+                    if (params.newsletter) {
+                        user.setNewsletterSubscribed(true);
+                    }
+                    else {
+                        user.setNewsletterSubscribed(false);
+                    }
+                    //TODO: change Newsletter Subscription
+                    try {
+                        //DO change
+                        messages.add("ddbnext.User.Newsletter_Update_Success")
+                    }
+                    catch (Exception e) {
+                        //errors.add("")
+                    }
+                }
+                if (errors == null || errors.isEmpty()) {
+                    //adapt user-attributes in session
+                    sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
                 }
             }
             render(view: "profile", model: [favoritesCount: "no count yet", user: user, errors: errors, messages: messages])
@@ -267,7 +308,7 @@ class UserController {
                 user.setPassword(params.newpassword)
                 sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
             }
-            render(view: "passwordChange", model: [user: user, errors: errors, messages: messages, oldpassword: params.oldpassword, newpassword: params.newpassword, confnewpassword: params.confnewpassword])
+            render(view: "changepassword", model: [user: user, errors: errors, messages: messages, oldpassword: params.oldpassword, newpassword: params.newpassword, confnewpassword: params.confnewpassword])
         }
         else{
             redirect(controller:"index")
@@ -285,7 +326,7 @@ class UserController {
         }
         doLogout()
     }
-    
+
     def confirm() {
         if (StringUtils.isBlank(params.type)) {
             forward controller: "error", action: "serverError"
@@ -425,6 +466,8 @@ class UserController {
                 user.setFirstname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
+                
+                //TODO: check Newsletter-Subscription and set attribute newsletterSubscribed.
 
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
 

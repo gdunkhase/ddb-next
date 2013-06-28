@@ -101,7 +101,7 @@ class UrlMappings {
         }
         "/user/passwordchange" {
             controller="user"
-            action="passwordChange"
+            action="changePasswordPage"
         }
         "/user/delete" {
             controller="user"
@@ -145,7 +145,7 @@ class UrlMappings {
 
         "/recovery" {
             controller="user"
-            action="recoverPassword"
+            action="resetPasswordPage"
         }
 
         "/profile" {

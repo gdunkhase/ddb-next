@@ -433,7 +433,7 @@ class ApiConsumer {
             if(session) {
                 User user = session.getAttribute(User.SESSION_USER);
                 if (user != null) {
-                    http.auth.basic user.username, user.password
+                    http.auth.basic user.id, user.password
                 }
             }
         } catch(Exception e) {

@@ -23,11 +23,13 @@ class User implements Cloneable {
 
     String id
     String username
+    String status
     String firstname
     String lastname
     String email
     String password
     boolean openIdUser
+    boolean newsletterSubscribed
 
     User(){
     }
