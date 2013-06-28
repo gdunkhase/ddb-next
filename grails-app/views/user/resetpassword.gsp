@@ -25,7 +25,7 @@ limitations under the License.
 
 <body>
   <div class="container row">
-    <g:form method="post" id="password-reset-form" name="password-reset-form" class="form-horizontal" url="[controller:'user', action:'resetPassword']" >
+    <g:form method="post" id="password-reset-form" name="password-reset-form" class="form-horizontal" url="[controller:'user', action:'passwordReset']" >
         <g:if test="${errors != null && errors.size()>0}">
           <g:renderErrors errors="${errors}"></g:renderErrors>
         </g:if>

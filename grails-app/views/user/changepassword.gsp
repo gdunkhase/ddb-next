@@ -27,7 +27,7 @@ limitations under the License.
 
 <body>
   <div class="container row">
-    <g:form method="post" id="password-change-form" name="password-change-form" class="form-horizontal" url="[controller:'user', action:'changePassword']" >
+    <g:form method="post" id="password-change-form" name="password-change-form" class="form-horizontal" url="[controller:'user', action:'passwordChange']" >
         <g:if test="${errors != null && errors.size()>0}">
           <g:renderErrors errors="${errors}"></g:renderErrors>
         </g:if>

@@ -34,6 +34,7 @@ import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
+import de.ddb.next.exception.ItemNotFoundException
 
 class UserController {
 
@@ -156,14 +157,26 @@ class UserController {
         }
     }
 
-    def resetPasswordPage() {
+    def passwordResetPage() {
         render(view: "resetpassword", model: [])
     }
 
-    def resetPassword() {
-        aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), null, null));
-        messages.add("ddbnext.User.PasswordReset_Success");
-        render(view: "resetpassword" , model: [messages: messages, params: params])
+    def passwordReset() {
+        List<String> messages = []
+        List<String> errors = []
+        if (StringUtils.isBlank(params.username)) {
+            errors.add("ddbnext.Error_Username_Empty")
+        }
+        if (errors == null || errors.isEmpty()) {
+            try {
+                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), null, null));
+                messages.add("ddbnext.User.PasswordReset_Success");
+            }
+            catch (ItemNotFoundException e) {
+                errors.add("ddbnext.Error_Username_Notfound");
+            }
+        }
+        render(view: "resetpassword" , model: [messages: messages, errors: errors, params: params])
     }
 
     def profile() {
@@ -179,7 +192,7 @@ class UserController {
         }
     }
 
-    def changePasswordPage() {
+    def passwordChangePage() {
         if(isUserLoggedIn()){
             User user = getUserFromSession()
             if (user.isOpenIdUser()) {
@@ -190,6 +203,34 @@ class UserController {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
             render(view: "changepassword", model: [user: user])
+        }
+        else{
+            redirect(controller:"index")
+        }
+    }
+
+    def passwordChange() {
+        if (isUserLoggedIn()) {
+            List<String> errors = []
+            List<String> messages = []
+            User user = getUserFromSession().clone()
+            if (user.isOpenIdUser()) {
+                //password-change is only for aas-users
+                redirect(controller:"index")
+            }
+            if (user?.getPassword() == null) {
+                forward controller: "error", action: "serverError"
+            }
+            errors = Validations.validatorPasswordChange(user?.getPassword(), params.oldpassword, params.newpassword, params.confnewpassword)
+            if (errors == null || errors.isEmpty()) {
+                //change password in AAS
+                aasService.changePassword(user?.getId(), aasService.getChangePasswordJson(params.newpassword))
+                messages.add("ddbnext.User.Password_Change_Success")
+                //adapt user-attributes in session
+                user.setPassword(params.newpassword)
+                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+            }
+            render(view: "changepassword", model: [user: user, errors: errors, messages: messages, oldpassword: params.oldpassword, newpassword: params.newpassword, confnewpassword: params.confnewpassword])
         }
         else{
             redirect(controller:"index")
@@ -208,23 +249,27 @@ class UserController {
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
-            if (StringUtils.isBlank(params.username) || params.username.length() < 2) {
-                errors.add("ddbnext.Error_Username_Empty")
-            }
-            if (StringUtils.isBlank(params.email)) {
-                errors.add("ddbnext.Error_Email_Empty")
-            }
-            if (!Validations.validatorEmail(params.email)) {
-                errors.add("ddbnext.Error_Valid_Email_Address");
+            if (!user.getOpenIdUser()) {
+                if (StringUtils.isBlank(params.username) || params.username.length() < 2) {
+                    errors.add("ddbnext.Error_Username_Empty")
+                }
+                if (StringUtils.isBlank(params.email)) {
+                    errors.add("ddbnext.Error_Email_Empty")
+                }
+                if (!Validations.validatorEmail(params.email)) {
+                    errors.add("ddbnext.Error_Valid_Email_Address");
+                }
             }
             if (errors == null || errors.isEmpty()) {
-                if (Validations.isDifferent(user.getFirstname(), params.fname)
-                || Validations.isDifferent(user.getLastname(), params.lname)
-                || Validations.isDifferent(user.getUsername(), params.username)) {
-                    profileDifference = true;
-                }
-                if (Validations.isDifferent(user.getEmail(), params.email)) {
-                    eMailDifference = true;
+                if (!user.getOpenIdUser()) {
+                    if (Validations.isDifferent(user.getFirstname(), params.fname)
+                    || Validations.isDifferent(user.getLastname(), params.lname)
+                    || Validations.isDifferent(user.getUsername(), params.username)) {
+                        profileDifference = true;
+                    }
+                    if (Validations.isDifferent(user.getEmail(), params.email)) {
+                        eMailDifference = true;
+                    }
                 }
                 if ((params.newsletter && !user.newsletterSubscribed)
                     || (!params.newsletter && user.newsletterSubscribed)) {
@@ -291,40 +336,24 @@ class UserController {
         }
     }
 
-    def changePassword() {
-        if (isUserLoggedIn()) {
-            List<String> errors = []
-            List<String> messages = []
-            User user = getUserFromSession().clone()
-            if (user?.getPassword() == null) {
-                forward controller: "error", action: "serverError"
-            }
-            errors = Validations.validatorPasswordChange(user?.getPassword(), params.oldpassword, params.newpassword, params.confnewpassword)
-            if (errors == null || errors.isEmpty()) {
-                //change password in AAS
-                aasService.changePassword(user?.getId(), aasService.getChangePasswordJson(params.newpassword))
-                messages.add("ddbnext.User.Password_Change_Success")
-                //adapt user-attributes in session
-                user.setPassword(params.newpassword)
-                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
-            }
-            render(view: "changepassword", model: [user: user, errors: errors, messages: messages, oldpassword: params.oldpassword, newpassword: params.newpassword, confnewpassword: params.confnewpassword])
-        }
-        else{
-            redirect(controller:"index")
-        }
-    }
-
     def delete() {
-        def user
-        try {
-            user = aasService.getPerson("current")
-            aasService.deletePerson(user.id)
+        if (isUserLoggedIn()) {
+            User user = getUserFromSession().clone()
+            if (!user.isConsistent()) {
+                throw new BackendErrorException("user-attributes are not consistent")
+            }
+            if (user.isOpenIdUser()) {
+                //password-change is only for aas-users
+                redirect(controller:"index")
+            }
+            try {
+                aasService.deletePerson(user.id)
+            }
+            catch (AuthorizationException e) {
+                forward controller: "error", action: "auth"
+            }
+            doLogout()
         }
-        catch (AuthorizationException e) {
-            forward controller: "error", action: "auth"
-        }
-        doLogout()
     }
 
     def confirm() {
@@ -333,30 +362,33 @@ class UserController {
         }
         List<String> messages = [];
         List<String> errors = [];
-        def jsonuser = aasService.confirm(params.id, params.token);
-        if (jsonuser == null) {
-            throw new BackendErrorException("user is null")
-        }
-        if (params.type.equals("emailupdate")) {
-            messages.add("ddbnext.User.Email_Confirm_Success");
-        }
-        else if (params.type.equals("passwordreset")) {
-            messages.add("ddbnext.User.Pwreset_Confirm_Success");
-        }
-        else if (params.type.equals("create")) {
-            messages.add("ddbnext.User.Create_Confirm_Success");
-        }
-        // set changed attributes in user-object in session
-        if (isUserLoggedIn()) {
-            User user = getUserFromSession().clone()
-            if (!user.isConsistent() || StringUtils.isBlank(jsonuser.getString(AasService.EMAIL_FIELD))) {
-                throw new BackendErrorException("user-attributes are not consistent")
+        def jsonuser
+        try {
+            jsonuser = aasService.confirm(params.id, params.token);
+            if (params.type.equals("emailupdate")) {
+                messages.add("ddbnext.User.Email_Confirm_Success");
             }
-            user.setEmail(jsonuser.getString(AasService.EMAIL_FIELD))
-            if (jsonuser.containsKey(AasService.PASSWORD_FIELD)) {
-                user.setPassword(jsonuser.getString(AasService.PASSWORD_FIELD))
+            else if (params.type.equals("passwordreset")) {
+                messages.add("ddbnext.User.Pwreset_Confirm_Success");
             }
-            sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+            else if (params.type.equals("create")) {
+                messages.add("ddbnext.User.Create_Confirm_Success");
+            }
+            // set changed attributes in user-object in session
+            if (isUserLoggedIn()) {
+                User user = getUserFromSession().clone()
+                if (!user.isConsistent() || StringUtils.isBlank(jsonuser.getString(AasService.EMAIL_FIELD))) {
+                    throw new BackendErrorException("user-attributes are not consistent")
+                }
+                user.setEmail(jsonuser.getString(AasService.EMAIL_FIELD))
+                if (jsonuser.containsKey(AasService.PASSWORD_FIELD)) {
+                    user.setPassword(jsonuser.getString(AasService.PASSWORD_FIELD))
+                }
+                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+            }
+        }
+        catch (ItemNotFoundException e) {
+            errors.add("ddbnext.Error.Confirmation_Not_Found")
         }
         render(view: "confirm", model: [errors: errors, messages: messages])
     }
