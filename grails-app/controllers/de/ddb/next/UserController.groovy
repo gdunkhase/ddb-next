@@ -277,7 +277,7 @@ class UserController {
                 }
                     
                 if (!profileDifference && !eMailDifference && !newsletterDifference) {
-                    messages.add("ddbnext.User.Profile_NoValuesChanged")
+                    errors.add("ddbnext.User.Profile_NoValuesChanged")
                 }
 
                 if (profileDifference) {
