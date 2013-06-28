@@ -58,45 +58,6 @@ class InstitutionController {
         render institutionService.findAll() as JSON
     }
 
-    //    def showInstitutionsTreeByItemId() { // ToDo: rename to showInstitutionsTreeByItemId
-    //        def id = params.id;
-    //        def itemId = id;
-    //        def vApiInstitution = new ApiInstitution();
-    //        log.debug("read insitution by item id: ${id}");
-    //        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
-    //        def pageUrl = "http://www.deutsche-digitale-bibliothek.de"+request.forwardURI;
-    //        if (selectedOrgXML) {
-    //            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
-    //            log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
-    //            if (jsonOrgParentHierarchy.size() == 1) {
-    //                if (jsonOrgParentHierarchy[0].id != id) {
-    //                    log.error("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}");
-    //                    forward controller: 'error', action: "ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}"
-    //                }
-    //            }
-    //            else if (jsonOrgParentHierarchy.size() > 1) {
-    //                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
-    //            }
-    //            log.debug("root itemId = ${itemId}");
-    //            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
-    //            log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
-    //            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
-    //            int countObjectsForProv = 0;
-    //            if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
-    //                try {
-    //                    countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
-    //                }
-    //                catch (NumberFormatException ex) {
-    //                    countObjectsForProv = -1;
-    //                }
-    //            }
-    //            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl])
-    //        }
-    //        else {
-    //           forward controller: 'error', action: "notFound"
-    //        }
-    //
-    //    }
 
     def showInstitutionsTreeByItemId() { // ToDo: rename to showInstitutionsTreeByItemId
         def id = params.id;
