@@ -42,7 +42,7 @@ class ApiInstitution {
     }
 
     def getChildrenOfInstitutionByItemId(String id, String url) {
-        log.debug("get chlildren of institution by item id: ${id}")
+        log.debug("get children of institution by item id: ${id}")
         def jsonResult;
         def uriPath = "/hierarchy/" + id + "/children"
         def apiResponse = ApiConsumer.getJson(url, uriPath)
