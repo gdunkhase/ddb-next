@@ -22,7 +22,7 @@
       </g:if>
       <g:else>
         <div>
-          <b>DESCRIPTION:</b> No description available. This is most likely the cause when you called an url of the Archivportal-D that does not exist.
+          <b>DESCRIPTION:</b> No description available. This is most likely the cause when you called an url of the DDB-NEXT that does not exist.
         </div>
       </g:else>   
       <hr />

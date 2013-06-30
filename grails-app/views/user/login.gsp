@@ -47,6 +47,20 @@ limitations under the License.
                       </div>  
                     </div>
                   </g:if>
+                  <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_DENIED}">
+                    <div class="row login-error">
+                      <div class="span4"> 
+                        <g:message code="ddbnext.Error_Authentication_Provider_Denied" />
+                      </div>  
+                    </div>
+                  </g:if>
+                  <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_UNKNOWN}">
+                    <div class="row login-error">
+                      <div class="span4"> 
+                        <g:message code="ddbnext.Error_Authentication_Provider_Unknown" />
+                      </div>  
+                    </div>
+                  </g:if>
                   <div class="row">
                     <div class="span4"> 
                       <label for="login-username"><g:message code="ddbnext.Username" />:</label>
@@ -54,7 +68,7 @@ limitations under the License.
                   </div>
                   <div class="row">
                     <div class="span4"> 
-                      <input id="login-username" type="text" name="email" value="fiz@fiz.fiz"/>
+                      <input id="login-username" type="text" name="email" value=""/>
                     </div>
                   </div>
                   <div class="row spacer-vertical">
@@ -64,7 +78,7 @@ limitations under the License.
                   </div>
                   <div class="row">
                     <div class="span4"> 
-                      <input id="login-password" type="password" name="password" value="fiz"/>
+                      <input id="login-password" type="password" name="password" value=""/>
                     </div>
                   </div>
                   <div class="row spacer-vertical">

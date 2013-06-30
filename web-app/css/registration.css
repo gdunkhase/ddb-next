@@ -23,18 +23,28 @@
   padding: 4px 6px !important;
 }
 
-.reg-title {
-  margin-bottom: 20px;
-  font-size: 1.375em;
-  line-height: 40px;
-  border-bottom: 1px solid #e5e5e5;
+#registration-form .bt {
+  border-top: solid 1px #fff;
+}
+
+#registration-form .errors-container {
+  width: 465px;
+}
+
+.reg-subtitle {
+  margin-bottom: 30px;
 }
 
 .control-group label.error {
   font-size: 16px;
   margin-left: 10px;
+  color: #A5003B;;
 }
 
 .control-group .error {
   margin-left: 0;
+}
+
+.well {
+  background-color: #EFEBE8;
 }

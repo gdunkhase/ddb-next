@@ -29,6 +29,11 @@ class UrlMappings {
             controller="facets"
             action="facetsList"
         }
+        
+        "/informationitem/$id"{
+            controller="search"
+            action="informationItem"
+        }
 
         "/content/$dir/$id?" {
             controller="content"
@@ -81,7 +86,12 @@ class UrlMappings {
 
         "/entity/$id" {
             controller="entity"
-            action="show"
+            action="index"
+        }
+
+        "/entity/ajax/searchresults" {
+            controller="entity"
+            action="getAjaxSearchResultsAsJson"
         }
 
         "/binary/$filename**" {
@@ -92,6 +102,15 @@ class UrlMappings {
         "/static/$filename**" {
             controller="apis"
             action="staticFiles"
+        }
+
+        "/user/profile" {
+            controller="user"
+            action="profile"
+        }
+        "/user/delete" {
+            controller="user"
+            action="delete"
         }
 
         "/login" {
@@ -123,13 +142,30 @@ class UrlMappings {
             controller="user"
             action="registration"
         }
+        
+        "/favorites" {
+            controller="user"
+            action="favorites"
+        }
 
         "/recovery" {
             controller="user"
             action="recoverPassword"
         }
 
+        "/profile" {
+            controller="user"
+            action="profile"
+        }
+
+        "/favorites" {
+            controller="user"
+            action="favorites"
+        }
+
+
         "404"(controller: "error", action: "notFound")
+        "401"(controller: "error", action: "auth")
 
         "500"(controller: "error", action: "notFound", exception: de.ddb.next.exception.ItemNotFoundException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)

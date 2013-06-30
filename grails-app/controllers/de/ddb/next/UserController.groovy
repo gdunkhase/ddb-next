@@ -15,8 +15,12 @@
  */
 package de.ddb.next
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession
+import org.codehaus.groovy.grails.web.json.JSONObject
 
+import de.ddb.next.beans.User
+import de.ddb.next.exception.AuthorizationException
+import de.ddb.next.AasService
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator;
 import org.openid4java.consumer.ConsumerManager;
 import org.openid4java.consumer.VerificationResult;
@@ -28,12 +32,12 @@ import org.openid4java.message.ax.FetchRequest;
 import org.openid4java.util.HttpClientFactory;
 import org.openid4java.util.ProxyProperties;
 
-import de.ddb.next.beans.User;
-
 class UserController {
-
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
+
+    def aasService
+    def sessionService
 
     LinkGenerator grailsLinkGenerator
 
@@ -45,57 +49,82 @@ class UserController {
     }
 
     def doLogin() {
-
+        log.info "doLogin(): login user "
         def loginStatus = LoginStatus.LOGGED_OUT
 
         // Only perfom login if user is not already logged in
-        if(!isUserInSession()){
+        if(!isUserLoggedIn()){
             def email = params.email
             def password = params.password
 
-            def USERNAMEDUMMY = "FIZ"
-            def EMAILDUMMY = "fiz@fiz.fiz"
-            def PASSWORDDUMMY = "fiz"
+            User user = aasService.login(email, password)
 
-            if(email == EMAILDUMMY && password == PASSWORDDUMMY){
+            if(user != null){
                 loginStatus = LoginStatus.SUCCESS
+                sessionService.createNewSession()
+                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
             }else{
                 loginStatus = LoginStatus.FAILURE
             }
-
-            if(loginStatus == LoginStatus.SUCCESS){
-                User user = new User() // TODO get from AAS
-                user.setUsername(USERNAMEDUMMY)
-                user.setEmail(EMAILDUMMY)
-                user.setPassword(PASSWORDDUMMY)
-                user.setOpenIdUser(false)
-                session.setAttribute(User.SESSION_USER, user)
-            }
         }
 
-        render(view: "login", model: [
-            'loginStatus': loginStatus]
-        )
+        if(loginStatus == LoginStatus.SUCCESS){
+            redirect(controller: 'user', action: 'favorites')
+        }else{
+            render(view: "login", model: ['loginStatus': loginStatus])
+        }
     }
 
     def doLogout() {
+        log.info "doLogout(): logout user "
 
-        session.removeAttribute(User.SESSION_USER)
-        session.invalidate()
+        logoutUserFromSession()
 
-        render(view: "login", model: [
-            'loginStatus': LoginStatus.LOGGED_OUT]
-        )
+        redirect(controller: 'index', action: 'index')
+
+    }
+
+    //Favorites page
+    def favorites(){
+        if(isUserLoggedIn() || true){
+            //1. Call to fetch the list of favorites items#
+            //2. Get the items from the backend
+            //3. Render the results in the page
+
+            // Date info for the print view
+            def dateTime = new Date()
+            dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+
+            // User info for the print view
+            def userName = getUserFromSession()?.getFirstnameAndLastnameOrNickname()
+
+            render(view:"favorites", model: ['userName': userName, 'dateString': dateTime])
+        }
+        else{
+            redirect(controller:"index")
+        }
     }
 
     def registration() {
-
         render(view: "registration", model: [])
-
     }
 
     def signup() {
-//        TODO
+
+        //        TODO
+
+        def errors = []
+        // check variable
+        def nextStep = false
+        // dummy error added to try the form validation
+        errors.add(message(code: "error.500.body"))
+
+        if(!nextStep){
+            render(view: "registration" , model: [errors: errors])
+            return
+        }else{
+            //        TODO
+        }
     }
 
     def recoverPassword(){
@@ -103,43 +132,85 @@ class UserController {
         //TODO
     }
 
+    def profile() {
+        def user
+        try {
+            user = aasService.getPerson("current")
+        }
+        catch (AuthorizationException e) {
+            forward controller: "error", action: "auth"
+        }
+        render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
+    }
+
+    def save() {
+        JSONObject user
+        try {
+            user = aasService.getPerson(params.id)
+        }
+        catch (AuthorizationException e) {
+            forward controller: "error", action: "auth"
+        }
+        user.email = params.email
+        try {
+            user = aasService.updatePerson(params.id, user)
+        }
+        catch (AuthorizationException e) {
+            forward controller: "error", action: "auth"
+        }
+        render(view: "profile", model: [bookmarksCount: "no count yet", user: user])
+    }
+
+    def delete() {
+        def user
+        try {
+            user = aasService.getPerson("current")
+            aasService.deletePerson(user.id)
+        }
+        catch (AuthorizationException e) {
+            forward controller: "error", action: "auth"
+        }
+        doLogout()
+    }
+
     def requestOpenIdLogin() {
         def provider = params.provider
 
         String discoveryUrl = ""
 
-        FetchRequest fetch = FetchRequest.createFetchRequest();
+        FetchRequest fetch = FetchRequest.createFetchRequest()
 
         if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
             discoveryUrl = "https://www.google.com/accounts/o8/id"
-            fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true);
-            fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true);
-            fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true);
-            fetch.setCount("openid.ext1.value.Email", 1);
+            fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
+            fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
+            fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true)
+            fetch.setCount("openid.ext1.value.Email", 1)
         }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
             discoveryUrl = "https://me.yahoo.com"
-            fetch.addAttribute("Email", "http://axschema.org/contact/email", true);
-            fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true);
+            fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
+            fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
         }else{
-            //TODO handle invalid provider
+            render(view: "login", model: [
+                'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
+            )
+            return
         }
 
-        // --- Forward proxy setup (only if needed) ---
-        ProxyProperties proxyProps = new ProxyProperties();
-        proxyProps.setProxyHostName("proxy.fiz-karlsruhe.de");
-        proxyProps.setProxyPort(8888);
-        HttpClientFactory.setProxyProperties(proxyProps);
-
+        setProxy()
 
         log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
-        ConsumerManager manager = new ConsumerManager();
-        session.setAttribute(SESSION_CONSUMER_MANAGER, manager)
-        session.setAttribute(SESSION_OPENID_PROVIDER, provider)
-        String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
-        List discoveries = manager.discover(discoveryUrl);
-        DiscoveryInformation discovered = manager.associate(discoveries);
-        AuthRequest authReq = manager.authenticate(discovered, returnURL);
-        authReq.addExtension(fetch);
+        ConsumerManager manager = new ConsumerManager()
+
+        sessionService.createNewSession()
+        sessionService.setSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER, provider)
+        sessionService.setSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER, manager)
+
+        String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+        List discoveries = manager.discover(discoveryUrl)
+        DiscoveryInformation discovered = manager.associate(discoveries)
+        AuthRequest authReq = manager.authenticate(discovered, returnURL)
+        authReq.addExtension(fetch)
 
         // Leave DDB for login on OpenID-provider
         redirect(url: authReq.getDestinationUrl(true))
@@ -151,16 +222,19 @@ class UserController {
 
         log.info "doOpenIdLogin(): got OpenID login request"
 
-        ConsumerManager manager = session.getAttribute(SESSION_CONSUMER_MANAGER)
+        //ConsumerManager manager = getSessionObject(false)?.getAttribute(SESSION_CONSUMER_MANAGER)
+        ConsumerManager manager = sessionService.getSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER)
         if(manager){
-            def provider = session.getAttribute(SESSION_OPENID_PROVIDER)
+            //def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
+            def provider = sessionService.getSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER)
 
-            ParameterList openidResp = new ParameterList(request.getParameterMap());
-            DiscoveryInformation discovered = (DiscoveryInformation) session.getAttribute("discovered");
-            String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin";
-            String receivingURL =  returnURL + "?" + request.getQueryString();
-            VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered);
-            Identifier verified = verification.getVerifiedId();
+            ParameterList openidResp = new ParameterList(request.getParameterMap())
+            //DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
+            DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
+            String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+            String receivingURL =  returnURL + "?" + request.getQueryString()
+            VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered)
+            Identifier verified = verification.getVerifiedId()
 
             if (verified != null) {
                 log.info "doOpenIdLogin(): success verification"
@@ -180,38 +254,79 @@ class UserController {
                     email = params["openid.ax.value.email"]
                     identifier = verified.getIdentifier()
                 }else{
-                    //TODO handle invalid provider
+                    render(view: "login", model: [
+                        'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
+                    )
+                    return
                 }
 
                 log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
 
                 // Create new session, because the old one might be corrupt due to the redirect to the OpenID provider
-                session.invalidate()
-                HttpSession newSession = request.getSession(true)
+                //                getSessionObject(false)?.invalidate()
+                //                HttpSession newSession = getSessionObject(true)
+                sessionService.destroySession()
+                HttpSession newSession = sessionService.createNewSession()
 
                 User user = new User()
                 user.setEmail(email)
                 user.setUsername(username)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                newSession.setAttribute(User.SESSION_USER, user)
+
+                sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
 
                 loginStatus = LoginStatus.SUCCESS
 
             }else {
                 log.info "doOpenIdLogin(): failure verification"
-                loginStatus = LoginStatus.FAILURE
+                loginStatus = LoginStatus.AUTH_PROVIDER_DENIED
             }
         }
 
-        render(view: "login", model: [
-            'loginStatus': loginStatus]
-        )
+        if(loginStatus == LoginStatus.SUCCESS){
+            redirect(controller: 'user', action: 'favorites')
+        }else{
+            render(view: "login", model: ['loginStatus': loginStatus])
+        }
 
     }
 
-    private boolean isUserInSession() {
-        HttpSession sessionObject = request.getSession(false)
-        return sessionObject && sessionObject.getAttribute(User.SESSION_USER)
+    private def setProxy(){
+
+        def proxyHost = System.getProperty("http.proxyHost")
+        def proxyPortString = System.getProperty("http.proxyPort")
+        int proxyPort = 80
+
+        if (proxyHost) {
+            if (proxyPortString && !proxyPortString.isEmpty()) {
+                try{
+                    proxyPort = Integer.parseInt(proxyPortString)
+                }catch(NumberFormatException e){
+                    log.error "setProxy(): The proxyport of the system properties cannot be cast to an int: '"+proxyPortString"'"
+                }
+            }
+
+            ProxyProperties proxyProps = new ProxyProperties()
+            proxyProps.setProxyHostName(proxyHost)
+            proxyProps.setProxyPort(proxyPort)
+            HttpClientFactory.setProxyProperties(proxyProps)
+        }
+
     }
+
+    private boolean isUserLoggedIn() {
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+    }
+
+    private User getUserFromSession() {
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+    }
+
+    private boolean logoutUserFromSession() {
+        sessionService.removeSessionAttributeIfAvailable(User.SESSION_USER)
+        sessionService.destroySession()
+    }
+
+
 }

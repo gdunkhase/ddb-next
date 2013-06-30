@@ -56,12 +56,17 @@ A list of some predefined variables is set below:
     ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
     ddb.apis.url="http://localhost:8080"
     ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+    ddb.aas.url="http://whddbapp10.fiz-karlsruhe.de:8081"
 	  ddb.logging.folder=/opt/ddb/logs
 	  ddb.tracking.piwikfile=/opt/ddb/tracking.txt
     ddb.advancedSearch.searchGroupCount=3
     ddb.advancedSearch.searchFieldCount=10
     ddb.advancedSearch.defaultOffset=0
     ddb.advancedSearch.defaultRows=20  
+    ddb.session.timeout=1800
+    ddb.loadbalancer.header.name="nid"
+    ddb.loadbalancer.header.value="-1"
+    
 
 ####Tomcat configuration
 The tomcat configuration in the server.xml must ensure, that the used Connector must contain a valid URIEncoding tag.

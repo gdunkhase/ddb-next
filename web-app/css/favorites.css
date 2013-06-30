@@ -1,18 +1,18 @@
 /*
-* Copyright (C) 2013 FIZ Karlsruhe
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright (C) 2013 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 hr {
   margin:0;
   border-top: 1px solid #efebe8;
@@ -493,7 +493,7 @@ hr {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
    }
-  .page-info-nav .first-page,
+  .page-info-nav .first-page, 
   .page-info-nav .last-page {
      display: none;
    }
@@ -516,10 +516,10 @@ hr {
 @media (max-width: 767px) {
   .summary .extra,
   .favorites-results .results-list .summary .information,
-  .results-paginator-options,
-  .results-paginator-view .group-actions,
-  .page-info-nav .first-page,
-  .page-info-nav .last-page,
+  .results-paginator-options, 
+  .results-paginator-view .group-actions, 
+  .page-info-nav .first-page, 
+  .page-info-nav .last-page, 
   .page-info-nav .pages-overall-index {
      display: none;
    }

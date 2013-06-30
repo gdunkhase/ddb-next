@@ -15,19 +15,15 @@
  */
 package de.ddb.next
 
-import javax.servlet.http.HttpSession;
-
-import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession;
-
 import de.ddb.next.beans.User;
 
 class SessionTagLib {
 
     def userController
+    def sessionService
 
     private boolean isUserInSession() {
-        HttpSession sessionObject = request.getSession(false)
-        return sessionObject && sessionObject.getAttribute(User.SESSION_USER)
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
 
     def isLoggedIn = { attrs, body ->
@@ -54,7 +50,7 @@ class SessionTagLib {
         def isLoggedIn = isUserInSession()
 
         if(isLoggedIn){
-            out << session.getAttribute(User.SESSION_USER).getUsername()
+            out << sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)?.getUsername()
         }else{
             out << ""
         }
@@ -64,9 +60,20 @@ class SessionTagLib {
         def isLoggedIn = isUserInSession()
 
         if(isLoggedIn){
-            out << request.getAttribute(User.SESSION_USER).getEmail()
+            out << sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)?.getEmail()
         }else{
             out << ""
+        }
+    }
+
+    /**
+     * Redirects the page to a defined endpoint when the user is not logged in
+     */
+    def redirectIfNotLoggedIn = { attrs, body ->
+        def isLoggedIn = isUserInSession()
+
+        if(!isLoggedIn){
+            response.sendRedirect(request.contextPath)
         }
     }
 }

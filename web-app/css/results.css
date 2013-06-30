@@ -74,17 +74,17 @@
   background-position: 100% -74px;
 }
 
-.page-filter,.sort-results-switch {
+.search-results-container .page-filter,.sort-results-switch {
   line-height: 42px;
   display: inline-block;
   margin-right: 20px;
 }
 
-.page-filter label,.sort-results-switch label {
+.search-results-container .page-filter label,.sort-results-switch label {
   display: inline;
 }
 
-.page-filter span,.sort-results-switch span {
+.search-results-container .page-filter span,.sort-results-switch span {
   margin-left: 10px;
 }
 
@@ -529,14 +529,6 @@ input[type="checkbox"],input[type="radio"] {
   font-weight:bold;
 }
 
-.information:hover .hovercard-info-item{
-  display: block;
-}
-
-.information .hovercard-info-item:hover{
-  display: none;
-}
-
 .information .hovercard-info-item {
   background: #fff;
   border: 1px solid #a7a7a6;
@@ -553,7 +545,7 @@ input[type="checkbox"],input[type="radio"] {
   position: absolute;
   right: 0;
   top: 20px;
-  display: none;
+  display:none;
 }
 
 .information .hovercard-info-item h4 {

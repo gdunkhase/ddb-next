@@ -26,30 +26,44 @@ limitations under the License.
     <div class="well">
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
 
-        <div class="reg-title"><g:message code="ddbnext.Sign_up_here" /></div>
+        <div><h1><g:message code="ddbnext.Sign_up_here" /></h1></div>
+        <div class="reg-subtitle bt"><h3><g:message code="ddbnext.Mandatory" /></h3></div>
 
+        <g:if test="${errors != null && errors.size()>0}">
+          <g:renderErrors errors="${errors}"></g:renderErrors>
+        </g:if>
         <div class="control-group">
-          <label class="control-label">First Name</label>
+          <label class="control-label"><g:message code="ddbnext.Username" />*</label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-user"></i></span>
-              <input type="text" class="reg-input" id="fname" name="fname" placeholder="First Name">
+              <input type="text" class="reg-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username" />">
+            </div>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label"><g:message code="ddbnext.User.First_Name" /></label>
+          <div class="controls">
+            <div class="input-prepend">
+              <span class="add-on"><i class="icon-user"></i></span>
+              <input type="text" class="reg-input" id="fname" name="fname" placeholder="<g:message code="ddbnext.User.First_Name" />">
             </div>
           </div>
         </div>
 
         <div class="control-group ">
-          <label class="control-label">Last Name</label>
+          <label class="control-label"><g:message code="ddbnext.User.Last_Name" /></label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-user"></i></span>
-              <input type="text" class="reg-input" id="lname" name="lname" placeholder="Last Name">
+              <input type="text" class="reg-input" id="lname" name="lname" placeholder="<g:message code="ddbnext.User.Last_Name" />">
             </div>
           </div>
         </div>
 
         <div class="control-group">
-          <label class="control-label"><g:message code="ddbnext.Email" /></label>
+          <label class="control-label"><g:message code="ddbnext.Email" />*</label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-envelope"></i></span>
@@ -59,7 +73,7 @@ limitations under the License.
         </div>
 
         <div class="control-group">
-          <label class="control-label"><g:message code="ddbnext.Your_Password" /></label>
+          <label class="control-label"><g:message code="ddbnext.Your_Password" />*</label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-lock"></i></span>
@@ -69,7 +83,7 @@ limitations under the License.
         </div>
 
         <div class="control-group">
-          <label class="control-label"><g:message code="ddbnext.Confirm_password" /></label>
+          <label class="control-label"><g:message code="ddbnext.Confirm_password" />*</label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-lock"></i></span>
@@ -81,7 +95,7 @@ limitations under the License.
         <div class="control-group">
           <label class="control-label"></label>
           <div class="controls">
-            <button type="submit" class="btn-padding">Create My Account</button>
+            <button type="submit" class="btn-padding"><g:message code="ddbnext.User.Create_Account" /></button>
           </div>
         </div>
         <ul id="error-messages" class="off">
