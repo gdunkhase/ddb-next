@@ -52,7 +52,7 @@
       case 200: case 201:
         // -- success
         //var JSONresponse = jQuery.parseJSON(data.responseText);
-        jElemFavorite.css("color","red");
+        //jElemFavorite.css("color","red");
         jElemFavorite.attr("data-actn", "DELETE");
         jElemFavorite.parent().removeClass("favorite-add");
         jElemFavorite.parent().addClass("favorite-selected");
@@ -81,7 +81,7 @@
       case 200: case 204:
         // -- success
         //var JSONresponse = jQuery.parseJSON(data.responseText);
-        jElemFavorite.css("color","green");
+        //jElemFavorite.css("color","green");
         jElemFavorite.attr("data-actn", "POST");
         jElemFavorite.parent().removeClass("favorite-selected");
         jElemFavorite.parent().addClass("favorite-add");

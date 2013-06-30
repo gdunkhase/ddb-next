@@ -49,7 +49,8 @@ limitations under the License.
         </div>
         <div class="span3">
         
-            <div class="favorite" style="text-align: right;">
+            <div class="favorite">
+            <!--  
                 <g:isNotLoggedIn>
                     <g:link controller="user" class="favorite-actions">
                         <span title="<g:message code='ddbnext.stat_010' />">
@@ -57,18 +58,19 @@ limitations under the License.
                         </span>
                     </g:link>
                 </g:isNotLoggedIn>
+              -->
                 <g:isLoggedIn>
                 
                     <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
                         <g:link controller="item" action="changeItemState" params="${params + [reqActn:'delete']}" class="favorite-actions favorite-selected">
-                            <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: red;">
+                            <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
                                 <g:message code="ddbnext.favorit" />
                             </span>
                         </g:link>
                     </g:if>
                     <g:else>
                         <g:link controller="item" action="changeItemState" params="${params + [reqActn:'add']}" class="favorite-actions favorite-add">
-                            <span data-itemid="${itemId}" data-actn="POST" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" style="font-weight: bold; color: green;">
+                            <span data-itemid="${itemId}" data-actn="POST" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
                                 <g:message code="ddbnext.favorit" />
                             </span>
                         </g:link>
