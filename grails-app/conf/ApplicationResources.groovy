@@ -86,6 +86,7 @@ modules = {
         resource url:'/js/search-results.js'
         resource url:'/js/favorites.js'
         resource url:'/js/registration.js'
+        resource url:'/js/changeFavorite.js'
         resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
     }

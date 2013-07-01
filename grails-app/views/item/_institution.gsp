@@ -13,15 +13,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.FavoritesService"%>
+<%@page import="de.ddb.next.beans.User"%>
 <div class="row item-detail">
   <div class="span12 institution">
     <div class="row">
-        <div class="span9" >
+    
+        <div class="span9">
             <div><g:message code="ddbnext.Institution" /></div>
             <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
             ${institution.name}
             </g:link>
             <a class="institution-link" href="${institution.uri}">${institution.uri}</a>
+        </div>
+        <div class="span3">
+            <img alt="${institution.name}" src="${institution.logo.a}"/>
+        </div>
+        
+        <div class="span9">
             <g:if test="${!item.origin?.toString().isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
                   <g:if test="${!item.origin?.toString().isEmpty()}">
@@ -38,10 +47,42 @@ limitations under the License.
               </div>
             </g:if>
         </div>
-        <div class="span3" >
-            <img alt="${institution.name}" src="${institution.logo.a}"/>
+        <div class="span3">
+        
+            <div class="favorite">
+            <!--  
+                <g:isNotLoggedIn>
+                    <g:link controller="user" class="favorite-actions">
+                        <span title="<g:message code='ddbnext.stat_010' />">
+                            <g:message code="ddbnext.favorit" />
+                        </span>
+                    </g:link>
+                </g:isNotLoggedIn>
+              -->
+                <g:isLoggedIn>
+                
+                    <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
+                        <g:link controller="item" action="changeItemState" params="${params + [reqActn:'delete']}" class="favorite-actions favorite-selected">
+                            <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
+                                <g:message code="ddbnext.favorit" />
+                            </span>
+                        </g:link>
+                    </g:if>
+                    <g:else>
+                        <g:link controller="item" action="changeItemState" params="${params + [reqActn:'add']}" class="favorite-actions favorite-add">
+                            <span data-itemid="${itemId}" data-actn="POST" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
+                                <g:message code="ddbnext.favorit" />
+                            </span>
+                        </g:link>
+                    </g:else>
+                    
+                    
+                </g:isLoggedIn>
+            </div>
         </div>
+        
     </div>
+
   </div>
 </div>
 <!-- /end of institution -->

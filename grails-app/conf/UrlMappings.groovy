@@ -19,7 +19,7 @@ class UrlMappings {
         //@formatter:off
         "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
         //@formatter:on
-
+        
         "/searchresults/$q?" {
             controller="search"
             action="results"
@@ -59,7 +59,16 @@ class UrlMappings {
             controller="item"
             action="findById"
         }
-
+        
+        "/item/$id/changeItemState" {
+            controller="item"
+            action="changeItemState"
+        }
+        
+        "/api/favorites/$id" (controller: "favorites", parseRequest: true) {
+            action=[GET: "getFavorite", POST: "addFavorite", DELETE: "delFavorite"]
+        }
+        
         "/about-us/institutions" {
             controller="institution"
             action="show"
