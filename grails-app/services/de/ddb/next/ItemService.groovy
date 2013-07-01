@@ -15,13 +15,15 @@
  */
 package de.ddb.next
 
+import net.sf.json.JSONNull;
+
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils;
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
-
+import org.ccil.cowan.tagsoup.Parser;
 import groovyx.net.http.HTTPBuilder
 
 class ItemService {
@@ -46,45 +48,35 @@ class ItemService {
     LinkGenerator grailsLinkGenerator
 
     def findItemById(id) {
-        def http = new HTTPBuilder(configurationService.getBackendUrl())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
 
-        /* TODO remove this hack, once the server deliver the right content
-         type*/
-        http.parser.'application/json' = http.parser.'application/xml'
-
-        final def componentsPath = "/access/" + id + "/components/"
+        final def componentsPath = "/items/" + id + "/"
         final def viewPath = componentsPath + "view"
 
-        def institution, item, title, fields, viewerUri, pageLabel
-        http.request( GET) { req ->
-            uri.path = viewPath
-
-            response.success = { resp, xml ->
-                log.info "findItemById(): Current request uri: 200, "+uri
-
-                institution= xml.institution
-                item = xml.item
-
-                title = shortenTitle(id, item)
-
-                fields = xml.item.fields.field.findAll()
-                viewerUri = buildViewerUri(item, componentsPath)
-
-                return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
-                    'fields': fields, pageLabel: xml.pagelabel]
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp ->
-                log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """
-                return response
-            }
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), viewPath)
+        if(!apiResponse.isOk()){
+            log.error "findItemById: xml file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
+        def xml = apiResponse.getResponse()
+
+        //def institution= xml.institution
+        def institution= xml.item.institution
+
+        Parser tagsoupParser = new Parser()
+        XmlSlurper slurper = new XmlSlurper(tagsoupParser)
+        String institutionLogoUrl = slurper.parseText(xml.item.institution.logo.toString()).text()
+        String originUrl = slurper.parseText(xml.item.origin.toString()).text()
+
+        def item = xml.item
+
+        def title = shortenTitle(id, item)
+
+        def fields = xml.item.fields.field.findAll()
+        def viewerUri = buildViewerUri(item, componentsPath)
+
+        return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
+            'fields': fields, pageLabel: xml.pagelabel, 'institutionImage': institutionLogoUrl, 'originUrl': originUrl]
+
     }
 
     private getItemTitle(id) {
@@ -118,7 +110,7 @@ class ItemService {
 
     private shortenTitle(id, item) {
 
-        def title = item.title.text()
+        def title = item.title
 
         def hasBinary = !fetchBinaryList(id).isEmpty()
 
@@ -143,11 +135,14 @@ class ItemService {
 
 
     private def buildViewerUri(item, componentsPath) {
-        if(item.viewers.viewer == null || item.viewers.viewer.isEmpty()) {
+        if(item.viewers instanceof JSONNull){
+            return ''
+        }
+        if(item.viewers?.viewer == null || item.viewers?.viewer?.isEmpty()) {
             return ''
         }
 
-        def viewerPrefix = item.viewers.viewer.uri.toString()
+        def viewerPrefix = item.viewers.viewer.url.toString()
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
