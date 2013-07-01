@@ -139,6 +139,7 @@ class UserController {
                 render(view: "confirm" , model: [errors: errors, messages: messages])
             }
             catch (ConflictException e) {
+                log.error "Conflict: user with given data already exists. username:" + params.username + ",email:" + params.email, e
                 String conflictField = e.getMessage().replaceFirst(".*?'(.*?)'.*", "\$1")
                 if (params.username.equals(conflictField)) {
                     errors.add("ddbnext.Conflict_User_Name");
@@ -173,6 +174,7 @@ class UserController {
                 messages.add("ddbnext.User.PasswordReset_Success");
             }
             catch (ItemNotFoundException e) {
+                log.error "NotFound: a user with given name " + params.username + " was not found", e
                 errors.add("ddbnext.Error_Username_Notfound");
             }
         }
@@ -294,6 +296,7 @@ class UserController {
                         messages.add("ddbnext.User.Profile_Update_Success")
                     }
                     catch (ConflictException e) {
+                        log.error "Conflict: user with given data already exists. username:" + params.username, e
                         errors.add("ddbnext.Conflict_User_Name");
                     }
                 }
@@ -305,6 +308,7 @@ class UserController {
                     }
                     catch (ConflictException e) {
                         user.setEmail(params.email)
+                        log.error "Conflict: user with given data already exists. email:" + params.email, e
                         errors.add("ddbnext.Conflict_User_Email");
                     }
                 }
@@ -321,6 +325,7 @@ class UserController {
                         messages.add("ddbnext.User.Newsletter_Update_Success")
                     }
                     catch (Exception e) {
+                        //log.error "", e
                         //errors.add("")
                     }
                 }
@@ -388,6 +393,7 @@ class UserController {
             }
         }
         catch (ItemNotFoundException e) {
+            log.error "NotFound: confirmation does not exist. uid:" + params.id + ", token:" + params.token, e
             errors.add("ddbnext.Error.Confirmation_Not_Found")
         }
         render(view: "confirm", model: [errors: errors, messages: messages])
