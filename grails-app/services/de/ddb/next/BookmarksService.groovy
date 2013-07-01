@@ -309,4 +309,50 @@ class BookmarksService {
         log.info "delete favorites with the bookmarkIds ${bookmarkIds}"
         deleteBookmarks(userId, bookmarkIds)
     }
+
+    def findFavoritesByItemIds(userId, itemIdList) {
+        // TODO: refactor this, dry
+        def favoritesFolder = findFoldersByTitle(userId, BookmarksService.FAVORITES)
+        //assert favoritesFolder.size() <= 1 :"There must be max one folder with the title Favorites"
+
+        def favoriteFolderId
+        if(!favoritesFolder) {
+            /* The user does not have a 'Favorites' folder, create a folder with
+             * the title 'Favorites'
+             */
+            log.info "The user(${uderId}) does not have a 'Favorites' folder, the service is creating it."
+            favoriteFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
+            log.info "New Favorites Folder is created: ${favoriteFolderId}"
+        } else {
+            assert favoritesFolder.folderId != null: 'no folder id'
+            favoriteFolderId  = favoritesFolder.folderId
+        }
+
+        log.info 'fav: ${favoriteFolderId}'
+
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${favoriteFolderId}")
+        http.request(Method.POST, ContentType.JSON) { req ->
+            body = [
+              filter: [
+                terms: [
+                  item: itemIdList
+                ]
+              ]
+            ]
+
+            response.success = { resp, json ->
+                log.info "response as application/json: ${json}"
+                // TODO: use inject if possible
+                def items = [] as Set
+                json.hits.hits.each { it ->
+                    items.add(it._source.item)
+                }
+                items
+            }
+        }
+    }
+
+    def getFavoritesFolderId(userId) {
+
+    }
 }
