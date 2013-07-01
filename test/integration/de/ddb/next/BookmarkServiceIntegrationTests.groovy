@@ -61,26 +61,17 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     }
 
     // TODO: fix this
-    @Ignore('Can not search immediately after Indexing?')
+//    @Ignore('Can not search immediately after Indexing?')
     @Test void shouldFindBookmarkedItems() {
         def folderId = createNewFolder()
         def itemId = 'foobar' + new Date().getTime().toString()
         def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId)
 
+        sleep 3000
         def foundBookmarkedItems = bookmarksService.findBookmarkedItems(userId, [itemId])
         assert foundBookmarkedItems.size() > 0
     }
 
-
-    @Ignore('Not yet implemented')
-    @Test void shouldFindFolderById(){
-        assert false
-    }
-
-    @Ignore('Not yet implemented')
-    @Test void shouldFindBookmarkById() {
-        assert false
-    }
 
     // Favorites
     @Test void shouldAddItemToUserFavorite() {
@@ -91,6 +82,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         // if the user don't have a favorite list, then the service should create it.
         def favoriteId = bookmarksService.addFavorite(userId, itemId)
         assert favoriteId != null
+
         log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId"
     }
 
@@ -118,7 +110,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
     @Test void shouldGetAllUserFavorites() {
         def userId = UUID.randomUUID() as String
-        def firstItemId = UUID.randomUUID() as String
+        def firstItemId = 'foobarbaz'
         def secondItemId = UUID.randomUUID() as String
 
         // if the user don't have a favorite list, then the service should create it.
@@ -127,13 +119,13 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         sleep 3000
 
         def allFavs = bookmarksService.findFavoritesByUserId(userId)
-        assert allFavs.size() == 1
+        assert allFavs.size() > 0
     }
 
     @Test void shouldDeleteFavoritesByItemIDs() {
         log.info "the bookmark service should delete favorites by item IDs."
         def userId = UUID.randomUUID() as String
-        def firstItemId = UUID.randomUUID() as String
+        def firstItemId = 'foobarbaz'
         log.info "adding item (${firstItemId} to the folder Favorite."
 
         def firstFav = bookmarksService.addFavorite(userId, firstItemId)
@@ -151,4 +143,18 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assert emptyFavs.size() == 0
     }
 
+    @Test void shouldFindFavoritesByItemIds() {
+        log.info "the bookmark service should find favorites by item IDs."
+        def userId = UUID.randomUUID() as String
+        def firstItemId = 'foobarbaz'
+        log.info "adding item ${firstItemId} to the folder Favorite."
+
+        def firstFav = bookmarksService.addFavorite(userId, firstItemId)
+        sleep 3000
+
+        def itemIds = [firstItemId]
+
+        def foundBookmarkedItems = bookmarksService.findFavoritesByItemIds(userId, itemIds)
+        assert foundBookmarkedItems.size() > 0
+    }
 }
