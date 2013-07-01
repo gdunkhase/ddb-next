@@ -114,12 +114,15 @@ class BookmarksService {
      * @return          a list of bookmarks.
      */
     def findBookmarksByFolderId(userId, folderId) {
+        log.info "find bookmarks for the user (${userId}) in the folder ${folderId}"
         def http = new HTTPBuilder(
             "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}")
         http.request(Method.GET, ContentType.JSON) { req ->
+            def all = []
            response.success = { resp, json ->
+               log.info 'resp: ${resp}'
                def resultList = json.hits.hits
-               def all = []
+               //def all = []
                resultList.each { it ->
                    log.info "created at: ${it._source.createdAt}"
                    def bookmark = new Bookmark(
@@ -130,8 +133,9 @@ class BookmarksService {
                    )
                    all.add(bookmark)
                }
-               return all
            }
+
+           return all
        }
     }
 
@@ -273,7 +277,23 @@ class BookmarksService {
     }
 
     def findFavoritesByUserId(userId) {
-        []
+        // TODO: refactor this, dry
+        def favoritesFolder = findFoldersByTitle(userId, BookmarksService.FAVORITES)
+        assert favoritesFolder.size() <= 1 :"There must be max one folder with the title Favorites"
+
+        def favoriteFolderId
+        if(!favoritesFolder) {
+            /* The user does not have a 'Favorites' folder, create a folder with
+             * the title 'Favorites'
+             */
+            log.info "The user(${uderId}) does not have a 'Favorites' folder, the service is creating it."
+            favoriteFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
+            log.info "New Favorites Folder is created: ${favoriteFolderId}"
+        } else {
+            assert favoritesFolder.folderId != null: 'no folder id'
+            favoriteFolderId  = favoritesFolder.folderId
+        }
+        return findBookmarksByFolderId(userId, favoriteFolderId[0])
     }
 
 }

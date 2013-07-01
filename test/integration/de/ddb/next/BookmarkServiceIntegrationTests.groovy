@@ -109,7 +109,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
        def favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
        log.info "The user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
 
-       // TODO wait for 3 seconds before second try
+       // wait for 3 seconds before second try
        sleep 3000
 
        if(!favFolderList) {
@@ -121,7 +121,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
        assertEquals favFolderList[0].folderId, folderId
     }
 
-    @Ignore('Not Yet Implemented')
+//    @Ignore('Not Yet Implemented')
     @Test void shouldGetAllUserFavorites() {
         def userId = UUID.randomUUID() as String
         def firstItemId = UUID.randomUUID() as String
@@ -129,11 +129,11 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         // if the user don't have a favorite list, then the service should create it.
         def firstFav = bookmarksService.addFavorite(userId, firstItemId)
-        def secondFav = bookmarksService.addFavorite(userId, secondItemId)
-        // should get a list of item IDs in user's favorite list.
+
+        sleep 3000
+
         def allFavs = bookmarksService.findFavoritesByUserId(userId)
-        // if the user don't have a favorite list, then the service should create it.
-        assert allFavs.size() == 2
+        assert allFavs.size() == 1
     }
 
 }
