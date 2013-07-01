@@ -173,6 +173,9 @@ log4j = {
         production {
             root { info "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace" }
         }
+        test {
+            root {  info "console", "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace"  }
+        }
     }
 
     // This part can be used to filter out all loggings that are not interesting
@@ -188,10 +191,21 @@ log4j = {
                     "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
 
             error   "grails.util.GrailsUtil"                    // hide deprecated warnings on startup
-
         }
         production {
             //Don't filter messages in production
+        }
+        test {
+            warn    "org.codehaus.groovy.grails",               // only warnings or errors from grails
+                    "grails.plugin",                            // only warnings or errors from grails.plugins
+                    "org.grails.plugin",                        // only warnings or errors from plugins
+                    "org.springframework",                      // only warnings or errors from spring
+                    "net.jawr",                                 // only warnings or errors from jawr
+                    "org.apache.catalina.core",                 // only warnings or errors from catalina core
+                    "org.apache.coyote.http11.Http11Protocol",  // only warnings or errors from Http11Protocol
+                    "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
+
+            error   "grails.util.GrailsUtil"                    // hide deprecated warnings on startup
         }
     }
 

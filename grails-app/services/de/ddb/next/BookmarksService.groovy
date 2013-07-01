@@ -34,6 +34,9 @@ import de.ddb.next.beans.Folder
 // TODO: use ApiConsumer if possible
 class BookmarksService {
 
+    public static final def FAVORITES = 'Favorites'
+    public static final def IS_PUBLIC = false
+
     def configurationService
     def transactional = false
 
@@ -57,8 +60,8 @@ class BookmarksService {
            def folderId
            response.success = { resp, json ->
                folderId = json._id
+               folderId
            }
-           folderId
        }
     }
 
@@ -152,10 +155,11 @@ class BookmarksService {
 
            def bookmarkId = ''
            response.success = { resp, json ->
-               log.info "response as application/json: ${json}"
                bookmarkId = json._id
+
+               log.info "Bookmark ${bookmarkId} is created."
+               return bookmarkId
            }
-          bookmarkId
        }
     }
 
@@ -182,7 +186,6 @@ class BookmarksService {
                 // TODO: use inject if possible
                 def items = [] as Set
                 json.hits.hits.each { it ->
-                    log.info it._source.item
                     items.add(it._source.item)
                 }
                 items
@@ -206,6 +209,71 @@ class BookmarksService {
 
             body = reqBody
         }
+    }
+
+    def addFavorite(userId, itemId) {
+        // find a folder that belongs to the user with the title 'Favorites"
+        // BUT it returns for example Favorites-foobar as well.
+        def favoritesFolder = findFoldersByTitle(userId, FAVORITES)
+        assert favoritesFolder.size() <= 1 :"There must be max one folder with the title Favorites"
+
+        def favoriteFolderId
+
+        if(!favoritesFolder) {
+            /* The user does not have a 'Favorites' folder, create a folder with
+             * the title 'Favorites'
+             */
+            favoriteFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
+            log.info "New Favorites Folder is created: ${favoriteFolderId}"
+        } else {
+            assert favoritesFolder.folderId != null: 'no folder id'
+            favoriteFolderId  = favoritesFolder.folderId
+        }
+
+        // add a new bookmark to this folder.
+        def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId)
+        log.info "Add a bookmark ${bookmarkId} in Favorites"
+        return bookmarkId
+    }
+
+    def findFoldersByTitle(userId, title) {
+        log.info "userId: ${userId}"
+        def http = new HTTPBuilder(
+            "${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}%20AND%20title:${title}")
+
+        http.request(Method.POST, ContentType.JSON) { req ->
+
+            body = [
+              filter: [
+                script: [
+                  script: '_source.title == \"' + title + '\"'
+                ]
+              ]
+            ]
+
+           response.success = { resp, json ->
+               log.info json
+               def resultList = json.hits.hits
+               def all = []
+               resultList.each { it ->
+                   def folder = new Folder(
+                        folderId: it._id,
+                        userId: it._source.user,
+                        title: it._source.title,
+                        isPublic: it._source.isPublic
+                   )
+
+                   all.add(folder)
+               }
+
+               log.info "#folder: ${all.size()}"
+               return all
+           }
+       }
+    }
+
+    def findFavoritesByUserId(userId) {
+        []
     }
 
 }

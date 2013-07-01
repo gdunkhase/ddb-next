@@ -7,6 +7,7 @@ import org.junit.*
 
 class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
+
     def bookmarksService
 
     def userId = 'crh'
@@ -31,8 +32,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assertTrue folderList.size() >0
 
         if(folderList) {
+            log.info "The user with the ID: ${userId} has: "
             folderList.each { it ->
-                log.info "found folder: ${it}"
+                log.info "- ${it}"
             }
         } else {
             log.info 'empty folder.'
@@ -58,6 +60,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assert bookmarks.size() > 0
     }
 
+    // TODO: fix this
     @Ignore('Can not search immediately after Indexing?')
     @Test void shouldFindBookmarkedItems() {
         def folderId = createNewFolder()
@@ -83,4 +86,54 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     @Test void shouldFindBookmarkById() {
         assert false
     }
+
+    // Favorites
+    @Test void shouldAddItemToUserFavorite() {
+        log.info "should add item to the user's Favorites"
+        // should add a cultural item to user's favorite list.
+        def userId = UUID.randomUUID() as String
+        def itemId = UUID.randomUUID() as String
+        // if the user don't have a favorite list, then the service should create it.
+        def favoriteId = bookmarksService.addFavorite(userId, itemId)
+        assert favoriteId != null
+        log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId"
+    }
+
+    @Test void shouldFindFoldersByTitle() {
+       log.info "the bookmark service should find folders by its title."
+       def userId = UUID.randomUUID() as String
+
+       def folderId = bookmarksService.newFolder(userId, BookmarksService.FAVORITES, BookmarksService.IS_PUBLIC)
+       log.info "the bookmark service created a ${BookmarksService.FAVORITES} folder(${folderId}) for a user(${userId})"
+
+       def favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
+       log.info "The user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
+
+       // TODO wait for 3 seconds before second try
+       sleep 3000
+
+       if(!favFolderList) {
+           favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
+           log.info "Second try, the user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
+       }
+
+       assert favFolderList.size() == 1
+       assertEquals favFolderList[0].folderId, folderId
+    }
+
+    @Ignore('Not Yet Implemented')
+    @Test void shouldGetAllUserFavorites() {
+        def userId = UUID.randomUUID() as String
+        def firstItemId = UUID.randomUUID() as String
+        def secondItemId = UUID.randomUUID() as String
+
+        // if the user don't have a favorite list, then the service should create it.
+        def firstFav = bookmarksService.addFavorite(userId, firstItemId)
+        def secondFav = bookmarksService.addFavorite(userId, secondItemId)
+        // should get a list of item IDs in user's favorite list.
+        def allFavs = bookmarksService.findFavoritesByUserId(userId)
+        // if the user don't have a favorite list, then the service should create it.
+        assert allFavs.size() == 2
+    }
+
 }
