@@ -99,8 +99,6 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId"
     }
 
-    // TODO: fix this
-//    @Ignore('Can not search immediately after Indexing?')
     @Test void shouldFindFoldersByTitle() {
        log.info "the bookmark service should find folders by its title."
        def userId = UUID.randomUUID() as String
@@ -135,7 +133,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         // should get a list of item IDs in user's favorite list.
         def allFavs = bookmarksService.findFavoritesByUserId(userId)
         // if the user don't have a favorite list, then the service should create it.
-        assert allFavs.size() > 0
+        assert allFavs.size() == 2
     }
 
 }
