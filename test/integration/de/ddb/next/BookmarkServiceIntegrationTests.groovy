@@ -110,7 +110,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
     @Test void shouldGetAllUserFavorites() {
         def userId = UUID.randomUUID() as String
-        def firstItemId = UUID.randomUUID() as String
+        def firstItemId = 'foobarbaz'
         def secondItemId = UUID.randomUUID() as String
 
         // if the user don't have a favorite list, then the service should create it.
@@ -125,7 +125,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     @Test void shouldDeleteFavoritesByItemIDs() {
         log.info "the bookmark service should delete favorites by item IDs."
         def userId = UUID.randomUUID() as String
-        def firstItemId = UUID.randomUUID() as String
+        def firstItemId = 'foobarbaz'
         log.info "adding item (${firstItemId} to the folder Favorite."
 
         def firstFav = bookmarksService.addFavorite(userId, firstItemId)
@@ -144,10 +144,10 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     }
 
     @Test void shouldFindFavoritesByItemIds() {
-        log.info "the bookmark service should delete favorites by item IDs."
+        log.info "the bookmark service should find favorites by item IDs."
         def userId = UUID.randomUUID() as String
-        def firstItemId = UUID.randomUUID() as String
-        log.info "adding item (${firstItemId} to the folder Favorite."
+        def firstItemId = 'foobarbaz'
+        log.info "adding item ${firstItemId} to the folder Favorite."
 
         def firstFav = bookmarksService.addFavorite(userId, firstItemId)
         sleep 3000

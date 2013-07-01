@@ -324,11 +324,10 @@ class BookmarksService {
             favoriteFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
             log.info "New Favorites Folder is created: ${favoriteFolderId}"
         } else {
-            assert favoritesFolder.folderId != null: 'no folder id'
-            favoriteFolderId  = favoritesFolder.folderId
+            favoriteFolderId  = favoritesFolder[0].folderId
         }
 
-        log.info 'fav: ${favoriteFolderId}'
+        log.info "fav: ${favoriteFolderId}"
 
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${favoriteFolderId}")
         http.request(Method.POST, ContentType.JSON) { req ->
