@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import org.apache.commons.lang.StringUtils
+import org.apache.commons.validator.EmailValidator
 
 /**
  * check password and new password.
@@ -90,8 +91,13 @@ public static List<String> validatorRegistration(String username, String firstna
  * @return true or false (valid or not)
  */
 public static validatorEmail(String email){
-    def res = (email ==~ /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,4}/)
-    return res
+    EmailValidator emailValidator = EmailValidator.getInstance()
+    if (emailValidator.isValid(email)) {
+        return true
+    }
+    else {
+        return false
+    }
 }
 
 /**
