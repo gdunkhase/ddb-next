@@ -47,7 +47,7 @@ limitations under the License.
         <input type="hidden" name="id" value="${ user.id }"/>
         <div class="row well">
             <div class="profile-nav">
-                <div class="profile-title"><g:message code="ddbnext.User_Profile"/><g:getUserLabel /></div>
+                <div class="profile-title"><g:message code="ddbnext.User_Profile"/> <g:getUserLabel /></div>
                 <div class="fr profile-links">
                     <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="user",action: 'favorites', params:[:])}">
                         <g:message code="ddbnext.Favorites" />(${favoritesCount })

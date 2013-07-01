@@ -17,6 +17,7 @@
 package de.ddb.next
 
 import de.ddb.next.exception.ConfigurationException;
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 /**
  * Service for accessing the configuration.
@@ -106,37 +107,31 @@ class ConfigurationService {
         return url
     }
 
+    public String getSelfBaseUrl(){
+        def baseUrl = grailsApplication.config.ddb?.self?.base?.url
+        if(!baseUrl){
+            throw new ConfigurationException("getPasswordResetLink(): Configuration entry does not exist -> ddb.self.base.url")
+        }
+        if(!(baseUrl instanceof String)){
+            throw new ConfigurationException("getPasswordResetLink(): ddb.self.base.url is not a String")
+        }
+        return baseUrl
+    }
+
+    public String getConfirmBase(){
+        return getSelfBaseUrl() + ServletContextHolder.servletContext.contextPath + "/user/confirm/|id|/|confirmationToken|"
+    }
+
     public String getPasswordResetConfirmationLink(){
-        def link = grailsApplication.config.ddb?.passwordreset?.confirmation
-        if(!link){
-            throw new ConfigurationException("getPasswordResetLink(): Configuration entry does not exist -> ddb.passwordreset.confirmation")
-        }
-        if(!(link instanceof String)){
-            throw new ConfigurationException("getPasswordResetLink(): ddb.passwordreset.confirmation is not a String")
-        }
-        return link
+        return getConfirmBase() + "?type=passwordreset"
     }
 
     public String getEmailUpdateConfirmationLink(){
-        def link = grailsApplication.config.ddb?.emailupdate?.confirmation
-        if(!link){
-            throw new ConfigurationException("getEmailUpdateConfirmationLink(): Configuration entry does not exist -> ddb.emailupdate.confirmation")
-        }
-        if(!(link instanceof String)){
-            throw new ConfigurationException("getEmailUpdateConfirmationLink(): ddb.emailupdate.confirmation is not a String")
-        }
-        return link
+        return getConfirmBase() + "?type=emailupdate"
     }
 
     public String getCreateConfirmationLink(){
-        def link = grailsApplication.config.ddb?.create?.confirmation
-        if(!link){
-            throw new ConfigurationException("getCreateConfirmationLink(): Configuration entry does not exist -> ddb.create.confirmation")
-        }
-        if(!(link instanceof String)){
-            throw new ConfigurationException("getCreateConfirmationLink(): ddb.create.confirmation is not a String")
-        }
-        return link
+        return getConfirmBase() + "?type=create"
     }
 
     public List getFacetsFilter(){
