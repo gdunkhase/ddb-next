@@ -71,11 +71,6 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assert foundBookmarkedItems.size() > 0
     }
 
-    @Ignore('Not yet implemented')
-    @Test void shouldBulkDeleteBookmarks() {
-       // { "delete" : { "_index" : "ddb", "_type" : "bookmark", "_id" : "Oq3T4o34TWO_D-cJ4ok2hA" } }
-        assert false
-    }
 
     @Ignore('Not yet implemented')
     @Test void shouldFindFolderById(){
@@ -121,7 +116,6 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
        assertEquals favFolderList[0].folderId, folderId
     }
 
-//    @Ignore('Not Yet Implemented')
     @Test void shouldGetAllUserFavorites() {
         def userId = UUID.randomUUID() as String
         def firstItemId = UUID.randomUUID() as String
@@ -134,6 +128,27 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         def allFavs = bookmarksService.findFavoritesByUserId(userId)
         assert allFavs.size() == 1
+    }
+
+    @Test void shouldDeleteFavoritesByItemIDs() {
+        log.info "the bookmark service should delete favorites by item IDs."
+        def userId = UUID.randomUUID() as String
+        def firstItemId = UUID.randomUUID() as String
+        log.info "adding item (${firstItemId} to the folder Favorite."
+
+        def firstFav = bookmarksService.addFavorite(userId, firstItemId)
+        sleep 3000
+
+        def allFavs = bookmarksService.findFavoritesByUserId(userId)
+        assert allFavs.size() == 1
+
+        def itemIds = [firstItemId]
+        bookmarksService.deleteFavorites(userId, itemIds)
+
+        sleep 3000
+
+        def emptyFavs = bookmarksService.findFavoritesByUserId(userId)
+        assert emptyFavs.size() == 0
     }
 
 }

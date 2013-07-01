@@ -118,13 +118,11 @@ class BookmarksService {
         def http = new HTTPBuilder(
             "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}")
         http.request(Method.GET, ContentType.JSON) { req ->
-            def all = []
+
            response.success = { resp, json ->
-               log.info 'resp: ${resp}'
+               def all = []
                def resultList = json.hits.hits
-               //def all = []
                resultList.each { it ->
-                   log.info "created at: ${it._source.createdAt}"
                    def bookmark = new Bookmark(
                         bookmarkId: it._id,
                         userId: it._source.user,
@@ -133,9 +131,9 @@ class BookmarksService {
                    )
                    all.add(bookmark)
                }
+               all
            }
 
-           return all
        }
     }
 
@@ -296,4 +294,19 @@ class BookmarksService {
         return findBookmarksByFolderId(userId, favoriteFolderId[0])
     }
 
+    def deleteFavorites(userId, itemIds) {
+        def bookmarkIds = []
+        def allFavorites = findFavoritesByUserId(userId)
+        log.info "favs: ${allFavorites}"
+        allFavorites.each { it ->
+            log.info "fav: ${it}"
+            if(it.itemId  in itemIds) {
+                bookmarkIds.add(it.bookmarkId)
+            }
+        }
+
+        log.info "delete favorites for the items ${itemIds}"
+        log.info "delete favorites with the bookmarkIds ${bookmarkIds}"
+        deleteBookmarks(userId, bookmarkIds)
+    }
 }
