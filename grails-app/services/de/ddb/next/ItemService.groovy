@@ -142,7 +142,7 @@ class ItemService {
             return ''
         }
 
-        def viewerPrefix = item.viewers.viewer.uri.toString()
+        def viewerPrefix = item.viewers.viewer.url.toString()
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
