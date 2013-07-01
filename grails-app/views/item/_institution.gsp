@@ -24,17 +24,17 @@ limitations under the License.
             <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
             ${institution.name}
             </g:link>
-            <a class="institution-link" href="${institution.uri}">${institution.uri}</a>
+            <a class="institution-link" href="${institution.url}">${institution.url}</a>
         </div>
         <div class="span3">
-            <img alt="${institution.name}" src="${institution.logo.a}"/>
+            <img alt="${institution.name}" src="${institutionImage}"/>
         </div>
         
         <div class="span9">
-            <g:if test="${!item.origin?.toString().isEmpty() || !viewerUri?.isEmpty()}">
+            <g:if test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
-                  <g:if test="${!item.origin?.toString().isEmpty()}">
-                          <a target="_blank" class="show-origin" href="${item.origin.a}" title="<g:message code="ddbnext.stat_008" />">
+                  <g:if test="${!originUrl?.toString()?.isEmpty()}">
+                          <a target="_blank" class="show-origin" href="${originUrl}" title="<g:message code="ddbnext.stat_008" />">
                           <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
                           </a>
                   </g:if>
