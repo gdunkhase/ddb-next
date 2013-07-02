@@ -13,8 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.FavoritesService"%>
-<%@page import="de.ddb.next.beans.User"%>
 <div class="row item-detail">
   <div class="span12 institution">
     <div class="row">
@@ -60,7 +58,7 @@ limitations under the License.
                 </g:isNotLoggedIn>
               -->
                 <g:isLoggedIn>
-                
+                <%--
                     <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
                         <g:link controller="item" action="changeItemState" params="${params + [reqActn:'delete']}" class="favorite-actions favorite-selected">
                             <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
@@ -75,8 +73,12 @@ limitations under the License.
                             </span>
                         </g:link>
                     </g:else>
-                    
-                    
+                --%>
+                  <g:link controller="item" action="changeItemState" params="${params + [reqActn:'add']}" class="favorite-actions favorite-add">
+                    <span data-itemid="${itemId}" data-actn="POST" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
+                      <g:message code="ddbnext.favorit" />
+                    </span>
+                  </g:link>
                 </g:isLoggedIn>
             </div>
         </div>
