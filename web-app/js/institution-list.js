@@ -438,7 +438,9 @@
       maxHeight: false,
       buttonText: function(options) {
         if (options.length === 0) {
-          return 'None selected <b class="caret"></b>';
+          var thanks = messages.ddbnext.Tnx;
+          console.log('thanks: ' + thanks);
+          return messages.ddbnext.Tnx + 'None selected <b class="caret"></b>';
         } else if (options.length > 4) {
           return options.length + ' selected <b class="caret"></b>';
         } else {

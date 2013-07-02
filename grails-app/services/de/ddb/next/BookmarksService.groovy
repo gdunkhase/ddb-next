@@ -228,8 +228,8 @@ class BookmarksService {
             favoriteFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
             log.info "New Favorites Folder is created: ${favoriteFolderId}"
         } else {
-            assert favoritesFolder.folderId != null: 'no folder id'
-            favoriteFolderId  = favoritesFolder.folderId
+            assert favoritesFolder[0].folderId != null: 'no folder id'
+            favoriteFolderId  = favoritesFolder[0].folderId
         }
 
         // add a new bookmark to this folder.

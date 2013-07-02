@@ -15,14 +15,14 @@
  */
 package de.ddb.next
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+import com.sun.org.apache.bcel.internal.generic.RETURN
 
-import de.ddb.next.beans.User;
+import de.ddb.next.beans.User
 
-import org.springframework.context.NoSuchMessageException;
-import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.context.NoSuchMessageException
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.exception.ItemNotFoundException
 
@@ -36,6 +36,8 @@ class ItemController {
     def searchService
     def grailsLinkGenerator
     def configurationService
+
+    def bookmarksService
     def messageSource
 
     def findById() {
@@ -215,34 +217,34 @@ class ItemController {
     }
 
     def changeItemState() {
-        def itemId = params.id;
-        def reqType = params.reqType;
-        def reqActn = params.reqActn;
-        int favStatus = 0;
-        println "################## itemdId = " + itemId;
-        println "################## reqType = " + reqType;
-        println "################## reqActn = " + reqActn;
+        def itemId = params.id
+        def reqType = params.reqType
+        def reqActn = params.reqActn
+        int favStatus = 0
+        println "################## itemdId = " + itemId
+        println "################## reqType = " + reqType
+        println "################## reqActn = " + reqActn
         HttpSession sessionObject = request.getSession(false)
-        User vUser = null;
+        User vUser = null
         if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
-            log.info("Favorite: change itemState User-Email: " + vUser.getEmail() + ", item: " + itemId);
-            FavoritesService vFavService = FavoritesService.getFevoritesService();
+            log.info("Favorite: change itemState User-Email: " + vUser.getEmail() + ", item: " + itemId)
+            FavoritesService vFavService = FavoritesService.getFevoritesService()
             if ((vFavService != null)) {
                 if (vFavService.isFavorit(vUser.getEmail(), itemId)) {
-                    log.info("delete from favorits list: ${itemId}");
+                    log.info("delete from favorits list: ${itemId}")
                     if (vFavService.deleteFromFavoritesList(vUser.getEmail(), itemId)) {
-                        favStatus = 1;
+                        favStatus = 1
                     }
                 }
                 else {
-                    log.info("add to favorits: ${itemId}");
+                    log.info("add to favorits: ${itemId}")
                     if (vFavService.addToFavorites(vUser.getEmail(), itemId)) {
-                        favStatus = 2;
+                        favStatus = 2
                     }
                 }
             }
             else {
-                log.error("Favorites-Services not found");
+                log.error("Favorites-Services not found")
             }
         }
 
@@ -254,7 +256,7 @@ class ItemController {
         else {
             println "################## render - AJAX-AJAX-AJAX"
             //def jsonResp = apiResponse.getResponse()
-            def jsonResp = '{"favStatus":"' + favStatus + '"}';
+            def jsonResp = '{"favStatus":"' + favStatus + '"}'
             render(contentType:"application/json", text: jsonResp)
         }
         println "################## render - STOP"
@@ -289,8 +291,8 @@ class ItemController {
                 url = item.item.license["@url"].toString()
             }
             if(img){
-                img = img.replaceAll("'", "");
-                img = img.replaceAll("\"", "");
+                img = img.replaceAll("'", "")
+                img = img.replaceAll("\"", "")
             }
             if(!img || img?.isEmpty()){
                 img = null
