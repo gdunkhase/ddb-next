@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import java.lang.reflect.Array;
+
 import javax.servlet.http.HttpSession;
 
 import com.sun.org.apache.bcel.internal.generic.RETURN;
@@ -37,6 +39,37 @@ class ItemController {
     def grailsLinkGenerator
     def configurationService
     def messageSource
+    def bookmarksService;
+
+    private def getUserFromSession() {
+        def result
+        def HttpSession session = request.getSession(false)
+        if (session != null) {
+            result = session.getAttribute(User.SESSION_USER)
+        }
+        return result
+    }
+    
+    private def isFavorite(pId) {
+        def vResult = null;
+        def User user = getUserFromSession()
+        if (user != null) {
+            def favorites = bookmarksService.findFavoritesByItemIds(user.getId(), [pId])
+            //def favorites = bookmarksService.findFavoritesByUserId(user.getId(), pId)
+            log.info "isFavorite findFavoritesByUserId(${user.getId()}, ${pId}): favorites = " + favorites;
+            if (favorites && (favorites.size() > 0)) {
+                vResult = response.SC_FOUND;
+            }
+            else {
+                vResult = response.SC_NOT_FOUND;
+            }
+        }
+        else {
+            vResult = response.SC_UNAUTHORIZED
+        }
+        log.info "isFavorite ${pId} returns: " + vResult
+        return vResult;
+    }
 
     def findById() {
         try {
@@ -49,6 +82,8 @@ class ItemController {
                 throw new ItemNotFoundException()
             }
 
+            def isFavorite = isFavorite(id);
+            
             def binaryList = itemService.findBinariesById(id)
             def binariesCounter = itemService.binariesCounter(binaryList)
 
@@ -86,7 +121,9 @@ class ItemController {
                         'title': item.title, item: item.item, itemId: id, institution : item.institution, institutionImage: item.institutionImage, originUrl: item.originUrl, fields: fields,
                         binaryList: binaryList, pageLabel: item.pageLabel,
                         firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation])
+                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation
+                        , "isFavorite":isFavorite
+                        ])
 
                 }
             }

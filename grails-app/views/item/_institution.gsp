@@ -58,8 +58,7 @@ limitations under the License.
                 </g:isNotLoggedIn>
               -->
                 <g:isLoggedIn>
-                <%--
-                    <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
+                    <g:if test="${(isFavorite == 302) }">
                         <g:link controller="item" action="changeItemState" params="${params + [reqActn:'delete']}" class="favorite-actions favorite-selected">
                             <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
                                 <g:message code="ddbnext.favorit" />
@@ -73,12 +72,14 @@ limitations under the License.
                             </span>
                         </g:link>
                     </g:else>
-                --%>
+                
+                <%--
                   <g:link controller="item" action="changeItemState" params="${params + [reqActn:'add']}" class="favorite-actions favorite-add">
                     <span data-itemid="${itemId}" data-actn="POST" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
                       <g:message code="ddbnext.favorit" />
                     </span>
                   </g:link>
+                   --%>
                 </g:isLoggedIn>
             </div>
         </div>
