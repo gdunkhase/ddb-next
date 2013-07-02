@@ -15,130 +15,114 @@
  */
 package de.ddb.next
 
-import javax.servlet.http.HttpSession;
+import de.ddb.next.beans.User
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+import grails.converters.JSON
 
-import de.ddb.next.beans.User;
-
-import de.ddb.next.exception.ItemNotFoundException
+import javax.servlet.http.HttpSession
 
 class FavoritesController {
 
+    def bookmarksService
+
     def getFavorite() {
-        log.info("FavoritesController: isFavorite");
-        int statusCode = response.SC_NOT_FOUND;
-        String statusTxt = null;
-        def itemId = params.id;
-        HttpSession sessionObject = request.getSession(false)
-        User vUser = null;
-        if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
-            log.info("isFavorite: User: " + vUser.getEmail() + ", itemid: " + itemId);
-            FavoritesService vFavService = FavoritesService.getFevoritesService();
-            if ((vFavService != null)) {
-                if (vFavService.isFavorit(vUser.getEmail(), itemId)) {
-                    statusTxt = "isFavorit(${vUser.getEmail()}, ${itemId}):${response.SC_OK}";
-                    statusCode = response.SC_OK;
+        log.info "getFavorite " + params.id
+        def result = response.SC_NOT_FOUND
+        def HttpSession session = request.getSession(false)
+        if (session != null) {
+            def User user = session.getAttribute(User.SESSION_USER)
+            if (user != null) {
+                // TODO use UID instead of email
+                def folderId = bookmarksService.findFoldersByTitle(user.getEmail(), BookmarksService.FAVORITES)
+
+                if(folderId) {
+                    // TODO use UID instead of email
+                    def bookmarks = bookmarksService.findBookmarksByFolderId(user.getEmail(), folderId)
+
+                    if (bookmarks && bookmarks.contains(itemId)) {
+                        result = response.SC_OK
+                    }
                 }
-                else {
-                    statusTxt = "isFavorit(${vUser.getEmail()}, ${itemId}):${response.SC_NOT_FOUND}";
-                    statusCode = response.SC_NOT_FOUND;
-                }
-                log.info(statusTxt);
             }
             else {
-                statusTxt = "Favorites-Service not found";
-                statusCode = response.SC_INTERNAL_SERVER_ERROR;
-                log.error(statusTxt);
+                result = response.SC_UNAUTHORIZED
             }
         }
         else {
-            statusTxt = "UNAUTHORIZED";
-            statusCode = response.SC_UNAUTHORIZED;
-            //response.status = response.SC_UNAUTHORIZED;
-            log.error(statusTxt);
+            result = response.SC_UNAUTHORIZED
         }
-        //response.flushBuffer();
-        render(status: statusCode, text: statusTxt);
+        log.info "getFavorite returns " + result
+        render(result)
     }
-    
-    
+
+    def getFavorites() {
+        log.info "getFavorites " + request.JSON
+        def HttpSession session = request.getSession(false)
+        if (session != null) {
+            def User user = session.getAttribute(User.SESSION_USER)
+            if (user != null) {
+                // TODO use UID instead of email
+                def result = bookmarksService.findBookmarkedItems(user.getEmail(), request.JSON)
+                log.info "getFavorites returns " + result
+                render result as JSON
+            }
+            else {
+                log.info "getFavorites returns " + response.SC_UNAUTHORIZED
+                render(response.SC_UNAUTHORIZED)
+            }
+        }
+        else {
+            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
+            render(response.SC_UNAUTHORIZED)
+        }
+    }
+
     def addFavorite() {
-        log.info("FavoritesController: addFavorite");
-        int statusCode = response.SC_BAD_REQUEST;
-        String statusTxt = "";
-        def itemId = params.id;
-        HttpSession sessionObject = request.getSession(false)
-        User vUser = null;
-        if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
-            log.info("addFavorite: User: " + vUser.getEmail() + ", itemid: " + itemId);
-            FavoritesService vFavService = FavoritesService.getFevoritesService();
-            if ((vFavService != null)) {
-                if (vFavService.addToFavorites(vUser.getEmail(), itemId)) {
-                    statusTxt = "add to favorits ${itemId} : ${response.SC_CREATED}";
-                    statusCode = response.SC_CREATED;
+        log.info "addFavorite " + params.id
+        def result = response.SC_BAD_REQUEST
+        def HttpSession session = request.getSession(false)
+        if (session != null) {
+            def User user = session.getAttribute(User.SESSION_USER)
+            if (user != null) {
+                // TODO use UID instead of email
+                if (bookmarksService.addFavorite(user.getEmail(), params.id)) {
+                    result = response.SC_CREATED
                 }
-                else {
-                    statusTxt = "add to favorits ${itemId} : ${response.SC_BAD_REQUEST}";
-                    statusCode = response.SC_BAD_REQUEST;
-                }
-                log.info(statusTxt);
             }
             else {
-                statusTxt = "Favorites-Service not found";
-                statusCode = response.SC_INTERNAL_SERVER_ERROR;
-                log.error(statusTxt);
+                result = response.SC_UNAUTHORIZED
             }
         }
         else {
-            statusTxt = "UNAUTHORIZED";
-            statusCode = response.SC_UNAUTHORIZED;
-            //response.status = response.SC_UNAUTHORIZED;
-            log.error(statusTxt);
+            result = response.SC_UNAUTHORIZED
         }
-        //response.flushBuffer();
-        render(status: statusCode, text: statusTxt);
+        log.info "addFavorite returns " + result
+        render(result)
     }
-    
-    
+
     def delFavorite() {
-        log.info("FavoritesController: delFavorite");
-        int statusCode = response.SC_NOT_FOUND;
-        String statusTxt = "";
-        def itemId = params.id;
-        HttpSession sessionObject = request.getSession(false)
-        User vUser = null;
-        if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
-            log.info("delFavorite: User: " + vUser.getEmail() + ", itemid: " + itemId);
-            FavoritesService vFavService = FavoritesService.getFevoritesService();
-            if ((vFavService != null)) {
-                if (vFavService.deleteFromFavoritesList(vUser.getEmail(), itemId)) {
-                    statusTxt = "delete from favorits ${itemId} : ${response.SC_NO_CONTENT}";
-                    statusCode = response.SC_NO_CONTENT;
+        log.info "delFavorite " + params.id
+        def result = response.SC_NOT_FOUND
+        def HttpSession session = request.getSession(false)
+        if (session != null) {
+            def User user = session.getAttribute(User.SESSION_USER)
+            if (user != null) {
+                // TODO use UID instead of email
+                if (bookmarksService.deleteBookmarks(user.getEmail(), [params.id])) {
+                    result = response.SC_OK
                 }
-                else {
-                    statusTxt = "delete from favorits ${itemId} : ${response.SC_NOT_FOUND}";
-                    statusCode = response.SC_NOT_FOUND;
-                }
-                log.info(statusTxt);
             }
             else {
-                statusTxt = "Favorites-Service not found";
-                statusCode = response.SC_INTERNAL_SERVER_ERROR;
-                log.error(statusTxt);
+                result = response.SC_UNAUTHORIZED
             }
         }
         else {
-            statusTxt = "UNAUTHORIZED";
-            statusCode = response.SC_UNAUTHORIZED;
-            //response.status = response.SC_UNAUTHORIZED;
-            log.error(statusTxt);
+            result = response.SC_UNAUTHORIZED
         }
-        //response.flushBuffer();
-        render(status: statusCode, text: statusTxt);
+        log.info "delFavorite returns " + result
+        render(result)
     }
-    
-    
+
     def changeItemState() {
         def itemId = params.id;
         def reqType = params.reqType;
@@ -165,6 +149,4 @@ class FavoritesController {
             }
         }
     }
-    
-    
 }

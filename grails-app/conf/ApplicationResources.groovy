@@ -65,6 +65,7 @@ modules = {
         resource url:'/js/vendor/bootstrap.js'
         resource url:'/js/vendor/bootstrap-collapse.js'
         resource url:'/js/vendor/bootstrap-button.js'
+        resource url:'/js/vendor/bootstrap-modal.js'
         resource url:'/js/vendor/bootstrap-multiselect.js'
         resource url:'/js/vendor/jquery.validate.min.js'
         resource url:'/js/vendor/respond.src.js'
