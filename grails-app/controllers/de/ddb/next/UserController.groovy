@@ -228,8 +228,11 @@ class UserController {
                 //adapt user-attributes in session
                 user.setPassword(params.newpassword)
                 sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+                render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
             }
-            render(view: "changepassword", model: [user: user, errors: errors, messages: messages, oldpassword: params.oldpassword, newpassword: params.newpassword, confnewpassword: params.confnewpassword])
+            else {
+                render(view: "changepassword", model: [user: user, errors: errors, messages: messages, oldpassword: params.oldpassword, newpassword: params.newpassword, confnewpassword: params.confnewpassword])
+            }
         }
         else{
             redirect(controller:"index")
