@@ -42,7 +42,10 @@ class SearchController {
             apiResponse.throwException(request)
         }
         def resultsItems = apiResponse.getResponse()
-
+        
+        resultsItems.results.docs.each{
+            println "\""+it.id+"\",";
+        }
         if(resultsItems["randomSeed"]){
             urlQuery["randomSeed"] = resultsItems["randomSeed"]
             firstLastQuery["sort"] = resultsItems["randomSeed"]

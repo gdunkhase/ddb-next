@@ -28,7 +28,7 @@ limitations under the License.
     </g:if>
     <li class="item bt">
       <div class="summary row">
-        <div class="summary-main-wrapper span5">
+        <div class="summary-main-wrapper span5" id="slaves">
           <input type="checkbox" name="${index++}" class="remove-item-check">
           <div class="summary-main">
             <h2 class="title">

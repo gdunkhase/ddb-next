@@ -271,7 +271,7 @@ class ApiConsumer {
     private static def build200Response(timestampStart, calledUrl, method, content, responseHeader, responseObject){
         def duration = System.currentTimeMillis()-timestampStart
         def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, null, ApiResponse.HttpStatus.HTTP_200, responseHeader)
-        log.info response.toString()
+        //log.info response.toString()
         return response
     }
 
@@ -289,7 +289,7 @@ class ApiConsumer {
         def duration = System.currentTimeMillis()-timestampStart
         AuthorizationException exception = new AuthorizationException(exceptionDescription)
         def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_401, responseHeader)
-        log.info response.toString()
+        //log.info response.toString()
         return response
     }
 
@@ -307,7 +307,7 @@ class ApiConsumer {
         def duration = System.currentTimeMillis()-timestampStart
         ItemNotFoundException exception = new ItemNotFoundException(exceptionDescription)
         def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_404, responseHeader)
-        log.info response.toString()
+        //log.info response.toString()
         return response
     }
 
@@ -325,7 +325,7 @@ class ApiConsumer {
         def duration = System.currentTimeMillis()-timestampStart
         BackendErrorException exception = new BackendErrorException(exceptionDescription)
         def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500, responseHeader)
-        log.info response.toString()
+        //log.info response.toString()
         return response
     }
 
@@ -341,7 +341,7 @@ class ApiConsumer {
     private static def build500ResponseWithException(timestampStart, calledUrl, method, content, exception){
         def duration = System.currentTimeMillis()-timestampStart
         def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500, [:])
-        log.info response.toString()
+        //log.info response.toString()
         return response
     }
 
