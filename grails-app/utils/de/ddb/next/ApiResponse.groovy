@@ -26,7 +26,7 @@ class ApiResponse {
     public final static String REQUEST_ATTRIBUTE_APIRESPONSE = "REQUEST_ATTRIBUTE_APIRESPONSE"
 
     public static enum HttpStatus {
-        HTTP_200, HTTP_401, HTTP_404, HTTP_500
+        HTTP_200, HTTP_401, HTTP_404, HTTP_409, HTTP_500
     }
 
     def calledUrl

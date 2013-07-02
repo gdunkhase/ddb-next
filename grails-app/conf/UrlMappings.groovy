@@ -64,11 +64,17 @@ class UrlMappings {
             controller="item"
             action="changeItemState"
         }
-        
-        "/api/favorites/$id" (controller: "favorites", parseRequest: true) {
+
+        "/apis/favorites/_get" {
+            controller="favorites"
+            action=[POST: "getFavorites"]
+        }
+
+        "/apis/favorites/$id" {
+            controller="favorites"
             action=[GET: "getFavorite", POST: "addFavorite", DELETE: "delFavorite"]
         }
-        
+
         "/about-us/institutions" {
             controller="institution"
             action="show"
@@ -104,9 +110,34 @@ class UrlMappings {
             action="staticFiles"
         }
 
+        "/user/registration" {
+            controller="user"
+            action="registration"
+        }
+        
+        "/user/resetPassword" {
+            controller="user"
+            action="passwordResetPage"
+        }
+
         "/user/profile" {
             controller="user"
             action="profile"
+        }
+
+        "/user/favorites" {
+            controller="user"
+            action="favorites"
+        }
+
+        "/user/confirm/$id/$token" {
+            controller="user"
+            action="confirm"
+        }
+
+        "/user/changePassword" {
+            controller="user"
+            action="passwordChangePage"
         }
         "/user/delete" {
             controller="user"
@@ -137,32 +168,6 @@ class UrlMappings {
             controller="user"
             action="doOpenIdLogin"
         }
-
-        "/registration" {
-            controller="user"
-            action="registration"
-        }
-        
-        "/favorites" {
-            controller="user"
-            action="favorites"
-        }
-
-        "/recovery" {
-            controller="user"
-            action="recoverPassword"
-        }
-
-        "/profile" {
-            controller="user"
-            action="profile"
-        }
-
-        "/favorites" {
-            controller="user"
-            action="favorites"
-        }
-
 
         "404"(controller: "error", action: "notFound")
         "401"(controller: "error", action: "auth")

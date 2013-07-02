@@ -66,6 +66,16 @@ class SessionTagLib {
         }
     }
 
+    def getUserLabel = { attrs, body ->
+        def isLoggedIn = isUserInSession()
+
+        if(isLoggedIn){
+            out << sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)?.getFirstnameAndLastnameOrNickname()
+        }else{
+            out << ""
+        }
+    }
+
     /**
      * Redirects the page to a defined endpoint when the user is not logged in
      */

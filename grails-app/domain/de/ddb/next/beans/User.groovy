@@ -15,38 +15,61 @@
  */
 package de.ddb.next.beans
 
-class User {
+import org.apache.commons.lang.StringUtils
+
+class User implements Cloneable {
 
     public final static String SESSION_USER = "SESSION_USER_ATTRIBUTE"
 
+    String id
     String username
+    String status
     String firstname
     String lastname
     String email
     String password
     boolean openIdUser
+    boolean newsletterSubscribed
 
     // TODO: why do we need to declare a default constructor?
     User(){
     }
 
     public String toString() {
-        return "User[username="+username+", email="+email+", openIdUser="+openIdUser+"]"
+        return "User[id="+id+", username="+username+", firstname="+firstname+", lastname="+lastname+", email="+email+", openIdUser="+openIdUser+"]"
     }
 
     // Utility method to get first name and last name if present or username if not
     public String getFirstnameAndLastnameOrNickname() {
-      if (firstname || lastname) {
-        if (!lastname) {
-          return firstname
-        } else if (!firstname) {
-            return lastname
+        if (firstname || lastname) {
+            if (!lastname) {
+                return firstname
+            } else if (!firstname) {
+                return lastname
+            } else {
+                return firstname+" "+lastname
+            }
         } else {
-            return firstname+" "+lastname
+            return username
         }
-      } else {
-        return username
-      }
     }
 
+    // Utility method to check if attributes are consistent
+    public boolean isConsistent() {
+        if (StringUtils.isBlank(id) || StringUtils.isBlank(username) || StringUtils.isBlank(email)) {
+            return false
+        }
+        if (!openIdUser) {
+            //additional attributes for non-openid users
+            if (StringUtils.isBlank(password)) {
+                return false
+            }
+        }
+        return true
+    }
+    
+   public Object clone() throws CloneNotSupportedException {
+     Object result = super.clone()
+     return result
+   }
 }

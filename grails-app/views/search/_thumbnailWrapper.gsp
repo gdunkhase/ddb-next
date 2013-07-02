@@ -30,4 +30,16 @@ limitations under the License.
       </ul>
     </div>
   </div>
+  <g:isLoggedIn>
+    <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>">
+    </div>
+    <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-body">
+        <p><g:message code="ddbnext.Added_To_Favorites"/></p>
+      </div>
+      <div class="modal-footer">
+        <button id="modal-btn-ok" class="btn" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </g:isLoggedIn>
 </div>

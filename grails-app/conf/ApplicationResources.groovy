@@ -65,6 +65,7 @@ modules = {
         resource url:'/js/vendor/bootstrap.js'
         resource url:'/js/vendor/bootstrap-collapse.js'
         resource url:'/js/vendor/bootstrap-button.js'
+        resource url:'/js/vendor/bootstrap-modal.js'
         resource url:'/js/vendor/bootstrap-multiselect.js'
         resource url:'/js/vendor/jquery.validate.min.js'
         resource url:'/js/vendor/respond.src.js'
@@ -87,6 +88,8 @@ modules = {
         resource url:'/js/favorites.js'
         resource url:'/js/registration.js'
         resource url:'/js/changeFavorite.js'
+        resource url:'/js/profile.js'
+        resource url:'/js/passwordchange.js'
         resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
     }

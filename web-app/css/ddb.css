@@ -1354,3 +1354,17 @@ select {
   margin: 3px 5px 0 0;
 }
 /* errors - end */
+
+/* messages */
+.messages-container {
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: green 1px solid;
+}
+.messages-container ul {
+  margin:0;
+}
+.messages-container i {
+  margin: 3px 5px 0 0;
+}
+/* messages - end */

@@ -16,7 +16,8 @@
 
 package de.ddb.next
 
-import de.ddb.next.exception.ConfigurationException
+import de.ddb.next.exception.ConfigurationException;
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 /**
  * Service for accessing the configuration.
@@ -115,6 +116,33 @@ class ConfigurationService {
             throw new ConfigurationException("getBookmarkUrl(): ddb.bookmark.url is not a String")
         }
         return url
+    }
+
+    public String getSelfBaseUrl(){
+        def baseUrl = grailsApplication.config.ddb?.self?.base?.url
+        if(!baseUrl){
+            throw new ConfigurationException("getPasswordResetLink(): Configuration entry does not exist -> ddb.self.base.url")
+        }
+        if(!(baseUrl instanceof String)){
+            throw new ConfigurationException("getPasswordResetLink(): ddb.self.base.url is not a String")
+        }
+        return baseUrl
+    }
+
+    public String getConfirmBase(){
+        return getSelfBaseUrl() + ServletContextHolder.servletContext.contextPath + "/user/confirm/|id|/|confirmationToken|"
+    }
+
+    public String getPasswordResetConfirmationLink(){
+        return getConfirmBase() + "?type=passwordreset"
+    }
+
+    public String getEmailUpdateConfirmationLink(){
+        return getConfirmBase() + "?type=emailupdate"
+    }
+
+    public String getCreateConfirmationLink(){
+        return getConfirmBase() + "?type=create"
     }
 
     public List getFacetsFilter(){
