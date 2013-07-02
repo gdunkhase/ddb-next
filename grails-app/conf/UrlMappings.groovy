@@ -64,11 +64,17 @@ class UrlMappings {
             controller="item"
             action="changeItemState"
         }
-        
-        "/api/favorites/$id" (controller: "favorites", parseRequest: true) {
+
+        "/apis/favorites/_get" {
+            controller="favorites"
+            action=[POST: "getFavorites"]
+        }
+
+        "/apis/favorites/$id" {
+            controller="favorites"
             action=[GET: "getFavorite", POST: "addFavorite", DELETE: "delFavorite"]
         }
-        
+
         "/about-us/institutions" {
             controller="institution"
             action="show"
