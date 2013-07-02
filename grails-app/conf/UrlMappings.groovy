@@ -59,15 +59,20 @@ class UrlMappings {
             controller="item"
             action="findById"
         }
-        
-        "/item/$id/changeItemState" {
-            controller="item"
-            action="changeItemState"
+
+        "/apis/favorites/" {
+            controller="favorites"
+            action="getFavorites"
+        }
+
+        "/apis/favorites/_delete" {
+            controller="favorites"
+            action=[POST: "deleteFavorites"]
         }
 
         "/apis/favorites/_get" {
             controller="favorites"
-            action=[POST: "getFavorites"]
+            action=[POST: "filterFavorites"]
         }
 
         "/apis/favorites/$id" {
