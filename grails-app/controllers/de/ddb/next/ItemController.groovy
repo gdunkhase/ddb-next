@@ -214,53 +214,6 @@ class ItemController {
         return searchResultParameters
     }
 
-    def changeItemState() {
-        def itemId = params.id;
-        def reqType = params.reqType;
-        def reqActn = params.reqActn;
-        int favStatus = 0;
-        println "################## itemdId = " + itemId;
-        println "################## reqType = " + reqType;
-        println "################## reqActn = " + reqActn;
-        HttpSession sessionObject = request.getSession(false)
-        User vUser = null;
-        if ((sessionObject != null) && ((vUser = sessionObject.getAttribute(User.SESSION_USER)) != null)) {
-            log.info("Favorite: change itemState User-Email: " + vUser.getEmail() + ", item: " + itemId);
-            FavoritesService vFavService = FavoritesService.getFevoritesService();
-            if ((vFavService != null)) {
-                if (vFavService.isFavorit(vUser.getEmail(), itemId)) {
-                    log.info("delete from favorits list: ${itemId}");
-                    if (vFavService.deleteFromFavoritesList(vUser.getEmail(), itemId)) {
-                        favStatus = 1;
-                    }
-                }
-                else {
-                    log.info("add to favorits: ${itemId}");
-                    if (vFavService.addToFavorites(vUser.getEmail(), itemId)) {
-                        favStatus = 2;
-                    }
-                }
-            }
-            else {
-                log.error("Favorites-Services not found");
-            }
-        }
-
-        println "################## render - START"
-        //render (view: 'item', model: [id: itemId]);
-        if (reqType == null) {
-            findById()
-        }
-        else {
-            println "################## render - AJAX-AJAX-AJAX"
-            //def jsonResp = apiResponse.getResponse()
-            def jsonResp = '{"favStatus":"' + favStatus + '"}';
-            render(contentType:"application/json", text: jsonResp)
-        }
-        println "################## render - STOP"
-
-    }
-
     private def buildLicenseInformation(def item){
         def licenseInformation
 

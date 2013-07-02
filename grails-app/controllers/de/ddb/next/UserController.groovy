@@ -497,7 +497,7 @@ class UserController {
                 HttpSession newSession = sessionService.createNewSession()
 
                 User user = new User()
-                user.setId(identifier)
+                user.setId(identifier.encodeAsMD5())
                 user.setEmail(email)
                 user.setUsername(username)
                 user.setFirstname(firstName)
