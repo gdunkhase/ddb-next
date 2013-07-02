@@ -214,25 +214,7 @@ class BookmarksService {
     }
 
     def addFavorite(userId, itemId) {
-        // find a folder that belongs to the user with the title 'Favorites"
-        // BUT it returns for example Favorites-foobar as well.
-        def favoritesFolder = findFoldersByTitle(userId, FAVORITES)
-        assert favoritesFolder.size() <= 1 :"There must be max one folder with the title Favorites"
-
-        def favoriteFolderId
-
-        if(!favoritesFolder) {
-            /* The user does not have a 'Favorites' folder, create a folder with
-             * the title 'Favorites'
-             */
-            favoriteFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
-            log.info "New Favorites Folder is created: ${favoriteFolderId}"
-        } else {
-            assert favoritesFolder.folderId != null: 'no folder id'
-            favoriteFolderId  = favoritesFolder.folderId
-        }
-
-        // add a new bookmark to this folder.
+        def favoriteFolderId = getFavoritesFolderId(userId)
         def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId)
         log.info "Add a bookmark ${bookmarkId} in Favorites"
         return bookmarkId
@@ -275,23 +257,8 @@ class BookmarksService {
     }
 
     def findFavoritesByUserId(userId) {
-        // TODO: refactor this, dry
-        def favoritesFolder = findFoldersByTitle(userId, BookmarksService.FAVORITES)
-        assert favoritesFolder.size() <= 1 :"There must be max one folder with the title Favorites"
-
-        def favoriteFolderId
-        if(!favoritesFolder) {
-            /* The user does not have a 'Favorites' folder, create a folder with
-             * the title 'Favorites'
-             */
-            log.info "The user(${uderId}) does not have a 'Favorites' folder, the service is creating it."
-            favoriteFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
-            log.info "New Favorites Folder is created: ${favoriteFolderId}"
-        } else {
-            assert favoritesFolder.folderId != null: 'no folder id'
-            favoriteFolderId  = favoritesFolder.folderId
-        }
-        return findBookmarksByFolderId(userId, favoriteFolderId[0])
+        def favoriteFolderId = getFavoritesFolderId(userId)
+        return findBookmarksByFolderId(userId, favoriteFolderId)
     }
 
     def deleteFavorites(userId, itemIds) {
@@ -311,21 +278,7 @@ class BookmarksService {
     }
 
     def findFavoritesByItemIds(userId, itemIdList) {
-        // TODO: refactor this, dry
-        def favoritesFolder = findFoldersByTitle(userId, BookmarksService.FAVORITES)
-        //assert favoritesFolder.size() <= 1 :"There must be max one folder with the title Favorites"
-
-        def favoriteFolderId
-        if(!favoritesFolder) {
-            /* The user does not have a 'Favorites' folder, create a folder with
-             * the title 'Favorites'
-             */
-            log.info "The user(${uderId}) does not have a 'Favorites' folder, the service is creating it."
-            favoriteFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
-            log.info "New Favorites Folder is created: ${favoriteFolderId}"
-        } else {
-            favoriteFolderId  = favoritesFolder[0].folderId
-        }
+        def favoriteFolderId = getFavoritesFolderId(userId)
 
         log.info "fav: ${favoriteFolderId}"
 
@@ -352,6 +305,20 @@ class BookmarksService {
     }
 
     def getFavoritesFolderId(userId) {
+        def favoritesFolderList = findFoldersByTitle(userId, BookmarksService.FAVORITES)
+        //assert favoritesFolderList.size() <= 1 :"There must be max one folder with the title Favorites"
 
+        def favoritesFolderId
+        if(favoritesFolderList) {
+            favoritesFolderId  = favoritesFolderList[0].folderId
+        } else {
+            /* The user does not have a 'Favorites' folder, create a folder with
+             * the title 'Favorites'
+             */
+            log.info "The user(${userId}) does not have a 'Favorites' folder, the service is creating it."
+            favoritesFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
+            log.info "New Favorites Folder is created and has the ID: ${favoritesFolderId}"
+        }
+        favoritesFolderId
     }
 }
