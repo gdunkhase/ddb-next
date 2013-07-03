@@ -129,12 +129,16 @@ environments {
 }
 
 //DDB SPECIFIC Configuration variables
-//The variables can be overwritten by defining local configurations, see below environments
-ddb.binary.url="http://www.binary-p1.deutsche-digitale-bibliothek.de/binary/"
-ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
-ddb.apis.url="http://localhost:8080"
-ddb.backend.url="http://backend-p2.deutsche-digitale-bibliothek.de:9998"
-ddb.aas.url="http://whddbapp10.fiz-karlsruhe.de:8081"
+//The variables have to be overwritten by defining local configurations, see below environments
+ddb.self.base.url="http://localhost:8080"
+ddb.binary.url="http://localhost/binary/"
+ddb.static.url="http://localhost/static/"
+ddb.apis.url="http://localhost:8080/"
+ddb.backend.url="http://localhost/backend:9998/"
+ddb.aas.url="http://localhost/aas:8081/"
+ddb.culturegraph.url="http://hub.culturegraph.org"
+ddb.dnb.url="http://d-nb.info"
+ddb.bookmark.url="http://whvmescidev6.fiz-karlsruhe.de:9200"
 ddb.logging.folder="target/logs"
 ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
 ddb.advancedSearch.searchGroupCount=3
@@ -170,6 +174,9 @@ log4j = {
         production {
             root { info "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace" }
         }
+        test {
+            root {  info "console", "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace"  }
+        }
     }
 
     // This part can be used to filter out all loggings that are not interesting
@@ -185,10 +192,21 @@ log4j = {
                     "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
 
             error   "grails.util.GrailsUtil"                    // hide deprecated warnings on startup
-
         }
         production {
             //Don't filter messages in production
+        }
+        test {
+            warn    "org.codehaus.groovy.grails",               // only warnings or errors from grails
+                    "grails.plugin",                            // only warnings or errors from grails.plugins
+                    "org.grails.plugin",                        // only warnings or errors from plugins
+                    "org.springframework",                      // only warnings or errors from spring
+                    "net.jawr",                                 // only warnings or errors from jawr
+                    "org.apache.catalina.core",                 // only warnings or errors from catalina core
+                    "org.apache.coyote.http11.Http11Protocol",  // only warnings or errors from Http11Protocol
+                    "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
+
+            error   "grails.util.GrailsUtil"                    // hide deprecated warnings on startup
         }
     }
 

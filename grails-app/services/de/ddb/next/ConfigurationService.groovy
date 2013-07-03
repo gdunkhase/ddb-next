@@ -17,6 +17,7 @@
 package de.ddb.next
 
 import de.ddb.next.exception.ConfigurationException;
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 /**
  * Service for accessing the configuration.
@@ -35,7 +36,7 @@ class ConfigurationService {
             throw new ConfigurationException("getBinaryBackendUrl(): Configuration entry does not exist -> ddb.binary.backend.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getBinaryBackendUrl(): apd.binary.backend.url is not a String")
+            throw new ConfigurationException("getBinaryBackendUrl(): ddb.binary.backend.url is not a String")
         }
         return url
     }
@@ -46,7 +47,7 @@ class ConfigurationService {
             throw new ConfigurationException("getStaticUrl(): Configuration entry does not exist -> ddb.static.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getStaticUrl(): apd.static.url is not a String")
+            throw new ConfigurationException("getStaticUrl(): ddb.static.url is not a String")
         }
         return url
     }
@@ -57,7 +58,7 @@ class ConfigurationService {
             throw new ConfigurationException("getApisUrl(): Configuration entry does not exist -> ddb.apis.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getApisUrl(): apd.apis.url is not a String")
+            throw new ConfigurationException("getApisUrl(): ddb.apis.url is not a String")
         }
         return url
     }
@@ -68,7 +69,7 @@ class ConfigurationService {
             throw new ConfigurationException("getBackendUrl(): Configuration entry does not exist -> ddb.backend.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getBackendUrl(): apd.backend.url is not a String")
+            throw new ConfigurationException("getBackendUrl(): ddb.backend.url is not a String")
         }
         return url
     }
@@ -79,9 +80,69 @@ class ConfigurationService {
             throw new ConfigurationException("getAasUrl(): Configuration entry does not exist -> ddb.aas.url")
         }
         if(!(url instanceof String)){
-            throw new ConfigurationException("getAasUrl(): apd.backend.url is not a String")
+            throw new ConfigurationException("getAasUrl(): ddb.aas.url is not a String")
         }
         return url
+    }
+
+    public String getCulturegraphUrl(){
+        def url = grailsApplication.config.ddb?.culturegraph?.url
+        if(!url){
+            throw new ConfigurationException("getCulturegraphUrl(): Configuration entry does not exist -> ddb.culturegraph.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getCulturegraphUrl(): ddb.culturegraph.url is not a String")
+        }
+        return url
+    }
+
+    public String getDnbUrl(){
+        def url = grailsApplication.config.ddb?.dnb?.url
+        if(!url){
+            throw new ConfigurationException("getDnbUrl(): Configuration entry does not exist -> ddb.dnb.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getDnbUrl(): ddb.dnb.url is not a String")
+        }
+        return url
+    }
+
+    public String getBookmarkUrl(){
+        def url = grailsApplication.config.ddb?.bookmark?.url
+        if(!url){
+            throw new ConfigurationException("getBookmarkUrl(): Configuration entry does not exist -> ddb.bookmark.url ")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getBookmarkUrl(): ddb.bookmark.url is not a String")
+        }
+        return url
+    }
+
+    public String getSelfBaseUrl(){
+        def baseUrl = grailsApplication.config.ddb?.self?.base?.url
+        if(!baseUrl){
+            throw new ConfigurationException("getPasswordResetLink(): Configuration entry does not exist -> ddb.self.base.url")
+        }
+        if(!(baseUrl instanceof String)){
+            throw new ConfigurationException("getPasswordResetLink(): ddb.self.base.url is not a String")
+        }
+        return baseUrl
+    }
+
+    public String getConfirmBase(){
+        return getSelfBaseUrl() + ServletContextHolder.servletContext.contextPath + "/user/confirm/|id|/|confirmationToken|"
+    }
+
+    public String getPasswordResetConfirmationLink(){
+        return getConfirmBase() + "?type=passwordreset"
+    }
+
+    public String getEmailUpdateConfirmationLink(){
+        return getConfirmBase() + "?type=emailupdate"
+    }
+
+    public String getCreateConfirmationLink(){
+        return getConfirmBase() + "?type=create"
     }
 
     public List getFacetsFilter(){
@@ -100,7 +161,7 @@ class ConfigurationService {
         if(!filepath){
             throw new ConfigurationException("getPiwikTrackingFile(): Configuration entry does not exist -> ddb.tracking.piwikfile")
         }
-        filepath = new String(filepath.toString());
+        filepath = new String(filepath.toString())
         if(!(filepath instanceof String)){
             throw new ConfigurationException("getPiwikTrackingFile(): ddb.tracking.piwikfile is not a String")
         }
@@ -181,7 +242,7 @@ class ConfigurationService {
         }
 
         try {
-            searchGroupCount = Integer.parseInt(searchGroupCount);
+            searchGroupCount = Integer.parseInt(searchGroupCount)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchGroupCount(): ddb.advancedSearch.searchGroupCount is not
@@ -202,7 +263,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            searchFieldCount = Integer.parseInt(searchFieldCount);
+            searchFieldCount = Integer.parseInt(searchFieldCount)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchFieldCount(): ddb.advancedSearch.searchFieldCount is not
@@ -222,7 +283,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            offset = Integer.parseInt(offset);
+            offset = Integer.parseInt(offset)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchOffset(): ddb.advancedSearch.defaultOffset is not
@@ -242,7 +303,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            rows = Integer.parseInt(rows);
+            rows = Integer.parseInt(rows)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSearchRows(): ddb.advancedSearch.defaultRows is not
@@ -262,7 +323,7 @@ class ConfigurationService {
                 a String""")
         }
         try {
-            timeout = Integer.parseInt(timeout);
+            timeout = Integer.parseInt(timeout)
         }
         catch (NumberFormatException e) {
             throw new ConfigurationException("""getSessionTimeout(): ddb.session.timeout is not
@@ -277,6 +338,8 @@ class ConfigurationService {
         log.info "ddb.apis.url = " + getApisUrl()
         log.info "ddb.backend.url = " + getBackendUrl()
         log.info "ddb.aas.url = " + getAasUrl()
+        log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
+        log.info "ddb.dnb.url = " + getDnbUrl()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()
         log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
         log.info "grails.views.gsp.encoding = " + getEncoding()

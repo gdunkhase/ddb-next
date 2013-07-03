@@ -97,7 +97,7 @@ class I18NHelperTagLib {
             if(paramString.length() > 1){
                 paramString = paramString.substring(0, paramString.length()-1)
             }
-            out << "<a href=\""+linkUrl+paramString+"\" >"+body()+"</a>"
+            out << "<a href=\""+(linkUrl+paramString).encodeAsHTML()+"\" >"+body()+"</a>"
         }
     }
 }

@@ -23,6 +23,9 @@ import groovyx.net.http.Method
 
 import java.util.regex.Pattern
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.catalina.connector.ClientAbortException
 import org.apache.commons.io.IOUtils
 import org.apache.commons.logging.LogFactory
@@ -33,6 +36,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
+import de.ddb.next.exception.ConflictException
 import de.ddb.next.exception.ItemNotFoundException
 
 
@@ -237,13 +241,17 @@ class ApiConsumer {
                     }
                 }
                 response.'401' = { resp ->
-                    return build401Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 401 -> " + uri.toString())
+                    return build401Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 401 -> " + uri.toString() + " / " + resp.headers.'Error-Message')
                 }
                 response.'404' = { resp ->
-                    return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 404 -> " + uri.toString())
+                    return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 404 -> " + uri.toString() + " / " + resp.headers.'Error-Message')
+                }
+                response.'409' = { resp ->
+                    System.out.println(resp.statusLine.reasonPhrase)
+                    return build409Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 409 -> " + uri.toString() + " / " + resp.headers.'Error-Message')
                 }
                 response.failure = { resp ->
-                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 500 -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase)
+                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 500 -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase+"/"+resp.headers.'Error-Message')
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
@@ -307,7 +315,25 @@ class ApiConsumer {
         def duration = System.currentTimeMillis()-timestampStart
         ItemNotFoundException exception = new ItemNotFoundException(exceptionDescription)
         def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_404, responseHeader)
-        //log.info response.toString()
+        log.info response.toString()
+        return response
+    }
+
+    /**
+     * Utility method to build the ApiResponse object for 409 responses
+     * @param timestampStart The timestamp when the request was send
+     * @param calledUrl The complete URL that was called
+     * @param method The request method (Method.GET, Method.POST)
+     * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param responseHeader The headers of the response
+     * @param exceptionDescription The text for the ConflictException that will be attached but not thrown
+     * @return An ApiResponse object containing the response information
+     */
+    private static def build409Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription){
+        def duration = System.currentTimeMillis()-timestampStart
+        ConflictException exception = new ConflictException(exceptionDescription)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_409, responseHeader)
+        log.info response.toString()
         return response
     }
 
@@ -402,10 +428,13 @@ class ApiConsumer {
 
     static def setAuthHeader(http){
         try {
-            User user = WebUtils.retrieveGrailsWebRequest().getSession().getAttribute(User.SESSION_USER);
-            if (user != null) {
-                http.auth.basic user.username, user.password
-
+            HttpServletRequest request = WebUtils.retrieveGrailsWebRequest().getCurrentRequest()
+            HttpSession session = request.getSession(false)
+            if(session) {
+                User user = session.getAttribute(User.SESSION_USER);
+                if (user != null) {
+                    http.auth.basic user.id, user.password
+                }
             }
         } catch(Exception e) {
             log.error "setAuthHeader(): Could not get haeder-data from session"

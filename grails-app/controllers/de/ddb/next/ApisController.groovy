@@ -66,17 +66,8 @@ class ApisController {
             tmpResult["latitude"] = (it.latitude instanceof JSONNull)?"":it.latitude
             tmpResult["longitude"] = (it.longitude instanceof JSONNull)?"":it.longitude
             tmpResult["category"] = (it.category instanceof JSONNull)?"":it.category
-
-            def properties = [:]
-
             tmpResult["preview"] = [title:title, subtitle: subtitle, media: media, thumbnail: thumbnail]
-            tmpResult["properties"] = properties
             docs.add(tmpResult)
-        }
-        if(jsonResp.results["docs"].get(0).size()>0){
-            apisService.fetchItemsProperties(jsonResp.results["docs"].get(0)).eachWithIndex() { obj, i ->
-                docs[i].properties = obj
-            }
         }
         resultList["facets"] = jsonResp.facets
         resultList["highlightedTerms"] = jsonResp.highlightedTerms

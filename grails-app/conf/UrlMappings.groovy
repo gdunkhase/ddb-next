@@ -19,7 +19,7 @@ class UrlMappings {
         //@formatter:off
         "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
         //@formatter:on
-
+        
         "/searchresults/$q?" {
             controller="search"
             action="results"
@@ -28,6 +28,11 @@ class UrlMappings {
         "/facets/$q?" {
             controller="facets"
             action="facetsList"
+        }
+        
+        "/informationitem/$id"{
+            controller="search"
+            action="informationItem"
         }
 
         "/content/$dir/$id?" {
@@ -54,7 +59,16 @@ class UrlMappings {
             controller="item"
             action="findById"
         }
-
+        
+        "/item/$id/changeItemState" {
+            controller="item"
+            action="changeItemState"
+        }
+        
+        "/api/favorites/$id" (controller: "favorites", parseRequest: true) {
+            action=[GET: "getFavorite", POST: "addFavorite", DELETE: "delFavorite"]
+        }
+        
         "/about-us/institutions" {
             controller="institution"
             action="show"
@@ -72,7 +86,12 @@ class UrlMappings {
 
         "/entity/$id" {
             controller="entity"
-            action="show"
+            action="index"
+        }
+
+        "/entity/ajax/searchresults" {
+            controller="entity"
+            action="getAjaxSearchResultsAsJson"
         }
 
         "/binary/$filename**" {
@@ -85,9 +104,34 @@ class UrlMappings {
             action="staticFiles"
         }
 
+        "/user/registration" {
+            controller="user"
+            action="registration"
+        }
+        
+        "/user/resetPassword" {
+            controller="user"
+            action="passwordResetPage"
+        }
+
         "/user/profile" {
             controller="user"
             action="profile"
+        }
+
+        "/user/favorites" {
+            controller="user"
+            action="favorites"
+        }
+
+        "/user/confirm/$id/$token" {
+            controller="user"
+            action="confirm"
+        }
+
+        "/user/changePassword" {
+            controller="user"
+            action="passwordChangePage"
         }
         "/user/delete" {
             controller="user"
@@ -117,31 +161,6 @@ class UrlMappings {
         "/login/doOpenIdLogin" {
             controller="user"
             action="doOpenIdLogin"
-        }
-
-        "/registration" {
-            controller="user"
-            action="registration"
-        }
-        
-        "/favorites" {
-            controller="user"
-            action="favorites"
-        }
-
-        "/recovery" {
-            controller="user"
-            action="recoverPassword"
-        }
-
-        "/profile" {
-            controller="user"
-            action="profile"
-        }
-
-        "/favorites" {
-            controller="user"
-            action="favorites"
         }
 
         "404"(controller: "error", action: "notFound")

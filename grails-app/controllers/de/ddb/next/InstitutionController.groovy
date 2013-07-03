@@ -26,7 +26,7 @@ import groovyx.net.http.Method
 class InstitutionController {
 
     private static final log = LogFactory.getLog(this)
-    
+
     def institutionService
     def configurationService
 
@@ -49,9 +49,7 @@ class InstitutionController {
 
         // TODO: move to service
         def index = []
-        institutionByFirstLetter.each {
-            index.add(it)
-        }
+        institutionByFirstLetter.each { index.add(it) }
 
         render (view: 'institutionList',  model: [index: index, all: all, total: allInstitution?.total])
     }
@@ -59,7 +57,8 @@ class InstitutionController {
     def getJson() {
         render institutionService.findAll() as JSON
     }
-        
+
+
     def showInstitutionsTreeByItemId() { // ToDo: rename to showInstitutionsTreeByItemId
         def id = params.id;
         def itemId = id;
@@ -68,6 +67,7 @@ class InstitutionController {
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
         def pageUrl = "http://www.deutsche-digitale-bibliothek.de"+request.forwardURI;
         if (selectedOrgXML) {
+            selectedOrgXML = selectedOrgXML["cortex-institution"] // fix for the changed xml-format in the new backend api
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
             if (jsonOrgParentHierarchy.size() == 1) {
@@ -87,17 +87,16 @@ class InstitutionController {
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {
                     countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
-                } 
+                }
                 catch (NumberFormatException ex) {
                     countObjectsForProv = -1;
                 }
             }
             render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl])
-        } 
-        else {
-           forward controller: 'error', action: "notFound"
         }
-        
-    }
+        else {
+            forward controller: 'error', action: "notFound"
+        }
 
+    }
 }
