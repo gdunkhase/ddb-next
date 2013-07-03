@@ -186,7 +186,7 @@ background-position: right -40px;
   }
 }
 
-@media (max-width: 489px) {
+@media (max-width: 480px) {
   .item-nav .result-label {
     display: none;
   }
