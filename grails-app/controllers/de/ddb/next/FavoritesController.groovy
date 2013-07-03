@@ -46,8 +46,8 @@ class FavoritesController {
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
-            if (bookmarksService.deleteBookmarks(user.getId(), [params.id])) {
-                result = response.SC_OK
+            if (bookmarksService.deleteFavorites(user.getId(), [params.id])) {
+                result = response.SC_NO_CONTENT
             }
         }
         else {

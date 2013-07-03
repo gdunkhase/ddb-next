@@ -16,7 +16,6 @@
 
   $("#idFavorite").parent().click(function(event) {
     event.preventDefault();
-    //alert( document.getElementById("idFavorite").getAttribute("itemid") );
     changeFavoriteState(this.href);
     return false;
     
@@ -24,19 +23,19 @@
   
   function changeFavoriteState(url) {
     var jElemFavorite = $("#idFavorite");
-    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqActn=add&reqType=ajax';
     var vActn = jElemFavorite.attr("data-actn");
+    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqType=ajax';
     var request = $.ajax({
-      type: jElemFavorite.attr("data-actn"),
+      type: vActn,
       dataType: 'json',
       async: true,
-      url: url,
+      url: url + (vActn=="DELETE" ? "&reqActn=del" : "&reqActn=add"),
       complete: function(data) {
         if (vActn=="POST") {
           addToFavorites(data);
         }
         else if (vActn=="DELETE") {
-          delToFavorites(data);
+          delFromFavorites(data);
         }
         else {
           alert("Method not found...");
@@ -52,7 +51,6 @@
       case 200: case 201:
         // -- success
         //var JSONresponse = jQuery.parseJSON(data.responseText);
-        //jElemFavorite.css("color","red");
         jElemFavorite.attr("data-actn", "DELETE");
         jElemFavorite.parent().removeClass("favorite-add");
         jElemFavorite.parent().addClass("favorite-selected");
@@ -74,14 +72,13 @@
     }
   }
   
-  function delToFavorites(data) {
+  function delFromFavorites(data) {
     //alert("delToFavorites: status = " + data.status);
     var jElemFavorite = $("#idFavorite");
     switch (data.status) {
       case 200: case 204:
         // -- success
         //var JSONresponse = jQuery.parseJSON(data.responseText);
-        //jElemFavorite.css("color","green");
         jElemFavorite.attr("data-actn", "POST");
         jElemFavorite.parent().removeClass("favorite-selected");
         jElemFavorite.parent().addClass("favorite-add");
