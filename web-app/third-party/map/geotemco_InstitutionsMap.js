@@ -9419,7 +9419,7 @@ function PlacenamePopup(parent) {
                        );
         };
 
-        var nb = countHolder.length; // >= elementInfos.length;
+        var nb = elementInfos.length; // <= countHolder.length;
         var instText = "";
         if (nb == 1) {
             instText = GeoTemConfig.getString('institution');
