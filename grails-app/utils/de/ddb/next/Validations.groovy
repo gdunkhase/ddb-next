@@ -107,6 +107,9 @@ public static validatorEmail(String email){
  * @return true or false (different or not)
  */
 public static isDifferent(String val1, String val2) {
+    if (StringUtils.isBlank(val1) && StringUtils.isBlank(val2)) {
+        return false
+    }
     if ((StringUtils.isBlank(val1) && !StringUtils.isBlank(val2))
     || (StringUtils.isBlank(val2) && !StringUtils.isBlank(val1))) {
         return true

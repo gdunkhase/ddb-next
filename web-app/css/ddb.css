@@ -598,7 +598,6 @@ header .header-spacer,.header .header-spacer {
   background-color: #EEEEEE !important;
 }
 
-
 header .selector,.header .selector {
   display: none;
   background-color: #fff;
@@ -818,7 +817,7 @@ header .language-widget form,.header .language-widget form {
   }
 }
 
-@media (max-width: 479px) {
+@media (max-width: 480px) {
   #form-search input {
     width: 80%;
   }
@@ -951,6 +950,14 @@ noscript .caption {
   }
 }
 
+@media (max-width: 767px) {
+  .carousel a.previous {
+    left: -12px;
+  }
+  .carousel a.next {
+    right: -20px;
+  }
+}
 /* carousel controls responsiveness - end */
 .carousel a.next:hover {
   background-position: 0 -200px;
@@ -1339,6 +1346,15 @@ select {
   top: -9px;
   background-color: #fff;
 }
+
+/* responsive genaral rules */
+@media (max-width: 767px) {
+  body {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+/* responsive genaral rules - end */
 /* genaral rules - end */
 
 /* errors */

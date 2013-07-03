@@ -24,7 +24,7 @@
   
   function changeFavoriteState(url) {
     var jElemFavorite = $("#idFavorite");
-    var url = jsContextPath + "/api/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqActn=add&reqType=ajax';
+    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqActn=add&reqType=ajax';
     var vActn = jElemFavorite.attr("data-actn");
     var request = $.ajax({
       type: jElemFavorite.attr("data-actn"),
@@ -106,8 +106,8 @@
   function changeFavorite(url) {
     //url = url + '&reqType=ajax';
     var jElemFavorite = $("#idFavorite");
-    //var url = jsContextPath + "/api/favorites/" + jElemFavorite.attr("data-itemid") + '/changeItemState?reqActn=add&reqType=ajax';
-    var url = jsContextPath + "/api/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqActn=add&reqType=ajax';
+    //var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/changeItemState?reqActn=add&reqType=ajax';
+    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqActn=add&reqType=ajax';
     //alert("url = " + url);
     //alert("Method: " + jElemFavorite.attr("data-actn"));
     var request = $.ajax({
