@@ -26,12 +26,14 @@
 }
 
 /* Removing unwanted elements */
-header, .header,
+
+header, .header, 
 footer, .footer,
 .facets-container, .results-paginator-options, .page-info-nav .page-nav, .results-paginator-view, .information, #print-nav,
 .object-controls, .origin, .slide-viewer .tabs, .sibling-count,
-#first-letter-index li:not(.active),
 .group-operator, .add-group-button,
+#first-letter-index li,
+.institutionlist .span3, .institutionlist .multiselect-container, .institutionlist #filter-title, .institutionlist .multiselect,
 #articles-prev, #articles-next, .link-adv-search, .contextual-help,
 #divOSM .sliderStyle-vertical, #divOSM .mapHome,
 #mapContainerDiv .sliderStyle-vertical, #mapContainerDiv .mapHome,
@@ -241,7 +243,7 @@ footer, .footer,
 .item-detail .item-hierarchy .branch-type, .item-hierarchy .leaf-indicator {
   display: none;
 }
-/* Item detail-view - end*/
+/* Item detail-view - end */
 
 
 /* Advanced search */
@@ -251,8 +253,14 @@ footer, .footer,
 /* Advanced search - end */
 
 
-/* Institution details */
+/* Institutions list */
+#first-letter-index li.active {
+  display: block;
+}
+/* Institutions list -end */
 
+
+/* Institution details */
 .institution-item-page #divOSM {
   width: 555px;
   height: 300px;

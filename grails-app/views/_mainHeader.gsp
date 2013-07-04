@@ -127,9 +127,13 @@ limitations under the License.
     </div>
   </div>
 </header>
+<header class="hidden-phone">
 <!--<![endif]-->
 
-<header class="hidden-phone">
+<!--[if IE]>
+<header class="ie-mobile">
+<!--<![endif]-->
+
   <h1 class="invisible-but-readable">
     <g:message code="ddbnext.Heading_Header" />
   </h1>
