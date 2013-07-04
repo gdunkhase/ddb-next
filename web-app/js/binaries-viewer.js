@@ -278,7 +278,7 @@ $(document).ready(function() {
       infinite: false,
       width: 445,
       align: false,
-      height: 116,
+      height: 110,
       items: {
         visible: img,
         minimum: 1

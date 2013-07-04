@@ -107,7 +107,7 @@ limitations under the License.
               <div class="thumbnail ${type}">
                 <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
               </div>
-              <span class="label">${it.orig.title}</span>
+              <span class="label off">${it.orig.title}</span>
             </a>
           </li>
         </g:each>
@@ -144,7 +144,7 @@ limitations under the License.
                 <div class="thumbnail ${type}">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
-                <span class="label">${it.orig.title}</span>
+                <span class="label off">${it.orig.title}</span>
               </a>
             </li>
           </g:each>
@@ -168,7 +168,7 @@ limitations under the License.
                 <div class="thumbnail image">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
-                <span class="label">${it.preview.title}</span>
+                <span class="label off">${it.preview.title}</span>
               </a>
             </li>
           </g:if>
@@ -194,7 +194,7 @@ limitations under the License.
                   <div class="thumbnail image">
                     <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
-                  <span class="label">${it.preview.title}</span>
+                  <span class="label off">${it.preview.title}</span>
                 </a>
               </li>
             </g:if>
@@ -220,7 +220,7 @@ limitations under the License.
                 <div class="thumbnail video">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
-                <span class="label">${it.orig.title}</span>
+                <span class="label off">${it.orig.title}</span>
               </a>
             </li>
           </g:if>
@@ -246,7 +246,7 @@ limitations under the License.
                   <div class="thumbnail video">
                     <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
-                  <span class="label">${it.orig.title}</span>
+                  <span class="label off">${it.orig.title}</span>
                 </a>
               </li>
             </g:if>
@@ -272,7 +272,7 @@ limitations under the License.
                 <div class="thumbnail video">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
-                <span class="label">${it.orig.title}</span>
+                <span class="label off">${it.orig.title}</span>
               </a>
             </li>
           </g:if>
@@ -298,7 +298,7 @@ limitations under the License.
                   <div class="thumbnail video">
                     <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
-                  <span class="label">${it.orig.title}</span>
+                  <span class="label off">${it.orig.title}</span>
                 </a>
               </li>
             </g:if>
