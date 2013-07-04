@@ -55,7 +55,6 @@ class ItemController {
         def User user = getUserFromSession()
         if (user != null) {
             def favorites = bookmarksService.findFavoritesByItemIds(user.getId(), [pId])
-            //def favorites = bookmarksService.findFavoritesByUserId(user.getId(), pId)
             log.info "isFavorite findFavoritesByUserId(${user.getId()}, ${pId}): favorites = " + favorites;
             if (favorites && (favorites.size() > 0)) {
                 vResult = response.SC_FOUND;
@@ -69,6 +68,40 @@ class ItemController {
         }
         log.info "isFavorite ${pId} returns: " + vResult
         return vResult;
+    }
+    
+    def delFavorite() {
+        log.info "non-JavaScript: delFavorite " + params.id
+        def User user = getUserFromSession()
+        if (user != null) {
+            if (bookmarksService.deleteFavorites(user.getId(), [params.id])) {
+                log.info "non-JavaScript: delFavorite " + params.id + " - success!"
+            }
+            else {
+                log.info "non-JavaScript: delFavorite " + params.id + " - failed..."
+            }
+        }
+        else {
+            log.info "non-JavaScript: addFavorite " + params.id + " - failed (unauthorized)"
+        }
+        findById()
+    }
+    
+    def addFavorite() {
+        log.info "non-JavaScript: addFavorite " + params.id
+        def User user = getUserFromSession()
+        if (user != null) {
+            if (bookmarksService.addFavorite(user.getId(), params.id)) {
+                log.info "non-JavaScript: addFavorite " + params.id + " - success!"
+            }
+            else {
+                log.info "non-JavaScript: addFavorite " + params.id + " - failed..."
+            }
+        }
+        else {
+            log.info "non-JavaScript: addFavorite " + params.id + " - failed (unauthorized)"
+        }
+        findById()
     }
 
     def findById() {

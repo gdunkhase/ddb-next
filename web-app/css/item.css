@@ -113,10 +113,18 @@
 
 .favorite-actions.favorite-selected {
   background-position: -2px -160px;
-  //pointer-events: none;
+  pointer-events: none;
 }
 .favorite-actions.favorite-selected:hover {
   background-position: -2px -60px;
+}
+
+.modal-body {
+  position: relative;
+  max-height: 400px;
+  padding: 15px;
+  text-align: left;
+  overflow-y: auto;
 }
 
 .item-nav {
