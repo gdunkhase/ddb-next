@@ -173,12 +173,16 @@ class BookmarksService {
      * @return           the list of bookmarked items.
      */
     def findBookmarkedItems(userId, itemIdList) {
+        log.info "itemIdList ${itemIdList}"
+        def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
+        log.info "lowerCaseIdList  ${lowerCaseIdList}"
+
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
               filter: [
                 terms: [
-                  item: itemIdList
+                  item: lowerCaseIdList
                 ]
               ]
             ]
@@ -215,6 +219,8 @@ class BookmarksService {
 
     def addFavorite(userId, itemId) {
         def favoriteFolderId = getFavoritesFolderId(userId)
+        // TODO: find bookmarks that has the itemId
+        // TODO: if foundBookmarks is not empty then return null, other wise continue
         def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId)
         log.info "Add a bookmark ${bookmarkId} in Favorites"
         return bookmarkId
@@ -279,15 +285,18 @@ class BookmarksService {
 
     def findFavoritesByItemIds(userId, itemIdList) {
         def favoriteFolderId = getFavoritesFolderId(userId)
-
         log.info "fav: ${favoriteFolderId}"
+
+        log.info "itemIdList ${itemIdList}"
+        def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
+        log.info "lowerCaseIdList  ${lowerCaseIdList}"
 
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${favoriteFolderId}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
               filter: [
                 terms: [
-                  item: itemIdList
+                  item: lowerCaseIdList
                 ]
               ]
             ]
