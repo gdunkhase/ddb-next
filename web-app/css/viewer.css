@@ -95,15 +95,6 @@
   max-height:90px;
   display: inline-block;
 }
-.scroller li a .label {
-  display:block;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  margin-left:15px;
-  width:100px;
-  font-size:0.813em;
-}
 .previews img {
   max-width: 445px;
   max-height: 323px;
