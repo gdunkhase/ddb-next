@@ -48,7 +48,7 @@ limitations under the License.
           </g:link>
         </div>
         <div class="span2 created-at">
-          <div>${it.createdAt }</div>
+          <div>${it.creationDate }</div>
         </div>
       </div>
     </li>

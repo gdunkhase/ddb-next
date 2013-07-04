@@ -16,6 +16,9 @@
 package de.ddb.next
 
 import javax.servlet.http.HttpSession
+import grails.converters.*
+import org.codehaus.groovy.grails.web.json.*;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -43,6 +46,8 @@ class UserController {
     def aasService
     def sessionService
     def configurationService
+    def searchService
+    def bookmarksService
 
     LinkGenerator grailsLinkGenerator
 
@@ -100,114 +105,16 @@ class UserController {
     }
 
     //Favorites page
-def favorites(){
-        if(isUserInSession() || true){
+    def favorites(){
+        if(isUserLoggedIn() || true){
             //2. Get the items from the backend
             def rows=20; //default
             if (params.rows){
                 rows = params.rows.toInteger();
             }
-            def items = ["TRTRGC6OFUIM2XDY2GUO47AHHOYQOL7B",
-                "7OXMALA3A37GLV3QOAE5HEFUDW5ZHVIJ",
-                "7IQZX2CP46KWXBF4BCBT6K7J65LZHTBV",
-                "SJDLXCQDM7NUQVWAD6LN3XVYQYHWRMUX",
-                "VI5VNJQVU4DFNRUPRLX64X677EDX5AY2",
-                "V2MGDJLUEBQOMJUZKEGATJTMIW7G27FF",
-                "NLQS2WPWPNRWQ5ARBYJU6ABPLQX6EOSA",
-                "3JAANL4K5TG2E6ANW35F2IS32M4IPYLP",
-                "SC5JE75OBAAUQE7MTCNUAIS7CDWECUUM",
-                "F635HM6OBKLKDRA4EFCMMNHS5JHLPPOM",
-                "SAHJO7SIH7JKPQTWGR7WSORUXS5HC64K",
-                "4T2WWGUIZFVXIQQ4QDKN37KKOUYPGRGQ",
-                "GXXKJ3MU6ZLZUKTHW5F5GZOCVNJE32NP",
-                "KHGNYHJ5KKQGDC54DKGGUJTQSXWUBVQ5",
-                "ZG2L7DT7RYI6BHKXESBJMXER6T2MMXFG",
-                "V6VQXHVGXSUTWDNS4QVD2FRCGRECPNLB",
-                "6YM2CTWGE7XGZJWSE4I3YGE7NOX454X5",
-                "K42KLJO2UKSOV3DZW25N7IROQZLWUR3F",
-                "S3K75RXMGPFQ4QTPUATISCGPL23BPBMY",
-                "ERGC2QQLALIVEQVDHTDLTXL462TXQS6V",
-                "YP4AJQ43346W423C5RZ57MOJWBOYTEWH",
-                "E5TMWZVZBBVSSIH3BLWKMHXZZGE6PL3Q",
-                "AD5SHFJJAPQODAXDVQBT5CVEOWMPQN2G",
-                "4UM4NHFZCP35O7JALCWTBBIS4QAGJZPM",
-                "6TQTOHJNU2A2TJUXNE22KNB7THQE2EMF",
-                "52UQT3XQWEOYYPLJXAMVS33BZSD67RYV",
-                "U3FC6TS7Y2J73SNYFXDCMWQL45W5LHEE",
-                "CTDXWJJJX63B2TYB5NKFJ3BV7VY5CDSA",
-                "T4IBNVFSZXOJUTN7BBEVQOX2AJQ664XK",
-                "VL3D2TRKWJXCGARZQGLDJBIV7MYDGH4T",
-                "E6USCXLWO2AA6ORIOZ3JNF3Z4EICJMOL",
-                "ZYADPLVNYTG3PFVJQGEW7N4RB6M5A572",
-                "2F5KR7L5I4ZOIU5QLZKXTWISVPDFERJF",
-                "JJ2XBLEARVCQMSK22KDPOFVLTEYJ7PE4",
-                "GXJ7EYSMEZUTHITRPSFHZBYPIPIYGLER",
-                "UI3E3QC4AYOOUM7PA6LU5Z5XXQRN2UTA",
-                "MPAMCPXOBHPZQ2254U5ZSTWAX5BGOKQH",
-                "TDPRZRWRCLPCGMNCXWNOQ2US4YT43VPP",
-                "P6THODJUJU3JLNBQ2AVNXS4ZXD7FTSVX",
-                "J5AMTTBIL3DVS2VUDHR7RLT4PT3IBNLC",
-                "KH32SMB3J7COV3YBCPXOGRDT5UFJDRWU",
-                "OFKUJEHYSLWMBCM3DZ4RKP43MKSOPGUD",
-                "6TIXPVDT2KO2HZAUKI3KBC3JNQDPXRF7",
-                "WOHXUS6YZRYRU7JLH5H6DSYXKGPHALB3",
-                "DN2ZLBEHRMIBALJPAKJCYNPFFJX56U4A",
-                "BROZH4ECXV4CBQS5IXU62KVS4MSX575F",
-                "E2NR45AHMXCSR7XIVQZQW3EHVCVSLGJJ",
-                "IRKXPGCBOIHL245BZYA4V74ZPRGAOBKS",
-                "GXQKENT3VRM7ZVPIEXL7EBGNETGARKTL",
-                "IE3CG3JZICXVY5DD4ADTCLOOCS5OOG7T",
-                "OIUEB3SJ56BLB6EGR2DKCFO65IJRSOCV",
-                "FQGMUU5VFW2D4YG2RIJGSVXSEVQ4F3BQ",
-                "7B2MYHFAOQCBQ4FDXXQKFB6IRNKOXTR2",
-                "BOBHYT3TPDFXU6WAIQ6OAXJKFQ3NBDO4",
-                "EJ3AQ4IXBFUDKPVLLSKPAOT6NYBGJDDQ",
-                "SABB7RTZRKRABUFXIFZWO7YNNJV2TOM4",
-                "MIHHDCM6ZB5LGMGX66FE2MOCCLUFSCFH",
-                "U64CCGZADVDZNJ5JW7KB4EMYHWPRHUJJ",
-                "6UMVWEB5UNKGMQCLL3FTV7WYEFV5NW2A",
-                "ANJHPKSTRGPY3WVW7T2DVAMYC2HLWFF3",
-                "GOQUXIUABYNVZRGBDET43FORCOU4JS5K",
-                "TU635FC4OPZTHPXXIQ3FTMQEJ6NJRPFD",
-                "73GPKEUBFYTTRS2TGJCZCFQ6HQPSCSP6",
-                "A7GXCZF6CBIQ5GOZ63A2VKBEWK2Z46XG",
-                "VHS6UBSAIUNHYLEMEMX7RKZRZWQ75DOS",
-                "7NCYC3T27DMV4EWGNHMUCEQZUX47ORIA",
-                "ZEBQN3PGNBUC3D3IV4OQRRSUFKBFC22K",
-                "X64H5A35SDHV7HHO75CD4D4B5MKN3GZ4",
-                "EAN3QF5J5FE6DEDXYS2MYOFZOXMUUJJU",
-                "LEYZML5KBE4W6UWVNMV7ZRELOXPKDDIB",
-                "I5TKAVKCZIS5LFIGBIV2N356QPK5AS4C",
-                "3HPHGOZIL2XQSL7GEPLX4PUIPPNGUPZ2",
-                "OAO6BBNAV7DNVJIN2KSP3S2G7UKGERWS",
-                "LW2D3GECTL67MSHMBRGNYORC6X5TOUDM",
-                "AH3W53Y7B6J5LMHN6H6IXSXLNML2233Y",
-                "ACFTKAHGE4EBPOAASP4N2D5CKW74LO4I",
-                "SVQXLISGSQCRBEQNUMTCMQSKN7BC7IKZ",
-                "WQ6BSXPMMODNHGILLOB3D7CYQDA7OROO",
-                "3KH3BK7HN25CPTFUXUVHDMZCAHZ6O6FX",
-                "5DRGO2BEU6HFUKSXQM6N6WJNUIAY7VPJ",
-                "BK7RS3BUA2SUW4EBVYTJA3YATVF3MIUL",
-                "IUD2LT7BMP42GBFR5J2GO6K6UVMCT5WF",
-                "UMPYNSQJ57UBMQWXBGQEUO2XOJ5XFADP",
-                "LPRBN7LTABFPEKQ36XO2AC6GGF3AHV2R",
-                "4TI3CWLJANJN5BERCN6YBSLUZZ64KYH7",
-                "ERPWNFB7SIOOCAXOHKQNTFWWSZFFBDJP",
-                "NH32GJHT7Z4XTSZ7DFDAVWANPPVNDDIC",
-                "2IEJWLZBB2Z746ABZO2IKPCTRR2Y5LWE",
-                "FSAXUMVNEZNSYYOWT2I2WUWSLGX3MP2T",
-                "GZBE7LJIFKLAKG6ZPLJDZ5Z4ZZX6MOLN",
-                "Q2PPCJUYGCODGM3CR4H6QT7CZGQQECH4",
-                "37G5YEVNECD5BS22BVDCYQHPCUK6OOP6",
-                "AF7OFZXCKUODX5PUNEROT5SSZFNCHB2T",
-                "7HXKJSYS5G7JVD6MSZINAIMUKAYB7OE4",
-                "QZO5TOCKKJ6WTPNCVKBTO5ANWE62YUEK",
-                "Y6D4ZTAUI6YM5SYHWQ7KQXB4Q7JBVZQN",
-                "P6G5FHXE4GF6EK4HTAZ5TC63GNNPNJX2",
-                "3GWC3DTPQ2MEU646KILPPVONYICAK6HC",
-                "KA2XRBKUDTTQTWZNXU6LIU5QUDEB6I4A",
-            ];
-            //3. Render the results in the page
+            
+            def String result = getFavorites()
+            List items = JSON.parse(result) as List
             def queryItems;
             if (params.offset){
                 println "here it is" + params.offset;
@@ -217,12 +124,9 @@ def favorites(){
                 params.offset=0;
                 queryItems=items.take(20)
             }
-            
-            
-            println "This is the list" + queryItems;
-            
-            def orQuery=queryItems[0];
-            queryItems.tail().each() { orQuery+=" OR "+ it };
+
+            def orQuery=queryItems[0].getAt("itemId");
+            queryItems.tail().each() { orQuery+=" OR "+ it.itemId };
             params.query = "id:("+orQuery+")"
 
 
@@ -247,14 +151,25 @@ def favorites(){
 
             def queryString = request.getQueryString()
 
-
-            println "totalPages "+ totalPages;
-            println "resultsPaginatorOptions"+ resultsPaginatorOptions;
-            println "paginationUrl" + searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString)
-
             def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false];
             def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
 
+
+            def all = []
+            def temp = []
+            resultsItems["results"]["docs"].each { searchItem->
+                temp = []
+                temp = searchItem
+                items.each { favItems ->
+
+                    if (searchItem.id== favItems.itemId){
+                        println "FOUND ONE " + favItems;
+                        temp["creationDate"]=favItems.creationDate
+                    }
+                }                
+                all.add(temp)
+            }
+            println "ALL HERE " +all;
             render(view: "favorites", model: [
                 title: urlQuery["query"],
                 results: resultsItems["results"]["docs"],
@@ -282,11 +197,24 @@ def favorites(){
 
     }
 
-
     def private createFavoritesLinkNavigation(bid,offset,rows,order){
         return g.createLink(controller:'user', action: 'favorites',params:['fid':bid,offset:offset,rows:rows,order:order])
     }
 
+    def getFavorites() {
+        log.info "getFavorites"
+        def User user = getUserFromSession()
+        if (user != null) {
+            def result = bookmarksService.findFavoritesByUserId(user.getId())
+            log.info "getFavorites returns " + result
+            return result as JSON
+        }
+        else {
+            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
+           return null
+        }
+    }
+    
     def registration() {
         render(view: "registration", model: [])
     }
@@ -414,7 +342,7 @@ def favorites(){
             boolean profileDifference = false
             boolean newsletterDifference = false
             User user = getUserFromSession().clone()
-            
+
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
@@ -441,10 +369,10 @@ def favorites(){
                     }
                 }
                 if ((params.newsletter && !user.newsletterSubscribed)
-                    || (!params.newsletter && user.newsletterSubscribed)) {
+                || (!params.newsletter && user.newsletterSubscribed)) {
                     newsletterDifference = true
                 }
-                    
+
                 if (!profileDifference && !eMailDifference && !newsletterDifference) {
                     errors.add("ddbnext.User.Profile_NoValuesChanged")
                 }
@@ -671,7 +599,7 @@ def favorites(){
                 user.setFirstname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                
+
                 //TODO: check Newsletter-Subscription and set attribute newsletterSubscribed.
 
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
