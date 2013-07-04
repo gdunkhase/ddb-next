@@ -247,7 +247,6 @@ class ApiConsumer {
                     return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 404 -> " + uri.toString() + " / " + resp.headers.'Error-Message')
                 }
                 response.'409' = { resp ->
-                    System.out.println(resp.statusLine.reasonPhrase)
                     return build409Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 409 -> " + uri.toString() + " / " + resp.headers.'Error-Message')
                 }
                 response.failure = { resp ->
