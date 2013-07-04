@@ -34,7 +34,7 @@ import de.ddb.next.beans.Folder
 // TODO: use ApiConsumer if possible
 class BookmarksService {
 
-    public static final def FAVORITES = 'Favorites'
+    public static final def FAVORITES = 'favorites'
     public static final def IS_PUBLIC = false
 
     def configurationService
@@ -219,24 +219,26 @@ class BookmarksService {
 
     def addFavorite(userId, itemId) {
         def favoriteFolderId = getFavoritesFolderId(userId)
-        // TODO: find bookmarks that has the itemId
-        // TODO: if foundBookmarks is not empty then return null, other wise continue
+
+        def foundItemIdList = findBookmarkedItemsInFolder(userId,[itemId], favoriteFolderId)
+        log.info "foundItemIdList ${foundItemIdList}"
+        if(foundItemIdList.size()>0) return null
+
         def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId)
         log.info "Add a bookmark ${bookmarkId} in Favorites"
         return bookmarkId
     }
 
     def findFoldersByTitle(userId, title) {
-        log.info "userId: ${userId}"
-        def http = new HTTPBuilder(
-            "${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}%20AND%20title:${title}")
+        log.info "finding a folder with the title ${title} for the user: ${userId}"
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}")
 
         http.request(Method.POST, ContentType.JSON) { req ->
 
             body = [
               filter: [
-                script: [
-                  script: '_source.title == \"' + title + '\"'
+                term: [
+                  title: title
                 ]
               ]
             ]
@@ -291,7 +293,35 @@ class BookmarksService {
         def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
         log.info "lowerCaseIdList  ${lowerCaseIdList}"
 
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${favoriteFolderId}")
+        return findBookmarkedItemsInFolder(userId, itemIdList, favoriteFolderId)
+    }
+
+    def getFavoritesFolderId(userId) {
+        def favoritesFolderList = findFoldersByTitle(userId, BookmarksService.FAVORITES)
+
+        assert favoritesFolderList.size() <= 1 :"There must be max one folder with the title Favorites"
+
+        def favoritesFolderId
+        if(favoritesFolderList.size() > 0) {
+            favoritesFolderId  = favoritesFolderList[0].folderId
+        } else {
+            /* The user does not have a 'Favorites' folder, create a folder with
+             * the title 'Favorites'
+             */
+            log.info "The user(${userId}) does not have a 'Favorites' folder, the service is creating it."
+            favoritesFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
+            log.info "New Favorites Folder is created and has the ID: ${favoritesFolderId}"
+        }
+        favoritesFolderId
+    }
+
+    // TODO refactor this method, duplicate with findFavoritesByItemIds
+    def findBookmarkedItemsInFolder(userId, itemIdList, folderId) {
+        log.info "itemIdList ${itemIdList}"
+        def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
+        log.info "lowerCaseIdList  ${lowerCaseIdList}"
+
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
               filter: [
@@ -311,23 +341,5 @@ class BookmarksService {
                 items
             }
         }
-    }
-
-    def getFavoritesFolderId(userId) {
-        def favoritesFolderList = findFoldersByTitle(userId, BookmarksService.FAVORITES)
-        //assert favoritesFolderList.size() <= 1 :"There must be max one folder with the title Favorites"
-
-        def favoritesFolderId
-        if(favoritesFolderList) {
-            favoritesFolderId  = favoritesFolderList[0].folderId
-        } else {
-            /* The user does not have a 'Favorites' folder, create a folder with
-             * the title 'Favorites'
-             */
-            log.info "The user(${userId}) does not have a 'Favorites' folder, the service is creating it."
-            favoritesFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
-            log.info "New Favorites Folder is created and has the ID: ${favoritesFolderId}"
-        }
-        favoritesFolderId
     }
 }

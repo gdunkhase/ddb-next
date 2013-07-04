@@ -162,4 +162,20 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def foundBookmarkedItems = bookmarksService.findFavoritesByItemIds(userId, itemIds)
         assert foundBookmarkedItems.size() > 0
     }
+
+    @Test void shouldNotAddSameItemIdMoreThanOnce() {
+        log.info "the bookmark service should _not_ add the same item IDs more than once to favorites."
+        def userId = UUID.randomUUID() as String
+
+        def firstItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
+        log.info "adding item ${firstItemId} to the folder Favorite."
+        def firstFavId = bookmarksService.addFavorite(userId, firstItemId)
+        sleep 6000
+
+        def secondItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
+        log.info "adding item ${secondItemId} _again_ to the folder Favorite."
+        def secondFavId= bookmarksService.addFavorite(userId, secondItemId)
+
+        assert secondFavId == null
+    }
 }
