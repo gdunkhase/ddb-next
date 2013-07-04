@@ -161,15 +161,12 @@ class UserController {
                 temp = []
                 temp = searchItem
                 items.each { favItems ->
-
                     if (searchItem.id== favItems.itemId){
-                        println "FOUND ONE " + favItems;
                         temp["creationDate"]=favItems.creationDate
                     }
                 }                
                 all.add(temp)
             }
-            println "ALL HERE " +all;
             render(view: "favorites", model: [
                 title: urlQuery["query"],
                 results: resultsItems["results"]["docs"],
