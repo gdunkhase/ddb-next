@@ -16,7 +16,6 @@
 
   $("#idFavorite").parent().click(function(event) {
     event.preventDefault();
-    //alert( document.getElementById("idFavorite").getAttribute("itemid") );
     changeFavoriteState(this.href);
     return false;
     
@@ -24,19 +23,19 @@
   
   function changeFavoriteState(url) {
     var jElemFavorite = $("#idFavorite");
-    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqActn=add&reqType=ajax';
     var vActn = jElemFavorite.attr("data-actn");
+    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqType=ajax';
     var request = $.ajax({
-      type: jElemFavorite.attr("data-actn"),
+      type: vActn,
       dataType: 'json',
       async: true,
-      url: url,
+      url: url + (vActn=="DELETE" ? "&reqActn=del" : "&reqActn=add"),
       complete: function(data) {
         if (vActn=="POST") {
           addToFavorites(data);
         }
         else if (vActn=="DELETE") {
-          delToFavorites(data);
+          delFromFavorites(data);
         }
         else {
           alert("Method not found...");
@@ -46,16 +45,15 @@
   }
   
   function addToFavorites(data) {
-    //alert("addToFavorites: status = " + data.status);
     var jElemFavorite = $("#idFavorite");
     switch (data.status) {
       case 200: case 201:
         // -- success
         //var JSONresponse = jQuery.parseJSON(data.responseText);
-        //jElemFavorite.css("color","red");
         jElemFavorite.attr("data-actn", "DELETE");
         jElemFavorite.parent().removeClass("favorite-add");
         jElemFavorite.parent().addClass("favorite-selected");
+        $("#favorite-confirmation").modal("show");
         break;
       case 400:
         // -- bad request
@@ -74,14 +72,12 @@
     }
   }
   
-  function delToFavorites(data) {
-    //alert("delToFavorites: status = " + data.status);
+  function delFromFavorites(data) {
     var jElemFavorite = $("#idFavorite");
     switch (data.status) {
       case 200: case 204:
         // -- success
         //var JSONresponse = jQuery.parseJSON(data.responseText);
-        //jElemFavorite.css("color","green");
         jElemFavorite.attr("data-actn", "POST");
         jElemFavorite.parent().removeClass("favorite-selected");
         jElemFavorite.parent().addClass("favorite-add");
@@ -102,59 +98,3 @@
         break;
     }
   }
-  
-  function changeFavorite(url) {
-    //url = url + '&reqType=ajax';
-    var jElemFavorite = $("#idFavorite");
-    //var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/changeItemState?reqActn=add&reqType=ajax';
-    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqActn=add&reqType=ajax';
-    //alert("url = " + url);
-    //alert("Method: " + jElemFavorite.attr("data-actn"));
-    var request = $.ajax({
-      type: jElemFavorite.attr("data-actn"),
-      dataType: 'json',
-      async: true,
-      url: url,
-      complete: function(data) {
-        //alert("data.responseText = " + data.responseText);
-        var JSONresponse = jQuery.parseJSON(data.responseText);
-        //alert("JSONresponse.favStatus = " + JSONresponse.favStatus);
-        //var elemFavorite = document.getElementById("idFavorite");
-        var jElemFavorite = $("#idFavorite");
-        if (jElemFavorite == null) {
-            alert("Elemt 'idFavorite' not find!");
-        }
-        if (JSONresponse && jElemFavorite) {
-            if (JSONresponse.favStatus == 0) {
-                //elemFavorite.style.color = 'silver';
-                jElemFavorite.css("color","silver");
-                //elemFavorite.parent.style.backgroundPosition = "-2px -0px";
-                jElemFavorite.attr("data-actn", "GET");
-                jElemFavorite.parent().removeClass("favorite-selected");
-                jElemFavorite.parent().removeClass("favorite-add");
-                jElemFavorite.parent().css("backgroundPosition","-2px -0px");
-            }
-            else if (JSONresponse.favStatus == 1) {
-                //elemFavorite.style.color = 'green';
-                jElemFavorite.css("color","green");
-                //elemFavorite.parent.style.backgroundPosition = "-2px -80px";
-                //jElemFavorite.parent().css("backgroundPosition","-2px -80px");
-                jElemFavorite.attr("data-actn", "POST");
-                jElemFavorite.parent().removeClass("favorite-selected");
-                jElemFavorite.parent().addClass("favorite-add");
-            }
-            else if (JSONresponse.favStatus == 2) {
-                //elemFavorite.style.color = 'red';
-                jElemFavorite.css("color","red");
-                //elemFavorite.parent.style.backgroundPosition = "-2px -140px";
-                //jElemFavorite.parent().css("backgroundPosition","-2px -140px");
-                jElemFavorite.attr("data-actn", "DELETE");
-                jElemFavorite.parent().removeClass("favorite-add");
-                jElemFavorite.parent().addClass("favorite-selected");
-            }
-        }
-      }
-    });
-    
-  }
-  
