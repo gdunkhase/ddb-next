@@ -36,13 +36,14 @@ class ErrorController {
      * @return Either the 500_development view or the 500_production view, dependent on the environment
      */
     def serverError() {
-
-
+        def exceptionMessage = ""
+        
         //Lot of logging to make bugfixing easier
         log.error "serverError(): The user will be redirected to the 500 page."
         if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
             try{
-                log.error "serverError(): Source of the error is: '"+request.exception.getMessage()+"'"
+                log.error "serverError(): Source of the error is: '"+exceptionMessage+"'"
                 def stackElements = request.exception.getStackTrace();
                 for(stackElement in stackElements){
                     log.error "Stack: "+stackElement.getClassName()+"."+stackElement.getMethodName()+" ["+stackElement.getLineNumber()+"]"
@@ -57,6 +58,7 @@ class ErrorController {
 
         // Return response code 500
         response.status = 500
+        response.setHeader("Error-Message", exceptionMessage)
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
@@ -96,7 +98,8 @@ class ErrorController {
 
         // Return response code 404
         response.status = 404
-
+        response.setHeader("Error-Message", exceptionMessage)
+        
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
         def contentTypeFromConfig = configurationService.getMimeTypeHtml()
@@ -137,7 +140,8 @@ class ErrorController {
 
         // Return response code 401
         response.status = 401
-
+        response.setHeader("Error-Message", exceptionMessage)
+        
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
         def contentTypeFromConfig = configurationService.getMimeTypeHtml()
