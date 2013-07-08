@@ -236,7 +236,7 @@ limitations under the License.
                         </g:link>
                       </li>
                       <li
-                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"]]}">active-default</g:isMappingActive>">
+                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"]]}">active-default</g:isMappingActive>">
                         <g:link controller="user" action="profile">
                           <g:message code="ddbnext.Profile" />
                         </g:link>
