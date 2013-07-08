@@ -127,9 +127,13 @@ limitations under the License.
     </div>
   </div>
 </header>
+<header class="hidden-phone">
 <!--<![endif]-->
 
-<header class="hidden-phone">
+<!--[if IE]>
+<header class="ie-mobile">
+<!--<![endif]-->
+
   <h1 class="invisible-but-readable">
     <g:message code="ddbnext.Heading_Header" />
   </h1>
@@ -253,7 +257,7 @@ limitations under the License.
               <div class="login-wrapper">
                 <g:message code="ddbnext.You_are_currently_logged_in_as" /> 
                 <g:link controller="user" action="profile" class="login-username"><g:getUserName /></g:link><div class="login-dropdown"></div>
-                <ul class="selector">
+                <ul class="selector logout">
                   <li><g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link></li>
                 </ul>
               </div>

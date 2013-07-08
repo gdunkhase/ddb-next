@@ -459,6 +459,7 @@ header .login-dropdown,.header .login-dropdown {
   width: 15px;
   height: 15px;
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 3px -40px;
+  cursor: pointer;
 }
 
 header .header-spacer,.header .header-spacer {
@@ -468,7 +469,6 @@ header .header-spacer,.header .header-spacer {
   margin: 0px 10px 0 10px;
   border-right: 2px solid #e9e5e2;
 }
-
 
 #form-search-header .link-adv-search {
   font-size: 0.938em;
@@ -613,6 +613,10 @@ header .selector,.header .selector {
   -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+header .selector.logout,.header .selector.logout {
+  right: -20px;
+}
+
 header .selector li,.header .selector li {
   float: none;
   cursor: pointer;
@@ -652,9 +656,10 @@ header .language-widget form,.header .language-widget form {
 }
 
 .brand img {
-  margin: 0px;
+  margin: 0 0 0 10px;
   height: 90px;
 }
+
 
 .btn-navbar {
   height: 30px;
@@ -702,6 +707,20 @@ header .language-widget form,.header .language-widget form {
   }
   #form-search-header .link-adv-search, .header .link-adv-search {
     margin-left: 60px;
+  }
+}
+
+@media (max-width: 767px) {
+  header.ie-mobile .span7 {
+    width: 75%;
+    float: left;
+  }
+  header.ie-mobile .toolbar {
+    width: 20%;
+    float: left;
+  }
+  header.ie-mobile .navigation {
+    margin-bottom: 30px;
   }
 }
 
@@ -1352,6 +1371,23 @@ select {
   body {
     padding-right: 10px;
     padding-left: 10px;
+  }
+
+  h1,h2,h3,h4 {
+    font-size: 1.5em;
+    line-height: 1.125em;
+  }
+
+  h1,h1 a {
+    font-size: 1.5em;
+  }
+
+  h2,h2 a {
+    font-size: 1.250em;
+  }
+
+  h3,h3 a {
+    font-size: 1em;
   }
 }
 /* responsive genaral rules - end */

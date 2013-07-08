@@ -48,7 +48,8 @@ limitations under the License.
         <div class="span3">
         
             <div class="favorite">
-            <!--  
+                
+                <%--  
                 <g:isNotLoggedIn>
                     <g:link controller="user" class="favorite-actions">
                         <span title="<g:message code='ddbnext.stat_010' />">
@@ -56,30 +57,34 @@ limitations under the License.
                         </span>
                     </g:link>
                 </g:isNotLoggedIn>
-              -->
+                --%>
                 <g:isLoggedIn>
-                <%--
-                    <g:if test="${(FavoritesService.getFevoritesService().isFavorit(session.getAttribute(User.SESSION_USER).getEmail(), params.id))}">
-                        <g:link controller="item" action="changeItemState" params="${params + [reqActn:'delete']}" class="favorite-actions favorite-selected">
+                    <g:if test="${(isFavorite == 302) }">
+                        <%-- <g:link controller="item" action="delFavorite" params="${params}" class="favorite-actions favorite-selected"> --%>
+                        <g:link params="${params}" class="favorite-actions favorite-selected">
                             <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
                                 <g:message code="ddbnext.favorit" />
                             </span>
                         </g:link>
                     </g:if>
                     <g:else>
-                        <g:link controller="item" action="changeItemState" params="${params + [reqActn:'add']}" class="favorite-actions favorite-add">
-                            <span data-itemid="${itemId}" data-actn="POST" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
+                       <%-- <g:link controller="item" action="addFavorite" params="${params}" class="favorite-actions favorite-add"> --%> 
+                        <g:link params="${params}" class="favorite-actions favorite-add">
+                            <span data-itemid="${itemId}" data-actn="POST" title="<g:message code='ddbnext.Add_To_Favorites' />" id="idFavorite" >
                                 <g:message code="ddbnext.favorit" />
                             </span>
                         </g:link>
                     </g:else>
-                --%>
-                  <g:link controller="item" action="changeItemState" params="${params + [reqActn:'add']}" class="favorite-actions favorite-add">
-                    <span data-itemid="${itemId}" data-actn="POST" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
-                      <g:message code="ddbnext.favorit" />
-                    </span>
-                  </g:link>
+                    <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-body">
+                            <p><g:message code="ddbnext.Added_To_Favorites"/></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="modal-btn-ok" class="btn" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
                 </g:isLoggedIn>
+                
             </div>
         </div>
         

@@ -612,7 +612,7 @@ class UserController {
                 user.setEmail(email)
                 user.setUsername(username)
                 user.setFirstname(firstName)
-                user.setFirstname(lastName)
+                user.setLastname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
 

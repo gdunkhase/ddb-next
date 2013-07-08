@@ -321,7 +321,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results .results-list .summary-main-wrapper .title{
-  max-height: 3.2em;
+  max-height: 8em;
 }
 
 .search-results .results-list .summary-main-wrapper .title a{

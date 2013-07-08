@@ -64,7 +64,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 //    @Ignore('Can not search immediately after Indexing?')
     @Test void shouldFindBookmarkedItems() {
         def folderId = createNewFolder()
-        def itemId = 'foobar' + new Date().getTime().toString()
+        def itemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
         def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId)
 
         sleep 3000
@@ -146,15 +146,36 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     @Test void shouldFindFavoritesByItemIds() {
         log.info "the bookmark service should find favorites by item IDs."
         def userId = UUID.randomUUID() as String
-        def firstItemId = 'foobarbaz'
-        log.info "adding item ${firstItemId} to the folder Favorite."
 
-        def firstFav = bookmarksService.addFavorite(userId, firstItemId)
+        def firstItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
+        log.info "adding item ${firstItemId} to the folder Favorite."
+        def firstFavId = bookmarksService.addFavorite(userId, firstItemId)
         sleep 3000
 
-        def itemIds = [firstItemId]
+        def secondItemId = 'U3TWCZVFIHOC6A65ICIC3UIEYRCR2LKL'
+        log.info "adding item ${secondItemId} to the folder Favorite."
+        def secondFavId= bookmarksService.addFavorite(userId, secondItemId)
+        sleep 3000
+
+        def itemIds = [firstItemId, secondItemId]
 
         def foundBookmarkedItems = bookmarksService.findFavoritesByItemIds(userId, itemIds)
         assert foundBookmarkedItems.size() > 0
+    }
+
+    @Test void shouldNotAddSameItemIdMoreThanOnce() {
+        log.info "the bookmark service should _not_ add the same item IDs more than once to favorites."
+        def userId = UUID.randomUUID() as String
+
+        def firstItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
+        log.info "adding item ${firstItemId} to the folder Favorite."
+        def firstFavId = bookmarksService.addFavorite(userId, firstItemId)
+        sleep 6000
+
+        def secondItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
+        log.info "adding item ${secondItemId} _again_ to the folder Favorite."
+        def secondFavId= bookmarksService.addFavorite(userId, secondItemId)
+
+        assert secondFavId == null
     }
 }
