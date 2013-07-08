@@ -39,11 +39,11 @@ limitations under the License.
             </div>
 
             <div class="control-group">
-              <label class="control-label"><g:message code="ddbnext.Username" /></label>
+              <label class="control-label"><g:message code="ddbnext.Username_Or_Email" /></label>
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="reg-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username" />" value="${params.username}">
+                  <input type="text" class="reg-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username_Or_Email" />" value="${params.username}">
                 </div>
               </div>
             </div>

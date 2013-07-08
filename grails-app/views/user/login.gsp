@@ -63,7 +63,7 @@ limitations under the License.
                   </g:if>
                   <div class="row">
                     <div class="span4"> 
-                      <label for="login-username"><g:message code="ddbnext.Username" />:</label>
+                      <label for="login-username"><g:message code="ddbnext.Username_Or_Email" />:</label>
                     </div>  
                   </div>
                   <div class="row">
