@@ -184,7 +184,7 @@ class UserController {
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
-            render(view: "profile", model: [favoritesCount: "no count yet", user: user])
+            render(view: "profile", model: [favoritesCount: "0", user: user])
         }
         else{
             redirect(controller:"index")
@@ -334,7 +334,7 @@ class UserController {
                     sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
                 }
             }
-            render(view: "profile", model: [favoritesCount: "no count yet", user: user, errors: errors, messages: messages])
+            render(view: "profile", model: [favoritesCount: "0", user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -343,6 +343,8 @@ class UserController {
 
     def delete() {
         if (isUserLoggedIn()) {
+            List<String> errors = []
+            List<String> messages = []
             User user = getUserFromSession().clone()
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
@@ -357,7 +359,11 @@ class UserController {
             catch (AuthorizationException e) {
                 forward controller: "error", action: "auth"
             }
-            doLogout()
+            logoutUserFromSession()
+            
+            messages.add("ddbnext.User.Delete_Confirm")
+
+            render(view: "confirm", model: [errors: errors, messages: messages])
         }
     }
 
