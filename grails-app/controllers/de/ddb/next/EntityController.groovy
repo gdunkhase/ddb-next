@@ -72,12 +72,15 @@ class EntityController {
 
         //------------------------- Birth/Death date -------------------------------
 
-        entity["dateOfBirth"] = xmlDnb.breadthFirst().find {
-            it.name() == "dateOfBirth"
-        }[0].text()
-        entity["dateOfDeath"] = xmlDnb.breadthFirst().find {
-            it.name() == "dateOfDeath"
-        }[0].text()
+        //        entity["dateOfBirth"] = xmlDnb.breadthFirst().find {
+        //            it.name() == "dateOfBirth"
+        //        }[0].text()
+        //        entity["dateOfDeath"] = xmlDnb.breadthFirst().find {
+        //            it.name() == "dateOfDeath"
+        //        }[0].text()
+
+        entity["dateOfBirth"] = jsonGraph[entityType].birth
+        entity["dateOfDeath"] = jsonGraph[entityType].death
 
         //------------------------- Birth/Death place -------------------------------
 
@@ -101,17 +104,19 @@ class EntityController {
 
         //------------------------- Professions -------------------------------
 
-        def dnbProfessionUrls = xmlDnb.breadthFirst().findAll {it.name() == "professionOrOccupation"}."@rdf:resource".collect {it.text()}
-        def dnbProfessionIds = dnbProfessionUrls.collect {it.substring(it.lastIndexOf("/")+1)}
+        //        def dnbProfessionUrls = xmlDnb.breadthFirst().findAll {it.name() == "professionOrOccupation"}."@rdf:resource".collect {it.text()}
+        //        def dnbProfessionIds = dnbProfessionUrls.collect {it.substring(it.lastIndexOf("/")+1)}
+        //
+        //        def professions = []
+        //        dnbProfessionIds.each {
+        //            def xmlProfession = cultureGraphService.getDNBInformation(it)
+        //            def professionName = xmlProfession.breadthFirst().find {it.name() == "preferredNameForTheSubjectHeading"}[0].text()
+        //            professions.add(professionName)
+        //        }
+        //
+        //        entity["professions"] = professions.join(', ')
 
-        def professions = []
-        dnbProfessionIds.each {
-            def xmlProfession = cultureGraphService.getDNBInformation(it)
-            def professionName = xmlProfession.breadthFirst().find {it.name() == "preferredNameForTheSubjectHeading"}[0].text()
-            professions.add(professionName)
-        }
-
-        entity["professions"] = professions.join(', ')
+        entity["description"] = jsonGraph[entityType].description
 
         //------------------------- Search preview -------------------------------
 

@@ -19,10 +19,9 @@ limitations under the License.
   
     <g:each var="link" in="${entity.externalLinks}">
       <li class="external-link">
-        <a href="${link.url}"
-          rel="external">
-          <i class="icon-globe"></i>
-          ${link.name}
+        <a href="${link.url}" rel="external">
+          <i class="external-icon"><img src="${link.icon}" alt="" /></i>
+          <span>${link.name}</span>         
         </a>
       </li>
     </g:each>

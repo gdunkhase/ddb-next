@@ -106,3 +106,14 @@
 .entity-page .popup-dialog-wrapper {
   margin-left: 0px !important;
 }
+
+.entity-page .external-icon img {
+  margin: 0px;
+  padding: 0px;
+  width: 16px;
+}
+
+.entity-page .external-link span {
+  margin: -18px 0 0 20px;
+  display: block;
+}

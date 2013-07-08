@@ -20,6 +20,6 @@ limitations under the License.
   <span>Schriftsteller, Politiker, Jurist, Naturwissenschaftler, Maler, Zeichner</span>
   --%>
   
-  <span class="todo-gnd">${entity.professions}</span>
+  <span>${entity.description}</span>
   
 </div>
