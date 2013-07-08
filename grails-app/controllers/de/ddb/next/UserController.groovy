@@ -16,6 +16,10 @@
 package de.ddb.next
 
 import javax.servlet.http.HttpSession
+
+import java.awt.GraphicsConfiguration.DefaultBufferCapabilities;
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import grails.converters.*
 import org.codehaus.groovy.grails.web.json.*;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -131,6 +135,7 @@ class UserController {
 
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
             urlQuery["offset"]=0;
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
@@ -156,17 +161,14 @@ class UserController {
 
 
             def all = []
-            def temp = []
+            def temp = []            
             resultsItems["results"]["docs"].each { searchItem->
                 temp = []
                 temp = searchItem
-                items.each { favItems ->
-                    if (searchItem.id== favItems.itemId){
-                        temp["creationDate"]=favItems.creationDate
-                    }
-                }                
+                temp["creationDate"]=formatDate(items,searchItem.id);
                 all.add(temp)
             }
+            
             render(view: "favorites", model: [
                 title: urlQuery["query"],
                 results: resultsItems["results"]["docs"],
@@ -193,6 +195,23 @@ class UserController {
         }
 
     }
+
+	def private String formatDate(items,String id) {
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def newDate;
+        items.each { favItems ->
+            if (id== favItems.itemId){
+                String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+                SimpleDateFormat oldFormat = new SimpleDateFormat(pattern,locale);
+                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm",locale);
+                DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
+                def Date javaDate = oldFormat.parse(favItems.creationDate);
+                newDate = newFormat.format(javaDate)
+                
+            }
+        }
+        return newDate.toString()
+	}
 
     def private createFavoritesLinkNavigation(bid,offset,rows,order){
         return g.createLink(controller:'user', action: 'favorites',params:['fid':bid,offset:offset,rows:rows,order:order])

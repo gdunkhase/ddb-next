@@ -21,6 +21,21 @@ $(function() {
 	        this.next().text(prefix + 'check all');
 	    }
 	});	
+	$('#favorites-remove').submit(function() {
+		var selected = new Array();
+		$('#slaves input:checked').each(function() {
+		    selected.push($(this).attr('name'));
+		});
+		  jQuery.ajax({
+			    type: 'POST',
+			    url: "/apis/favorites/_delete",
+			    data: JSON.stringify(selected),
+			    dataType: "json",
+			    success: function(data){ alert(data); }
+			});
+		  //TODO Reload page
+		  return false;
+		});
 	if (jsPageName == "favorites") {
 		// workaround for ffox + ie click focus - prevents links that load dynamic
 		// content to be focussed/active.

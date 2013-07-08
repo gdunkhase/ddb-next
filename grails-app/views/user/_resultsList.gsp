@@ -13,11 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<ul class="results-list unstyled">
+<ul class="results-list unstyled" id="slaves">
   <g:set var="pageHitCounter" value="${0}"/>
   <g:set var="offset" value="${0}"/>
   <g:set var="index" value="${0}"/>
-  <g:each in="${results}">
+  <g:each in="${results}" >
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <g:set var="hitNumber" value="${offset + pageHitCounter}"/>
     <g:set var="controller" value="item" />
@@ -28,8 +28,8 @@ limitations under the License.
     </g:if>
     <li class="item bt">
       <div class="summary row">
-        <div class="summary-main-wrapper span5" id="slaves">
-          <input type="checkbox" name="${index++}" class="remove-item-check">
+        <div class="summary-main-wrapper span5">
+          <input type="checkbox" name="${it.id}" class="remove-item-check">
           <div class="summary-main">
             <h2 class="title">
               <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]" title="${truncateHovercardTitle(title: it.label, length: 350)}">
@@ -48,7 +48,7 @@ limitations under the License.
           </g:link>
         </div>
         <div class="span2 created-at">
-          <div>${it.creationDate }</div>
+          <div>${it.creationDate}</div>
         </div>
       </div>
     </li>

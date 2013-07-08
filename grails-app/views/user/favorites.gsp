@@ -75,7 +75,7 @@ limitations under the License.
         </ul>
       </div>
       <div class="span9 favorites-results-content">
-        <g:form controller="favorites" action="remove" id="${bookmarkID}"
+        <g:form id="favorites-remove"
           name="favorites-remove">
           <div class="favorites-results-controls">
             <div class="results-pagination">
@@ -87,7 +87,7 @@ limitations under the License.
             <div class="results-sorter">
               <div class="row">
                 <div class="span6">
-                  <span><input type="checkbox" class="select-all" ></span>
+                  <span><input type="checkbox" class="select-all" id="checkall"></span>
                   <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
                   <span> <a href="#"><i class="icon-arrow-up"></i></a> <a
                     href="#"><i class="icon-arrow-down"></i></a>
@@ -99,7 +99,7 @@ limitations under the License.
               </div>
             </div>
           </div>
-          <div class="favorites-results" id="checkall">
+          <div class="favorites-results">
             <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>
           </div>
         </g:form>
