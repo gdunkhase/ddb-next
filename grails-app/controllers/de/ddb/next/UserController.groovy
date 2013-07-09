@@ -30,6 +30,8 @@ import org.openid4java.message.ax.FetchRequest
 import org.openid4java.util.HttpClientFactory
 import org.openid4java.util.ProxyProperties
 
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
@@ -43,6 +45,7 @@ class UserController {
     def aasService
     def sessionService
     def configurationService
+    def messageSource
 
     LinkGenerator grailsLinkGenerator
 
@@ -129,7 +132,9 @@ class UserController {
         List<String> messages = []
         errors = Validations.validatorRegistration(params.username, params.fname, params.lname, params.email, params.passwd, params.conpasswd)
         if (errors == null || errors.isEmpty()) {
-            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), null, null)
+            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+            def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
+            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null)
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success");
@@ -167,7 +172,9 @@ class UserController {
         }
         if (errors == null || errors.isEmpty()) {
             try {
-                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), null, null));
+                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
+                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null));
                 messages.add("ddbnext.User.PasswordReset_Success");
             }
             catch (ItemNotFoundException e) {
@@ -184,7 +191,7 @@ class UserController {
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
-            render(view: "profile", model: [favoritesCount: "no count yet", user: user])
+            render(view: "profile", model: [favoritesCount: "0", user: user])
         }
         else{
             redirect(controller:"index")
@@ -334,7 +341,7 @@ class UserController {
                     sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
                 }
             }
-            render(view: "profile", model: [favoritesCount: "no count yet", user: user, errors: errors, messages: messages])
+            render(view: "profile", model: [favoritesCount: "0", user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -343,6 +350,8 @@ class UserController {
 
     def delete() {
         if (isUserLoggedIn()) {
+            List<String> errors = []
+            List<String> messages = []
             User user = getUserFromSession().clone()
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
@@ -357,7 +366,11 @@ class UserController {
             catch (AuthorizationException e) {
                 forward controller: "error", action: "auth"
             }
-            doLogout()
+            logoutUserFromSession()
+            
+            messages.add("ddbnext.User.Delete_Confirm")
+
+            render(view: "confirm", model: [errors: errors, messages: messages])
         }
     }
 
