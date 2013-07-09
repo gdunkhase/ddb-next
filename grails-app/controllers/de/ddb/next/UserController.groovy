@@ -254,7 +254,7 @@ class UserController {
             boolean profileDifference = false
             boolean newsletterDifference = false
             User user = getUserFromSession().clone()
-            
+
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
@@ -281,10 +281,10 @@ class UserController {
                     }
                 }
                 if ((params.newsletter && !user.newsletterSubscribed)
-                    || (!params.newsletter && user.newsletterSubscribed)) {
+                || (!params.newsletter && user.newsletterSubscribed)) {
                     newsletterDifference = true
                 }
-                    
+
                 if (!profileDifference && !eMailDifference && !newsletterDifference) {
                     errors.add("ddbnext.User.Profile_NoValuesChanged")
                 }
@@ -514,10 +514,10 @@ class UserController {
                 user.setEmail(email)
                 user.setUsername(username)
                 user.setFirstname(firstName)
-                user.setFirstname(lastName)
+                user.setLastname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                
+
                 //TODO: check Newsletter-Subscription and set attribute newsletterSubscribed.
 
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)

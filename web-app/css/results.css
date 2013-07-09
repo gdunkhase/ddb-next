@@ -412,9 +412,12 @@ input[type="checkbox"],input[type="radio"] {
   position: absolute;
   right: 0;
   background: url("../images/icons/search_actions.png") no-repeat 0 0;
-  margin-right: 30px;
   margin-top: -15px;
   cursor: pointer;
+}
+
+.search-results .results-list .summary .information.show-favorites {
+  margin-right: 30px;
 }
 
 .search-results .results-list .summary .information:hover {

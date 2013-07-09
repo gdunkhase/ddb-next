@@ -90,7 +90,7 @@ footer, .footer,
 
 .search-results-list .summary-main-wrapper {
   width: 490px;
-  position: absolute;
+  position: relative;
 }
 
 
@@ -103,8 +103,12 @@ footer, .footer,
 }
 .search-results-list .thumbnail-wrapper {
   width: 160px;
-  position: absolute;
+  top: 0px;
+  position: absolute !important;
   margin-left: 490px !important;
+}
+.search-results-list .grid .thumbnail-wrapper {
+  position: relative !important;
 }
 .results-list h2 {
   font-size: 1em;
@@ -124,7 +128,7 @@ footer, .footer,
   position: relative;
 }
 .results-list .extra {
-  display: block !important;
+  display: none !important;
   min-height: 20px;
 }
 .results-list .extra ul {
