@@ -36,6 +36,7 @@ class BookmarksService {
 
     public static final def FAVORITES = 'favorites'
     public static final def IS_PUBLIC = false
+    public static final def DEFAULT_SIZE = 9999
 
     def configurationService
     def transactional = false
@@ -116,10 +117,10 @@ class BookmarksService {
      * @param folderId  the ID of a certain folder. Use {@link #findAllFolders} to find out the folder IDs.
      * @return          a list of bookmarks.
      */
-    def findBookmarksByFolderId(userId, folderId) {
+    def findBookmarksByFolderId(userId, folderId, size) {
         log.info "find bookmarks for the user (${userId}) in the folder ${folderId}"
         def http = new HTTPBuilder(
-            "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}")
+            "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}%20&size=${size}")
         http.request(Method.GET, ContentType.JSON) { req ->
 
            response.success = { resp, json ->
@@ -283,14 +284,15 @@ class BookmarksService {
        }
     }
 
-    def findFavoritesByUserId(userId) {
+    def findFavoritesByUserId(userId, size) {
         def favoriteFolderId = getFavoritesFolderId(userId)
-        return findBookmarksByFolderId(userId, favoriteFolderId)
+        return findBookmarksByFolderId(userId, favoriteFolderId, size)
     }
+
 
     def deleteFavorites(userId, itemIds) {
         def bookmarkIds = []
-        def allFavorites = findFavoritesByUserId(userId)
+        def allFavorites = findFavoritesByUserId(userId, DEFAULT_SIZE)
         log.info "favs: ${allFavorites}"
         allFavorites.each { it ->
             log.info "fav: ${it}"
