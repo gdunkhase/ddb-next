@@ -193,17 +193,13 @@ class BookmarksService {
      */
     def findBookmarkedItems(userId, itemIdList) {
         log.info "itemIdList ${itemIdList}"
-//        def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
-
-        def lowerCaseIdList = itemIdList
-        log.info "lowerCaseIdList  ${lowerCaseIdList}"
 
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
               filter: [
                 terms: [
-                  item: lowerCaseIdList
+                  item: itemIdList
                 ]
               ]
             ]
@@ -313,15 +309,7 @@ class BookmarksService {
     def findFavoritesByItemIds(userId, itemIdList) {
         def favoriteFolderId = getFavoritesFolderId(userId)
         log.info "fav: ${favoriteFolderId}"
-
         log.info "itemIdList ${itemIdList}"
-//        def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
-        //        def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
-
-        def lowerCaseIdList = itemIdList
-
-        log.info "lowerCaseIdList  ${lowerCaseIdList}"
-
         return findBookmarkedItemsInFolder(userId, itemIdList, favoriteFolderId)
     }
 
@@ -347,17 +335,13 @@ class BookmarksService {
     // TODO refactor this method, duplicate with findFavoritesByItemIds
     def findBookmarkedItemsInFolder(userId, itemIdList, folderId) {
         log.info "itemIdList ${itemIdList}"
-        // def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
-        def lowerCaseIdList = itemIdList
-
-        log.info "lowerCaseIdList  ${lowerCaseIdList}"
 
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
               filter: [
                 terms: [
-                  item: lowerCaseIdList
+                  item: itemIdList
                 ]
               ]
             ]
@@ -376,9 +360,7 @@ class BookmarksService {
 
     def findFavoriteByItemId(userId, itemId) {
       log.info "itemId: ${itemId}"
-      def lowerCaseId = itemId.toLowerCase()
 
-      def lowerCaseIdList = [itemId]
       def folderId = getFavoritesFolderId(userId)
 
       def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
@@ -386,7 +368,7 @@ class BookmarksService {
           body = [
             filter: [
               terms: [
-                item: lowerCaseIdList
+                item: [itemId]
               ]
             ]
           ]
