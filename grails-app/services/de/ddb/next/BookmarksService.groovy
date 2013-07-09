@@ -115,10 +115,10 @@ class BookmarksService {
      *
      * @param userId    the ID whose the folders and bookmarks belongs to.
      * @param folderId  the ID of a certain folder. Use {@link #findAllFolders} to find out the folder IDs.
-     * @param size      how many bookmarks the service should return.
+     * @param size      how many bookmarks the service should return, it is _optional_ by default size=9999
      * @return          a list of bookmarks.
      */
-    def findBookmarksByFolderId(userId, folderId, size) {
+    def findBookmarksByFolderId(userId, folderId, size = DEFAULT_SIZE) {
         log.info "find bookmarks for the user (${userId}) in the folder ${folderId}"
         def http = new HTTPBuilder(
             "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}%20&size=${size}")
@@ -285,7 +285,7 @@ class BookmarksService {
        }
     }
 
-    def findFavoritesByUserId(userId, size) {
+    def findFavoritesByUserId(userId, size = DEFAULT_SIZE) {
         def favoriteFolderId = getFavoritesFolderId(userId)
         return findBookmarksByFolderId(userId, favoriteFolderId, size)
     }

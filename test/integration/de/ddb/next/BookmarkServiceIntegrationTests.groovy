@@ -57,7 +57,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def folderId = createNewFolder()
         def itemId = 'foobarbaz'
         def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId)
-        def bookmarks = bookmarksService.findBookmarksByFolderId(userId, folderId, SIZE)
+        def bookmarks = bookmarksService.findBookmarksByFolderId(userId, folderId)
         assert bookmarks.size() > 0
     }
 
@@ -111,7 +111,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         // if the user don't have a favorite list, then the service should create it.
         def firstFav = bookmarksService.addFavorite(userId, firstItemId)
 
-        def allFavs = bookmarksService.findFavoritesByUserId(userId, SIZE)
+        def allFavs = bookmarksService.findFavoritesByUserId(userId)
         assert allFavs.size() > 0
     }
 
@@ -123,13 +123,13 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         def firstFav = bookmarksService.addFavorite(userId, firstItemId)
 
-        def allFavs = bookmarksService.findFavoritesByUserId(userId, SIZE)
+        def allFavs = bookmarksService.findFavoritesByUserId(userId)
         assert allFavs.size() == 1
 
         def itemIds = [firstItemId]
         bookmarksService.deleteFavorites(userId, itemIds)
 
-        def emptyFavs = bookmarksService.findFavoritesByUserId(userId, SIZE)
+        def emptyFavs = bookmarksService.findFavoritesByUserId(userId)
         assert emptyFavs.size() == 0
     }
 
