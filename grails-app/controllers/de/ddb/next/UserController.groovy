@@ -110,8 +110,7 @@ class UserController {
 
     //Favorites page
     def favorites(){
-        if(isUserLoggedIn() || true){
-            //2. Get the items from the backend
+        if(isUserLoggedIn()){
             def rows=20; //default
             if (params.rows){
                 rows = params.rows.toInteger();
@@ -119,14 +118,13 @@ class UserController {
             
             def String result = getFavorites()
             List items = JSON.parse(result) as List
+            def totalResults= items.length();
             def queryItems;
             if (params.offset){
-                println "here it is" + params.offset;
                 queryItems=items.drop(params.offset.toInteger())
-                println "###############" + items
             }else{
                 params.offset=0;
-                queryItems=items.take(20)
+                queryItems=items.take(rows)
             }
 
             def orQuery=queryItems[0].getAt("itemId");
@@ -178,11 +176,11 @@ class UserController {
                 viewType:  urlQuery["viewType"],
                 resultsPaginatorOptions: resultsPaginatorOptions,
                 page: page,
-                resultsNumber: items.size(),
-                firstPg:createFavoritesLinkNavigation(favList.id,urlQuery["offset"],urlQuery["rows"],"sempty"),
-                prevPg:createFavoritesLinkNavigation(favList.id,params.offset.toInteger()-rows,urlQuery["rows"],"sempty"),
-                nextPg:createFavoritesLinkNavigation(bookmarks["bookmarksLists"]["id"],params.offset.toInteger()+rows,urlQuery["rows"],"sempty"),
-                lastPg:createFavoritesLinkNavigation(bookmarks["bookmarksLists"]["id"],(Math.ceil((items.size()-rows)/10)*10).toInteger(),urlQuery["rows"],"sempty"),
+                resultsNumber: totalResults,
+                firstPg:createFavoritesLinkNavigation(urlQuery["offset"],urlQuery["rows"],"sempty"),
+                prevPg:createFavoritesLinkNavigation(params.offset.toInteger()-rows,urlQuery["rows"],"sempty"),
+                nextPg:createFavoritesLinkNavigation(params.offset.toInteger()+rows,urlQuery["rows"],"sempty"),
+                lastPg:createFavoritesLinkNavigation((Math.ceil((items.size()-rows)/10)*10).toInteger(),urlQuery["rows"],"sempty"),
                 totalPages: totalPages,
                 paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                 numberOfResultsFormatted: numberOfResultsFormatted,
@@ -191,9 +189,12 @@ class UserController {
 
         }
         else{
-            redirect(controller:"index")
+            redirect(controller:"user", action:"index")
         }
-
+    }
+    
+    def sendfavorites(){
+        
     }
 
 	def private String formatDate(items,String id) {
@@ -213,8 +214,8 @@ class UserController {
         return newDate.toString()
 	}
 
-    def private createFavoritesLinkNavigation(bid,offset,rows,order){
-        return g.createLink(controller:'user', action: 'favorites',params:['fid':bid,offset:offset,rows:rows,order:order])
+    def private createFavoritesLinkNavigation(offset,rows,order){
+        return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
     }
 
     def getFavorites() {
@@ -230,6 +231,8 @@ class UserController {
            return null
         }
     }
+    /* end favorites methods */
+    
     
     def registration() {
         render(view: "registration", model: [])

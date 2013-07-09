@@ -21,6 +21,7 @@ $(function() {
 	        this.next().text(prefix + 'check all');
 	    }
 	});	
+	updateNavigationUrl();
 	$('#favorites-remove').submit(function() {
 		var selected = new Array();
 		$('#slaves input:checked').each(function() {
@@ -28,7 +29,7 @@ $(function() {
 		});
 		  jQuery.ajax({
 			    type: 'POST',
-			    url: "/apis/favorites/_delete",
+			    url: "/ddb-next/apis/favorites/_delete",
 			    data: JSON.stringify(selected),
 			    dataType: "json",
 			    success: function(data){ alert(data); }
@@ -40,7 +41,13 @@ $(function() {
 		// workaround for ffox + ie click focus - prevents links that load dynamic
 		// content to be focussed/active.
 		$("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
-
+		$('#editor').wysiwyg();
+		 $("#sendbookmarks").click(function(event) {
+		        event.preventDefault()
+		        $('#myModal').removeData("modal")
+		        $('#myModal').modal({remote: $(this).attr("href")})
+		    })
+		//$('#sendbookmarks').click(function(){ $('#myModal').empty({path:"/ddb-next/user/sendfavorites"}) });
 		// Fix for back-button problem with the searchfield: DDBNEXT-389
 		if($.browser.msie){
 			var queryCache = $("#querycache");
@@ -188,6 +195,30 @@ $('.page-input').keyup(function(e){
 	}
 });
 
+
+function updateNavigationUrl(){
+	$.urlParam = function(name){
+	    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	    return results[1] || 0;
+	}
+	var offset = getParam( 'offset' ); 
+
+	if ((offset == null) || (offset<1)){
+		$(".page-nav .prev-page").addClass("off");
+		$(".page-nav .first-page").addClass("off");
+	}
+}
+function getParam( name )
+{
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var tmpURL = window.location.href;
+  var results = regex.exec( tmpURL );
+  if( results == null )
+    return "";
+  else
+    return results[1];
+}
 //function fetchResultsList(url){
 
 //var divFavoritesResultsOverlayModal = $(document.createElement('div'));

@@ -67,8 +67,8 @@ limitations under the License.
               class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br">
               <a class="h3" href="#"> ${it.name}
             </a> <span class="bookmarks-list-number"> ${resultsNumber}
-            </span> <a class="bookmarks-list-envelope" href="#"><i
-                class="icon-envelope"></i></a> <a class="bookmarks-list-edit"
+            </span> <a class="bookmarks-list-envelope" id="sendbookmarks" href="http://shqiperia.com">
+            <i class="icon-envelope"></i></a> <a class="bookmarks-list-edit"
               href="#"><i class="icon-edit"></i></a>
             </li>
           </g:each>
@@ -106,5 +106,27 @@ limitations under the License.
       </div>
     </div>
   </div>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h3 id="myModalLabel"></h3>
+</div>
+<div class="modal-body">
+    <form>
+    <fieldset>
+    <legend><g:message code="ddbnext.send_favorites"/></legend>
+    <label><g:message code="ddbnext.Email" /></label>
+    <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+    ...
+     <input type="text" placeholder="Type something…" ></div>
+    <span class="help-block">Example block-level help text here.</span>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary" type="submit">Save changes</button>
+    </fieldset>
+    </form>
+</div>
+</div>
+
 </body>
 </html>
