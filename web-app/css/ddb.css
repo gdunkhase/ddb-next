@@ -564,6 +564,11 @@ header .header-spacer,.header .header-spacer {
   font-size: 1em;
 }
 
+.form-horizontal .control-label {
+  width: 180px;
+  margin-right: 10px;
+}
+
 .nav .tooltip {
   width: 321px !important;
 }

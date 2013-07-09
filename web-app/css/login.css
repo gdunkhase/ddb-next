@@ -27,13 +27,13 @@
 } 
 
 .openid-google {
-  background: transparent url("../images/icons/openid.png") no-repeat -80px -100px;
+  background: transparent url("../images/icons/openid.png") no-repeat -80px -200px;
   width: 150px;
   height: 50px;
 }
 
 .openid-yahoo {
-  background: transparent url("../images/icons/openid.png") no-repeat -80px -150px;
+  background: transparent url("../images/icons/openid.png") no-repeat -80px -250px;
   width: 150px;
   height: 50px;
 }
