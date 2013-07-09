@@ -115,6 +115,7 @@ class BookmarksService {
      *
      * @param userId    the ID whose the folders and bookmarks belongs to.
      * @param folderId  the ID of a certain folder. Use {@link #findAllFolders} to find out the folder IDs.
+     * @param size      how many bookmarks the service should return.
      * @return          a list of bookmarks.
      */
     def findBookmarksByFolderId(userId, folderId, size) {
@@ -342,7 +343,7 @@ class BookmarksService {
         def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
         log.info "lowerCaseIdList  ${lowerCaseIdList}"
 
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}")
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
               filter: [
