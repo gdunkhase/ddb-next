@@ -50,6 +50,8 @@ class BookmarksService {
      */
     def newFolder(userId, title, isPublic) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder")
+
+        def folderId
         http.request(Method.POST, ContentType.JSON) { req ->
            body = [
              user: userId,
@@ -57,12 +59,13 @@ class BookmarksService {
              isPublic : isPublic
            ]
 
-           def folderId
            response.success = { resp, json ->
                folderId = json._id
-               folderId
+               refresh()
            }
-       }
+        }
+
+        folderId
     }
 
     /**
@@ -147,6 +150,8 @@ class BookmarksService {
      */
     def saveBookmark(userId, folderId, itemId) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark")
+
+        def bookmarkId
         http.request(Method.POST, ContentType.JSON) { req ->
            body = [
              user: userId,
@@ -155,12 +160,23 @@ class BookmarksService {
              createdAt: new Date().getTime()
            ]
 
-           def bookmarkId = ''
            response.success = { resp, json ->
                bookmarkId = json._id
-
                log.info "Bookmark ${bookmarkId} is created."
-               return bookmarkId
+               refresh()
+           }
+        }
+        bookmarkId
+    }
+
+    private refresh() {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/_refresh")
+
+        log.info "refreshing index ddb..."
+        http.request(Method.POST, ContentType.JSON) { req ->
+           response.success = { resp, json ->
+               log.info "Response: ${resp}"
+               log.info "finished refreshing index ddb."
            }
        }
     }
@@ -214,6 +230,9 @@ class BookmarksService {
             }
 
             body = reqBody
+            response.success = {
+              refresh()
+            }
         }
     }
 
