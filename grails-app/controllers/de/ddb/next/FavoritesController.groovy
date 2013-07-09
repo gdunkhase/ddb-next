@@ -41,8 +41,8 @@ class FavoritesController {
         render(status: result)
     }
 
-    def delFavorite() {
-        log.info "delFavorite " + params.id
+    def deleteFavorite() {
+        log.info "deleteFavorite " + params.id
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
@@ -53,12 +53,12 @@ class FavoritesController {
         else {
             result = response.SC_UNAUTHORIZED
         }
-        log.info "delFavorite returns " + result
+        log.info "deleteFavorite returns " + result
         render(status: result)
     }
 
-    def delFavorites() {
-        log.info "delFavorites " + request.JSON
+    def deleteFavorites() {
+        log.info "deleteFavorites " + request.JSON
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
@@ -69,7 +69,7 @@ class FavoritesController {
         else {
             result = response.SC_UNAUTHORIZED
         }
-        log.info "delFavorites returns " + result
+        log.info "deleteFavorites returns " + result
         render(status: result)
     }
 
