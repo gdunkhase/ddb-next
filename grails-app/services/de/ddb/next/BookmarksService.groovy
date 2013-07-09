@@ -365,7 +365,7 @@ class BookmarksService {
         }
     }
 
-    def findBookmarkByItemId(userId, itemId) {
+    def findFavoriteByItemId(userId, itemId) {
       log.info "itemId: ${itemId}"
       def lowerCaseId = itemId.toLowerCase()
       def lowerCaseIdList = [lowerCaseId]
