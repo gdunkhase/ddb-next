@@ -7,6 +7,7 @@ import org.junit.*
 
 class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
+    private static final def SIZE = 99999
 
     def bookmarksService
 
@@ -51,12 +52,12 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info 'bookmark is saved, ID is: ' + bookmarkId
     }
 
-    @Ignore('Can not search immediately after Indexing?')
+
     @Test void shouldFindBookmarksByFolderId() {
         def folderId = createNewFolder()
         def itemId = 'foobarbaz'
         def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId)
-        def bookmarks = bookmarksService.findBookmarksByFolderId(userId, folderId)
+        def bookmarks = bookmarksService.findBookmarksByFolderId(userId, folderId, SIZE)
         assert bookmarks.size() > 0
     }
 
@@ -110,7 +111,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         // if the user don't have a favorite list, then the service should create it.
         def firstFav = bookmarksService.addFavorite(userId, firstItemId)
 
-        def allFavs = bookmarksService.findFavoritesByUserId(userId)
+        def allFavs = bookmarksService.findFavoritesByUserId(userId, SIZE)
         assert allFavs.size() > 0
     }
 
@@ -122,13 +123,13 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         def firstFav = bookmarksService.addFavorite(userId, firstItemId)
 
-        def allFavs = bookmarksService.findFavoritesByUserId(userId)
+        def allFavs = bookmarksService.findFavoritesByUserId(userId, SIZE)
         assert allFavs.size() == 1
 
         def itemIds = [firstItemId]
         bookmarksService.deleteFavorites(userId, itemIds)
 
-        def emptyFavs = bookmarksService.findFavoritesByUserId(userId)
+        def emptyFavs = bookmarksService.findFavoritesByUserId(userId, SIZE)
         assert emptyFavs.size() == 0
     }
 
