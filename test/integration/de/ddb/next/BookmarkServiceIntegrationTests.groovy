@@ -165,4 +165,19 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         assert secondFavId == null
     }
+
+    @Test void shouldFindBookmarkByItemId() {
+        log.info "the bookmark service should find bookmark by item ID"
+        def userId = UUID.randomUUID() as String
+
+        def firstItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
+        log.info "adding item ${firstItemId} to the folder Favorite."
+        def firstFavId = bookmarksService.addFavorite(userId, firstItemId)
+
+        def bookmarkForItem = bookmarksService.findBookmarkByItemId(userId, firstItemId)
+        assert bookmarkForItem != null
+        assert bookmarkForItem.itemId == firstItemId
+        log.info bookmarkForItem
+    }
+
 }

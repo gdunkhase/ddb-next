@@ -364,4 +364,40 @@ class BookmarksService {
             }
         }
     }
+
+    def findBookmarkByItemId(userId, itemId) {
+      log.info "itemId: ${itemId}"
+      def lowerCaseId = itemId.toLowerCase()
+      def lowerCaseIdList = [lowerCaseId]
+      def folderId = getFavoritesFolderId(userId)
+
+      def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
+      http.request(Method.POST, ContentType.JSON) { req ->
+          body = [
+            filter: [
+              terms: [
+                item: lowerCaseIdList
+              ]
+            ]
+          ]
+
+          response.success = { resp, json ->
+              log.info "response as application/json: ${json}"
+              def all = [] //as Set
+
+              def resultList = json.hits.hits
+              resultList.each { it ->
+                  def bookmark = new Bookmark(
+                       bookmarkId: it._id,
+                       userId: it._source.user,
+                       itemId: it._source.item,
+                       creationDate: new Date(it._source.createdAt.toLong())
+                  )
+                  all.add(bookmark)
+              }
+              assert all.size() <= 1
+              all[0]
+          }
+      }
+    }
 }
