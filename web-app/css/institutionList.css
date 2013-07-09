@@ -215,3 +215,35 @@ div.sector-facet>label:hover {
   position: absolute;
   background-color: #FFFFFF;
 }
+
+.institutionlist .multiselect-container{
+  left: 0;
+  right: 0;
+  z-index:1002;
+}
+
+.institutionlist .btn-group > .btn:last-child, .btn-group > .dropdown-toggle, .institutionlist .multiselect-container{
+  webkit-border-radius: 0;
+  border-radius: 0;
+  -moz-border-radius: 0;
+}
+
+.institutionlist .btn-group, .institutionlist .btn-group > .btn:last-child, .btn-group > .dropdown-toggle{
+  width: 100%!important;
+}
+
+.institutionlist .btn .caret {
+  margin-top: 8px;
+  margin-left: 5px;
+}
+
+.institutionlist .filter.visible-phone #filter-title {
+  border-bottom: none;
+}
+
+@media (max-width: 767px){
+  #institution-list{
+    padding-bottom: 10px;
+    border-bottom: 2px solid #EFEBE8;
+  }
+}
