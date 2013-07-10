@@ -191,7 +191,7 @@ class UserController {
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
-            render(view: "profile", model: [favoritesCount: "0", user: user])
+            render(view: "profile", model: [favoritesCount: "0", user: user, errors:params.errors, messages: params.messages])
         }
         else{
             redirect(controller:"index")
@@ -343,7 +343,7 @@ class UserController {
                     sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
                 }
             }
-            render(view: "profile", model: [favoritesCount: "0", user: user, errors: errors, messages: messages])
+            redirect(controller:"user", action:"profile", params:[errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
