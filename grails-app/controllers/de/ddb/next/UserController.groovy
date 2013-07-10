@@ -50,6 +50,8 @@ class UserController {
     def sessionService
     def configurationService
     def messageSource
+    def bookmarksService
+    def searchService
 
     LinkGenerator grailsLinkGenerator
 
