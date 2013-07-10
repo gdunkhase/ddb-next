@@ -320,21 +320,21 @@ noscript .scroller {
 }
 @media (max-width: 529px) {
   .slide-viewer {
-    width: 280px;
+    width: 300px;
   }
   .slide-viewer .scroller {
-    width: 260px;
+    width: 280px;
   }
   #binary-viewer {
-    width: 280px;
+    width: 300px;
     height: 200px;
   }
   .previews img {
-    max-width: 280px;
+    max-width: 300px;
     max-height: 200px;
   }
   #jwplayer-container_wrapper {
-    width: 280px !important;
+    width: 300px !important;
     height: 200px !important;
   }
 }

@@ -115,15 +115,13 @@ limitations under the License.
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 <h3 id="myModalLabel"></h3>
 </div>
-<div class="modal-body">
+<div class="modal-body" style=" max-height: 800px;">
     <form>
     <fieldset>
     <legend><g:message code="ddbnext.send_favorites"/></legend>
     <label><g:message code="ddbnext.Email" /></label>
-    <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
-    ...
-     <input type="text" placeholder="Type something…" ></div>
-    <span class="help-block">Example block-level help text here.</span>
+    <input type="text" placeholder="Type something…" >
+     <span class="help-block">Example block-level help text here.</span>
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     <button class="btn btn-primary" type="submit">Save changes</button>
     </fieldset>

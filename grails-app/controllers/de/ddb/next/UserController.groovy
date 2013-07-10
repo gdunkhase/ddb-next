@@ -17,13 +17,6 @@ package de.ddb.next
 
 import javax.servlet.http.HttpSession
 
-import java.awt.GraphicsConfiguration.DefaultBufferCapabilities;
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import grails.converters.*
-import org.codehaus.groovy.grails.web.json.*;
-import org.springframework.web.servlet.support.RequestContextUtils;
-
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
@@ -37,11 +30,17 @@ import org.openid4java.message.ax.FetchRequest
 import org.openid4java.util.HttpClientFactory
 import org.openid4java.util.ProxyProperties
 
+import org.springframework.web.servlet.support.RequestContextUtils;
+
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
 import de.ddb.next.exception.ItemNotFoundException
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import grails.converters.*
+import org.codehaus.groovy.grails.web.json.*;
 
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
@@ -50,8 +49,9 @@ class UserController {
     def aasService
     def sessionService
     def configurationService
-    def searchService
+    def messageSource
     def bookmarksService
+    def searchService
 
     LinkGenerator grailsLinkGenerator
 
@@ -108,7 +108,7 @@ class UserController {
 
     }
 
-    //Favorites page
+ //Favorites page
     def favorites(){
         if(isUserLoggedIn()){
             def rows=20; //default
@@ -202,7 +202,7 @@ class UserController {
         
     }
 
-	def private String formatDate(items,String id) {
+    def private String formatDate(items,String id) {
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         def newDate;
         items.each { favItems ->
@@ -217,7 +217,7 @@ class UserController {
             }
         }
         return newDate.toString()
-	}
+    }
 
     def private createFavoritesLinkNavigation(offset,rows,order){
         return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
@@ -237,8 +237,7 @@ class UserController {
         }
     }
     /* end favorites methods */
-    
-    
+
     def registration() {
         render(view: "registration", model: [])
     }
@@ -248,7 +247,9 @@ class UserController {
         List<String> messages = []
         errors = Validations.validatorRegistration(params.username, params.fname, params.lname, params.email, params.passwd, params.conpasswd)
         if (errors == null || errors.isEmpty()) {
-            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), null, null)
+            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+            def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
+            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null)
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success");
@@ -286,7 +287,9 @@ class UserController {
         }
         if (errors == null || errors.isEmpty()) {
             try {
-                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), null, null));
+                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
+                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null));
                 messages.add("ddbnext.User.PasswordReset_Success");
             }
             catch (ItemNotFoundException e) {
@@ -303,7 +306,7 @@ class UserController {
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
-            render(view: "profile", model: [favoritesCount: "no count yet", user: user])
+            render(view: "profile", model: [favoritesCount: "0", user: user])
         }
         else{
             redirect(controller:"index")
@@ -422,7 +425,9 @@ class UserController {
                 if (eMailDifference && (errors == null || errors.isEmpty())) {
                     try {
                         //update email in aas
-                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), null, null));
+                        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                        def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
+                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null));
                         messages.add("ddbnext.User.Email_Update_Success")
                     }
                     catch (ConflictException e) {
@@ -453,7 +458,7 @@ class UserController {
                     sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
                 }
             }
-            render(view: "profile", model: [favoritesCount: "no count yet", user: user, errors: errors, messages: messages])
+            render(view: "profile", model: [favoritesCount: "0", user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -462,6 +467,8 @@ class UserController {
 
     def delete() {
         if (isUserLoggedIn()) {
+            List<String> errors = []
+            List<String> messages = []
             User user = getUserFromSession().clone()
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
@@ -476,7 +483,11 @@ class UserController {
             catch (AuthorizationException e) {
                 forward controller: "error", action: "auth"
             }
-            doLogout()
+            logoutUserFromSession()
+            
+            messages.add("ddbnext.User.Delete_Confirm")
+
+            render(view: "confirm", model: [errors: errors, messages: messages])
         }
     }
 

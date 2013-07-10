@@ -92,16 +92,9 @@ class FavoritesController {
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
-            def favorites = bookmarksService.findFavoritesByUserId(user.getId())
-            if (favorites) {
-                favorites.each {
-                    def bookmark = it
-                    if (bookmark.itemId == params.id) {
-                        log.info "getFavorite returns " + bookmark
-                        render(bookmark as JSON)
-                    }
-                }
-            }
+            def bookmark = bookmarksService.findFavoriteByItemId(user.getId(), params.id)
+            log.info "getFavorite returns " + bookmark
+            render(bookmark as JSON)
         }
         else {
             result = response.SC_UNAUTHORIZED
