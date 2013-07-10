@@ -79,6 +79,50 @@ class ErrorController {
     }
 
     /**
+     * Handler method for error 409 situations
+     * @return The conflict view
+     */
+    def conflict() {
+
+        // Here we have the possibility to add further logging to identify if some 409 urls were called
+
+        def exceptionMessage = ""
+        def apiResponse
+
+        // Does it come from a automatically handled backend request?
+        if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
+        }
+
+        apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
+
+        // Return response code 409
+        response.status = 409
+        response.setHeader("Error-Message", exceptionMessage)
+        
+        // The content type and encoding of the error page (should be explicitly set, otherwise the mime
+        // could be text/json if an API was called and the layout would be messed up
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
+
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Return the 409 view
+            log.error "notFound(): Return view '409'"
+            return render(view:'409_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        } else {
+
+            // Not it production? show an ugly, developer-focused error message
+            log.error "notFound(): Return view '409_development'"
+            return render(view:'409_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+            
+        }
+        
+    }
+
+    /**
      * Handler method for error 404 situations
      * @return The notfound view
      */
@@ -122,7 +166,7 @@ class ErrorController {
         
     }
 
-        /**
+     /**
      * Handler method for error 401 situations
      * @return The auth view
      */
@@ -163,4 +207,47 @@ class ErrorController {
         }
         
     }
+
+     /**
+     * Handler method for error 400 situations
+     * @return The bad-request view
+     */
+    def badRequest() {
+
+        def exceptionMessage = ""
+        def apiResponse
+
+        // Does it come from a automatically handled backend request?
+        if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
+        }
+
+        apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
+
+        // Return response code 400
+        response.status = 400
+        response.setHeader("Error-Message", exceptionMessage)
+        
+        // The content type and encoding of the error page (should be explicitly set, otherwise the mime
+        // could be text/json if an API was called and the layout would be messed up
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
+
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Return the 400 view
+            log.error "badRequest(): Return view '400'"
+            return render(view:'400_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        } else {
+
+            // Not it production? show an ugly, developer-focused error message
+            log.error "auth(): Return view '400_development'"
+            return render(view:'400_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+            
+        }
+        
+    }
+
 }
