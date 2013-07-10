@@ -50,7 +50,7 @@ limitations under the License.
                 <div class="profile-title"><g:message code="ddbnext.User_Profile"/> <g:getUserLabel /></div>
                 <div class="fr profile-links">
                     <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="user",action: 'favorites', params:[:])}">
-                        <g:message code="ddbnext.Favorites" />(${favoritesCount })
+                        <g:message code="ddbnext.Favorites" /> (${favoritesCount})
                     </a>
                     <a class="profile-link ${offForOpenId}" title="<g:message code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
                         <g:message code="ddbnext.Change_Password_Link" />

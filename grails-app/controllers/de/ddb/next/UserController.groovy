@@ -310,7 +310,9 @@ class UserController {
                 if (eMailDifference && (errors == null || errors.isEmpty())) {
                     try {
                         //update email in aas
-                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), null, null));
+                        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                        def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
+                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null));
                         messages.add("ddbnext.User.Email_Update_Success")
                     }
                     catch (ConflictException e) {

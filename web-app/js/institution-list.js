@@ -436,9 +436,12 @@
       buttonClass: 'btn btn-small',
       buttonWidth: 'auto',
       maxHeight: false,
+      field_NoneSelected: messages.ddbnext.None_Selected,
       buttonText: function(options) {
         if (options.length === 0) {
-          return 'None selected <b class="caret"></b>';
+          var textNode = $(document.createElement('span')).html(this.field_NoneSelected);
+          textNode.append($(document.createElement('b')).addClass('caret'));
+          return textNode;
         } else if (options.length > 4) {
           return options.length + ' selected <b class="caret"></b>';
         } else {
