@@ -36,6 +36,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
+import de.ddb.next.exception.BadRequestException
 import de.ddb.next.exception.ConflictException
 import de.ddb.next.exception.ItemNotFoundException
 
@@ -240,6 +241,9 @@ class ApiConsumer {
                             return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output)
                     }
                 }
+                response.'400' = { resp ->
+                    return build400Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 400 -> " + uri.toString() + " / " + resp.headers.'Error-Message')
+                }
                 response.'401' = { resp ->
                     return build401Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 401 -> " + uri.toString() + " / " + resp.headers.'Error-Message')
                 }
@@ -279,6 +283,24 @@ class ApiConsumer {
         def duration = System.currentTimeMillis()-timestampStart
         def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, null, ApiResponse.HttpStatus.HTTP_200, responseHeader)
         //log.info response.toString()
+        return response
+    }
+
+    /**
+     * Utility method to build the ApiResponse object for 400 responses
+     * @param timestampStart The timestamp when the request was send
+     * @param calledUrl The complete URL that was called
+     * @param method The request method (Method.GET, Method.POST)
+     * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
+     * @param responseHeader The headers of the response
+     * @param exceptionDescription The text for the ItemNotFoundException that will be attached but not thrown
+     * @return An ApiResponse object containing the response information
+     */
+    private static def build400Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription){
+        def duration = System.currentTimeMillis()-timestampStart
+        BadRequestException exception = new BadRequestException(exceptionDescription)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_400, responseHeader)
+        log.info response.toString()
         return response
     }
 

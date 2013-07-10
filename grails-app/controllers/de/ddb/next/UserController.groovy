@@ -17,13 +17,6 @@ package de.ddb.next
 
 import javax.servlet.http.HttpSession
 
-import java.awt.GraphicsConfiguration.DefaultBufferCapabilities;
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import grails.converters.*
-import org.codehaus.groovy.grails.web.json.*;
-import org.springframework.web.servlet.support.RequestContextUtils;
-
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
@@ -36,6 +29,8 @@ import org.openid4java.message.ParameterList
 import org.openid4java.message.ax.FetchRequest
 import org.openid4java.util.HttpClientFactory
 import org.openid4java.util.ProxyProperties
+
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
@@ -50,8 +45,7 @@ class UserController {
     def aasService
     def sessionService
     def configurationService
-    def searchService
-    def bookmarksService
+    def messageSource
 
     LinkGenerator grailsLinkGenerator
 
@@ -110,135 +104,25 @@ class UserController {
 
     //Favorites page
     def favorites(){
-        if(isUserLoggedIn()){
-            def rows=20; //default
-            if (params.rows){
-                rows = params.rows.toInteger();
-            }
-            
-            def String result = getFavorites()
-            List items = JSON.parse(result) as List
-            def totalResults= items.length();
-            
-            if (totalResults <1){
-                render(view: "favorites", model: [
-                resultsNumber: totalResults,
-                ])
-                return;
-            }else{
-                def queryItems;
-                if (params.offset){
-                    queryItems=items.drop(params.offset.toInteger())
-                }else{
-                    params.offset=0;
-                    queryItems=items.take(rows)
-                }
-    
-                def orQuery=queryItems[0].getAt("itemId");
-                queryItems.tail().each() { orQuery+=" OR "+ it.itemId };
-                params.query = "id:("+orQuery+")"
-    
-                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-    
-                def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-                urlQuery["offset"]=0;
-                def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
-                if(!apiResponse.isOk()){
-                    log.error "Json: Json file was not found"
-                    apiResponse.throwException(request)
-                }
-                def resultsItems = apiResponse.getResponse()
-    
-                //Calculating results pagination (previous page, next page, first page, and last page)
-                def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()    
-                def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-                def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-    
-                def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-                def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
-    
-                def queryString = request.getQueryString()
-    
-                def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false];
-                def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
-    
-    
-                def all = []
-                def temp = []            
-                resultsItems["results"]["docs"].each { searchItem->
-                    temp = []
-                    temp = searchItem
-                    temp["creationDate"]=formatDate(items,searchItem.id);
-                    all.add(temp)
-                }
-                
-                render(view: "favorites", model: [
-                    title: urlQuery["query"],
-                    results: resultsItems["results"]["docs"],
-                    isThumbnailFiltered: params.isThumbnailFiltered,
-                    clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                    correctedQuery:resultsItems["correctedQuery"],
-                    viewType:  urlQuery["viewType"],
-                    resultsPaginatorOptions: resultsPaginatorOptions,
-                    page: page,
-                    resultsNumber: totalResults,
-                    firstPg:createFavoritesLinkNavigation(urlQuery["offset"],urlQuery["rows"],"sempty"),
-                    prevPg:createFavoritesLinkNavigation(params.offset.toInteger()-rows,urlQuery["rows"],"sempty"),
-                    nextPg:createFavoritesLinkNavigation(params.offset.toInteger()+rows,urlQuery["rows"],"sempty"),
-                    lastPg:createFavoritesLinkNavigation((Math.ceil((items.size()-rows)/10)*10).toInteger(),urlQuery["rows"],"sempty"),
-                    totalPages: totalPages,
-                    paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
-                    numberOfResultsFormatted: numberOfResultsFormatted,
-                    offset: params["offset"],
-                ])
-            }
+        if(isUserLoggedIn() || true){
+            //1. Call to fetch the list of favorites items#
+            //2. Get the items from the backend
+            //3. Render the results in the page
+
+            // Date info for the print view
+            def dateTime = new Date()
+            dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+
+            // User info for the print view
+            def userName = getUserFromSession()?.getFirstnameAndLastnameOrNickname()
+
+            render(view:"favorites", model: ['userName': userName, 'dateString': dateTime])
         }
         else{
-            redirect(controller:"user", action:"index")
+            redirect(controller:"index")
         }
-    }
-    
-    def sendfavorites(){
-        
     }
 
-	def private String formatDate(items,String id) {
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        def newDate;
-        items.each { favItems ->
-            if (id== favItems.itemId){
-                String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-                SimpleDateFormat oldFormat = new SimpleDateFormat(pattern,locale);
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm",locale);
-                DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
-                def Date javaDate = oldFormat.parse(favItems.creationDate);
-                newDate = newFormat.format(javaDate)
-                
-            }
-        }
-        return newDate.toString()
-	}
-
-    def private createFavoritesLinkNavigation(offset,rows,order){
-        return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
-    }
-
-    def getFavorites() {
-        log.info "getFavorites"
-        def User user = getUserFromSession()
-        if (user != null) {
-            def result = bookmarksService.findFavoritesByUserId(user.getId())
-            log.info "getFavorites returns " + result
-            return result as JSON
-        }
-        else {
-            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
-           return null
-        }
-    }
-    /* end favorites methods */
-    
-    
     def registration() {
         render(view: "registration", model: [])
     }
@@ -248,7 +132,9 @@ class UserController {
         List<String> messages = []
         errors = Validations.validatorRegistration(params.username, params.fname, params.lname, params.email, params.passwd, params.conpasswd)
         if (errors == null || errors.isEmpty()) {
-            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), null, null)
+            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+            def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
+            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null)
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success");
@@ -286,7 +172,9 @@ class UserController {
         }
         if (errors == null || errors.isEmpty()) {
             try {
-                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), null, null));
+                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
+                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null));
                 messages.add("ddbnext.User.PasswordReset_Success");
             }
             catch (ItemNotFoundException e) {
@@ -303,7 +191,7 @@ class UserController {
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
-            render(view: "profile", model: [favoritesCount: "no count yet", user: user])
+            render(view: "profile", model: [favoritesCount: "0", user: user])
         }
         else{
             redirect(controller:"index")
@@ -422,7 +310,9 @@ class UserController {
                 if (eMailDifference && (errors == null || errors.isEmpty())) {
                     try {
                         //update email in aas
-                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), null, null));
+                        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                        def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
+                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null));
                         messages.add("ddbnext.User.Email_Update_Success")
                     }
                     catch (ConflictException e) {
@@ -453,7 +343,7 @@ class UserController {
                     sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
                 }
             }
-            render(view: "profile", model: [favoritesCount: "no count yet", user: user, errors: errors, messages: messages])
+            render(view: "profile", model: [favoritesCount: "0", user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -462,6 +352,8 @@ class UserController {
 
     def delete() {
         if (isUserLoggedIn()) {
+            List<String> errors = []
+            List<String> messages = []
             User user = getUserFromSession().clone()
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
@@ -476,7 +368,11 @@ class UserController {
             catch (AuthorizationException e) {
                 forward controller: "error", action: "auth"
             }
-            doLogout()
+            logoutUserFromSession()
+            
+            messages.add("ddbnext.User.Delete_Confirm")
+
+            render(view: "confirm", model: [errors: errors, messages: messages])
         }
     }
 
