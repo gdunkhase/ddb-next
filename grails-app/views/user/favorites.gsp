@@ -117,20 +117,7 @@ limitations under the License.
 <h3 id="myModalLabel"></h3>
 </div>
 <div class="modal-body">
-    <form>
-    <fieldset>
-    <legend><g:message code="ddbnext.send_favorites"/></legend>
-    <label><g:message code="ddbnext.Email" /></label>
-    <input type="text" placeholder="Contact Email" >
-          <div class="favorites-results">
-            <g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
-          </div> 
-	
-	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-	    <button class="btn btn-primary" type="submit">Save changes</button>
-	    </fieldset>
-	    </form>
-	</div>
+</div>
 </div>
 
 </body>

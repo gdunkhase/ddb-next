@@ -36,7 +36,8 @@ limitations under the License.
 			</g:if>
 			
 			<tr>
-				<td><g:link controller="${ controller }"
+				<td> 
+				<g:link controller="${ controller }"
 						action="${ action }" params="[id: it.id, hitNumber: hitNumber]">
 						<img
 							src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
