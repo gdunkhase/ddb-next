@@ -119,74 +119,78 @@ class UserController {
             def String result = getFavorites()
             List items = JSON.parse(result) as List
             def totalResults= items.length();
-            def queryItems;
-            if (params.offset){
-                queryItems=items.drop(params.offset.toInteger())
-            }else{
-                params.offset=0;
-                queryItems=items.take(rows)
-            }
-
-            def orQuery=queryItems[0].getAt("itemId");
-            queryItems.tail().each() { orQuery+=" OR "+ it.itemId };
-            params.query = "id:("+orQuery+")"
-
-
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-            def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-            urlQuery["offset"]=0;
-            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
-            if(!apiResponse.isOk()){
-                log.error "Json: Json file was not found"
-                apiResponse.throwException(request)
-            }
-            def resultsItems = apiResponse.getResponse()
-
-            //Calculating results pagination (previous page, next page, first page, and last page)
-            def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
-
-            def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-            def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-
-            def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-            def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
-
-            def queryString = request.getQueryString()
-
-            def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false];
-            def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
-
-
-            def all = []
-            def temp = []            
-            resultsItems["results"]["docs"].each { searchItem->
-                temp = []
-                temp = searchItem
-                temp["creationDate"]=formatDate(items,searchItem.id);
-                all.add(temp)
-            }
-            
-            render(view: "favorites", model: [
-                title: urlQuery["query"],
-                results: resultsItems["results"]["docs"],
-                isThumbnailFiltered: params.isThumbnailFiltered,
-                clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                correctedQuery:resultsItems["correctedQuery"],
-                viewType:  urlQuery["viewType"],
-                resultsPaginatorOptions: resultsPaginatorOptions,
-                page: page,
+            if (totalResults <1){
+                render(view: "favorites", model: [
                 resultsNumber: totalResults,
-                firstPg:createFavoritesLinkNavigation(urlQuery["offset"],urlQuery["rows"],"sempty"),
-                prevPg:createFavoritesLinkNavigation(params.offset.toInteger()-rows,urlQuery["rows"],"sempty"),
-                nextPg:createFavoritesLinkNavigation(params.offset.toInteger()+rows,urlQuery["rows"],"sempty"),
-                lastPg:createFavoritesLinkNavigation((Math.ceil((items.size()-rows)/10)*10).toInteger(),urlQuery["rows"],"sempty"),
-                totalPages: totalPages,
-                paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
-                numberOfResultsFormatted: numberOfResultsFormatted,
-                offset: params["offset"],
-            ])
-
+                ])
+                return;
+            }else{
+                def queryItems;
+                if (params.offset){
+                    queryItems=items.drop(params.offset.toInteger())
+                }else{
+                    params.offset=0;
+                    queryItems=items.take(rows)
+                }
+    
+                def orQuery=queryItems[0].getAt("itemId");
+                queryItems.tail().each() { orQuery+=" OR "+ it.itemId };
+                params.query = "id:("+orQuery+")"
+    
+                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+    
+                def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+                urlQuery["offset"]=0;
+                def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+                if(!apiResponse.isOk()){
+                    log.error "Json: Json file was not found"
+                    apiResponse.throwException(request)
+                }
+                def resultsItems = apiResponse.getResponse()
+    
+                //Calculating results pagination (previous page, next page, first page, and last page)
+                def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()    
+                def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
+                def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+    
+                def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
+                def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
+    
+                def queryString = request.getQueryString()
+    
+                def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false];
+                def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
+    
+    
+                def all = []
+                def temp = []            
+                resultsItems["results"]["docs"].each { searchItem->
+                    temp = []
+                    temp = searchItem
+                    temp["creationDate"]=formatDate(items,searchItem.id);
+                    all.add(temp)
+                }
+                
+                render(view: "favorites", model: [
+                    title: urlQuery["query"],
+                    results: resultsItems["results"]["docs"],
+                    isThumbnailFiltered: params.isThumbnailFiltered,
+                    clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
+                    correctedQuery:resultsItems["correctedQuery"],
+                    viewType:  urlQuery["viewType"],
+                    resultsPaginatorOptions: resultsPaginatorOptions,
+                    page: page,
+                    resultsNumber: totalResults,
+                    firstPg:createFavoritesLinkNavigation(urlQuery["offset"],urlQuery["rows"],"sempty"),
+                    prevPg:createFavoritesLinkNavigation(params.offset.toInteger()-rows,urlQuery["rows"],"sempty"),
+                    nextPg:createFavoritesLinkNavigation(params.offset.toInteger()+rows,urlQuery["rows"],"sempty"),
+                    lastPg:createFavoritesLinkNavigation((Math.ceil((items.size()-rows)/10)*10).toInteger(),urlQuery["rows"],"sempty"),
+                    totalPages: totalPages,
+                    paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
+                    numberOfResultsFormatted: numberOfResultsFormatted,
+                    offset: params["offset"],
+                ])
+            }
         }
         else{
             redirect(controller:"user", action:"index")

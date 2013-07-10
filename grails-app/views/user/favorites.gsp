@@ -42,8 +42,7 @@ limitations under the License.
       </div>
       <div class="span4 results-paginator-options off">
         <div class="page-filter">
-          <label><g:message
-              code="ddbnext.SearchResultsPagination_Display" /></label> <span>
+          <label><g:message code="ddbnext.SearchResultsPagination_Display" /></label> <span>
             <select class="select">
               <g:each in="${resultsPaginatorOptions.pageFilter}">
                 <option value="${it}"
@@ -65,16 +64,16 @@ limitations under the License.
           <g:each in="${bookmarks.bookmarksLists}">
             <li
               class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br">
-              <a class="h3" href="#"> ${it.name}
-            </a> <span class="bookmarks-list-number"> ${resultsNumber}
-            </span> <a class="bookmarks-list-envelope" id="sendbookmarks" href="http://shqiperia.com">
-            <i class="icon-envelope"></i></a> <a class="bookmarks-list-edit"
-              href="#"><i class="icon-edit"></i></a>
+              <a class="h3" href="#"> ${it.name} </a> 
+              <span class="bookmarks-list-number"> ${resultsNumber}</span> <a class="bookmarks-list-envelope" id="sendbookmarks" href="http://ddb.de">
+              <i class="icon-envelope"></i></a> 
+              <a class="bookmarks-list-edit" href="#"><i class="icon-edit"></i></a>
             </li>
           </g:each>
         </ul>
       </div>
       <div class="span9 favorites-results-content">
+      <g:if test="${resultsNumber > 0}">
         <g:form id="favorites-remove"
           name="favorites-remove">
           <div class="favorites-results-controls">
@@ -103,6 +102,10 @@ limitations under the License.
             <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>
           </div>
         </g:form>
+        </g:if>
+        <g:else>
+        <div class="alert"><g:message code="ddnnext.no_favorites"/></div>
+</g:else>
       </div>
     </div>
   </div>
