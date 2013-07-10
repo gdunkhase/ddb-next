@@ -13,16 +13,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="dates todo-gnd">
+<div class="dates">
 
   <div><g:message code="ddbnext.Entity_Birth" />: ${entity.dateOfBirth}
     <g:if test="${entity.placeOfBirth}"> 
-      , <a href="">${entity.placeOfBirth}</a>
+      , <a href="" class="todo-gnd">${entity.placeOfBirth}</a>
     </g:if>
   </div>
   <div><g:message code="ddbnext.Entity_Death" />: ${entity.dateOfDeath}
     <g:if test="${entity.placeOfDeath}"> 
-      , <a href="">${entity.placeOfDeath}</a>
+      , <a href="" class="todo-gnd">${entity.placeOfDeath}</a>
     </g:if>
   </div>
 </div>

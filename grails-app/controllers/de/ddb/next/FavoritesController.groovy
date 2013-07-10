@@ -38,11 +38,11 @@ class FavoritesController {
             result = response.SC_UNAUTHORIZED
         }
         log.info "addFavorite returns " + result
-        render(result)
+        render(status: result)
     }
 
-    def delFavorite() {
-        log.info "delFavorite " + params.id
+    def deleteFavorite() {
+        log.info "deleteFavorite " + params.id
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
@@ -53,24 +53,24 @@ class FavoritesController {
         else {
             result = response.SC_UNAUTHORIZED
         }
-        log.info "delFavorite returns " + result
-        render(result)
+        log.info "deleteFavorite returns " + result
+        render(status: result)
     }
 
-    def delFavorites() {
-        log.info "delFavorites " + request.JSON
+    def deleteFavorites() {
+        log.info "deleteFavorites " + request.JSON
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
-            if (bookmarksService.deleteBookmarks(user.getId(), request.JSON)) {
+            if (bookmarksService.deleteFavorites(user.getId(), request.JSON)) {
                 result = response.SC_OK
             }
         }
         else {
             result = response.SC_UNAUTHORIZED
         }
-        log.info "delFavorites returns " + result
-        render(result)
+        log.info "deleteFavorites returns " + result
+        render(status: result)
     }
 
     def filterFavorites() {
@@ -79,11 +79,11 @@ class FavoritesController {
         if (user != null) {
             def result = bookmarksService.findFavoritesByItemIds(user.getId(), request.JSON)
             log.info "filterFavorites returns " + result
-            render result as JSON
+            render(result as JSON)
         }
         else {
             log.info "filterFavorites returns " + response.SC_UNAUTHORIZED
-            render(response.SC_UNAUTHORIZED)
+            render(status: response.SC_UNAUTHORIZED)
         }
     }
 
@@ -93,15 +93,21 @@ class FavoritesController {
         def User user = getUserFromSession()
         if (user != null) {
             def favorites = bookmarksService.findFavoritesByUserId(user.getId())
-            if (favorites && favorites.contains(itemId)) {
-                result = response.SC_OK
+            if (favorites) {
+                favorites.each {
+                    def bookmark = it
+                    if (bookmark.itemId == params.id) {
+                        log.info "getFavorite returns " + bookmark
+                        render(bookmark as JSON)
+                    }
+                }
             }
         }
         else {
             result = response.SC_UNAUTHORIZED
         }
         log.info "getFavorite returns " + result
-        render(result)
+        render(status: result)
     }
 
     def getFavorites() {
@@ -110,11 +116,11 @@ class FavoritesController {
         if (user != null) {
             def result = bookmarksService.findFavoritesByUserId(user.getId())
             log.info "getFavorites returns " + result
-            render result as JSON
+            render(result as JSON)
         }
         else {
             log.info "getFavorites returns " + response.SC_UNAUTHORIZED
-            render(response.SC_UNAUTHORIZED)
+            render(status: response.SC_UNAUTHORIZED)
         }
     }
 

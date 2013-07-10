@@ -459,6 +459,7 @@ header .login-dropdown,.header .login-dropdown {
   width: 15px;
   height: 15px;
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 3px -40px;
+  cursor: pointer;
 }
 
 header .header-spacer,.header .header-spacer {
@@ -563,6 +564,11 @@ header .header-spacer,.header .header-spacer {
   font-size: 1em;
 }
 
+.form-horizontal .control-label {
+  width: 180px;
+  margin-right: 10px;
+}
+
 .nav .tooltip {
   width: 321px !important;
 }
@@ -612,6 +618,10 @@ header .selector,.header .selector {
   -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+header .selector.logout,.header .selector.logout {
+  right: -20px;
+}
+
 header .selector li,.header .selector li {
   float: none;
   cursor: pointer;
@@ -651,9 +661,10 @@ header .language-widget form,.header .language-widget form {
 }
 
 .brand img {
-  margin: 0px;
+  margin: 0 0 0 10px;
   height: 90px;
 }
+
 
 .btn-navbar {
   height: 30px;

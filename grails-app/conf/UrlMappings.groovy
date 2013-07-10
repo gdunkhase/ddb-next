@@ -77,7 +77,7 @@ class UrlMappings {
 
         "/apis/favorites/$id" {
             controller="favorites"
-            action=[GET: "getFavorite", POST: "addFavorite", DELETE: "delFavorite"]
+            action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
         }
 
         "/about-us/institutions" {

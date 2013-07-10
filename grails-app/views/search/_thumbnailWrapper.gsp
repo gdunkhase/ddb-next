@@ -20,7 +20,7 @@ limitations under the License.
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<g:removeTags>${item.preview.title}</g:removeTags>" />
     </g:link>
   </div>
-  <div class="information">
+  <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn>">
     <div class="hovercard-info-item" data-iid="${item.id}">
       <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
       <ul class="unstyled">

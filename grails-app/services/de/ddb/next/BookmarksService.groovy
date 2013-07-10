@@ -36,6 +36,7 @@ class BookmarksService {
 
     public static final def FAVORITES = 'favorites'
     public static final def IS_PUBLIC = false
+    public static final def DEFAULT_SIZE = 9999
 
     def configurationService
     def transactional = false
@@ -50,6 +51,9 @@ class BookmarksService {
      */
     def newFolder(userId, title, isPublic) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder")
+
+        log.info "creating a new folder with the title: ${title}"
+        def folderId
         http.request(Method.POST, ContentType.JSON) { req ->
            body = [
              user: userId,
@@ -57,12 +61,13 @@ class BookmarksService {
              isPublic : isPublic
            ]
 
-           def folderId
            response.success = { resp, json ->
                folderId = json._id
-               folderId
+               refresh()
            }
-       }
+        }
+
+        folderId
     }
 
     /**
@@ -111,12 +116,13 @@ class BookmarksService {
      *
      * @param userId    the ID whose the folders and bookmarks belongs to.
      * @param folderId  the ID of a certain folder. Use {@link #findAllFolders} to find out the folder IDs.
+     * @param size      how many bookmarks the service should return, it is _optional_ by default size=9999
      * @return          a list of bookmarks.
      */
-    def findBookmarksByFolderId(userId, folderId) {
+    def findBookmarksByFolderId(userId, folderId, size = DEFAULT_SIZE) {
         log.info "find bookmarks for the user (${userId}) in the folder ${folderId}"
         def http = new HTTPBuilder(
-            "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}")
+            "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}%20&size=${size}")
         http.request(Method.GET, ContentType.JSON) { req ->
 
            response.success = { resp, json ->
@@ -147,6 +153,8 @@ class BookmarksService {
      */
     def saveBookmark(userId, folderId, itemId) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark")
+
+        def bookmarkId
         http.request(Method.POST, ContentType.JSON) { req ->
            body = [
              user: userId,
@@ -155,12 +163,23 @@ class BookmarksService {
              createdAt: new Date().getTime()
            ]
 
-           def bookmarkId = ''
            response.success = { resp, json ->
                bookmarkId = json._id
-
                log.info "Bookmark ${bookmarkId} is created."
-               return bookmarkId
+               refresh()
+           }
+        }
+        bookmarkId
+    }
+
+    private refresh() {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/_refresh")
+
+        log.info "refreshing index ddb..."
+        http.request(Method.POST, ContentType.JSON) { req ->
+           response.success = { resp, json ->
+               log.info "Response: ${json}"
+               log.info "finished refreshing index ddb."
            }
        }
     }
@@ -174,15 +193,13 @@ class BookmarksService {
      */
     def findBookmarkedItems(userId, itemIdList) {
         log.info "itemIdList ${itemIdList}"
-        def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
-        log.info "lowerCaseIdList  ${lowerCaseIdList}"
 
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
               filter: [
                 terms: [
-                  item: lowerCaseIdList
+                  item: itemIdList
                 ]
               ]
             ]
@@ -214,6 +231,9 @@ class BookmarksService {
             }
 
             body = reqBody
+            response.success = {
+              refresh()
+            }
         }
     }
 
@@ -229,6 +249,7 @@ class BookmarksService {
         return bookmarkId
     }
 
+    // TODO this is _broken_, sometimes it finds more than one folders with the title favorites for a user.
     def findFoldersByTitle(userId, title) {
         log.info "finding a folder with the title ${title} for the user: ${userId}"
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}")
@@ -258,20 +279,20 @@ class BookmarksService {
                    all.add(folder)
                }
 
-               log.info "#folder: ${all.size()}"
+               log.info "found #folder: ${all.size()} with the title ${title}"
                return all
            }
        }
     }
 
-    def findFavoritesByUserId(userId) {
+    def findFavoritesByUserId(userId, size = DEFAULT_SIZE) {
         def favoriteFolderId = getFavoritesFolderId(userId)
-        return findBookmarksByFolderId(userId, favoriteFolderId)
+        return findBookmarksByFolderId(userId, favoriteFolderId, size)
     }
 
     def deleteFavorites(userId, itemIds) {
         def bookmarkIds = []
-        def allFavorites = findFavoritesByUserId(userId)
+        def allFavorites = findFavoritesByUserId(userId, DEFAULT_SIZE)
         log.info "favs: ${allFavorites}"
         allFavorites.each { it ->
             log.info "fav: ${it}"
@@ -288,11 +309,7 @@ class BookmarksService {
     def findFavoritesByItemIds(userId, itemIdList) {
         def favoriteFolderId = getFavoritesFolderId(userId)
         log.info "fav: ${favoriteFolderId}"
-
         log.info "itemIdList ${itemIdList}"
-        def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
-        log.info "lowerCaseIdList  ${lowerCaseIdList}"
-
         return findBookmarkedItemsInFolder(userId, itemIdList, favoriteFolderId)
     }
 
@@ -318,15 +335,13 @@ class BookmarksService {
     // TODO refactor this method, duplicate with findFavoritesByItemIds
     def findBookmarkedItemsInFolder(userId, itemIdList, folderId) {
         log.info "itemIdList ${itemIdList}"
-        def lowerCaseIdList = itemIdList.collect { it.toLowerCase() }
-        log.info "lowerCaseIdList  ${lowerCaseIdList}"
 
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}")
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
               filter: [
                 terms: [
-                  item: lowerCaseIdList
+                  item: itemIdList
                 ]
               ]
             ]
@@ -341,5 +356,40 @@ class BookmarksService {
                 items
             }
         }
+    }
+
+    def findFavoriteByItemId(userId, itemId) {
+      log.info "itemId: ${itemId}"
+
+      def folderId = getFavoritesFolderId(userId)
+
+      def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
+      http.request(Method.POST, ContentType.JSON) { req ->
+          body = [
+            filter: [
+              terms: [
+                item: [itemId]
+              ]
+            ]
+          ]
+
+          response.success = { resp, json ->
+              log.info "response as application/json: ${json}"
+              def all = [] //as Set
+
+              def resultList = json.hits.hits
+              resultList.each { it ->
+                  def bookmark = new Bookmark(
+                       bookmarkId: it._id,
+                       userId: it._source.user,
+                       itemId: it._source.item,
+                       creationDate: new Date(it._source.createdAt.toLong())
+                  )
+                  all.add(bookmark)
+              }
+              assert all.size() <= 1
+              all[0]
+          }
+      }
     }
 }

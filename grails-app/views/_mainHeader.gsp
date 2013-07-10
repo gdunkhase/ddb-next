@@ -224,7 +224,7 @@ limitations under the License.
                 </li>
                 <g:isLoggedIn>
                   <li
-                    class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "favorites"],[controller: "user", action: "profile"]]}">active-default</g:isMappingActive>">
+                    class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "favorites"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"]]}">active-default</g:isMappingActive>">
                     <g:link controller="user" action="favorites">
                       <g:message code="ddbnext.MyDDB" />
                     </g:link>
@@ -257,7 +257,7 @@ limitations under the License.
               <div class="login-wrapper">
                 <g:message code="ddbnext.You_are_currently_logged_in_as" /> 
                 <g:link controller="user" action="profile" class="login-username"><g:getUserName /></g:link><div class="login-dropdown"></div>
-                <ul class="selector">
+                <ul class="selector logout">
                   <li><g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link></li>
                 </ul>
               </div>
