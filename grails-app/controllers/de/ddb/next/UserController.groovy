@@ -119,6 +119,7 @@ class UserController {
             def String result = getFavorites()
             List items = JSON.parse(result) as List
             def totalResults= items.length();
+            
             if (totalResults <1){
                 render(view: "favorites", model: [
                 resultsNumber: totalResults,
