@@ -110,9 +110,6 @@ class BookmarksService {
         folderList
     }
 
-    /* TODO: refactor this one
-     * URL encode the space character programmatically, _not_ hard code.
-     */
     /**
      * List all bookmarks in a folder that belongs to the user.
      *
@@ -208,15 +205,22 @@ class BookmarksService {
      */
     def findBookmarkedItems(userId, itemIdList) {
         log.info "itemIdList ${itemIdList}"
-        /*
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}")
+
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search")
         http.request(Method.POST, ContentType.JSON) { req ->
-            body = [
-              filter: [
-                terms: [
-                  item: itemIdList
+            def body = [
+                from: 0,
+                size: 9999,
+                filter: [
+                    and: [
+                        terms: [
+                            item: itemIdList
+                        ],
+                        term: [
+                            user: userId
+                        ]
+                    ]
                 ]
-              ]
             ]
 
             response.success = { resp, json ->
@@ -229,31 +233,6 @@ class BookmarksService {
                 items
             }
         }
-        */
-
-        def body = [
-          filter: [
-            terms: [
-              item: itemIdList
-            ]
-          ]
-        ]
-
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(),
-           '/ddb/bookmark/_search', false, new JSONObject(body), [q: "user:${userId}"])
-        if(!apiResponse.isOk()){
-           log.error("Fail to find bookmarked items. Response: ${apiResponse.toString()}")
-           apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
-
-        def items = [] as Set
-        log.info("JSON: ${apiResponse.getResponse()}")
-        // TODO use inject
-        apiResponse.getResponse().hits.hits.each { it ->
-            items.add(it._source.item)
-        }
-        log.info('found bookmarked items: ${items}')
-        items
     }
 
     /**
