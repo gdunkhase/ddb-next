@@ -27,18 +27,24 @@ limitations under the License.
   <h1><g:message code="ddbnext.Institutions" /></h1>
   <div class="row">
     <div class="view-type-switch span12 off">
-      <div>
+        <!--[if lt IE 9]>
+        <div class="ieVersion">
+        <![endif]-->
         <button id="view-institution-map" class="selected"
           type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />">
           <g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Label" />
         </button>
-      </div>
-      <div>
+        <!--[if lt IE 9]>
+        </div>
+        <div class="ieVersion">
+        <![endif]-->
         <button id="view-institution-list"
           type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsListButton_Title" />">
           <g:message code="ddbnext.InstitutionsList_ViewAsListButton_Label" />
         </button>
-      </div>
+        <!--[if lt IE 9]>
+        </div>
+        <![endif]-->
     </div>
   </div>
   <div class="row institutionlist">
