@@ -41,13 +41,12 @@ $(function() {
 		// workaround for ffox + ie click focus - prevents links that load dynamic
 		// content to be focussed/active.
 		$("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
-		$('#editor').wysiwyg();
-		 $("#sendbookmarks").click(function(event) {
+		$("#sendbookmarks").click(function(event) {
 		        event.preventDefault()
 		        $('#myModal').removeData("modal")
 		        $('#myModal').modal({remote: $(this).attr("href")})
-		    })
-		//$('#sendbookmarks').click(function(){ $('#myModal').empty({path:"/ddb-next/user/sendfavorites"}) });
+		    });
+		    
 		// Fix for back-button problem with the searchfield: DDBNEXT-389
 		if($.browser.msie){
 			var queryCache = $("#querycache");
