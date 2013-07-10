@@ -20,8 +20,13 @@ import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+
+import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.util.WebUtils
+
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
+
 
 
 /**
@@ -31,7 +36,6 @@ import de.ddb.next.beans.Folder
  * @author crh
  *
  */
-// TODO: use ApiConsumer if possible
 class BookmarksService {
 
     public static final def FAVORITES = 'favorites'
@@ -50,24 +54,25 @@ class BookmarksService {
      * @return          the newly created folder ID.
      */
     def newFolder(userId, title, isPublic) {
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder")
-
         log.info "creating a new folder with the title: ${title}"
-        def folderId
-        http.request(Method.POST, ContentType.JSON) { req ->
-           body = [
+
+        def body = [
              user: userId,
              title : title,
              isPublic : isPublic
            ]
 
-           response.success = { resp, json ->
-               folderId = json._id
-               refresh()
-           }
+
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(),
+           '/ddb/folder', false, new JSONObject(body))
+        if(!apiResponse.isOk()){
+           log.error('Fail to create a new folder. Response: ${apiResponse.toString()}')
+           apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
 
-        folderId
+        refresh()
+
+        return apiResponse.getResponse()._id
     }
 
     /**
@@ -83,23 +88,26 @@ class BookmarksService {
      * @return          a list of folders.
      */
     def findAllFolders(userId) {
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}")
-        http.request(Method.GET, ContentType.JSON) { req ->
-           response.success = { resp, json ->
-               def resultList = json.hits.hits
-               def folderList = []
-               resultList.each { it ->
-                    def folder = new Folder(
-                       folderId: it._id,
-                       userId: it._source.user,
-                       title: it._source.title,
-                       isPublic: it._source.isPublic
-                   )
-                   folderList.add(folder)
-               }
-               return folderList
-           }
-       }
+        log.info("find all folders for the user with the ID: ${userId}")
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(),
+            '/ddb/folder/_search', false, [q: "user:${userId}"])
+        if(!apiResponse.isOk()){
+            log.error("Fail to find all folders. Response: ${apiResponse.toString()}")
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        def resultList = apiResponse.getResponse().hits.hits
+        // TODO: use inject
+        def folderList = []
+        resultList.each { it ->
+            def folder = new Folder(
+               folderId: it._id,
+               userId: it._source.user,
+               title: it._source.title,
+               isPublic: it._source.isPublic
+           )
+           folderList.add(folder)
+        }
+        folderList
     }
 
     /* TODO: refactor this one
@@ -120,28 +128,31 @@ class BookmarksService {
      * @return          a list of bookmarks.
      */
     def findBookmarksByFolderId(userId, folderId, size = DEFAULT_SIZE) {
-        log.info "find bookmarks for the user (${userId}) in the folder ${folderId}"
-        def http = new HTTPBuilder(
-            "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}%20&size=${size}")
-        http.request(Method.GET, ContentType.JSON) { req ->
+        log.info "find bookmarks for the user ${userId} in the folder ${folderId}"
 
-           response.success = { resp, json ->
-               def all = []
-               def resultList = json.hits.hits
-               resultList.each { it ->
-                   def bookmark = new Bookmark(
-                        bookmarkId: it._id,
-                        userId: it._source.user,
-                        itemId: it._source.item,
-                        creationDate: new Date(it._source.createdAt.toLong())
-                   )
-                   all.add(bookmark)
-               }
-               all
-           }
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(),
+          '/ddb/bookmark/_search', false, [q: "user:${userId} AND folder:${folderId}", size: size])
 
-       }
+        if(!apiResponse.isOk()){
+            log.error('Fail to find bookmark by folder ID. Response: ${apiResponse.toString()}')
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        def resultList = apiResponse.getResponse().hits.hits
+
+        def all = []
+        // TODO use inject
+        resultList.each { it ->
+            def bookmark = new Bookmark(
+                 bookmarkId: it._id,
+                 userId: it._source.user,
+                 itemId: it._source.item,
+                 creationDate: new Date(it._source.createdAt.toLong())
+            )
+            all.add(bookmark)
+        }
+        all
     }
+
 
     /**
      * Bookmark a cultural item in a folder for a certain user.
@@ -152,36 +163,40 @@ class BookmarksService {
      * @return          the created bookmark ID.
      */
     def saveBookmark(userId, folderId, itemId) {
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark")
+        log.info('Saving a new bookmark')
 
-        def bookmarkId
-        http.request(Method.POST, ContentType.JSON) { req ->
-           body = [
+        def body = [
              user: userId,
              folder: folderId,
              item: itemId,
              createdAt: new Date().getTime()
-           ]
+        ]
 
-           response.success = { resp, json ->
-               bookmarkId = json._id
-               log.info "Bookmark ${bookmarkId} is created."
-               refresh()
-           }
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(),
+           '/ddb/bookmark', false, new JSONObject(body))
+        if(!apiResponse.isOk()){
+           log.error('Fail to save a new bookmark. Response: ${apiResponse.toString()}')
+           apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
+
+        def bookmarkId = apiResponse.getResponse()._id
+        log.info "Bookmark ${bookmarkId} is created."
+
+        refresh()
         bookmarkId
     }
 
     private refresh() {
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/_refresh")
-
         log.info "refreshing index ddb..."
-        http.request(Method.POST, ContentType.JSON) { req ->
-           response.success = { resp, json ->
-               log.info "Response: ${json}"
-               log.info "finished refreshing index ddb."
-           }
-       }
+
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(),
+           '/ddb/_refresh', false, new JSONObject([:]))
+        if(!apiResponse.isOk()){
+           log.error('Fail to refresh index ddb. Response: ${apiResponse.toString()}')
+           apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+
+        log.info("Succesful refreshing index ddb ${apiResponse.getResponse()}")
     }
 
     /**
@@ -193,7 +208,7 @@ class BookmarksService {
      */
     def findBookmarkedItems(userId, itemIdList) {
         log.info "itemIdList ${itemIdList}"
-
+        /*
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
@@ -214,6 +229,31 @@ class BookmarksService {
                 items
             }
         }
+        */
+
+        def body = [
+          filter: [
+            terms: [
+              item: itemIdList
+            ]
+          ]
+        ]
+
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(),
+           '/ddb/bookmark/_search', false, new JSONObject(body), [q: "user:${userId}"])
+        if(!apiResponse.isOk()){
+           log.error("Fail to find bookmarked items. Response: ${apiResponse.toString()}")
+           apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+
+        def items = [] as Set
+        log.info("JSON: ${apiResponse.getResponse()}")
+        // TODO use inject
+        apiResponse.getResponse().hits.hits.each { it ->
+            items.add(it._source.item)
+        }
+        log.info('found bookmarked items: ${items}')
+        items
     }
 
     /**
@@ -223,6 +263,9 @@ class BookmarksService {
      * @param bookmarkIdList a list of bookmark IDs. NOTE: These are _not_ a list of cultural item IDs.
      */
     def deleteBookmarks(userId, bookmarkIdList) {
+        log.info("delete bookmarks: ${bookmarkIdList}")
+
+        // TODO: use ApiConsumer
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_bulk")
         http.request(Method.POST, ContentType.JSON) { req ->
             def reqBody = ''
@@ -233,6 +276,7 @@ class BookmarksService {
             body = reqBody
             response.success = {
               refresh()
+              return true
             }
         }
     }
@@ -249,13 +293,11 @@ class BookmarksService {
         return bookmarkId
     }
 
-    // TODO this is _broken_, sometimes it finds more than one folders with the title favorites for a user.
     def findFoldersByTitle(userId, title) {
         log.info "finding a folder with the title ${title} for the user: ${userId}"
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}")
 
         http.request(Method.POST, ContentType.JSON) { req ->
-
             body = [
               filter: [
                 term: [
@@ -333,6 +375,7 @@ class BookmarksService {
     }
 
     // TODO refactor this method, duplicate with findFavoritesByItemIds
+    // TODO this method returns status code 500
     def findBookmarkedItemsInFolder(userId, itemIdList, folderId) {
         log.info "itemIdList ${itemIdList}"
 
