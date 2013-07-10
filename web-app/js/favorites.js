@@ -43,7 +43,7 @@ $(function() {
 		$("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
 		$("#sendbookmarks").click(function(event) {
 		        event.preventDefault()
-		        $('#myModal').removeData("modal")
+		        //$('#myModal').removeData("modal")
 		        $('#myModal').modal({remote: $(this).attr("href")})
 		    });
 		    

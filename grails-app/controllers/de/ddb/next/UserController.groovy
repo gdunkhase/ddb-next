@@ -171,7 +171,7 @@ class UserController {
                     temp["creationDate"]=formatDate(items,searchItem.id);
                     all.add(temp)
                 }
-                
+                sessionService.setSessionAttributeIfAvailable("results", resultsItems["results"]["docs"]);
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
                     results: resultsItems["results"]["docs"],
@@ -199,7 +199,8 @@ class UserController {
     }
     
     def sendfavorites(){
-        
+        def results = sessionService.getSessionAttributeIfAvailable("results");
+        render(view: "sendfavorites", model: [results: results])
     }
 
     def private String formatDate(items,String id) {

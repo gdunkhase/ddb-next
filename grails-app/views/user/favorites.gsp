@@ -65,7 +65,8 @@ limitations under the License.
             <li
               class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br">
               <a class="h3" href="#"> ${it.name} </a> 
-              <span class="bookmarks-list-number"> ${resultsNumber}</span> <a class="bookmarks-list-envelope" id="sendbookmarks" href="http://ddb.de">
+              <span class="bookmarks-list-number"> ${resultsNumber}</span> 
+              <a class="bookmarks-list-envelope" id="sendbookmarks" href="http://localhost:8080/ddb-next/user/sendfavorites">
               <i class="icon-envelope"></i></a> 
               <a class="bookmarks-list-edit" href="#"><i class="icon-edit"></i></a>
             </li>
@@ -115,18 +116,21 @@ limitations under the License.
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 <h3 id="myModalLabel"></h3>
 </div>
-<div class="modal-body" style=" max-height: 800px;">
+<div class="modal-body">
     <form>
     <fieldset>
     <legend><g:message code="ddbnext.send_favorites"/></legend>
     <label><g:message code="ddbnext.Email" /></label>
-    <input type="text" placeholder="Type something…" >
-     <span class="help-block">Example block-level help text here.</span>
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary" type="submit">Save changes</button>
-    </fieldset>
-    </form>
-</div>
+    <input type="text" placeholder="Contact Email" >
+          <div class="favorites-results">
+            <g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
+          </div> 
+	
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	    <button class="btn btn-primary" type="submit">Save changes</button>
+	    </fieldset>
+	    </form>
+	</div>
 </div>
 
 </body>
