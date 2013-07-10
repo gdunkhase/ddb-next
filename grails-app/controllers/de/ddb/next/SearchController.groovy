@@ -109,7 +109,8 @@ class SearchController {
                     totalPages: totalPagesFormatted,
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                     numberOfResults: numberOfResultsFormatted,
-                    offset: params["offset"]
+                    offset: params["offset"],
+                    params: params
                 ]
                 render (contentType:"text/json"){jsonReturn}
             }
@@ -139,7 +140,8 @@ class SearchController {
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
-                    keepFiltersChecked: keepFiltersChecked
+                    keepFiltersChecked: keepFiltersChecked,
+                    params: params
                 ])
             }
         }
