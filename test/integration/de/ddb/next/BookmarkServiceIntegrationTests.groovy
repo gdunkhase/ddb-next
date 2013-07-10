@@ -180,4 +180,18 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info favoriteForItem
     }
 
+    @Test void shouldReturnMoreThanTenFavorites() {
+        log.info "the bookmark service should find more than 10 favorites"
+        def userId = UUID.randomUUID() as String
+
+        11.times {
+            def itemId = UUID.randomUUID() as String
+            def favId = bookmarksService.addFavorite(userId, itemId)
+            log.info("Bookmark ${favId} is created." )
+        }
+
+        def allFavs = bookmarksService.findFavoritesByUserId(userId)
+        log.error('all favorites is more than 10: ' + allFavs.size())
+        assert allFavs.size() > 10
+    }
 }
