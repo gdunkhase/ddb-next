@@ -241,8 +241,10 @@ class BookmarksService {
         def favoriteFolderId = getFavoritesFolderId(userId)
 
         def foundItemIdList = findBookmarkedItemsInFolder(userId,[itemId], favoriteFolderId)
-        log.info "foundItemIdList ${foundItemIdList}"
-        if(foundItemIdList.size()>0) return null
+        if(foundItemIdList.size()>0) {
+          log.warn('The item ID (itemId) is already in the Favorites')
+          return null
+        }
 
         def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId)
         log.info "Add a bookmark ${bookmarkId} in Favorites"
