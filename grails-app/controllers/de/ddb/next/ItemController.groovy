@@ -70,38 +70,45 @@ class ItemController {
         return vResult;
     }
     
-    def delFavorite() {
-        log.info "non-JavaScript: delFavorite " + params.id
+    def delFavorite(pId) {
+        boolean vResult = false;
+        log.info "non-JavaScript: delFavorite " + pId
         def User user = getUserFromSession()
         if (user != null) {
-            if (bookmarksService.deleteFavorites(user.getId(), [params.id])) {
-                log.info "non-JavaScript: delFavorite " + params.id + " - success!"
+            // Bug: DDBNEXT-626: if (bookmarksService.deleteFavorites(user.getId(), [pId])) {
+            bookmarksService.deleteFavorites(user.getId(), [pId]);
+            def isFavorite = isFavorite(pId);
+            if (isFavorite == response.SC_NOT_FOUND) {
+                log.info "non-JavaScript: delFavorite " + pId + " - success!"
+                vResult = true;
             }
             else {
-                log.info "non-JavaScript: delFavorite " + params.id + " - failed..."
+                log.info "non-JavaScript: delFavorite " + pId + " - failed..."
             }
         }
         else {
-            log.info "non-JavaScript: addFavorite " + params.id + " - failed (unauthorized)"
+            log.info "non-JavaScript: addFavorite " + pId + " - failed (unauthorized)"
         }
-        findById()
+        return vResult;
     }
     
-    def addFavorite() {
-        log.info "non-JavaScript: addFavorite " + params.id
+    def addFavorite(pId) {
+        boolean vResult = false; 
+        log.info "non-JavaScript: addFavorite " + pId
         def User user = getUserFromSession()
         if (user != null) {
-            if (bookmarksService.addFavorite(user.getId(), params.id)) {
-                log.info "non-JavaScript: addFavorite " + params.id + " - success!"
+            if (bookmarksService.addFavorite(user.getId(), pId)) {
+                log.info "non-JavaScript: addFavorite " + pId + " - success!"
+                vResult = true;
             }
             else {
-                log.info "non-JavaScript: addFavorite " + params.id + " - failed..."
+                log.info "non-JavaScript: addFavorite " + pId + " - failed..."
             }
         }
         else {
-            log.info "non-JavaScript: addFavorite " + params.id + " - failed (unauthorized)"
+            log.info "non-JavaScript: addFavorite " + pId + " - failed (unauthorized)"
         }
-        findById()
+        return vResult;
     }
 
     def findById() {
@@ -116,6 +123,15 @@ class ItemController {
             }
 
             def isFavorite = isFavorite(id);
+            log.info("params.reqActn = ${params.reqActn} --> " + params.reqActn);
+            if (params.reqActn) {
+                if (params.reqActn.equalsIgnoreCase("add") && (isFavorite == response.SC_NOT_FOUND) && addFavorite(id)) {
+                    isFavorite = response.SC_FOUND;
+                }
+                else if (params.reqActn.equalsIgnoreCase("del") && (isFavorite == response.SC_FOUND) && delFavorite(id)) {
+                    isFavorite = response.SC_NOT_FOUND;
+                }
+            }
             
             def binaryList = itemService.findBinariesById(id)
             def binariesCounter = itemService.binariesCounter(binaryList)
