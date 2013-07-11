@@ -274,6 +274,13 @@ compress {
     production {  statsEnabled = false  }
 }
 
+grails {
+    mail {
+        host = "ddbmail.deutsche-digitale-bibliothek.de"
+        port = 25
+    }
+}
+
 // Often needed for testing the staticpages on localhost,
 // because these use absolute linking to the server root "/abc"
 //grails.app.context = "/"

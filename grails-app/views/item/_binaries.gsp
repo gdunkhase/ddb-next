@@ -44,7 +44,7 @@ limitations under the License.
       <div class="binary-viewer-flash-upgrade off">
         <p class="error-header"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
         <p>
-          <a href="http://get.adobe.com/flashplayer/"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" /></a>
+          <g:message code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
         </p>
         <p class="error-header"><g:message code="ddbnext.We_could_not_play_the_file" /></p>
         <p>
