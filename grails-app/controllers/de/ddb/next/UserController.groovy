@@ -83,7 +83,7 @@ class UserController {
             if (user.getStatus().equals(UserStatus.PW_RESET_REQUESTED.toString())) {
                 List<String> messages = []
                 messages.add("ddbnext.User.PasswordReset_Change")
-                render(view: "changepassword", model: [user: user, messages: messages])
+                redirect(controller: "user", action: "passwordChangePage", params:[messages: messages])
             }
             else {
                 redirect(controller: 'user', action: 'favorites')
@@ -138,7 +138,7 @@ class UserController {
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success");
-                render(view: "confirm" , model: [errors: errors, messages: messages])
+                redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
             }
             catch (ConflictException e) {
                 log.error "Conflict: user with given data already exists. username:" + params.username + ",email:" + params.email, e
@@ -161,7 +161,25 @@ class UserController {
     }
 
     def passwordResetPage() {
-        render(view: "resetpassword", model: [])
+        List<String> errors = []
+        List<String> messages = []
+        if (params.errors != null) {
+            if (params.errors instanceof String) {
+                errors.add(params.errors)
+            }
+            else {
+                errors.addAll(params.errors)
+            }
+        }
+        if (params.messages != null) {
+            if (params.messages instanceof String) {
+                messages.add(params.messages)
+            }
+            else {
+                messages.addAll(params.messages)
+            }
+        }
+        render(view: "resetpassword", model: [errors: errors, messages: messages])
     }
 
     def passwordReset() {
@@ -182,64 +200,53 @@ class UserController {
                 errors.add("ddbnext.Error_Username_Notfound");
             }
         }
-        render(view: "resetpassword" , model: [messages: messages, errors: errors, params: params])
+        if (!messages.isEmpty()) {
+            params.messages = messages
+        }
+        if (!errors.isEmpty()) {
+            params.errors = errors
+        }
+        redirect(controller: "user",action: "passwordResetPage" , params: params)
     }
 
     def profile() {
         if(isUserLoggedIn()){
-            User user = getUserFromSession()
-            if (!user.isConsistent()) {
-                throw new BackendErrorException("user-attributes are not consistent")
-            }
-            render(view: "profile", model: [favoritesCount: "0", user: user, errors:params.errors, messages: params.messages])
-        }
-        else{
-            redirect(controller:"index")
-        }
-    }
-
-    def passwordChangePage() {
-        if(isUserLoggedIn()){
-            User user = getUserFromSession()
-            if (user.isOpenIdUser()) {
-                //password-change is only for aas-users
-                redirect(controller:"index")
-            }
-            if (!user.isConsistent()) {
-                throw new BackendErrorException("user-attributes are not consistent")
-            }
-            render(view: "changepassword", model: [user: user])
-        }
-        else{
-            redirect(controller:"index")
-        }
-    }
-
-    def passwordChange() {
-        if (isUserLoggedIn()) {
-            List<String> errors = []
-            List<String> messages = []
             User user = getUserFromSession().clone()
-            if (user.isOpenIdUser()) {
-                //password-change is only for aas-users
-                redirect(controller:"index")
+            if (params.username) {
+                user.setUsername(params.username)
+                user.setFirstname(params.fname)
+                user.setLastname(params.lname)
+                user.setEmail(params.email)
+    
             }
-            if (user?.getPassword() == null) {
-                forward controller: "error", action: "serverError"
-            }
-            errors = Validations.validatorPasswordChange(user?.getPassword(), params.oldpassword, params.newpassword, params.confnewpassword)
-            if (errors == null || errors.isEmpty()) {
-                //change password in AAS
-                aasService.changePassword(user?.getId(), aasService.getChangePasswordJson(params.newpassword))
-                messages.add("ddbnext.User.Password_Change_Success")
-                //adapt user-attributes in session
-                user.setPassword(params.newpassword)
-                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
-                render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
+            if (params.newsletter) {
+                user.setNewsletterSubscribed(true);
             }
             else {
-                render(view: "changepassword", model: [user: user, errors: errors, messages: messages, oldpassword: params.oldpassword, newpassword: params.newpassword, confnewpassword: params.confnewpassword])
+                user.setNewsletterSubscribed(false);
             }
+            if (!user.isConsistent()) {
+                throw new BackendErrorException("user-attributes are not consistent")
+            }
+            List<String> errors = []
+            List<String> messages = []
+            if (params.errors != null) {
+                if (params.errors instanceof String) {
+                    errors.add(params.errors)
+                }
+                else {
+                    errors.addAll(params.errors)
+                }
+            }
+            if (params.messages != null) {
+                if (params.messages instanceof String) {
+                    messages.add(params.messages)
+                }
+                else {
+                    messages.addAll(params.messages)
+                }
+            }
+            render(view: "profile", model: [favoritesCount: "0", user: user, errors:errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -343,7 +350,85 @@ class UserController {
                     sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
                 }
             }
-            redirect(controller:"user", action:"profile", params:[errors: errors, messages: messages])
+            if (!messages.isEmpty()) {
+                params.messages = messages
+            }
+            if (!errors.isEmpty()) {
+                params.errors = errors
+            }
+            redirect(controller:"user", action:"profile", params:params)
+        }
+        else{
+            redirect(controller:"index")
+        }
+    }
+
+    def passwordChangePage() {
+        if(isUserLoggedIn()){
+            User user = getUserFromSession()
+            if (user.isOpenIdUser()) {
+                //password-change is only for aas-users
+                redirect(controller:"index")
+            }
+            if (!user.isConsistent()) {
+                throw new BackendErrorException("user-attributes are not consistent")
+            }
+            List<String> errors = []
+            List<String> messages = []
+            if (params.errors != null) {
+                if (params.errors instanceof String) {
+                    errors.add(params.errors)
+                }
+                else {
+                    errors.addAll(params.errors)
+                }
+            }
+            if (params.messages != null) {
+                if (params.messages instanceof String) {
+                    messages.add(params.messages)
+                }
+                else {
+                    messages.addAll(params.messages)
+                }
+            }
+            render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
+        }
+        else{
+            redirect(controller:"index")
+        }
+    }
+
+    def passwordChange() {
+        if (isUserLoggedIn()) {
+            List<String> errors = []
+            List<String> messages = []
+            User user = getUserFromSession().clone()
+            if (user.isOpenIdUser()) {
+                //password-change is only for aas-users
+                redirect(controller:"index")
+            }
+            if (user?.getPassword() == null) {
+                forward controller: "error", action: "serverError"
+            }
+            errors = Validations.validatorPasswordChange(user?.getPassword(), params.oldpassword, params.newpassword, params.confnewpassword)
+            if (errors == null || errors.isEmpty()) {
+                //change password in AAS
+                aasService.changePassword(user?.getId(), aasService.getChangePasswordJson(params.newpassword))
+                messages.add("ddbnext.User.Password_Change_Success")
+                //adapt user-attributes in session
+                user.setPassword(params.newpassword)
+                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+                params.remove("oldpassword")
+                params.remove("newpassword")
+                params.remove("confnewpassword")
+            }
+            if (!messages.isEmpty()) {
+                params.messages = messages
+            }
+            if (!errors.isEmpty()) {
+                params.errors = errors
+            }
+            render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -371,9 +456,30 @@ class UserController {
             logoutUserFromSession()
             
             messages.add("ddbnext.User.Delete_Confirm")
-
-            render(view: "confirm", model: [errors: errors, messages: messages])
+            redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
         }
+    }
+
+    def confirmationPage() {
+        List<String> errors = []
+        List<String> messages = []
+        if (params.errors != null) {
+            if (params.errors instanceof String) {
+                errors.add(params.errors)
+            }
+            else {
+                errors.addAll(params.errors)
+            }
+        }
+        if (params.messages != null) {
+            if (params.messages instanceof String) {
+                messages.add(params.messages)
+            }
+            else {
+                messages.addAll(params.messages)
+            }
+        }
+        render(view: "confirm", model: [errors: errors, messages: messages])
     }
 
     def confirm() {
@@ -411,7 +517,7 @@ class UserController {
             log.error "NotFound: confirmation does not exist. uid:" + params.id + ", token:" + params.token, e
             errors.add("ddbnext.Error.Confirmation_Not_Found")
         }
-        render(view: "confirm", model: [errors: errors, messages: messages])
+        redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
     }
 
     def requestOpenIdLogin() {

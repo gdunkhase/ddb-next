@@ -86,6 +86,11 @@ class I18NHelperTagLib {
                 linkUrl = linkUrl.replaceAll("staticcontent", directory)
                 cleanedParams.remove("dir")
             }
+            cleanedParams.remove("passwd")
+            cleanedParams.remove("conpasswd")
+            cleanedParams.remove("oldpassword")
+            cleanedParams.remove("newpassword")
+            cleanedParams.remove("confnewpassword")
             cleanedParams.remove("controller")
             cleanedParams.remove("action")
             cleanedParams.remove("id")
