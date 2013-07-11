@@ -30,6 +30,13 @@
 #registration-form .errors-container {
   width: 465px;
 }
+#registration-form .checkbox.control-label {
+  width: 455px;
+}
+
+#registration-form .checkbox.control-label a {
+  text-decoration:underline;
+}
 
 .reg-subtitle {
   margin-bottom: 30px;

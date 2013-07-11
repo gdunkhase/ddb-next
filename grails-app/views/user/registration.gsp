@@ -93,6 +93,19 @@ limitations under the License.
         </div>
 
         <div class="control-group">
+          <label class="checkbox control-label">
+            <g:message code="ddbnext.I_Have_Read" 
+                       args="${['<a href="' + createLink(controller:"content", params:[dir:'terms']) + '">','</a>','<a href="' + createLink(controller:"content", params:[dir:'privacy']) + '">','</a>']}" 
+                       default="ddbnext.I_Have_Read"/>*
+          </label>
+          <div class="controls">
+            <div class="input-prepend">
+              <input type="checkbox" id="termOfUse" name="termOfUse">
+            </div>
+          </div>
+        </div>
+
+        <div class="control-group">
           <label class="control-label"></label>
           <div class="controls">
             <button type="submit" class="btn-padding"><g:message code="ddbnext.User.Create_Account" /></button>
