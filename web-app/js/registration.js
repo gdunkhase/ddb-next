@@ -34,8 +34,8 @@ $(document).ready(function(){
         required:true,
         equalTo: "#passwd"
       },
-      termOfUse: {
-          required: true,
+      termOfUse:{
+        required:true,
       },
       errorClass: "help-inline"
     },
