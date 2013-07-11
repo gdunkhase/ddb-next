@@ -24,7 +24,6 @@ limitations under the License.
 </head>
 
 <body>
-<h1>${params.query}</h1>
   <div class="row search-results-container">
   
     <div class="span3 facets-container hidden-phone">
