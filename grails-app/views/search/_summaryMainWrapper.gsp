@@ -16,7 +16,7 @@ limitations under the License.
 <div class="summary-main-wrapper <g:if test="${viewType != 'grid'}">span7</g:if>">
   <div class="summary-main">
     <h2 class="title">
-      <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: item.id, hitNumber: hitNumber]" title="${truncateHovercardTitle(title: item.label, length: 350)}">
+      <g:link class="persist" controller="${ controller }" action="${ action }" params="${params + [id:item.id, hitNumber:hitNumber]}" title="${truncateHovercardTitle(title: item.label, length: 350)}">
       <g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle>
       </g:link>
     </h2>

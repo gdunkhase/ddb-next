@@ -34,6 +34,9 @@ $(document).ready(function(){
         required:true,
         equalTo: "#passwd"
       },
+      termOfUse:{
+        required:true,
+      },
       errorClass: "help-inline"
     },
     messages: {
@@ -53,6 +56,9 @@ $(document).ready(function(){
       conpasswd: {
         required: $("#error-messages").children('li').eq(0).children('a').text(),
         equalTo: $("#error-messages").children('li').eq(4).children('a').text()
+      },
+      termOfUse: {
+        required: $("#error-messages").children('li').eq(0).children('a').text()
       }
 
     }

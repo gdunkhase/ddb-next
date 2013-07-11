@@ -251,17 +251,11 @@ class ItemController {
     def handleSearchResultParameters(reqParameters, httpRequest) {
         def searchResultParameters = [:]
         searchResultParameters["searchParametersMap"] = [:]
-        def searchParametersMap
         def resultsItems
         def searchResultUri
-        searchParametersMap = searchService.getSearchCookieAsMap(httpRequest, httpRequest.cookies)
-        if (!searchParametersMap || searchParametersMap.isEmpty()) {
-            reqParameters["hitNumber"] = null
-            return searchResultParameters
-        }
 
         if (reqParameters["hitNumber"]) {
-            def urlQuery = searchService.convertQueryParametersToSearchParameters(searchParametersMap)
+            def urlQuery = searchService.convertQueryParametersToSearchParameters(reqParameters)
 
             //Search and return 3 Hits: previous, current and last
             reqParameters["hitNumber"] = reqParameters["hitNumber"].toInteger()
@@ -287,15 +281,15 @@ class ItemController {
         }
 
         //generate link back to search-result. Calculate Offset.
-        def searchGetParameters = searchService.getSearchGetParameters(searchParametersMap)
+        def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
         def offset = 0
-        if (reqParameters["hitNumber"] && searchParametersMap["rows"]) {
-            offset = ((Integer)((reqParameters["hitNumber"]-1)/searchParametersMap["rows"]))*searchParametersMap["rows"]
+        if (reqParameters["hitNumber"] && reqParameters["rows"]) {
+            offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters["rows"]))*reqParameters["rows"]
         }
         searchGetParameters["offset"] = offset
         searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
         searchResultParameters["searchResultUri"] = searchResultUri
-        searchResultParameters["searchParametersMap"] = searchParametersMap
+        searchResultParameters["searchParametersMap"] = reqParameters
 
         return searchResultParameters
     }

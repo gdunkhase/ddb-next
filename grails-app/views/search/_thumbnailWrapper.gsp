@@ -16,7 +16,7 @@ limitations under the License.
 <%@page import="java.awt.event.ItemEvent"%>
 <div class="thumbnail-wrapper <g:if test="${viewType != 'grid'}">span2</g:if>">
   <div class="thumbnail">
-    <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: item.id, hitNumber: hitNumber]">
+    <g:link class="persist" controller="${ controller }" action="${ action }" params="${params + [id: item.id, hitNumber: hitNumber]}">
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<g:removeTags>${item.preview.title}</g:removeTags>" />
     </g:link>
   </div>
