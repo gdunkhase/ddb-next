@@ -89,7 +89,7 @@ class UserController {
             if (user.getStatus().equals(UserStatus.PW_RESET_REQUESTED.toString())) {
                 List<String> messages = []
                 messages.add("ddbnext.User.PasswordReset_Change")
-                render(view: "changepassword", model: [user: user, messages: messages])
+                redirect(controller: "user", action: "passwordChangePage", params:[messages: messages])
             }
             else {
                 redirect(controller: 'user', action: 'favorites')
@@ -108,21 +108,21 @@ class UserController {
 
     }
 
- //Favorites page
+    //Favorites page
     def favorites(){
         if(isUserLoggedIn()){
             def rows=20; //default
             if (params.rows){
                 rows = params.rows.toInteger();
             }
-            
+
             def String result = getFavorites()
             List items = JSON.parse(result) as List
             def totalResults= items.length();
-            
+
             if (totalResults <1){
                 render(view: "favorites", model: [
-                resultsNumber: totalResults,
+                    resultsNumber: totalResults,
                 ])
                 return;
             }else{
@@ -133,13 +133,13 @@ class UserController {
                     params.offset=0;
                     queryItems=items.take(rows)
                 }
-    
+
                 def orQuery=queryItems[0].getAt("itemId");
                 queryItems.tail().each() { orQuery+=" OR "+ it.itemId };
                 params.query = "id:("+orQuery+")"
-    
+
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-    
+
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
                 urlQuery["offset"]=0;
                 def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
@@ -148,29 +148,40 @@ class UserController {
                     apiResponse.throwException(request)
                 }
                 def resultsItems = apiResponse.getResponse()
-    
+
                 //Calculating results pagination (previous page, next page, first page, and last page)
-                def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()    
+                def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
                 def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-    
+
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
-    
+
                 def queryString = request.getQueryString()
-    
+
                 def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false];
                 def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
-    
-    
+
+
                 def all = []
-                def temp = []            
+                def temp = []
                 resultsItems["results"]["docs"].each { searchItem->
                     temp = []
                     temp = searchItem
                     temp["creationDate"]=formatDate(items,searchItem.id);
                     all.add(temp)
                 }
+                sessionService.setSessionAttributeIfAvailable("results", resultsItems["results"]["docs"]);
+                if (request.method=="POST"){
+                    sendMail {
+                        to "armand.brahaj@fiz-karlsruhe.de"
+                        subject "My Favorites"
+                        body( view:"_favoritesEmailBody",
+                        model:[fromAddress:'develop@ddb.de',results: resultsItems["results"]["docs"]])
+                    }
+                    flash.message = "ddnnext.favorites_email_was_sent_succ"
+                }
+                
                 
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
@@ -197,9 +208,10 @@ class UserController {
             redirect(controller:"user", action:"index")
         }
     }
-    
+
     def sendfavorites(){
-        
+        def results = sessionService.getSessionAttributeIfAvailable("results");
+        render(view: "sendfavorites", model: [results: results])
     }
 
     def private String formatDate(items,String id) {
@@ -213,7 +225,7 @@ class UserController {
                 DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
                 def Date javaDate = oldFormat.parse(favItems.creationDate);
                 newDate = newFormat.format(javaDate)
-                
+
             }
         }
         return newDate.toString()
@@ -233,7 +245,7 @@ class UserController {
         }
         else {
             log.info "getFavorites returns " + response.SC_UNAUTHORIZED
-           return null
+            return null
         }
     }
     /* end favorites methods */
@@ -253,7 +265,7 @@ class UserController {
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success");
-                render(view: "confirm" , model: [errors: errors, messages: messages])
+                redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
             }
             catch (ConflictException e) {
                 log.error "Conflict: user with given data already exists. username:" + params.username + ",email:" + params.email, e
@@ -276,7 +288,25 @@ class UserController {
     }
 
     def passwordResetPage() {
-        render(view: "resetpassword", model: [])
+        List<String> errors = []
+        List<String> messages = []
+        if (params.errors != null) {
+            if (params.errors instanceof String) {
+                errors.add(params.errors)
+            }
+            else {
+                errors.addAll(params.errors)
+            }
+        }
+        if (params.messages != null) {
+            if (params.messages instanceof String) {
+                messages.add(params.messages)
+            }
+            else {
+                messages.addAll(params.messages)
+            }
+        }
+        render(view: "resetpassword", model: [errors: errors, messages: messages])
     }
 
     def passwordReset() {
@@ -297,64 +327,53 @@ class UserController {
                 errors.add("ddbnext.Error_Username_Notfound");
             }
         }
-        render(view: "resetpassword" , model: [messages: messages, errors: errors, params: params])
+        if (!messages.isEmpty()) {
+            params.messages = messages
+        }
+        if (!errors.isEmpty()) {
+            params.errors = errors
+        }
+        redirect(controller: "user",action: "passwordResetPage" , params: params)
     }
 
     def profile() {
         if(isUserLoggedIn()){
-            User user = getUserFromSession()
-            if (!user.isConsistent()) {
-                throw new BackendErrorException("user-attributes are not consistent")
-            }
-            render(view: "profile", model: [favoritesCount: "0", user: user])
-        }
-        else{
-            redirect(controller:"index")
-        }
-    }
-
-    def passwordChangePage() {
-        if(isUserLoggedIn()){
-            User user = getUserFromSession()
-            if (user.isOpenIdUser()) {
-                //password-change is only for aas-users
-                redirect(controller:"index")
-            }
-            if (!user.isConsistent()) {
-                throw new BackendErrorException("user-attributes are not consistent")
-            }
-            render(view: "changepassword", model: [user: user])
-        }
-        else{
-            redirect(controller:"index")
-        }
-    }
-
-    def passwordChange() {
-        if (isUserLoggedIn()) {
-            List<String> errors = []
-            List<String> messages = []
             User user = getUserFromSession().clone()
-            if (user.isOpenIdUser()) {
-                //password-change is only for aas-users
-                redirect(controller:"index")
+            if (params.username) {
+                user.setUsername(params.username)
+                user.setFirstname(params.fname)
+                user.setLastname(params.lname)
+                user.setEmail(params.email)
+    
             }
-            if (user?.getPassword() == null) {
-                forward controller: "error", action: "serverError"
-            }
-            errors = Validations.validatorPasswordChange(user?.getPassword(), params.oldpassword, params.newpassword, params.confnewpassword)
-            if (errors == null || errors.isEmpty()) {
-                //change password in AAS
-                aasService.changePassword(user?.getId(), aasService.getChangePasswordJson(params.newpassword))
-                messages.add("ddbnext.User.Password_Change_Success")
-                //adapt user-attributes in session
-                user.setPassword(params.newpassword)
-                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
-                render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
+            if (params.newsletter) {
+                user.setNewsletterSubscribed(true);
             }
             else {
-                render(view: "changepassword", model: [user: user, errors: errors, messages: messages, oldpassword: params.oldpassword, newpassword: params.newpassword, confnewpassword: params.confnewpassword])
+                user.setNewsletterSubscribed(false);
             }
+            if (!user.isConsistent()) {
+                throw new BackendErrorException("user-attributes are not consistent")
+            }
+            List<String> errors = []
+            List<String> messages = []
+            if (params.errors != null) {
+                if (params.errors instanceof String) {
+                    errors.add(params.errors)
+                }
+                else {
+                    errors.addAll(params.errors)
+                }
+            }
+            if (params.messages != null) {
+                if (params.messages instanceof String) {
+                    messages.add(params.messages)
+                }
+                else {
+                    messages.addAll(params.messages)
+                }
+            }
+            render(view: "profile", model: [favoritesCount: "0", user: user, errors:errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -458,7 +477,85 @@ class UserController {
                     sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
                 }
             }
-            render(view: "profile", model: [favoritesCount: "0", user: user, errors: errors, messages: messages])
+            if (!messages.isEmpty()) {
+                params.messages = messages
+            }
+            if (!errors.isEmpty()) {
+                params.errors = errors
+            }
+            redirect(controller:"user", action:"profile", params:params)
+        }
+        else{
+            redirect(controller:"index")
+        }
+    }
+
+    def passwordChangePage() {
+        if(isUserLoggedIn()){
+            User user = getUserFromSession()
+            if (user.isOpenIdUser()) {
+                //password-change is only for aas-users
+                redirect(controller:"index")
+            }
+            if (!user.isConsistent()) {
+                throw new BackendErrorException("user-attributes are not consistent")
+            }
+            List<String> errors = []
+            List<String> messages = []
+            if (params.errors != null) {
+                if (params.errors instanceof String) {
+                    errors.add(params.errors)
+                }
+                else {
+                    errors.addAll(params.errors)
+                }
+            }
+            if (params.messages != null) {
+                if (params.messages instanceof String) {
+                    messages.add(params.messages)
+                }
+                else {
+                    messages.addAll(params.messages)
+                }
+            }
+            render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
+        }
+        else{
+            redirect(controller:"index")
+        }
+    }
+
+    def passwordChange() {
+        if (isUserLoggedIn()) {
+            List<String> errors = []
+            List<String> messages = []
+            User user = getUserFromSession().clone()
+            if (user.isOpenIdUser()) {
+                //password-change is only for aas-users
+                redirect(controller:"index")
+            }
+            if (user?.getPassword() == null) {
+                forward controller: "error", action: "serverError"
+            }
+            errors = Validations.validatorPasswordChange(user?.getPassword(), params.oldpassword, params.newpassword, params.confnewpassword)
+            if (errors == null || errors.isEmpty()) {
+                //change password in AAS
+                aasService.changePassword(user?.getId(), aasService.getChangePasswordJson(params.newpassword))
+                messages.add("ddbnext.User.Password_Change_Success")
+                //adapt user-attributes in session
+                user.setPassword(params.newpassword)
+                sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+                params.remove("oldpassword")
+                params.remove("newpassword")
+                params.remove("confnewpassword")
+            }
+            if (!messages.isEmpty()) {
+                params.messages = messages
+            }
+            if (!errors.isEmpty()) {
+                params.errors = errors
+            }
+            render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -484,11 +581,32 @@ class UserController {
                 forward controller: "error", action: "auth"
             }
             logoutUserFromSession()
-            
-            messages.add("ddbnext.User.Delete_Confirm")
 
-            render(view: "confirm", model: [errors: errors, messages: messages])
+            messages.add("ddbnext.User.Delete_Confirm")
+            redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
         }
+    }
+
+    def confirmationPage() {
+        List<String> errors = []
+        List<String> messages = []
+        if (params.errors != null) {
+            if (params.errors instanceof String) {
+                errors.add(params.errors)
+            }
+            else {
+                errors.addAll(params.errors)
+            }
+        }
+        if (params.messages != null) {
+            if (params.messages instanceof String) {
+                messages.add(params.messages)
+            }
+            else {
+                messages.addAll(params.messages)
+            }
+        }
+        render(view: "confirm", model: [errors: errors, messages: messages])
     }
 
     def confirm() {
@@ -526,7 +644,7 @@ class UserController {
             log.error "NotFound: confirmation does not exist. uid:" + params.id + ", token:" + params.token, e
             errors.add("ddbnext.Error.Confirmation_Not_Found")
         }
-        render(view: "confirm", model: [errors: errors, messages: messages])
+        redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
     }
 
     def requestOpenIdLogin() {

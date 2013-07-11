@@ -25,4 +25,8 @@ class FavoritesTagLib {
   def favoritesResultsRender = { attrs, body ->
       out << render(template:"/user/resultsList", model:[results: attrs.results])
   }
+  
+  def favoritesEmailResultsRender = { attrs, body ->
+      out << render(template:"/user/favoritesemailList", model:[results: attrs.results])
+  }
 }

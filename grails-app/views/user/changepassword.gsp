@@ -49,7 +49,7 @@ limitations under the License.
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-lock"></i></span>
-                  <input type="Password" id="oldpassword" class="profile-input" name="oldpassword" placeholder="<g:message code="ddbnext.Your_Old_Password" />" value="${oldpassword}">
+                  <input type="Password" id="oldpassword" class="profile-input" name="oldpassword" placeholder="<g:message code="ddbnext.Your_Old_Password" />" value="${params.oldpassword}">
                 </div>
               </div>
             </div>
@@ -59,7 +59,7 @@ limitations under the License.
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-lock"></i></span>
-                  <input type="Password" id="newpassword" class="profile-input" name="newpassword" placeholder="<g:message code="ddbnext.Your_New_Password" />" value="${newpassword}">
+                  <input type="Password" id="newpassword" class="profile-input" name="newpassword" placeholder="<g:message code="ddbnext.Your_New_Password" />" value="${params.newpassword}">
                 </div>
               </div>
             </div>
@@ -69,7 +69,7 @@ limitations under the License.
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-lock"></i></span>
-                  <input type="Password" id="confnewpassword" class="profile-input" name="confnewpassword" placeholder="<g:message code="ddbnext.Confirm_New_password" />" value="${confnewpassword}">
+                  <input type="Password" id="confnewpassword" class="profile-input" name="confnewpassword" placeholder="<g:message code="ddbnext.Confirm_New_password" />" value="${params.confnewpassword}">
                 </div>
               </div>
             </div>

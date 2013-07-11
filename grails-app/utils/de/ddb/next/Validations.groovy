@@ -48,7 +48,7 @@ public static List<String> validatorPassword(String password, String cpassword) 
             errors.add("ddbnext.Error_Password_Empty")
         }
         if (StringUtils.isBlank(cpassword)) {
-            errors.add("ddbnext.Error_Password_Empty")
+            errors.add("ddbnext.Error_Confirm_Password_Empty")
         }
     }
     else {
