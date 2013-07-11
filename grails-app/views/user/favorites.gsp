@@ -24,7 +24,6 @@ limitations under the License.
 
 <g:set var="navigationData"
   value="${[paginationURL: [firstPg: firstPg, lastPg: lastPg, prevPg: prevPg, nextPg: nextPg], page: page, totalPages: totalPages ]}"></g:set>
-<g:set var="confBinary" value="/ddb-next"></g:set>
 <html>
 <head>
 <title>- <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
@@ -76,6 +75,9 @@ limitations under the License.
       <div class="span9 favorites-results-content">
       <g:if test="${flash.message}">
         <div class="alert-success text-center"><g:message code="${flash.message}" /></div>
+      </g:if>
+      <g:if test="${flash.email_error}">
+        <div class="alert-error text-center"><g:message code="${flash.email_error}" /></div>
       </g:if>
       <g:if test="${resultsNumber > 0}">
         <g:form id="favorites-remove"

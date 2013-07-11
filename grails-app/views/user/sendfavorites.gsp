@@ -15,7 +15,7 @@
     <fieldset>
     <legend><g:message code="ddbnext.send_favorites"/></legend>
     <label><g:message code="ddbnext.Email" /></label>
-    <input type="text" placeholder="Contact Email" >
+    <input type="text" placeholder="Contact Email" name="to" >
           <div class="favorites-results">
             <g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
           </div> 

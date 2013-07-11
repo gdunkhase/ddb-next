@@ -173,16 +173,22 @@ class UserController {
                 }
                 sessionService.setSessionAttributeIfAvailable("results", resultsItems["results"]["docs"]);
                 if (request.method=="POST"){
-                    sendMail {
-                        to "armand.brahaj@fiz-karlsruhe.de"
-                        subject "My Favorites"
-                        body( view:"_favoritesEmailBody",
-                        model:[fromAddress:'develop@ddb.de',results: resultsItems["results"]["docs"]])
+                    //def User user = getUserFromSession()
+                    log.info getUserFromSession().getFirstnameAndLastnameOrNickname()
+                    try {
+                        sendMail {
+                            to params.to
+                            subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
+                            body( view:"_favoritesEmailBody",
+                            model:[fromAddress:'develop@ddb.de',results: resultsItems["results"]["docs"]])
+                        }
+                        flash.message = "ddbnext.favorites_email_was_sent_succ"
+                    } catch (Exception e) {
+                        flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
                     }
-                    flash.message = "ddnnext.favorites_email_was_sent_succ"
                 }
-                
-                
+
+
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
                     results: resultsItems["results"]["docs"],
@@ -236,11 +242,9 @@ class UserController {
     }
 
     def getFavorites() {
-        log.info "getFavorites"
         def User user = getUserFromSession()
         if (user != null) {
             def result = bookmarksService.findFavoritesByUserId(user.getId())
-            log.info "getFavorites returns " + result
             return result as JSON
         }
         else {

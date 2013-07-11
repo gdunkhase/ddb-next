@@ -60,7 +60,7 @@ p {
     Bring inline: Yes. */
 h1,h2,h3,h4,h5,h6 {
   font-family: KarbidWeb, Calibri, Arial, sans-serif;
-	color: black !important;
+	color: #a5003b !important;
   font-size: 1.375em;
 }
 
@@ -100,7 +100,8 @@ table {
 /* Styling your links has become much simpler with the new Yahoo.  In fact, it falls in line with the main credo of styling in email and make sure to bring your styles inline.  Your link colors will be uniform across clients when brought inline.
     Bring inline: Yes. */
 a {
-	color: red;
+	color: #a5003b;
+  text-decoration: none
 }
 
 /***************************************************
