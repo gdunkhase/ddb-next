@@ -23,8 +23,8 @@ import groovyx.net.http.Method
 
 import java.util.regex.Pattern
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpSession
 
 import org.apache.catalina.connector.ClientAbortException
 import org.apache.commons.io.IOUtils
@@ -62,9 +62,9 @@ class ApiConsumer {
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
      * @param optionalHeaders Optional request headers to add to the request
-     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text, 
-     *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set 
-     *      to true, the json-parser is explicitly overwritten with the text-parser.  
+     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text,
+     *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set
+     *      to true, the json-parser is explicitly overwritten with the text-parser.
      * @return An ApiResponse object containing the server response
      */
     static def getText(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], fixWrongContentTypeHeader = false) {
@@ -164,14 +164,14 @@ class ApiConsumer {
      * @param method The request method (Method.GET, Method.POST)
      * @param content The expected response content (ContentType.TEXT, ContentType.JSON, ContentType.XML, ContentType.BINARY)
      * @param optionalHeaders Optional request headers to add to the request
-     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text, 
-     *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set 
-     *      to true, the json-parser is explicitly overwritten with the text-parser.  
+     * @param fixWrongContentTypeHeader Workaround for a bug in the backend. On some responses that contain only application/text,
+     *      the backend sets a response-type of application/json, causing the parser to crash. So if fixWrongContentTypeHeader is set
+     *      to true, the json-parser is explicitly overwritten with the text-parser.
      * @param streamingOutputStream The gsp OutputStream needed for streaming binary resources
      * @return An ApiResponse object containing the server response
      */
     private static def requestServer(baseUrl, path, query, method, content, requestBody, boolean httpAuth = false, optionalHeaders, fixWrongContentTypeHeader, OutputStream streamingOutputStream) {
-        def timestampStart = System.currentTimeMillis();
+        def timestampStart = System.currentTimeMillis()
         path = checkContext(baseUrl, path)
 
         try {
@@ -407,7 +407,7 @@ class ApiConsumer {
      */
     private static def setTimeout(def req){
         try {
-            req.getParams().setParameter("http.connection.timeout", new Integer(BINARY_BACKEND_TIMEOUT));
+            req.getParams().setParameter("http.connection.timeout", new Integer(BINARY_BACKEND_TIMEOUT))
             req.getParams().setParameter("http.socket.timeout", new Integer(BINARY_BACKEND_TIMEOUT))
         } catch(Exception e) {
             log.error "setTimeout(): Could not set the timeout to the binary request"
@@ -430,7 +430,7 @@ class ApiConsumer {
             HttpServletRequest request = WebUtils.retrieveGrailsWebRequest().getCurrentRequest()
             HttpSession session = request.getSession(false)
             if(session) {
-                User user = session.getAttribute(User.SESSION_USER);
+                User user = session.getAttribute(User.SESSION_USER)
                 if (user != null) {
                     http.auth.basic user.id, user.password
                 }
