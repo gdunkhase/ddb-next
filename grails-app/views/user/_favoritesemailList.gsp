@@ -17,47 +17,46 @@ limitations under the License.
 <g:set var="offset" value="${0}" />
 <g:set var="index" value="${0}" />
 <g:message code="ddbnext.favorites_email_body" />
-<table cellpadding="0" cellspacing="10" border="border:1px solid #333" id="backgroundTable">
-  <tr>
-    <td valign="top">
-      <!-- Tables are the most common way to format your email consistently. Set your table widths inside cells and in most cases reset cellpadding, cellspacing, and border to zero. Use nested tables as a way to space effectively in your message. -->
-      <table cellpadding="10" cellspacing="10" border="border:1px solid #333" align="center">
-        <thead>
-          <tr>
-            <th>Thumbnail</th>
-            <th>Favorite Info</th>
-          </tr>
-        </thead>
-        <tbody>
-          <g:each in="${results}">
-            <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
-            <g:set var="hitNumber" value="${offset + pageHitCounter}" />
-            <g:set var="controller" value="item" />
-            <g:set var="action" value="findById" />
-            <g:if test="${it.preview.category == 'Institution'}">
-              <g:set var="controller" value="institution" />
-              <g:set var="action" value="showInstitutionsTreeByItemId" />
-            </g:if>
-            <tr>
-              <td><g:link controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]">
-                  <img src="http://dev.escidoc.org<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
-                    alt="<g:removeTags>${it.preview.title}</g:removeTags>"
-                  />
-                </g:link></td>
-              <td>
-                <span class="title" style=" font-family: KarbidWeb, Calibri, Arial, sans-serif; font-weight: bold; font-size: 1.375em; color: #a5003b;">
-                  <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]"
-                    title="${truncateHovercardTitle(title: it.label, length: 350)}"
-                  >
-                    <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
-                  </g:link>
-                </span>
-                <div class="subtitle">
-                  ${it.preview.subtitle}
-                </div>
-              </td>
-            </tr>
-          </g:each>
-        </tbody>
-      </table>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Objekt</th>
+      <th>Thumbnail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <g:each in="${results}">
+      <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
+      <g:set var="hitNumber" value="${offset + pageHitCounter}" />
+      <g:set var="controller" value="item" />
+      <g:set var="action" value="findById" />
+      <g:if test="${it.preview.category == 'Institution'}">
+        <g:set var="controller" value="institution" />
+        <g:set var="action" value="showInstitutionsTreeByItemId" />
+      </g:if>
+      
+      <tr>
+        <td height="130px">
+          <h2 class="title">
+            <g:link class="persist" controller="${ controller }"
+              action="${ action }" params="[id: it.id, hitNumber: hitNumber]"
+              title="${truncateHovercardTitle(title: it.label, length: 350)}">
+              <g:truncateItemTitle title="${ it.preview.title }"
+                length="${ 100 }"></g:truncateItemTitle>
+            </g:link>
+          </h2>
+          <div class="subtitle">
+            ${it.preview.subtitle}
+          </div>
+        </td>
+        <td> 
+        <g:link controller="${ controller }"
+            action="${ action }" params="[id: it.id, hitNumber: hitNumber]">
+            <img
+              src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
+              alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+          </g:link></td>        
+      </tr>
+    </g:each>
+  </tbody>
 </table>

@@ -177,7 +177,7 @@ class UserController {
                     log.info getUserFromSession().getFirstnameAndLastnameOrNickname()
                     try {
                         sendMail {
-                            to params.to
+                            to params.email
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
                             model:[fromAddress:'develop@ddb.de',results: resultsItems["results"]["docs"]])
