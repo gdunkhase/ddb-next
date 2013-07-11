@@ -86,13 +86,25 @@ class I18NHelperTagLib {
                 linkUrl = linkUrl.replaceAll("staticcontent", directory)
                 cleanedParams.remove("dir")
             }
+            cleanedParams.remove("passwd")
+            cleanedParams.remove("conpasswd")
+            cleanedParams.remove("oldpassword")
+            cleanedParams.remove("newpassword")
+            cleanedParams.remove("confnewpassword")
             cleanedParams.remove("controller")
             cleanedParams.remove("action")
             cleanedParams.remove("id")
             cleanedParams.put("lang", checkLocaleString)
             def paramString = "?"
             cleanedParams.each {
-                paramString += it.key + "=" + it.value + "&"
+                if (it.value instanceof String[]) {
+                    it.value.each { a -> 
+                        paramString += it.key + "=" + a + "&"
+                    }
+                }
+                else {
+                    paramString += it.key + "=" + it.value + "&"
+                }
             }
             if(paramString.length() > 1){
                 paramString = paramString.substring(0, paramString.length()-1)
