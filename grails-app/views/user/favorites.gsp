@@ -74,6 +74,9 @@ limitations under the License.
         </ul>
       </div>
       <div class="span9 favorites-results-content">
+      <g:if test="${flash.message}">
+        <div class="alert-success text-center"><g:message code="${flash.message}" /></div>
+      </g:if>
       <g:if test="${resultsNumber > 0}">
         <g:form id="favorites-remove"
           name="favorites-remove">

@@ -15,37 +15,16 @@
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 $(function() {
-	$('#checkall').checkAll('#slaves input:checkbox', {
-	    reportTo: function () {
-	        var prefix = this.prop('checked') ? 'un' : '';
-	        this.next().text(prefix + 'check all');
-	    }
-	});	
-	updateNavigationUrl();
-	$('#favorites-remove').submit(function() {
-		var selected = new Array();
-		$('#slaves input:checked').each(function() {
-		    selected.push($(this).attr('name'));
-		});
-		  jQuery.ajax({
-			    type: 'POST',
-			    url: "/ddb-next/apis/favorites/_delete",
-			    data: JSON.stringify(selected),
-			    dataType: "json",
-			    success: function(data){ alert(data); }
-			});
-		  //TODO Reload page
-		  return false;
-		});
+
 	if (jsPageName == "favorites") {
 		// workaround for ffox + ie click focus - prevents links that load dynamic
 		// content to be focussed/active.
 		$("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
 		$("#sendbookmarks").click(function(event) {
-		        event.preventDefault()
-		        $('#myModal').modal({remote: $(this).attr("href")})
-		    });
-		    
+			event.preventDefault()
+			$('#myModal').modal({remote: $(this).attr("href")})
+		});
+
 		// Fix for back-button problem with the searchfield: DDBNEXT-389
 		if($.browser.msie){
 			var queryCache = $("#querycache");
@@ -55,13 +34,29 @@ $(function() {
 			}
 			$("#form-search-header .query").val(queryString);
 		}
-		//searchResultsInitializer();
 
-//		function stateManager(url){
-//		$('#main-container').load(url+' .favorites-results-container', function(){
-//		favoritesResultsInitializer();
-//		});
-//		}
+		$('#checkall').checkAll('#slaves input:checkbox', {
+			reportTo: function () {
+				var prefix = this.prop('checked') ? 'un' : '';
+				this.next().text(prefix + 'check all');
+			}
+		});	
+		updateNavigationUrl();
+		$('#favorites-remove').submit(function() {
+			var selected = new Array();
+			$('#slaves input:checked').each(function() {
+				selected.push($(this).attr('name'));
+			});
+			jQuery.ajax({
+				type: 'POST',
+				url: "/ddb-next/apis/favorites/_delete",
+				data: JSON.stringify(selected),
+				dataType: "json",
+				success: function(data){ alert(data); }
+			});
+			//TODO Reload page
+			return false;
+		});
 	}
 
 });
@@ -168,36 +163,11 @@ function updateLanguageSwitch(params) {
 	}); 
 }
 
-$('.page-nav-result').click(function(){
-	fetchResultsList(this.href);
-	return false;
-});
-
-$('.page-input').keyup(function(e){
-	if(e.keyCode == 13) {
-		if (/^[0-9]+$/.test(this.value)) {
-			if (parseInt(this.value) <= 0) {
-				this.value = 1;
-			}
-			else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
-				this.value = $('.result-pages-count').text();
-			}
-		}
-		else {
-			this.value = 1;
-		}
-		$('.page-input').attr('value', this.value);
-		var paramsArray = new Array(new Array('offset', (this.value - 1) * $('.page-filter').find("select").val()));
-		var newUrl = addParamToCurrentUrl(paramsArray);
-		fetchResultsList(newUrl);
-	}
-});
-
 
 function updateNavigationUrl(){
 	$.urlParam = function(name){
-	    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
-	    return results[1] || 0;
+		var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+		return results[1] || 0;
 	}
 	var offset = getParam( 'offset' ); 
 
@@ -208,14 +178,14 @@ function updateNavigationUrl(){
 }
 function getParam( name )
 {
-  var regexS = "[\\?&]"+name+"=([^&#]*)";
-  var regex = new RegExp( regexS );
-  var tmpURL = window.location.href;
-  var results = regex.exec( tmpURL );
-  if( results == null )
-    return "";
-  else
-    return results[1];
+	var regexS = "[\\?&]"+name+"=([^&#]*)";
+	var regex = new RegExp( regexS );
+	var tmpURL = window.location.href;
+	var results = regex.exec( tmpURL );
+	if( results == null )
+		return "";
+	else
+		return results[1];
 }
 //function fetchResultsList(url){
 

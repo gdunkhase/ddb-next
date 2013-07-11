@@ -108,21 +108,21 @@ class UserController {
 
     }
 
- //Favorites page
+    //Favorites page
     def favorites(){
         if(isUserLoggedIn()){
             def rows=20; //default
             if (params.rows){
                 rows = params.rows.toInteger();
             }
-            
+
             def String result = getFavorites()
             List items = JSON.parse(result) as List
             def totalResults= items.length();
-            
+
             if (totalResults <1){
                 render(view: "favorites", model: [
-                resultsNumber: totalResults,
+                    resultsNumber: totalResults,
                 ])
                 return;
             }else{
@@ -133,13 +133,13 @@ class UserController {
                     params.offset=0;
                     queryItems=items.take(rows)
                 }
-    
+
                 def orQuery=queryItems[0].getAt("itemId");
                 queryItems.tail().each() { orQuery+=" OR "+ it.itemId };
                 params.query = "id:("+orQuery+")"
-    
+
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-    
+
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
                 urlQuery["offset"]=0;
                 def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
@@ -148,23 +148,23 @@ class UserController {
                     apiResponse.throwException(request)
                 }
                 def resultsItems = apiResponse.getResponse()
-    
+
                 //Calculating results pagination (previous page, next page, first page, and last page)
-                def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()    
+                def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
                 def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-    
+
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
-    
+
                 def queryString = request.getQueryString()
-    
+
                 def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false];
                 def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
-    
-    
+
+
                 def all = []
-                def temp = []            
+                def temp = []
                 resultsItems["results"]["docs"].each { searchItem->
                     temp = []
                     temp = searchItem
@@ -172,6 +172,17 @@ class UserController {
                     all.add(temp)
                 }
                 sessionService.setSessionAttributeIfAvailable("results", resultsItems["results"]["docs"]);
+                if (request.method=="POST"){
+                    sendMail {
+                        to "armand.brahaj@fiz-karlsruhe.de"
+                        subject "My Favorites"
+                        body( view:"_favoritesEmailBody",
+                        model:[fromAddress:'develop@ddb.de',results: resultsItems["results"]["docs"]])
+                    }
+                    flash.message = "ddnnext.favorites_email_was_sent_succ"
+                }
+                
+                
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
                     results: resultsItems["results"]["docs"],
@@ -197,21 +208,10 @@ class UserController {
             redirect(controller:"user", action:"index")
         }
     }
-    
+
     def sendfavorites(){
-        if (request.method=="POST"){
-            log.info "ENTERING SENDMAIL";
-            sendMail {
-                to "armand.brahaj@fiz-karlsruhe.de"
-                subject "My Favorites"
-                body( view:"_favoritesEmailBody",
-                    model:[fromAddress:'develop@ddb.de'])
-              }
-        }else {
-            def results = sessionService.getSessionAttributeIfAvailable("results");
-            render(view: "sendfavorites", model: [results: results])
-        }
-        
+        def results = sessionService.getSessionAttributeIfAvailable("results");
+        render(view: "sendfavorites", model: [results: results])
     }
 
     def private String formatDate(items,String id) {
@@ -225,7 +225,7 @@ class UserController {
                 DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
                 def Date javaDate = oldFormat.parse(favItems.creationDate);
                 newDate = newFormat.format(javaDate)
-                
+
             }
         }
         return newDate.toString()
@@ -245,7 +245,7 @@ class UserController {
         }
         else {
             log.info "getFavorites returns " + response.SC_UNAUTHORIZED
-           return null
+            return null
         }
     }
     /* end favorites methods */
@@ -496,7 +496,7 @@ class UserController {
                 forward controller: "error", action: "auth"
             }
             logoutUserFromSession()
-            
+
             messages.add("ddbnext.User.Delete_Confirm")
 
             render(view: "confirm", model: [errors: errors, messages: messages])
