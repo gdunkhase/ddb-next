@@ -233,6 +233,7 @@ class BookmarksService {
             body = reqBody
             response.success = {
               refresh()
+              return true
             }
         }
     }
@@ -305,7 +306,7 @@ class BookmarksService {
 
         log.info "delete favorites for the items ${itemIds}"
         log.info "delete favorites with the bookmarkIds ${bookmarkIds}"
-        deleteBookmarks(userId, bookmarkIds)
+        return deleteBookmarks(userId, bookmarkIds)
     }
 
     def findFavoritesByItemIds(userId, itemIdList) {
