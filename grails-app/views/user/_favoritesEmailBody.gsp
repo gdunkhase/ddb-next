@@ -1,4 +1,5 @@
-!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<%@ page contentType="text/html"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -50,7 +51,7 @@
 
     /* Styling your links has become much simpler with the new Yahoo.  In fact, it falls in line with the main credo of styling in email and make sure to bring your styles inline.  Your link colors will be uniform across clients when brought inline.
     Bring inline: Yes. */
-    a {color: orange;}
+    a {color: red;}
 
 
     /***************************************************
@@ -154,10 +155,6 @@
 
     <!-- Gmail/Hotmail image display fix -->
     <img class="image_fix" src="full path to image" alt="Your alt text" title="Your title text" width="x" height="x" />
-
-    <!-- Working with telephone numbers (including sms prompts).  Use the "mobile" class to style appropriately in desktop clients
-    versus mobile clients. -->
-    <span class="mobile_link">123-456-7890</span>
 
     </td>
   </tr>

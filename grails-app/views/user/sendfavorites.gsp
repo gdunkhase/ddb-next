@@ -11,7 +11,7 @@
 <h3 id="myModalLabel"></h3>
 </div>
 <div class="modal-body">
-    <form>
+    <form method="POST" action="/ddb-next/user/sendfavorites">
     <fieldset>
     <legend><g:message code="ddbnext.send_favorites"/></legend>
     <label><g:message code="ddbnext.Email" /></label>

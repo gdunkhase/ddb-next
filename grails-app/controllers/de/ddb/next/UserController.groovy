@@ -199,8 +199,19 @@ class UserController {
     }
     
     def sendfavorites(){
-        def results = sessionService.getSessionAttributeIfAvailable("results");
-        render(view: "sendfavorites", model: [results: results])
+        if (request.method=="POST"){
+            log.info "ENTERING SENDMAIL";
+            sendMail {
+                to "armand.brahaj@fiz-karlsruhe.de"
+                subject "My Favorites"
+                body( view:"_favoritesEmailBody",
+                    model:[fromAddress:'develop@ddb.de'])
+              }
+        }else {
+            def results = sessionService.getSessionAttributeIfAvailable("results");
+            render(view: "sendfavorites", model: [results: results])
+        }
+        
     }
 
     def private String formatDate(items,String id) {
