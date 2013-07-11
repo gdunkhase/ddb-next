@@ -103,9 +103,9 @@ limitations under the License.
                 data-type="audio"
                 <g:set var="type" value="audio"/>
               </g:elseif>
-                title="${it.orig.title}">
+                title="${(it.orig.title).encodeAsHTML()}">
               <div class="thumbnail ${type}">
-                <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
               </div>
               <span class="label off">${it.orig.title}</span>
             </a>
@@ -140,9 +140,9 @@ limitations under the License.
                   href="${it.orig.uri.audio}"
                   <g:set var="type" value="audio"/>
                 </g:elseif>
-                  title="${it.orig.title}">
+                  title="${(it.orig.title).encodeAsHTML()}">
                 <div class="thumbnail ${type}">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
                 <span class="label off">${it.orig.title}</span>
               </a>
@@ -164,9 +164,9 @@ limitations under the License.
           </g:else>
           <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <li>
-              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" title="${it.preview.title}">
+              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" title="${(it.preview.title).encodeAsHTML()}">
                 <div class="thumbnail image">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
                 <span class="label off">${it.preview.title}</span>
               </a>
@@ -190,9 +190,9 @@ limitations under the License.
           <g:each in="${binaryList}">
             <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
               <li>
-                <a class="group" href="${it.orig.uri.image}" title="${it.preview.title}">
+                <a class="group" href="${it.orig.uri.image}" title="${(it.preview.title).encodeAsHTML()}">
                   <div class="thumbnail image">
-                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                   </div>
                   <span class="label off">${it.preview.title}</span>
                 </a>
@@ -216,9 +216,9 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>  
-                 data-content="${it.orig.uri.video}" data-type="video" title="${it.orig.title}">
+                 data-content="${it.orig.uri.video}" data-type="video" title="${(it.orig.title).encodeAsHTML()}">
                 <div class="thumbnail video">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
                 <span class="label off">${it.orig.title}</span>
               </a>
@@ -242,9 +242,9 @@ limitations under the License.
           <g:each in="${binaryList}">
             <g:if test="${it.orig.uri.video != '' }">
               <li>
-                <a class="group" href="${it.orig.uri.video}" title="${it.orig.title}">
+                <a class="group" href="${it.orig.uri.video}" title="${(it.orig.title).encodeAsHTML()}">
                   <div class="thumbnail video">
-                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                   </div>
                   <span class="label off">${it.orig.title}</span>
                 </a>
@@ -268,9 +268,9 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>
-                 data-content="${it.orig.uri.audio}" data-type="audio" title="${it.orig.title}">
+                 data-content="${it.orig.uri.audio}" data-type="audio" title="${(it.orig.title).encodeAsHTML()}">
                 <div class="thumbnail video">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
                 <span class="label off">${it.orig.title}</span>
               </a>
@@ -294,9 +294,9 @@ limitations under the License.
           <g:each in="${binaryList}">
             <g:if test="${it.orig.uri.audio != '' }">
               <li>
-                <a class="group" href="${it.orig.uri.audio}" title="${it.orig.title}">
+                <a class="group" href="${it.orig.uri.audio}" title="${(it.orig.title).encodeAsHTML()}">
                   <div class="thumbnail video">
-                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                   </div>
                   <span class="label off">${it.orig.title}</span>
                 </a>
