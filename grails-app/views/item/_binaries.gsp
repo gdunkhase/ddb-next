@@ -58,12 +58,14 @@ limitations under the License.
     <span></span>
   </div>
 
-  <div class="tabs" role=tablist>
-    <p class="tab all" role="tab">
-      <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
-                 args="${flashInformation.all}" 
-                 default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
-    </p>
+  <div class="tabs">
+    <div role="tablist">
+      <p class="tab all" role="tab">
+        <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
+                   args="${flashInformation.all}" 
+                   default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
+      </p>
+    </div>
     <div class="scroller all" role="tabpanel">
       <ul class="gallery-all gallery-tab" role="tablist">
         <g:each in="${binaryList}">
@@ -152,7 +154,9 @@ limitations under the License.
       </div>
     </noscript>
 
-    <p class="tab images" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+    <div role="tablist">
+      <p class="tab images" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+    </div>
     <div class="scroller images" role="tabpanel">
       <ul class="gallery-images gallery-tab">
         <g:each in="${binaryList}">
@@ -203,7 +207,9 @@ limitations under the License.
       </div>
     </noscript>
 
-    <p class="tab videos" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+    <div role="tablist">
+      <p class="tab videos" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+    </div>
     <div class="scroller videos" role="tabpanel">
       <ul class="gallery-videos gallery-tab">
         <g:each in="${binaryList}">
@@ -255,7 +261,9 @@ limitations under the License.
       </div>
     </noscript>
 
-    <p class="tab audios" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+    <div role="tablist">
+      <p class="tab audios" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+    </div>
     <div class="scroller audios" role="tabpanel">
       <ul class="gallery-audios gallery-tab">
         <g:each in="${binaryList}">
