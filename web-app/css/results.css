@@ -750,7 +750,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
-  .page-info-nav #results-label {
+  .page-info-nav .results-label {
      display: none;
   }
 
@@ -794,7 +794,7 @@ input[type="checkbox"],input[type="radio"] {
      display: none;
    }
    
-  .page-info-nav #results-label {
+  .page-info-nav .results-label {
      display: none;
   }
 

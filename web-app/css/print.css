@@ -157,7 +157,7 @@ footer, .footer,
   padding-bottom: 0px !important;
 }
 
-.search-results-content .page-info-nav #results-label {
+.search-results-content .page-info-nav .results-label {
    display: inline;
 }
 .search-results-content .page-info-nav .results-overall-index + span {

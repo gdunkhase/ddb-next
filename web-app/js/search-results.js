@@ -527,10 +527,10 @@ function searchResultsInitializer(){
         $('.result-pages-count').html(JSONresponse.totalPages);
         $('.results-total').html(JSONresponse.numberOfResults);
         if (JSONresponse.numberOfResults == "1") {
-            $('#results-label').html(messages.ddbnext.Result_lowercase);
+            $('.results-label').html(messages.ddbnext.Result_lowercase);
         }
         else {
-            $('#results-label').html(messages.ddbnext.Results_lowercase);
+            $('.results-label').html(messages.ddbnext.Results_lowercase);
         }
         if(JSONresponse.paginationURL.nextPg){
           $(".page-nav .next-page").removeClass("off");
