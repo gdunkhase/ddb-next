@@ -67,7 +67,7 @@ limitations under the License.
       </p>
     </div>
     <div class="scroller all" role="tabpanel">
-      <ul class="gallery-all gallery-tab" role="tablist">
+      <ul class="gallery-all gallery-tab">
         <g:each in="${binaryList}">
           <g:if test="${it.full.uri == ''}">
             <g:set var="content" value="${it.preview.uri}"/>
