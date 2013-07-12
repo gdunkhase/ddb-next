@@ -30,12 +30,23 @@
 #registration-form .errors-container {
   width: 465px;
 }
-#registration-form .checkbox.control-label {
-  width: 455px;
+#registration-form label.checkbox-label {
+  width: 620px;
+  float: none;
+  text-align: left;
 }
 
-#registration-form .checkbox.control-label a {
+#registration-form label.checkbox-label a {
   text-decoration:underline;
+}
+
+#registration-form .controls.checkbox {
+  margin-left: 190px;
+  display: inline-block;
+}
+#registration-form .controls.checkbox .input-prepend-checkbox {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .reg-subtitle {
