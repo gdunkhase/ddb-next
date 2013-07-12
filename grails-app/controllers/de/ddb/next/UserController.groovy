@@ -373,7 +373,12 @@ class UserController {
                     messages.addAll(params.messages)
                 }
             }
-            render(view: "profile", model: [favoritesCount: "0", user: user, errors:errors, messages: messages])
+            //get favorites-count
+            def String result = getFavorites()
+            List items = JSON.parse(result) as List
+            def favoritesCount = items.length();
+
+            render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors:errors, messages: messages])
         }
         else{
             redirect(controller:"index")
