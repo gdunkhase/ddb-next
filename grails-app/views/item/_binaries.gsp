@@ -58,7 +58,7 @@ limitations under the License.
     <span></span>
   </div>
 
-  <div class="tabs">
+  <div class="tabs" role=tablist>
     <p class="tab all" role="tab">
       <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
                  args="${flashInformation.all}" 
