@@ -490,6 +490,7 @@ function searchResultsInitializer(){
   $('.clear-filters').click(function(){
     removeSearchCookieParameter('facetValues[]');
   });
+  
   function fetchResultsList(url, errorCallback){
     
     var divSearchResultsOverlayModal = $(document.createElement('div'));
@@ -509,9 +510,8 @@ function searchResultsInitializer(){
       async: true,
       url: url+'&reqType=ajax',
       success: function(data){
-        console.log("ciao")
         $('.search-results-list').fadeOut('fast', function(){
-        var JSONresponse = jQuery.parseJSON(data.responseText);
+        var JSONresponse = data;
         if(JSONresponse.numberOfResults==0){
             $('.search-noresults-content').removeClass("off");
             $('.search-results-content').addClass("off");
@@ -575,6 +575,7 @@ function searchResultsInitializer(){
         errorContainer.prepend(errorIcon);
         
         $('.search-results-list').prepend(errorContainer);
+        
         if(errorCallback){
           errorCallback();
         }
@@ -598,6 +599,7 @@ function searchResultsInitializer(){
     currentFacetValuesNotSelected: new Array(),
     currentPage: 1,
     searchFacetValuesTimeout: 0,
+    errorCaught: false,
     keyCode: {
         ALT: 18,
         BACKSPACE: 8,
@@ -760,7 +762,7 @@ function searchResultsInitializer(){
           var paramsArray = new Array(new Array('facetValues[]', this.currentFacetField+'='+facetValue));
         }
         paramsArray.push(new Array('offset', 0));
-        fetchResultsList(addParamToCurrentUrl(paramsArray));
+        fetchResultsList(addParamToCurrentUrl(paramsArray), function(){currObjInstance.unselectFacetValue(selectedFacetValue, true);});
         
         $('.clear-filters').removeClass('off');
     },
@@ -785,8 +787,8 @@ function searchResultsInitializer(){
       }
       if(!unselectWithoutFetch){
         fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
-        element.remove();
       }
+      element.remove();
       
       if($('.facets-list').find('li[data-fctvalue]').length==0) $('.clear-filters').addClass('off');
           
@@ -1234,38 +1236,38 @@ function searchResultsInitializer(){
  * Install a click event handler to add a result hit to the list of favorites.
  */
 function checkFavorites() {
-  var itemIds = [];
-
-  // collect all item ids on the page
-  $(".search-results .summary-main .persist").each(function() {
-    itemIds.push(extractItemId($(this).attr("href")));
-  });
-
-  // check if a result hit is already stored in the list of favorites
-  $.ajax({
-      type: "POST",
-      url: jsContextPath + "/apis/favorites/_get",
-      contentType : "application/json",
-      data: JSON.stringify(itemIds),
-      success: function(favoriteItemIds) {
-        $.each(itemIds, function(index, itemId) {
-          var div = $("#favorite-" + itemId);
-
-          if ($.inArray(itemId, favoriteItemIds) >= 0) {
-            disableFavorite(div);
-          }
-          else {
-            div.click(function() {
-              // add a result hit to the list of favorites
-              $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
-                $("#favorite-confirmation").modal("show");
-                disableFavorite(div);
-              });
-            });
-          }
-        });
-      }
-  });
+//  var itemIds = [];
+//
+//  // collect all item ids on the page
+//  $(".search-results .summary-main .persist").each(function() {
+//    itemIds.push(extractItemId($(this).attr("href")));
+//  });
+//
+//  // check if a result hit is already stored in the list of favorites
+//  $.ajax({
+//      type: "POST",
+//      url: jsContextPath + "/apis/favorites/_get",
+//      contentType : "application/json",
+//      data: JSON.stringify(itemIds),
+//      success: function(favoriteItemIds) {
+//        $.each(itemIds, function(index, itemId) {
+//          var div = $("#favorite-" + itemId);
+//
+//          if ($.inArray(itemId, favoriteItemIds) >= 0) {
+//            disableFavorite(div);
+//          }
+//          else {
+//            div.click(function() {
+//              // add a result hit to the list of favorites
+//              $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
+//                $("#favorite-confirmation").modal("show");
+//                disableFavorite(div);
+//              });
+//            });
+//          }
+//        });
+//      }
+//  });
 }
 
 /**
