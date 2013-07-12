@@ -31,6 +31,10 @@
   cursor: default;
 }
 
+#registration-form label.error {
+  vertical-align: middle;
+}
+
 #registration-form .errors-container {
   width: 465px;
 }
@@ -48,6 +52,11 @@
 #registration-form .controls.checkbox {
   margin-left: 190px;
   display: inline-block;
+}
+
+#registration-form .controls.checkbox label.error {
+  margin-top: 5px;
+  margin-right: 5px;
 }
 
 #termOfUse {
