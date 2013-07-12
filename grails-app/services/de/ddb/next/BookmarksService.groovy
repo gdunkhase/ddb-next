@@ -224,6 +224,7 @@ class BookmarksService {
      */
     def deleteBookmarks(userId, bookmarkIdList) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_bulk")
+        println("#####"+bookmarkIdList);
         http.request(Method.POST, ContentType.JSON) { req ->
             def reqBody = ''
             bookmarkIdList.each { id ->
@@ -298,7 +299,7 @@ class BookmarksService {
         log.info "favs: ${allFavorites}"
         allFavorites.each { it ->
             log.info "fav: ${it}"
-            if(it.itemId  in itemIds) {
+            if(it.itemId  in itemIds.ids) {
                 bookmarkIds.add(it.bookmarkId)
             }
         }
