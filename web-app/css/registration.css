@@ -27,9 +27,14 @@
   border-top: solid 1px #fff;
 }
 
+#registration-form label {
+  cursor: default;
+}
+
 #registration-form .errors-container {
   width: 465px;
 }
+
 #registration-form label.checkbox-label {
   width: 620px;
   float: none;
@@ -44,9 +49,9 @@
   margin-left: 190px;
   display: inline-block;
 }
-#registration-form .controls.checkbox .input-prepend-checkbox {
-  display: inline-block;
-  vertical-align: middle;
+
+#termOfUse {
+  margin-bottom: 6px;
 }
 
 .reg-subtitle {
