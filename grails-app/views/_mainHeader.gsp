@@ -132,7 +132,7 @@ limitations under the License.
 
 <!--[if IE]>
 <header class="ie-mobile">
-<!--<![endif]-->
+<![endif]-->
 
   <h1 class="invisible-but-readable">
     <g:message code="ddbnext.Heading_Header" />
