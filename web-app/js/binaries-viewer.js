@@ -386,8 +386,8 @@ $(document).ready(function() {
                 next     : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();" onmouseover="$(\'.fancybox-pagination\').show();" onmouseout="$(\'.fancybox-pagination\').hide();"></span>'
             },
             'afterLoad': function() {
-                var title = $(this.element).attr('caption');
-                var position = $(this.element).attr('pos') + '/' + $("#previews-list li").size();
+                var title = $(this.element).attr('data-caption');
+                var position = $(this.element).attr('data-pos') + '/' + $("#previews-list li").size();
                 $("span.fancybox-toolbar-title").text(title);
                 $("div.fancybox-pagination span").text(position);
             }
