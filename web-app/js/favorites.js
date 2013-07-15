@@ -16,14 +16,24 @@
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 $(function() {
 
-	if (jsPageName == "favorites") {
-		// workaround for ffox + ie click focus - prevents links that load dynamic
-		// content to be focussed/active.
-		$("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
-		$("#sendbookmarks").click(function(event) {
-			event.preventDefault()
-			$('#myModal').modal({remote: $(this).attr("href")})
-		});
+  if (jsPageName == "favorites") {
+    // workaround for ffox + ie click focus - prevents links that load dynamic
+    // content to be focussed/active.
+    $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
+    $("#sendbookmarks").click(function(event) {
+      event.preventDefault()
+      $('#myModal').modal({remote: $(this).attr("href")})
+    });
+
+    // Fix for back-button problem with the searchfield: DDBNEXT-389
+    if($.browser.msie){
+      var queryCache = $("#querycache");
+      var queryString = "";
+      if(queryCache.length > 0){
+        queryString = queryCache.val();
+      }
+      $("#form-search-header .query").val(queryString);
+    }
 
 		// Fix for back-button problem with the searchfield: DDBNEXT-389
 		if($.browser.msie){
