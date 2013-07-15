@@ -57,6 +57,11 @@ $(function() {
 			//TODO Reload page
 			return false;
 		});
+
+		$(document).on("click", "#btnSubmit", function(){ 
+			console.log("TODO Email Validation HERE");
+		}); 
+		
 	}
 
 });
