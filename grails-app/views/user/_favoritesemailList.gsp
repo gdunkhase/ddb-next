@@ -22,9 +22,13 @@ limitations under the License.
 <table border="1" style="margin-bottom:20px; border-spacing:0">
   <thead>
     <tr>
-      <th width="50%" style="padding: 10px;"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
-      <th width="30%" style="padding: 10px;"></th>
-      <th width="20%" style="padding: 10px;"><g:message code="ddbnext.Added_On" /></th>
+      <g:if test="${results.size() == 1}">
+        <th style="margin-top:20px"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
+      </g:if>
+      <g:else>
+        <th style="margin-top:20px"><g:message code="ddbnext.Entity_Objects" /></th>
+      </g:else>
+      <th width="170px"></th>
     </tr>
   </thead>
   <tbody>
@@ -39,7 +43,7 @@ limitations under the License.
       </g:if>
       
       <tr>
-        <td width="50%" height="130px" style="padding: 10px;">
+        <td height="130px" style="padding: 10px;">
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }"
               action="${ action }" params="[id: it.id, hitNumber: hitNumber]"
@@ -52,14 +56,11 @@ limitations under the License.
             ${it.preview.subtitle}
           </div>
         </td>
-        <td width="30%" style="padding: 10px;"> 
+        <td width="170px" style="padding: 10px;"> 
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]">
             <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
                  alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
           </g:link>
-        </td>
-        <td width="20%" style="padding: 10px;">
-        timestamp
         </td>
       </tr>
     </g:each>
