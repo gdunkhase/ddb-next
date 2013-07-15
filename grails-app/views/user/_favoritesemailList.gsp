@@ -17,7 +17,9 @@ limitations under the License.
 <g:set var="offset" value="${0}" />
 <g:set var="index" value="${0}" />
 <div style="margin-top:20px; margin-bottom:20px">
-  <g:message code="ddbnext.favorites_email_body" />
+  <g:message code="ddbnext.favorites_email_body" 
+             args="${[dateString]}" 
+             default="ddbnext.Favorites_List_Of"/>
 </div>
 <table border="1" style="margin-bottom:20px; border-spacing:0">
   <thead>

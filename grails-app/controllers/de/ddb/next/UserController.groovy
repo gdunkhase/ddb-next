@@ -120,9 +120,18 @@ class UserController {
             List items = JSON.parse(result) as List
             def totalResults= items.length();
 
+            // Date info for the print view and email
+            def dateTime = new Date()
+            dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+
+            // User info for the print view
+            def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
+
             if (totalResults <1){
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
+                    userName: userName, 
+                    dateString: dateTime
                 ])
                 return;
             }else{
@@ -207,6 +216,8 @@ class UserController {
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
+                    userName: userName,
+                    dateString: dateTime
                 ])
             }
         }
