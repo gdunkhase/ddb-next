@@ -19,10 +19,10 @@ limitations under the License.
     <span><g:message code="ddbnext.Of" /> </span> 
     <span><strong><span class="results-total">${numberOfResultsFormatted}</span></strong> </span> 
     <g:if test="${numberOfResultsFormatted == '1'}"> 
-        <span id="results-label"><g:message code="ddbnext.Result_lowercase" /></span>
+        <span class="results-label"><g:message code="ddbnext.Result_lowercase" /></span>
     </g:if>
     <g:else>
-        <span id="results-label"><g:message code="ddbnext.Results_lowercase" /></span>
+        <span class="results-label"><g:message code="ddbnext.Results_lowercase" /></span>
     </g:else>
   </div>
   <g:paginationControlsRender navData="${navData}"></g:paginationControlsRender>

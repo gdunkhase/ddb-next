@@ -28,7 +28,7 @@ limitations under the License.
           <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <g:set var="counter" value="${counter + 1}" />
             <li>
-              <a class="previews" caption="${(it.preview.title).encodeAsHTML()}" pos="${counter}" rel="group1" href="${content}">
+              <a class="previews" data-caption="${(it.preview.title).encodeAsHTML()}" data-pos="${counter}" href="${content}">
                 <img src="${it.preview.uri}" alt="${(it.preview.title).encodeAsHTML()}" />
               </a>
             </li>
@@ -59,13 +59,15 @@ limitations under the License.
   </div>
 
   <div class="tabs">
-    <p class="tab all" role="tab">
-      <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
-                 args="${flashInformation.all}" 
-                 default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
-    </p>
+    <div role="tablist">
+      <p class="tab all" role="tab">
+        <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
+                   args="${flashInformation.all}" 
+                   default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
+      </p>
+    </div>
     <div class="scroller all" role="tabpanel">
-      <ul class="gallery-all gallery-tab" role="tablist">
+      <ul class="gallery-all gallery-tab">
         <g:each in="${binaryList}">
           <g:if test="${it.full.uri == ''}">
             <g:set var="content" value="${it.preview.uri}"/>
@@ -152,7 +154,9 @@ limitations under the License.
       </div>
     </noscript>
 
-    <p class="tab images" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+    <div role="tablist">
+      <p class="tab images" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+    </div>
     <div class="scroller images" role="tabpanel">
       <ul class="gallery-images gallery-tab">
         <g:each in="${binaryList}">
@@ -203,7 +207,9 @@ limitations under the License.
       </div>
     </noscript>
 
-    <p class="tab videos" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+    <div role="tablist">
+      <p class="tab videos" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+    </div>
     <div class="scroller videos" role="tabpanel">
       <ul class="gallery-videos gallery-tab">
         <g:each in="${binaryList}">
@@ -255,7 +261,9 @@ limitations under the License.
       </div>
     </noscript>
 
-    <p class="tab audios" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+    <div role="tablist">
+      <p class="tab audios" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+    </div>
     <div class="scroller audios" role="tabpanel">
       <ul class="gallery-audios gallery-tab">
         <g:each in="${binaryList}">
