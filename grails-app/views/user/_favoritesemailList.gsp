@@ -16,12 +16,15 @@ limitations under the License.
 <g:set var="pageHitCounter" value="${0}" />
 <g:set var="offset" value="${0}" />
 <g:set var="index" value="${0}" />
-<g:message code="ddbnext.favorites_email_body" />
-<table class="table table-bordered">
+<div style="margin-top:20px; margin-bottom:20px">
+  <g:message code="ddbnext.favorites_email_body" />
+</div>
+<table border="1" style="margin-bottom:20px; border-spacing:0">
   <thead>
     <tr>
-      <th>Objekt</th>
-      <th>Thumbnail</th>
+      <th width="50%" style="padding: 10px;"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
+      <th width="30%" style="padding: 10px;"></th>
+      <th width="20%" style="padding: 10px;"><g:message code="ddbnext.Added_On" /></th>
     </tr>
   </thead>
   <tbody>
@@ -36,26 +39,28 @@ limitations under the License.
       </g:if>
       
       <tr>
-        <td height="130px">
-          <h2 class="title">
-            <g:link class="persist" controller="${ controller }"
+        <td width="50%" height="130px" style="padding: 10px;">
+          <h2>
+            <g:link style="color:#a5003b" controller="${ controller }"
               action="${ action }" params="[id: it.id, hitNumber: hitNumber]"
               title="${truncateHovercardTitle(title: it.label, length: 350)}">
               <g:truncateItemTitle title="${ it.preview.title }"
                 length="${ 100 }"></g:truncateItemTitle>
             </g:link>
           </h2>
-          <div class="subtitle">
+          <div>
             ${it.preview.subtitle}
           </div>
         </td>
-        <td> 
-        <g:link controller="${ controller }"
-            action="${ action }" params="[id: it.id, hitNumber: hitNumber]">
-            <img
-              src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
-              alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
-          </g:link></td>        
+        <td width="30%" style="padding: 10px;"> 
+          <g:link controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]">
+            <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
+                 alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+          </g:link>
+        </td>
+        <td width="20%" style="padding: 10px;">
+        timestamp
+        </td>
       </tr>
     </g:each>
   </tbody>

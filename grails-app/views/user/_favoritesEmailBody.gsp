@@ -207,7 +207,7 @@ a {
     </style>
   <![endif]-->
 </head>
-<body>
+<body style="font-family:Calibri,Arial,sans-serif;">
 	<g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
 </body>
 </html>
