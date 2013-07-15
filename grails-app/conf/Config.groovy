@@ -139,6 +139,7 @@ ddb.aas.url="http://localhost/aas:8081/"
 ddb.culturegraph.url="http://hub.culturegraph.org"
 ddb.dnb.url="http://d-nb.info"
 ddb.bookmark.url="http://whvmescidev6.fiz-karlsruhe.de:9200"
+ddb.newsletter.url="http://whvmescidev6.fiz-karlsruhe.de:9200"
 ddb.logging.folder="target/logs"
 ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
 ddb.advancedSearch.searchGroupCount=3
