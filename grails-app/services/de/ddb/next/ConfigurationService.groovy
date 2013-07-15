@@ -16,7 +16,7 @@
 
 package de.ddb.next
 
-import de.ddb.next.exception.ConfigurationException;
+import de.ddb.next.exception.ConfigurationException
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 /**
@@ -114,6 +114,17 @@ class ConfigurationService {
         }
         if(!(url instanceof String)){
             throw new ConfigurationException("getBookmarkUrl(): ddb.bookmark.url is not a String")
+        }
+        return url
+    }
+
+    public String getNewsletterUrl(){
+        def url = grailsApplication.config.ddb?.newsletter?.url
+        if(!url){
+            throw new ConfigurationException("getNewsletterUrl(): Configuration entry does not exist -> ddb.newsletter.url ")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getNewsletterUrl(): ddb.newsletter.url is not a String")
         }
         return url
     }
