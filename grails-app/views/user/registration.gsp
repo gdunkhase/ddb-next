@@ -26,7 +26,7 @@ limitations under the License.
     <g:if test="${errors != null && errors.size()>0}">
       <g:renderErrors errors="${errors}"></g:renderErrors>
     </g:if>
-    <div class="well">
+    <div class="span10 well">
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
 
         <div><h1><g:message code="ddbnext.Sign_up_here" /></h1></div>

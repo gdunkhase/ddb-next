@@ -40,7 +40,7 @@
 }
 
 #registration-form label.checkbox-label {
-  width: 620px;
+  width: 75%;
   float: none;
   text-align: left;
 }
@@ -52,6 +52,7 @@
 #registration-form .controls.checkbox {
   margin-left: 190px;
   display: inline-block;
+  vertical-align: top;
 }
 
 #registration-form .controls.checkbox label.error {
@@ -80,4 +81,27 @@
 
 .well {
   background-color: #EFEBE8;
+}
+
+/* responsive design */
+
+@media (max-width: 1199px) {
+  #registration-form label.checkbox-label {
+    width: 60%;
+  }
+}
+
+@media (max-width: 767px) {
+  #registration-form label.checkbox-label {
+    width: 46%;
+  }
+}
+
+@media (max-width: 480px) {
+  #registration-form .controls.checkbox {
+    margin-left: 0;
+  }
+  #termOfUse {
+    margin: 0 0 0;
+  }
 }
