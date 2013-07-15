@@ -6,9 +6,6 @@
 
 --%><g:set var="confBinary" value="/ddb-next"></g:set>
 <div id="myModal" class="modal" tabindex="-1" role="dialog" >
-<div class="modal-header">
-<h3 id="myModalLabel"></h3>
-</div>
 <div class="modal-body">
     <form method="POST" id="sendFavorites">
     <fieldset>
