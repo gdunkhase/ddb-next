@@ -119,35 +119,25 @@ class UserController {
             def String result = getFavorites()
             List items = JSON.parse(result) as List
             def totalResults= items.length();
-
+            def allRes = retriveItemMD(items);
             if (totalResults <1){
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
                 ])
                 return;
             }else{
-                def queryItems;
+                def resultsItems = allRes
                 if (params.offset){
-                    queryItems=items.drop(params.offset.toInteger())
+                    resultsItems=resultsItems.drop(params.offset.toInteger())
+                    println resultsItems;
                 }else{
                     params.offset=0;
-                    queryItems=items.take(rows)
+                    resultsItems=resultsItems.take(rows)
                 }
-
-                def orQuery=queryItems[0].getAt("itemId");
-                queryItems.tail().each() { orQuery+=" OR "+ it.itemId };
-                params.query = "id:("+orQuery+")"
 
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
                 urlQuery["offset"]=0;
-                def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
-                if(!apiResponse.isOk()){
-                    log.error "Json: Json file was not found"
-                    apiResponse.throwException(request)
-                }
-                def resultsItems = apiResponse.getResponse()
 
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
@@ -155,9 +145,8 @@ class UserController {
                 def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
 
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-                def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
+                def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
-                def queryString = request.getQueryString()
 
                 def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false];
                 def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
@@ -171,10 +160,8 @@ class UserController {
                     temp["creationDate"]=formatDate(items,searchItem.id);
                     all.add(temp)
                 }
-                sessionService.setSessionAttributeIfAvailable("results", resultsItems["results"]["docs"]);
+                sessionService.setSessionAttributeIfAvailable("results", allRes);
                 if (request.method=="POST"){
-                    //def User user = getUserFromSession()
-                    log.info getUserFromSession().getFirstnameAndLastnameOrNickname()
                     try {
                         sendMail {
                             to params.email
@@ -191,7 +178,7 @@ class UserController {
 
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
-                    results: resultsItems["results"]["docs"],
+                    results: resultsItems,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
@@ -204,7 +191,7 @@ class UserController {
                     nextPg:createFavoritesLinkNavigation(params.offset.toInteger()+rows,urlQuery["rows"],"sempty"),
                     lastPg:createFavoritesLinkNavigation((Math.ceil((items.size()-rows)/10)*10).toInteger(),urlQuery["rows"],"sempty"),
                     totalPages: totalPages,
-                    paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
+                    //paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
                 ])
@@ -215,6 +202,50 @@ class UserController {
         }
     }
 
+    /**
+     * Retrieve from Backend the Metadata for the items retrieved from the favorites list
+     * @param items
+     * @return
+     */
+    def private retriveItemMD(List items){
+        def totalResults= items.length();
+        def step = 20;
+        def queryItems;
+        def orQuery="";
+        def allRes = []
+        items.eachWithIndex() { it, i ->
+            if ((i==0)||((i-1)%step==0)){
+                orQuery=it.itemId;
+            }else if (i%step==0){
+                i=0
+                orQuery=orQuery + " OR "+ it.itemId
+                queryBackend(orQuery).each { item ->
+                    allRes.add(item);
+                }
+                orQuery="";
+            }else{
+                orQuery+=" OR "+ it.itemId
+            }
+        };
+        queryBackend(orQuery).each { item ->
+            allRes.add(item);
+        }
+        return allRes;
+    }
+
+    def private queryBackend(String query){
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        params.query = "id:("+query+")"
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def resultsItems = apiResponse.getResponse()
+        return resultsItems["results"]["docs"]
+
+    }
     def sendfavorites(){
         def results = sessionService.getSessionAttributeIfAvailable("results");
         render(view: "sendfavorites", model: [results: results])
