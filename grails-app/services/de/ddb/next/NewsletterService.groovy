@@ -16,14 +16,12 @@
 package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
-import de.ddb.next.beans.User
-import de.ddb.next.exception.BackendErrorException
 import groovy.json.*
-import groovyx.net.http.Method
 
-import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
+
+import de.ddb.next.beans.User
 
 /**
  * Set of Methods that encapsulate REST-calls to the NewsletterService
@@ -40,11 +38,12 @@ class NewsletterService {
     private static final def SUBSCRIPTION_PATH ='/newsletter/subscription/'
 
     def addSubscriber(User user) {
+        log.info "add user ${user} as newsletter subscriber"
         def body = [
             email: user.email
         ]
 
-        def apiResponse = ApiConsumer.postJson(configurationService.getNewsletterUrl(),
+        def apiResponse = ApiConsumer.putJson(configurationService.getNewsletterUrl(),
                 "${SUBSCRIPTION_PATH}${user.id}", false, new JSONObject(body))
         if(!apiResponse.isOk()){
             log.error "fail to add newsletter subscriber ${user.toString()}"
@@ -55,6 +54,7 @@ class NewsletterService {
     }
 
     def removeSubscriber(User user) {
+        log.info "remove user ${user} as newsletter subscriber"
         def apiResponse = ApiConsumer.delete(configurationService.getNewsletterUrl(), "${SUBSCRIPTION_PATH}${user.id}")
         if(!apiResponse.isOk()){
             log.error "fail to add remove subscriber ${user.toString()}"
@@ -80,6 +80,5 @@ class NewsletterService {
 
         log.info "The user ${user.toString()} is a subscriber"
         return true
-
     }
 }
