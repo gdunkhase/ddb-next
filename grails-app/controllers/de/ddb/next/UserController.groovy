@@ -109,6 +109,7 @@ class UserController {
     }
 
     //Favorites page
+    //TODO Refactor in a new service most of the assisting code
     def favorites(){
         if(isUserLoggedIn()){
             def rows=20; //default
@@ -149,9 +150,7 @@ class UserController {
                     resultsItems=allRes.take( rows)
 
                 }
-
-
-
+                //TODO remove this dummy data
                 def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false];
                 def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
 
@@ -263,7 +262,7 @@ class UserController {
             if (id== favItems.itemId){
                 String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
                 SimpleDateFormat oldFormat = new SimpleDateFormat(pattern,locale);
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm",locale);
+                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm Z",locale);
                 DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
                 def Date javaDate = oldFormat.parse(favItems.creationDate);
                 newDate = newFormat.format(javaDate)
