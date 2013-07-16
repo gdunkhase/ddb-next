@@ -15,10 +15,15 @@
  */
 package de.ddb.next
 
+import grails.converters.*
+
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
 import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
-import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.json.*
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.openid4java.consumer.ConsumerManager
 import org.openid4java.consumer.VerificationResult
@@ -29,18 +34,13 @@ import org.openid4java.message.ParameterList
 import org.openid4java.message.ax.FetchRequest
 import org.openid4java.util.HttpClientFactory
 import org.openid4java.util.ProxyProperties
-
-import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
 import de.ddb.next.exception.ItemNotFoundException
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import grails.converters.*
-import org.codehaus.groovy.grails.web.json.*;
 
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
@@ -52,6 +52,7 @@ class UserController {
     def messageSource
     def bookmarksService
     def searchService
+    def newsletterService
 
     LinkGenerator grailsLinkGenerator
 
@@ -66,7 +67,7 @@ class UserController {
         log.info "doLogin(): login user "
         def loginStatus = LoginStatus.LOGGED_OUT
 
-        // Only perfom login if user is not already logged in
+        // Only perform login, if user is not already logged in
         User user = null
         if(!isUserLoggedIn()){
             def email = params.email
@@ -76,7 +77,7 @@ class UserController {
 
             if(user != null){
                 loginStatus = LoginStatus.SUCCESS
-                //TODO: check Newsletter-Subscription and set attribute newsletterSubscribed.
+                user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
 
                 sessionService.createNewSession()
                 sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
@@ -111,25 +112,25 @@ class UserController {
   //TODO Refactor in a new service most of the assisting code
     def favorites(){
         if(isUserLoggedIn()){
-            def rows=20; //default
+            def rows=20 //default
             if (params.rows){
-                rows = params.rows.toInteger();
+                rows = params.rows.toInteger()
             }
 
             def String result = getFavorites()
             List items = JSON.parse(result) as List
-            def totalResults= items.length();
-            def allRes = retriveItemMD(items);
+            def totalResults= items.length()
+            def allRes = retriveItemMD(items)
             def resultsItems
             if (totalResults <1){
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
                 ])
-                return;
+                return
             }else{
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-                urlQuery["offset"]=0;
+                urlQuery["offset"]=0
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
@@ -140,17 +141,17 @@ class UserController {
                 }
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
-            
+
                 if (params.offset){
                     resultsItems=allRes.drop(params.offset.toInteger())
-                    resultsItems=resultsItems.take( rows)                    
+                    resultsItems=resultsItems.take( rows)
                 }else{
-                    params.offset=0;
+                    params.offset=0
                     resultsItems=allRes.take( rows)
 
                 }
                 //TODO remove this dummy data
-                def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false];
+                def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false]
                 def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
 
                 def all = []
@@ -158,10 +159,10 @@ class UserController {
                 resultsItems.each { searchItem->
                     temp = []
                     temp = searchItem
-                    temp["creationDate"]=formatDate(items,searchItem.id);
+                    temp["creationDate"]=formatDate(items,searchItem.id)
                     all.add(temp)
                 }
-                sessionService.setSessionAttributeIfAvailable("results", allRes);
+                sessionService.setSessionAttributeIfAvailable("results", allRes)
                 if (request.method=="POST"){
                     try {
                         sendMail {
@@ -209,37 +210,37 @@ class UserController {
      * @return
      */
     def private retriveItemMD(List items){
-        def totalResults= items.length();
-        def step = 20;
-        def queryItems;
-        def orQuery="";
+        def totalResults= items.length()
+        def step = 20
+        def queryItems
+        def orQuery=""
         def allRes = []
         items.eachWithIndex() { it, i ->
             if ((i==0)||((i-1)%step==0)){
-                orQuery=it.itemId;
+                orQuery=it.itemId
             }else if (i%step==0){
                 i=0
                 orQuery=orQuery + " OR "+ it.itemId
                 queryBackend(orQuery).each { item ->
-                    allRes.add(item);
+                    allRes.add(item)
                 }
-                orQuery="";
+                orQuery=""
             }else{
                 orQuery+=" OR "+ it.itemId
             }
-        };
-        queryBackend(orQuery).each { item ->
-            allRes.add(item);
         }
-        return allRes;
+        queryBackend(orQuery).each { item ->
+            allRes.add(item)
+        }
+        return allRes
     }
 
     def private queryBackend(String query){
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         params.query = "id:("+query+")"
-      
+
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-        urlQuery["offset"]=0;
+        urlQuery["offset"]=0
         def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
@@ -250,20 +251,20 @@ class UserController {
 
     }
     def sendfavorites(){
-        def results = sessionService.getSessionAttributeIfAvailable("results");
+        def results = sessionService.getSessionAttributeIfAvailable("results")
         render(view: "sendfavorites", model: [results: results])
     }
 
     def private String formatDate(items,String id) {
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        def newDate;
+        def newDate
         items.each { favItems ->
             if (id== favItems.itemId){
-                String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-                SimpleDateFormat oldFormat = new SimpleDateFormat(pattern,locale);
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm Z",locale);
-                DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
-                def Date javaDate = oldFormat.parse(favItems.creationDate);
+                String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+                SimpleDateFormat oldFormat = new SimpleDateFormat(pattern,locale)
+                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm Z",locale)
+                DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
+                def Date javaDate = oldFormat.parse(favItems.creationDate)
                 newDate = newFormat.format(javaDate)
 
             }
@@ -302,20 +303,20 @@ class UserController {
             JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null)
             try {
                 aasService.createPerson(userjson)
-                messages.add("ddbnext.User.Create_Success");
+                messages.add("ddbnext.User.Create_Success")
                 redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
             }
             catch (ConflictException e) {
                 log.error "Conflict: user with given data already exists. username:" + params.username + ",email:" + params.email, e
                 String conflictField = e.getMessage().replaceFirst(".*?'(.*?)'.*", "\$1")
                 if (params.username.equals(conflictField)) {
-                    errors.add("ddbnext.Conflict_User_Name");
+                    errors.add("ddbnext.Conflict_User_Name")
                 }
                 else if (params.email.equals(conflictField)) {
-                    errors.add("ddbnext.Conflict_User_Email");
+                    errors.add("ddbnext.Conflict_User_Email")
                 }
                 else {
-                    errors.add("ddbnext.Conflict_User_Common");
+                    errors.add("ddbnext.Conflict_User_Common")
                 }
                 render(view: "registration" , model: [errors: errors, messages: messages, params: params])
             }
@@ -357,12 +358,12 @@ class UserController {
             try {
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
-                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null));
-                messages.add("ddbnext.User.PasswordReset_Success");
+                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null))
+                messages.add("ddbnext.User.PasswordReset_Success")
             }
             catch (ItemNotFoundException e) {
                 log.error "NotFound: a user with given name " + params.username + " was not found", e
-                errors.add("ddbnext.Error_Username_Notfound");
+                errors.add("ddbnext.Error_Username_Notfound")
             }
         }
         if (!messages.isEmpty()) {
@@ -382,13 +383,12 @@ class UserController {
                 user.setFirstname(params.fname)
                 user.setLastname(params.lname)
                 user.setEmail(params.email)
-    
             }
             if (params.newsletter) {
-                user.setNewsletterSubscribed(true);
+                user.setNewsletterSubscribed(true)
             }
             else {
-                user.setNewsletterSubscribed(false);
+                user.setNewsletterSubscribed(false)
             }
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
@@ -414,7 +414,7 @@ class UserController {
             //get favorites-count
             def String result = getFavorites()
             List items = JSON.parse(result) as List
-            def favoritesCount = items.length();
+            def favoritesCount = items.length()
 
             render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors:errors, messages: messages])
         }
@@ -443,7 +443,7 @@ class UserController {
                     errors.add("ddbnext.Error_Email_Empty")
                 }
                 if (!Validations.validatorEmail(params.email)) {
-                    errors.add("ddbnext.Error_Valid_Email_Address");
+                    errors.add("ddbnext.Error_Valid_Email_Address")
                 }
             }
             if (errors == null || errors.isEmpty()) {
@@ -451,10 +451,10 @@ class UserController {
                     if (Validations.isDifferent(user.getFirstname(), params.fname)
                     || Validations.isDifferent(user.getLastname(), params.lname)
                     || Validations.isDifferent(user.getUsername(), params.username)) {
-                        profileDifference = true;
+                        profileDifference = true
                     }
                     if (Validations.isDifferent(user.getEmail(), params.email)) {
-                        eMailDifference = true;
+                        eMailDifference = true
                     }
                 }
                 if ((params.newsletter && !user.newsletterSubscribed)
@@ -476,12 +476,12 @@ class UserController {
                         user.setUsername(params.username)
                         user.setFirstname(params.fname)
                         user.setLastname(params.lname)
-                        aasService.updatePerson(user.getId(), aasUser);
+                        aasService.updatePerson(user.getId(), aasUser)
                         messages.add("ddbnext.User.Profile_Update_Success")
                     }
                     catch (ConflictException e) {
                         log.error "Conflict: user with given data already exists. username:" + params.username, e
-                        errors.add("ddbnext.Conflict_User_Name");
+                        errors.add("ddbnext.Conflict_User_Name")
                     }
                 }
                 if (eMailDifference && (errors == null || errors.isEmpty())) {
@@ -489,31 +489,18 @@ class UserController {
                         //update email in aas
                         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                         def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
-                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null));
+                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null))
                         messages.add("ddbnext.User.Email_Update_Success")
                     }
                     catch (ConflictException e) {
                         user.setEmail(params.email)
                         log.error "Conflict: user with given data already exists. email:" + params.email, e
-                        errors.add("ddbnext.Conflict_User_Email");
+                        errors.add("ddbnext.Conflict_User_Email")
                     }
                 }
                 if (newsletterDifference && (errors == null || errors.isEmpty())) {
-                    if (params.newsletter) {
-                        user.setNewsletterSubscribed(true);
-                    }
-                    else {
-                        user.setNewsletterSubscribed(false);
-                    }
-                    //TODO: change Newsletter Subscription
-                    try {
-                        //DO change
-                        messages.add("ddbnext.User.Newsletter_Update_Success")
-                    }
-                    catch (Exception e) {
-                        //log.error "", e
-                        //errors.add("")
-                    }
+                    log.info "parameter newsletter: ${params.newsletter}"
+                    updateNewsletterSubscription(user, messages, errors)
                 }
                 if (errors == null || errors.isEmpty()) {
                     //adapt user-attributes in session
@@ -530,6 +517,25 @@ class UserController {
         }
         else{
             redirect(controller:"index")
+        }
+    }
+
+    private updateNewsletterSubscription(user, messages, errors) {
+        try {
+            if (params.newsletter) {
+                newsletterService.addSubscriber(user)
+                user.setNewsletterSubscribed(true)
+            }
+            else {
+                newsletterService.removeSubscriber(user)
+                user.setNewsletterSubscribed(false)
+            }
+
+            messages.add("ddbnext.User.Newsletter_Update_Success")
+        }
+        catch (Exception e) {
+            log.error "fail to update newsletter subscription", e
+            errors.add("fail to update newsletter subscription")
         }
     }
 
@@ -656,19 +662,19 @@ class UserController {
         if (StringUtils.isBlank(params.type)) {
             forward controller: "error", action: "serverError"
         }
-        List<String> messages = [];
-        List<String> errors = [];
+        List<String> messages = []
+        List<String> errors = []
         def jsonuser
         try {
-            jsonuser = aasService.confirm(params.id, params.token);
+            jsonuser = aasService.confirm(params.id, params.token)
             if (params.type.equals("emailupdate")) {
-                messages.add("ddbnext.User.Email_Confirm_Success");
+                messages.add("ddbnext.User.Email_Confirm_Success")
             }
             else if (params.type.equals("passwordreset")) {
-                messages.add("ddbnext.User.Pwreset_Confirm_Success");
+                messages.add("ddbnext.User.Pwreset_Confirm_Success")
             }
             else if (params.type.equals("create")) {
-                messages.add("ddbnext.User.Create_Confirm_Success");
+                messages.add("ddbnext.User.Create_Confirm_Success")
             }
             // set changed attributes in user-object in session
             if (isUserLoggedIn()) {
@@ -795,8 +801,8 @@ class UserController {
                 user.setLastname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-
-                //TODO: check Newsletter-Subscription and set attribute newsletterSubscribed.
+                user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
+                log.info(user.toString())
 
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
 
