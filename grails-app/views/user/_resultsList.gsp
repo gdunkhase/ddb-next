@@ -29,7 +29,7 @@ limitations under the License.
     <li class="item bt">
       <div class="summary row">
         <div class="summary-main-wrapper span5">
-          <input type="checkbox" name="${it.id}" class="remove-item-check">
+          <input type="checkbox" name="id[${index++}]" value="${it.id}" class="remove-item-check">
           <div class="summary-main">
             <h2 class="title">
               <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]" title="${truncateHovercardTitle(title: it.label, length: 350)}">
