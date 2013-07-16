@@ -122,14 +122,10 @@ class UserController {
             def allRes = retriveItemMD(items);
             def resultsItems
             
-            // Date info for the print view and email
             def dateTime = new Date()
             dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
-
-            // User info for the print view
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
 
-            
             if (totalResults <1){
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
@@ -177,9 +173,10 @@ class UserController {
                     try {
                         sendMail {
                             to params.email
+                            from getUserFromSession().getEmail()
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[fromAddress:'develop@ddb.de',results: allRes,dateString: dateTime])
+                            model:[results: allRes,dateString: dateTime])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (Exception e) {
@@ -263,7 +260,6 @@ class UserController {
     }
     def sendfavorites(){
         def results = sessionService.getSessionAttributeIfAvailable("results");
-        // Date info for the print view and email
         def dateTime = new Date()
         dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
         render(view: "sendfavorites", model: [results: results, dateString:dateTime])
