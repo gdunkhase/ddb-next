@@ -119,14 +119,13 @@ class UserController {
             def String result = getFavorites()
             List items = JSON.parse(result) as List
             def totalResults= items.length();
-            def allRes = retriveItemMD(items);
-            def resultsItems
             
             def dateTime = new Date()
             dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
 
             if (totalResults <1){
+                log.info "-------------------------------------------------------> results less than 1" 
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
                     userName: userName,
@@ -134,6 +133,9 @@ class UserController {
                 ])
                 return;
             }else{
+                def allRes = retriveItemMD(items);
+                def resultsItems
+
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
                 urlQuery["offset"]=0;
