@@ -45,18 +45,27 @@ $(function() {
     $('#favorites-remove').submit(function() {
       var selected = new Array();
       $('#slaves input:checked').each(function() {
-        selected.push($(this).attr('name'));
+        selected.push($(this).attr('value'));
       });
+      var body = {
+        ids : selected
+      }
       jQuery.ajax({
-        type: 'POST',
-        url: "/ddb-next/apis/favorites/_delete",
-        data: JSON.stringify(selected),
-        dataType: "json",
-        success: function(data){ alert(data); }
+        type : 'POST',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : "/ddb-next/apis/favorites/_delete",
+        data : JSON.stringify(body),
+        dataType : "json",
+        success : function(data) {
+          alert("Hello " + data);
+        }
       });
-      //TODO Reload page
+      // TODO Reload page
+      location.reload();
       return false;
     });
+    
 
     $(document).on("click", "#btnSubmit", function(){ 
       console.log("TODO Email Validation HERE");

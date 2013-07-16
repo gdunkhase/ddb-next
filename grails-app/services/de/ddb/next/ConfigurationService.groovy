@@ -155,6 +155,17 @@ class ConfigurationService {
     public String getCreateConfirmationLink(){
         return getConfirmBase() + "?type=create"
     }
+    
+    public String getFavoritesSendMailFrom(){
+        def email = grailsApplication.config.ddb?.favorites.sendmailfrom
+        if(!email){
+            throw new ConfigurationException("getFavoritesSendMailFrom(): Configuration entry does not exist -> ddb.favorites.sendmailfrom  ")
+        }
+        if(!(email instanceof String)){
+            throw new ConfigurationException("getFavoritesSendMailFrom(): ddb.favorites.sendmailfrom  is not a String")
+        }
+        return email
+    }
 
     public List getFacetsFilter(){
         def filter = grailsApplication.config.ddb?.backend?.facets?.filter

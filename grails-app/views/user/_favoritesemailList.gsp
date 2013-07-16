@@ -59,7 +59,7 @@ limitations under the License.
           </div>
         </td>
         <td width="170px" style="padding: 10px;"> 
-          <g:link controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]">
+          <g:link controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]" absolute="true">
             <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
                  alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
           </g:link>
