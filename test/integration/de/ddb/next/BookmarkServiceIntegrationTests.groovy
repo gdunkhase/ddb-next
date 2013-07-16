@@ -126,7 +126,8 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def allFavs = bookmarksService.findFavoritesByUserId(userId)
         assert allFavs.size() == 1
 
-        def itemIds = [firstItemId]
+        def itemIds = [:]
+        itemIds.ids = [firstItemId]
         bookmarksService.deleteFavorites(userId, itemIds)
 
         def emptyFavs = bookmarksService.findFavoritesByUserId(userId)
