@@ -42,7 +42,7 @@ limitations under the License.
                      args="${[userName, dateString]}" 
                      default="ddbnext.Favorites_List_Of"/>
         </h1>
-        <%--
+          <%--
           <div class="page-info">
             <span class="results-overall-index">1-2 </span> 
             <span><g:message code="ddbnext.Of" /> </span> 
@@ -54,7 +54,7 @@ limitations under the License.
                 <span id="results-label"><g:message code="ddbnext.Results_lowercase" /></span>
             </g:else>
           </div>
-        --%>
+          --%>
       </div>
       <div class="span4 results-paginator-options off">
         <div class="page-filter">
