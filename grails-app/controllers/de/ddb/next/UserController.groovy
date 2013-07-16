@@ -125,7 +125,6 @@ class UserController {
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
 
             if (totalResults <1){
-                log.info "-------------------------------------------------------> results less than 1" 
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
                     userName: userName,
@@ -175,7 +174,7 @@ class UserController {
                     try {
                         sendMail {
                             to params.email
-                            from getUserFromSession().getEmail()
+                            from configurationService.getFavoritesSendMailFrom()
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
                             model:[results: allRes,dateString: dateTime])
