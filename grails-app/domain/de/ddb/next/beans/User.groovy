@@ -36,7 +36,7 @@ class User implements Cloneable {
     }
 
     public String toString() {
-        return "User[id="+id+", username="+username+", firstname="+firstname+", lastname="+lastname+", email="+email+", openIdUser="+openIdUser+"]"
+        return "User[id=${id}, username=${username}, firstname=${firstname}, lastname=${lastname}, email=${email}, openIdUser=${openIdUser}, isSubscriber=${newsletterSubscribed}"
     }
 
     // Utility method to get first name and last name if present or username if not
@@ -67,7 +67,7 @@ class User implements Cloneable {
         }
         return true
     }
-    
+
    public Object clone() throws CloneNotSupportedException {
      Object result = super.clone()
      return result
