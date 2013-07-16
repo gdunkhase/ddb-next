@@ -121,9 +121,20 @@ class UserController {
             def totalResults= items.length();
             def allRes = retriveItemMD(items);
             def resultsItems
+            
+            // Date info for the print view and email
+            def dateTime = new Date()
+            dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+
+            // User info for the print view
+            def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
+
+            
             if (totalResults <1){
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
+                    userName: userName,
+                    dateString: dateTime
                 ])
                 return;
             }else{
@@ -168,7 +179,7 @@ class UserController {
                             to params.email
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[fromAddress:'develop@ddb.de',results: resultsItems["results"]["docs"]])
+                            model:[fromAddress:'develop@ddb.de',results: allRes,dateString: dateTime])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (Exception e) {
@@ -192,9 +203,10 @@ class UserController {
                     nextPg:createFavoritesLinkNavigation(params.offset.toInteger()+rows,rows,""),
                     lastPg:createFavoritesLinkNavigation((Math.ceil((items.size()-rows)/10)*10).toInteger(),rows,""),
                     totalPages: totalPages,
-                    //paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
+                    userName: userName,
+                    dateString: dateTime
                 ])
             }
         }
