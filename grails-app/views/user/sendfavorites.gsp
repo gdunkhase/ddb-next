@@ -15,8 +15,8 @@
           <div class="favorites-results">
             <g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
           </div> 
-      <button class="btn" data-dismiss="modal" aria-hidden="true"><g:message code="ddbnext.Close" /></button>
-      <button class="btn btn-primary" type="submit" id="btnSubmit"><g:message code="ddbnext.send_now" /></button>
+      <button class="btn-padding" data-dismiss="modal" aria-hidden="true"><g:message code="ddbnext.Close" /></button>
+      <button class="btn-padding" type="submit" id="btnSubmit"><g:message code="ddbnext.send_now" /></button>
       </fieldset>
       </form>
   </div>
