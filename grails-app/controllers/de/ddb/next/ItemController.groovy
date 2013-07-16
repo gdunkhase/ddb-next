@@ -49,7 +49,7 @@ class ItemController {
         }
         return result
     }
-    
+
     private def isFavorite(pId) {
         def vResult = null;
         def User user = getUserFromSession()
@@ -69,7 +69,7 @@ class ItemController {
         log.info "isFavorite ${pId} returns: " + vResult
         return vResult;
     }
-    
+
     def delFavorite(pId) {
         boolean vResult = false;
         log.info "non-JavaScript: delFavorite " + pId
@@ -91,9 +91,9 @@ class ItemController {
         }
         return vResult;
     }
-    
+
     def addFavorite(pId) {
-        boolean vResult = false; 
+        boolean vResult = false;
         log.info "non-JavaScript: addFavorite " + pId
         def User user = getUserFromSession()
         if (user != null) {
@@ -132,7 +132,7 @@ class ItemController {
                     isFavorite = response.SC_NOT_FOUND;
                 }
             }
-            
+
             def binaryList = itemService.findBinariesById(id)
             def binariesCounter = itemService.binariesCounter(binaryList)
 
@@ -172,7 +172,7 @@ class ItemController {
                         firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
                         hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation
                         , "isFavorite":isFavorite
-                        ])
+                    ])
 
                 }
             }
@@ -307,11 +307,12 @@ class ItemController {
 
             def text
             def url
-            def img = item.item.license["@img"].toString()
+            def img
             try{
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 text = messageSource.getMessage("ddbnext.license.text."+propertyId, null, locale)
                 url = messageSource.getMessage("ddbnext.license.url."+propertyId, null, locale)
+                img = messageSource.getMessage("ddbnext.license.img."+propertyId, null, locale)
             }catch(NoSuchMessageException e){
                 log.error "findById(): no I18N information for license '"+licenseInformation.id+"' in license.properties"
             }
@@ -320,13 +321,6 @@ class ItemController {
             }
             if(!url){
                 url = item.item.license["@url"].toString()
-            }
-            if(img){
-                img = img.replaceAll("'", "");
-                img = img.replaceAll("\"", "");
-            }
-            if(!img || img?.isEmpty()){
-                img = null
             }
 
             licenseInformation.text = text
