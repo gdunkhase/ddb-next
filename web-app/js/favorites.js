@@ -22,7 +22,7 @@ $(function() {
     $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
     $("#sendbookmarks").click(function(event) {
       event.preventDefault()
-      $('#myModal').modal({remote: $(this).attr("href")})
+      $('#favoritesModal').modal({remote: $(this).attr("href")})
     });
 
     // Fix for back-button problem with the searchfield: DDBNEXT-389
