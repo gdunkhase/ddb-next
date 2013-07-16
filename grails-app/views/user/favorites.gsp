@@ -124,7 +124,7 @@ limitations under the License.
         </g:if>
         <g:else>
           <div class="alert">
-            <g:message code="ddnnext.no_favorites" />
+            <g:message code="ddbnext.no_favorites" />
           </div>
         </g:else>
       </div>
