@@ -85,13 +85,21 @@ limitations under the License.
       </div>
       <div class="span9 favorites-results-content">
         <g:if test="${flash.message}">
-          <div class="alert-success text-center">
-            <g:message code="${flash.message}" />
+          <div class="messages-container">
+            <ul class="unstyled">
+              <li>
+                <i class="icon-ok-circle"></i><span><g:message code="${flash.message}" /></span>
+              </li>
+            </ul>
           </div>
         </g:if>
         <g:if test="${flash.email_error}">
-          <div class="alert-error text-center">
-            <g:message code="${flash.email_error}" />
+          <div class="errors-container">
+            <ul class="unstyled">
+              <li>
+                <i class="icon-exclamation-sign"></i><span><g:message code="${flash.email_error}" /></span>
+              </li>
+            </ul>
           </div>
         </g:if>
         <g:if test="${resultsNumber > 0}">
@@ -145,10 +153,10 @@ limitations under the License.
             <div class="favorites-results">
               <g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
             </div>
-            <button class="btn" data-dismiss="modal" aria-hidden="true">
+            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
               <g:message code="ddbnext.Close" />
             </button>
-            <button class="btn btn-primary" type="submit" id="btnSubmit">
+            <button class="btn-padding" type="submit" id="btnSubmit">
               <g:message code="ddbnext.send_now" />
             </button>
           </fieldset>
@@ -156,5 +164,19 @@ limitations under the License.
       </div>
     </div>
   </g:if>
+  
+  
+  <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="msDeleteFavoritesLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="msDeleteFavoritesLabel">Delete favorites</h3>
+    </div>
+    <div class="modal-body">
+      <p>Your favorites have been deleted successfully</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+  </div>
 </body>
 </html>

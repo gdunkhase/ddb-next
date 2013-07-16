@@ -58,11 +58,10 @@ $(function() {
         data : JSON.stringify(body),
         dataType : "json",
         success : function(data) {
-          alert("Hello " + data);
+          $('#msDeleteFavorites').modal();
+          window.setTimeout('location.reload()', 1000);
         }
       });
-      // TODO Reload page
-      location.reload();
       return false;
     });
     
@@ -87,9 +86,10 @@ function updateNavigationUrl(){
     $(".page-nav .prev-page").addClass("off");
     $(".page-nav .first-page").addClass("off");
   }
+
   var offset_endPg = $(".last-page").find('a').attr("href").match(/offset=([0-9]+)/);
   var offset_nextPg = $(".next-page").find('a').attr("href").match(/offset=([0-9]+)/);
-  if (parseInt(offset_nextPg[1])>parseInt(offset_endPg[1])){
+  if (parseInt(offset_nextPg[1])>=parseInt(offset_endPg[1])){
     $(".page-nav .next-page").addClass("off");
     $(".page-nav .last-page").addClass("off");
   }

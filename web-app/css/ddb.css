@@ -75,32 +75,6 @@ select {
   background-color: #ffffff;
 }
 
-.btn-primary {
-  color: white;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #A5003B;
-  *background-color: #A5003B;
-  background-image: -moz-linear-gradient(top, #A5003B, #A5000B);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#A5003B), to(#A5000B));
-  background-image: -webkit-linear-gradient(top, #A5003B, #A5000B);
-  background-image: -o-linear-gradient(top, #A5000B, #A5000B);
-  background-image: linear-gradient(to bottom, #A5000B, #A5000B);
-  background-repeat: repeat-x;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-}
-
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary.active,
-.btn-primary.disabled,
-.btn-primary[disabled] {
-  color: #ffffff;
-  background-color: #A5003B;
-  *background-color: #A5003B;
-}
-
 .nav-list>.active>a,.nav-list>.active>a:hover {
   background-color: #0088cc;
 }
