@@ -143,8 +143,12 @@ class UserController {
                 def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
                 def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+                def startOffset=20
                 if (totalPages.toFloat()<page.toFloat()){
                    params.offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
+                   if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
+                       startOffset=0;
+                   }
                    page=totalPages
                 }
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
@@ -186,7 +190,6 @@ class UserController {
                     }
                 }
 
-
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
                     results: resultsItems,
@@ -200,7 +203,7 @@ class UserController {
                     firstPg:createFavoritesLinkNavigation(urlQuery["offset"],rows,""),
                     prevPg:createFavoritesLinkNavigation(params.offset.toInteger()-rows,rows,""),
                     nextPg:createFavoritesLinkNavigation(params.offset.toInteger()+rows,rows,""),
-                    lastPg:createFavoritesLinkNavigation((Math.ceil((items.size()-rows)/10)*10).toInteger(),rows,""),
+                    lastPg:createFavoritesLinkNavigation(startOffset,rows,""),
                     totalPages: totalPages,
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
@@ -226,8 +229,6 @@ class UserController {
         def orQuery=""
         def allRes = []
         items.eachWithIndex() { it, i ->
-            
-            println " ${i}: ${it}" 
             if ((i==0)||((i-1)%step==0)){
                 orQuery=it.itemId
             }else if (i%step==0){
