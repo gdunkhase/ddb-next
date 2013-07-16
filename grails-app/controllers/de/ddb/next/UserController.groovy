@@ -263,7 +263,10 @@ class UserController {
     }
     def sendfavorites(){
         def results = sessionService.getSessionAttributeIfAvailable("results");
-        render(view: "sendfavorites", model: [results: results])
+        // Date info for the print view and email
+        def dateTime = new Date()
+        dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+        render(view: "sendfavorites", model: [results: results, dateString:dateTime])
     }
 
     def private String formatDate(items,String id) {
