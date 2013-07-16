@@ -59,7 +59,7 @@ class InstitutionController {
     }
 
 
-    def showInstitutionsTreeByItemId() { // ToDo: rename to showInstitutionsTreeByItemId
+    def showInstitutionsTreeByItemId() {
         def id = params.id;
         def itemId = id;
         def vApiInstitution = new ApiInstitution();
