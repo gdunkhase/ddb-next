@@ -37,7 +37,7 @@ limitations under the License.
       <label for="facet-${group}-${row}">
         <g:message code="ddbnext.AdvancedSearch_Facet_SelectLabel"/>
       </label>
-      <select class="facet facet-simple" name="facet-${group}-${row}">
+      <select class="facet facet-simple" id="facet-${group}-${row}" name="facet-${group}-${row}">
         <g:each in="${facetSearchfields}">
           <g:if test="${it.searchType?.equals(textSearchType)}">
             <option value="${it.name}">
