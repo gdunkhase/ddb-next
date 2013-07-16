@@ -226,6 +226,8 @@ class UserController {
         def orQuery=""
         def allRes = []
         items.eachWithIndex() { it, i ->
+            
+            println " ${i}: ${it}" 
             if ((i==0)||((i-1)%step==0)){
                 orQuery=it.itemId
             }else if (i%step==0){

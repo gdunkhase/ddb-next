@@ -58,11 +58,10 @@ $(function() {
         data : JSON.stringify(body),
         dataType : "json",
         success : function(data) {
-          alert("Hello " + data);
+          $('#msDeleteFavorites').modal();
+          window.setTimeout('location.reload()', 1000);
         }
       });
-      // TODO Reload page
-      location.reload();
       return false;
     });
     
