@@ -36,6 +36,26 @@ limitations under the License.
           <g:message code="ddbnext.Favorites_Header" />
         </h1>
       </div>
+      <div class="print-header">
+        <h1>
+          <g:message code="ddbnext.Favorites_List_Of" 
+                     args="${[userName, dateString]}" 
+                     default="ddbnext.Favorites_List_Of"/>
+        </h1>
+          <%--
+          <div class="page-info">
+            <span class="results-overall-index">1-2 </span> 
+            <span><g:message code="ddbnext.Of" /> </span> 
+            <span><strong><span class="results-total">2 </span></strong> </span> 
+            <g:if test="${numberOfResultsFormatted == '1'}"> 
+                <span id="results-label"><g:message code="ddbnext.Result_lowercase" /></span>
+            </g:if>
+            <g:else>
+                <span id="results-label"><g:message code="ddbnext.Results_lowercase" /></span>
+            </g:else>
+          </div>
+          --%>
+      </div>
       <div class="span4 results-paginator-options off">
         <div class="page-filter">
           <label><g:message code="ddbnext.SearchResultsPagination_Display" /></label> <span> <select class="select">
@@ -110,29 +130,31 @@ limitations under the License.
       </div>
     </div>
   </div>
-  <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-      <h3 id="myModalLabel"></h3>
+  <g:if test="${resultsNumber > 0}">
+    <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <h3 id="myModalLabel"></h3>
+      </div>
+      <div class="modal-body">
+        <form method="POST"  id="sendFavorites">
+          <fieldset>
+            <legend>
+              <g:message code="ddbnext.send_favorites" />
+            </legend>
+            <label><g:message code="ddbnext.Email" /></label> <input type="text" placeholder="Contact Email" type="email" name="email" required>
+            <div class="favorites-results">
+              <g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
+            </div>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">
+              <g:message code="ddbnext.Close" />
+            </button>
+            <button class="btn btn-primary" type="submit" id="btnSubmit">
+              <g:message code="ddbnext.send_now" />
+            </button>
+          </fieldset>
+        </form>
+      </div>
     </div>
-    <div class="modal-body">
-      <form method="POST"  id="sendFavorites">
-        <fieldset>
-          <legend>
-            <g:message code="ddbnext.send_favorites" />
-          </legend>
-          <label><g:message code="ddbnext.Email" /></label> <input type="text" placeholder="Contact Email" type="email" name="email" required>
-          <div class="favorites-results">
-            <g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
-          </div>
-          <button class="btn" data-dismiss="modal" aria-hidden="true">
-            <g:message code="ddbnext.Close" />
-          </button>
-          <button class="btn btn-primary" type="submit" id="btnSubmit">
-            <g:message code="ddbnext.send_now" />
-          </button>
-        </fieldset>
-      </form>
-    </div>
-  </div>
+  </g:if>
 </body>
 </html>

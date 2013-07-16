@@ -120,18 +120,13 @@ class UserController {
             def String result = getFavorites()
             List items = JSON.parse(result) as List
             def totalResults= items.length()
-            def allRes = retriveItemMD(items)
-            def resultsItems
-            
-            // Date info for the print view and email
+
             def dateTime = new Date()
             dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
-
-            // User info for the print view
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
 
-            
             if (totalResults <1){
+                log.info "-------------------------------------------------------> results less than 1"
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
                     userName: userName,
@@ -139,6 +134,9 @@ class UserController {
                 ])
                 return
             }else{
+                def allRes = retriveItemMD(items)
+                def resultsItems
+
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
                 urlQuery["offset"]=0
@@ -178,9 +176,10 @@ class UserController {
                     try {
                         sendMail {
                             to params.email
+                            from getUserFromSession().getEmail()
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[fromAddress:'develop@ddb.de',results: allRes,dateString: dateTime])
+                            model:[results: allRes,dateString: dateTime])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (Exception e) {
@@ -264,7 +263,9 @@ class UserController {
     }
     def sendfavorites(){
         def results = sessionService.getSessionAttributeIfAvailable("results")
-        render(view: "sendfavorites", model: [results: results])
+        def dateTime = new Date()
+        dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+        render(view: "sendfavorites", model: [results: results, dateString:dateTime])
     }
 
     def private String formatDate(items,String id) {
@@ -396,12 +397,7 @@ class UserController {
                 user.setLastname(params.lname)
                 user.setEmail(params.email)
             }
-            if (params.newsletter) {
-                user.setNewsletterSubscribed(true)
-            }
-            else {
-                user.setNewsletterSubscribed(false)
-            }
+
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
