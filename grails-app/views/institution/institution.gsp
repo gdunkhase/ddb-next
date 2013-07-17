@@ -57,7 +57,7 @@ limitations under the License.
              </div>
            </div>
            <div class="span3">
-             <img class="logo" alt="${selectedOrgXML.name}" src="${selectedOrgXML.logo}">
+             <img class="logo" alt="${selectedOrgXML.name}" src="${organisationLogo}">
            </div>
          </div>
        </div>

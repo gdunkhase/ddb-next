@@ -59,7 +59,7 @@ class InstitutionController {
     }
 
 
-    def showInstitutionsTreeByItemId() { // ToDo: rename to showInstitutionsTreeByItemId
+    def showInstitutionsTreeByItemId() {
         def id = params.id;
         def itemId = id;
         def vApiInstitution = new ApiInstitution();
@@ -92,7 +92,14 @@ class InstitutionController {
                     countObjectsForProv = -1;
                 }
             }
-            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl])
+
+            def organisationLogo
+            if(selectedOrgXML.logo == null || selectedOrgXML.logo.toString().trim().isEmpty()){
+                organisationLogo = g.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
+            }else{
+                organisationLogo = selectedOrgXML.logo
+            }
+            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, organisationLogo: organisationLogo, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl])
         }
         else {
             forward controller: 'error', action: "notFound"
