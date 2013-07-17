@@ -229,6 +229,7 @@ class UserController {
         def orQuery=""
         def allRes = []
         items.eachWithIndex() { it, i ->
+            println "${i}  ${it}"
             if ((i==0)||((i-1)%step==0)){
                 orQuery=it.itemId
             }else if (i%step==0){
@@ -276,14 +277,13 @@ class UserController {
         items.each { favItems ->
             if (id== favItems.itemId){
                 String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-                SimpleDateFormat oldFormat = new SimpleDateFormat(pattern,locale)
-
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm",locale)
+                SimpleDateFormat oldFormat = new SimpleDateFormat(pattern)
+                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
+                oldFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
                 newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
                 DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
                 def Date javaDate = oldFormat.parse(favItems.creationDate)
                 newDate = newFormat.format(javaDate)
-
             }
         }
         return newDate.toString()
