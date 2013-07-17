@@ -91,8 +91,6 @@ function updateNavigationUrl(){
     $(".page-nav .next-page").addClass("off");
     $(".page-nav .last-page").addClass("off");
   }
-  console.log(offset_endPg);
-  console.log(offset_nextPg);
 }
 
 function getParam( name )
