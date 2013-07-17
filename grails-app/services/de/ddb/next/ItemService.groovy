@@ -64,7 +64,12 @@ class ItemService {
 
         Parser tagsoupParser = new Parser()
         XmlSlurper slurper = new XmlSlurper(tagsoupParser)
-        String institutionLogoUrl = slurper.parseText(xml.item.institution.logo.toString()).text()
+
+        String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
+        if(xml.item.institution.logo != null && !xml.item.institution.logo.toString().trim().isEmpty()){
+            institutionLogoUrl = slurper.parseText(xml.item.institution.logo.toString()).text()
+        }
+
         String originUrl = slurper.parseText(xml.item.origin.toString()).text()
 
         def item = xml.item
