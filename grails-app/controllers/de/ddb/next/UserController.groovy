@@ -277,7 +277,9 @@ class UserController {
             if (id== favItems.itemId){
                 String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
                 SimpleDateFormat oldFormat = new SimpleDateFormat(pattern,locale)
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm Z",locale)
+
+                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm",locale)
+                newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
                 DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
                 def Date javaDate = oldFormat.parse(favItems.creationDate)
                 newDate = newFormat.format(javaDate)
@@ -811,7 +813,7 @@ class UserController {
                 user.setLastname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
+                //user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
                 log.info(user.toString())
 
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
