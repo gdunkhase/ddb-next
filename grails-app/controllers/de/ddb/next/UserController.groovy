@@ -109,7 +109,7 @@ class UserController {
 
     }
 
-  //TODO Refactor in a new service most of the assisting code
+    //TODO Refactor in a new service most of the assisting code
     def favorites(){
         if(isUserLoggedIn()){
             def rows=20 //default
@@ -143,13 +143,14 @@ class UserController {
                 def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
                 def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-                def startOffset=20
+                def lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
+                
                 if (totalPages.toFloat()<page.toFloat()){
-                   params.offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
-                   if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
-                       startOffset=0;
-                   }
-                   page=totalPages
+                    params.offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
+                    if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
+                        lastPgOffset=20;
+                    }
+                    page=totalPages
                 }
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
@@ -203,7 +204,7 @@ class UserController {
                     firstPg:createFavoritesLinkNavigation(urlQuery["offset"],rows,""),
                     prevPg:createFavoritesLinkNavigation(params.offset.toInteger()-rows,rows,""),
                     nextPg:createFavoritesLinkNavigation(params.offset.toInteger()+rows,rows,""),
-                    lastPg:createFavoritesLinkNavigation(startOffset,rows,""),
+                    lastPg:createFavoritesLinkNavigation(lastPgOffset,rows,""),
                     totalPages: totalPages,
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
@@ -229,11 +230,9 @@ class UserController {
         def orQuery=""
         def allRes = []
         items.eachWithIndex() { it, i ->
-            println "${i}  ${it}"
-            if ((i==0)||((i-1)%step==0)){
+            if ( (i==0) || ( ((i>1)&&(i-1)%step==0)) ){
                 orQuery=it.itemId
             }else if (i%step==0){
-                i=0
                 orQuery=orQuery + " OR "+ it.itemId
                 queryBackend(orQuery).each { item ->
                     allRes.add(item)
@@ -243,8 +242,10 @@ class UserController {
                 orQuery+=" OR "+ it.itemId
             }
         }
-        queryBackend(orQuery).each { item ->
-            allRes.add(item)
+        if (orQuery){
+            queryBackend(orQuery).each { item ->
+                allRes.add(item)
+            }
         }
         return allRes
     }
@@ -255,6 +256,7 @@ class UserController {
 
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         urlQuery["offset"]=0
+        urlQuery["rows"]=21
         def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
