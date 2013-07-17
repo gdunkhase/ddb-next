@@ -37,14 +37,14 @@ class SearchController {
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
-    
+
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
                 apiResponse.throwException(request)
             }
             def resultsItems = apiResponse.getResponse()
-    
+
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
                 firstLastQuery["sort"] = resultsItems["randomSeed"]
@@ -52,7 +52,7 @@ class SearchController {
                     params.sort = urlQuery["randomSeed"]
                 }
             }
-    
+
             if (resultsItems != null && resultsItems["numberOfResults"] != null && (Integer)resultsItems["numberOfResults"] > 0) {
                 //check for lastHit and firstHit
                 //firstHit
@@ -67,37 +67,40 @@ class SearchController {
                 if (firstHit != null && firstHit["numberOfResults"] != null && (Integer)firstHit["numberOfResults"] > 0) {
                     params["firstHit"] = firstHit["results"]["docs"][0].id
                 }
-    
+
                 //lastHit
                 //Workaround, find id of last hit when calling last hit.
                 //Set id to "lasthit" to signal ItemController to find id of lasthit.
                 params["lastHit"] = "lasthit"
-    
+
             }
-    
+
+            //Replacing the mediatype images when not coming from backend server
+            resultsItems = checkAndReplaceMediaTypeImages(resultsItems)
+
             //create cookie with search parameters
             response.addCookie(searchService.createSearchCookie(request, params, additionalParams))
-    
+
             //Calculating results details info (number of results in page, total results number)
             def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
                     ((urlQuery["offset"].toInteger()+
                     urlQuery["rows"].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery["offset"].toInteger()+urlQuery["rows"].toInteger())
-    
+
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-    
+
             //Calculating results pagination (previous page, next page, first page, and last page)
             def page = ((urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()
             def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
             def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-    
+
             def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
             def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
-    
+
             def queryString = request.getQueryString()
-    
+
             if(!queryString?.contains("sort=random") && urlQuery["randomSeed"])
                 queryString = queryString+"&sort="+urlQuery["randomSeed"]
-    
+
             if(params.reqType=="ajax"){
                 def resultsHTML = ""
                 resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: request.getContextPath(),
@@ -144,21 +147,38 @@ class SearchController {
             }
         }
         catch (BadRequestException e) {
-            //BadRequestException corresponds to 400-Error, 
+            //BadRequestException corresponds to 400-Error,
             //in this case will be caused by invalid query-syntax
             List<String> errors = []
             errors.add("ddbnext.Error_Invalid_Search_Query")
             render(view: "/message/message", model: [errors: errors])
         }
     }
-    
+
+    def checkAndReplaceMediaTypeImages(def searchResult){
+        searchResult.results.docs.each {
+            def preview = it.preview
+            if(preview.thumbnail == null || preview.thumbnail.toString().trim().isEmpty() || preview.thumbnail.toString().startsWith("http://content")){
+                def mediaTypes = []
+                if(preview.media instanceof String){
+                    mediaTypes.add(preview.media)
+                }else{
+                    mediaTypes.addAll(preview.media)
+                }
+                def mediaType = mediaTypes[0]
+                preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/search_result_media_"+mediaType+".png").toString()
+            }
+        }
+        return searchResult
+    }
+
     def informationItem(){
         def informationItem = ApiConsumer.getXml(configurationService.getBackendUrl() ,'/access/'+params.id+'/components/indexing-profile').getResponse()
-        
+
         def jsonSubresp = new JsonSlurper().parseText(informationItem.toString())
-        
+
         def properties = [:]
-        
+
         if(jsonSubresp.properties.time_fct){
             properties['time_fct']=[]
             jsonSubresp.properties.time_fct.each(){
