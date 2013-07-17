@@ -254,7 +254,7 @@ class ItemController {
         def resultsItems
         def searchResultUri
 
-        if (reqParameters["hitNumber"]) {
+        if (reqParameters["hitNumber"] && reqParameters["query"] != null) {
             def urlQuery = searchService.convertQueryParametersToSearchParameters(reqParameters)
 
             //Search and return 3 Hits: previous, current and last

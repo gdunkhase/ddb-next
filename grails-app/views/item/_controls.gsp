@@ -31,7 +31,7 @@ limitations under the License.
       </a>
     </div>
     <!-- search results navigation -->
-    <g:if test="${hitNumber != null}">
+    <g:if test="${hitNumber != null && results != null && firstHit != null && lastHit != null}">
       <div class="span6 item-nav fr">
           <g:itemDetailInfoNavRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavRender>
       </div>
