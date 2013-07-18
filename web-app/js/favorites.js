@@ -54,14 +54,15 @@ $(function() {
         type : 'POST',
         contentType : "application/json; charset=utf-8",
         traditional : true,
-        url : "/ddb-next/apis/favorites/_delete",
+        url : jsContextPath + "/apis/favorites/_delete",
         data : JSON.stringify(body),
         dataType : "json",
         success : function(data) {
           $('#msDeleteFavorites').modal();
-          window.setTimeout('location.reload()', 1000);
+          window.setTimeout('location.reload()', 1500);
         }
       });
+      alert(jsContextPath);
       return false;
     });
     
