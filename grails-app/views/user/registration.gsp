@@ -22,7 +22,6 @@ limitations under the License.
 
 </head>
 <body>
-  <div class="container">
     <g:if test="${errors != null && errors.size()>0}">
       <g:renderErrors errors="${errors}"></g:renderErrors>
     </g:if>
@@ -30,7 +29,7 @@ limitations under the License.
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
 
         <div><h1><g:message code="ddbnext.Sign_up_here" /></h1></div>
-        <div class="reg-subtitle bt"><h3><g:message code="ddbnext.Mandatory" /></h3></div>
+        <div class="reg-subtitle bt-white"><h3><g:message code="ddbnext.Mandatory" /></h3></div>
 
         <div class="control-group">
           <label class="control-label"><g:message code="ddbnext.Username" />*</label>
@@ -120,6 +119,5 @@ limitations under the License.
         </ul>
       </g:form>
     </div>
-  </div>
 </body>
 </html>

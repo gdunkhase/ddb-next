@@ -358,13 +358,13 @@ footer, .footer,
     width: 110px;
   }
   .favorites-results .summary-main-wrapper {
-    width: 380px;
+    width: 360px;
     position: absolute;
   }
   .favorites-results .thumbnail {
     width: 160px;
     position: absolute;
-    margin-left: 360px !important;
+    margin-left: 340px !important;
   }
   .favorites-results .created-at {
     width: 160px;
