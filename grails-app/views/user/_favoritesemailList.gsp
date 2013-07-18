@@ -58,9 +58,9 @@ limitations under the License.
             ${it.preview.subtitle}
           </div>
         </td>
-        <td width="170px" style="padding: 10px;"> 
+        <td width="170px" style="padding: 10px;">
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" absolute="true">
-            <img src="http://${request.getServerName()}:${request.getServerPort() }${request.getContextPath()}${it.preview.thumbnail}"
+            <img src="${grailsApplication.config.ddb.favorites.basedomain}<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
                  alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
           </g:link>
         </td>
