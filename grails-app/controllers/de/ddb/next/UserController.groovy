@@ -161,7 +161,6 @@ class UserController {
                 }else{
                     params.offset=0
                     resultsItems=allRes.take( rows)
-
                 }
                 //TODO remove this dummy data
                 def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false]
@@ -172,9 +171,13 @@ class UserController {
                 resultsItems.each { searchItem->
                     temp = []
                     temp = searchItem
-                    temp["creationDate"]=formatDate(items,searchItem.id)
+                    temp["creationDate"]=formatDate(items,searchItem.id).get("newdate")
+                    temp["serverDate"]=formatDate(items,searchItem.id).get("oldDate")
                     all.add(temp)
                 }
+                
+                all.sort{a,b-> b.serverDate<=>a.serverDate}
+
 
                 sessionService.setSessionAttributeIfAvailable("results", allRes)
                 if (request.method=="POST"){
@@ -184,17 +187,18 @@ class UserController {
                             from configurationService.getFavoritesSendMailFrom()
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[results: allRes,dateString: dateTime])
+                            model:[results: all,dateString: dateTime])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
-                    } catch (Exception e) {
+                    } catch (e) {
+                        log.info "This is the mail error "+ e
                         flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
                     }
                 }
 
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
-                    results: resultsItems,
+                    results: all,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
@@ -274,9 +278,10 @@ class UserController {
         render(view: "sendfavorites", model: [results: results, dateString:dateTime])
     }
 
-    def private String formatDate(items,String id) {
+    def private formatDate(items,String id) {
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         def newDate
+        def oldDate
         items.each { favItems ->
             if (id== favItems.itemId){
                 String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
@@ -287,9 +292,10 @@ class UserController {
                 DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
                 def Date javaDate = oldFormat.parse(favItems.creationDate)
                 newDate = newFormat.format(javaDate)
+                oldDate = favItems.creationDate;
             }
         }
-        return newDate.toString()
+        return [newdate:newDate.toString(),oldDate:oldDate]
     }
 
     def private createFavoritesLinkNavigation(offset,rows,order){
