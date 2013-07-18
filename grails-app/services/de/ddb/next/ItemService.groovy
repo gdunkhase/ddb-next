@@ -84,35 +84,6 @@ class ItemService {
 
     }
 
-    private getItemTitle(id) {
-        def http = new HTTPBuilder(configurationService.getBackendUrl())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
-
-        /* TODO remove this hack, once the server deliver the right content
-         type*/
-        http.parser.'application/json' = http.parser.'text/html'
-
-        final def componentsPath = "/access/" + id + "/components/"
-        final def titlePath = componentsPath + "title"
-
-        http.request( GET) { req ->
-            uri.path = titlePath
-
-            response.success = { resp, html ->
-                log.info "getItemTitle(): Current request uri: 200, "+uri
-
-                return html
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
-        }
-    }
-
     private shortenTitle(id, item) {
 
         def title = item.title
