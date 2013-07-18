@@ -28,7 +28,7 @@ limitations under the License.
           <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <g:set var="counter" value="${counter + 1}" />
             <li>
-              <a class="previews" caption="${(it.preview.title).encodeAsHTML()}" pos="${counter}" rel="group1" href="${content}">
+              <a class="previews" data-caption="${(it.preview.title).encodeAsHTML()}" data-pos="${counter}" href="${content}">
                 <img src="${it.preview.uri}" alt="${(it.preview.title).encodeAsHTML()}" />
               </a>
             </li>
@@ -44,7 +44,7 @@ limitations under the License.
       <div class="binary-viewer-flash-upgrade off">
         <p class="error-header"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
         <p>
-          <a href="http://get.adobe.com/flashplayer/"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" /></a>
+          <g:message code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
         </p>
         <p class="error-header"><g:message code="ddbnext.We_could_not_play_the_file" /></p>
         <p>
@@ -59,13 +59,15 @@ limitations under the License.
   </div>
 
   <div class="tabs">
-    <p class="tab all" role="tab">
-      <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
-                 args="${flashInformation.all}" 
-                 default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
-    </p>
+    <div role="tablist">
+      <p class="tab all" role="tab">
+        <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
+                   args="${flashInformation.all}" 
+                   default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
+      </p>
+    </div>
     <div class="scroller all" role="tabpanel">
-      <ul class="gallery-all gallery-tab" role="tablist">
+      <ul class="gallery-all gallery-tab">
         <g:each in="${binaryList}">
           <g:if test="${it.full.uri == ''}">
             <g:set var="content" value="${it.preview.uri}"/>
@@ -103,11 +105,11 @@ limitations under the License.
                 data-type="audio"
                 <g:set var="type" value="audio"/>
               </g:elseif>
-                title="${it.orig.title}">
+                title="${(it.orig.title).encodeAsHTML()}">
               <div class="thumbnail ${type}">
-                <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
               </div>
-              <span class="label">${it.orig.title}</span>
+              <span class="label off">${it.orig.title}</span>
             </a>
           </li>
         </g:each>
@@ -140,11 +142,11 @@ limitations under the License.
                   href="${it.orig.uri.audio}"
                   <g:set var="type" value="audio"/>
                 </g:elseif>
-                  title="${it.orig.title}">
+                  title="${(it.orig.title).encodeAsHTML()}">
                 <div class="thumbnail ${type}">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
-                <span class="label">${it.orig.title}</span>
+                <span class="label off">${it.orig.title}</span>
               </a>
             </li>
           </g:each>
@@ -152,7 +154,9 @@ limitations under the License.
       </div>
     </noscript>
 
-    <p class="tab images" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+    <div role="tablist">
+      <p class="tab images" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+    </div>
     <div class="scroller images" role="tabpanel">
       <ul class="gallery-images gallery-tab">
         <g:each in="${binaryList}">
@@ -164,11 +168,11 @@ limitations under the License.
           </g:else>
           <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <li>
-              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" title="${it.preview.title}">
+              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" title="${(it.preview.title).encodeAsHTML()}">
                 <div class="thumbnail image">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
-                <span class="label">${it.preview.title}</span>
+                <span class="label off">${it.preview.title}</span>
               </a>
             </li>
           </g:if>
@@ -190,11 +194,11 @@ limitations under the License.
           <g:each in="${binaryList}">
             <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
               <li>
-                <a class="group" href="${it.orig.uri.image}" title="${it.preview.title}">
+                <a class="group" href="${it.orig.uri.image}" title="${(it.preview.title).encodeAsHTML()}">
                   <div class="thumbnail image">
-                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                   </div>
-                  <span class="label">${it.preview.title}</span>
+                  <span class="label off">${it.preview.title}</span>
                 </a>
               </li>
             </g:if>
@@ -203,7 +207,9 @@ limitations under the License.
       </div>
     </noscript>
 
-    <p class="tab videos" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+    <div role="tablist">
+      <p class="tab videos" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+    </div>
     <div class="scroller videos" role="tabpanel">
       <ul class="gallery-videos gallery-tab">
         <g:each in="${binaryList}">
@@ -216,11 +222,11 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>  
-                 data-content="${it.orig.uri.video}" data-type="video" title="${it.orig.title}">
+                 data-content="${it.orig.uri.video}" data-type="video" title="${(it.orig.title).encodeAsHTML()}">
                 <div class="thumbnail video">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
-                <span class="label">${it.orig.title}</span>
+                <span class="label off">${it.orig.title}</span>
               </a>
             </li>
           </g:if>
@@ -242,11 +248,11 @@ limitations under the License.
           <g:each in="${binaryList}">
             <g:if test="${it.orig.uri.video != '' }">
               <li>
-                <a class="group" href="${it.orig.uri.video}" title="${it.orig.title}">
+                <a class="group" href="${it.orig.uri.video}" title="${(it.orig.title).encodeAsHTML()}">
                   <div class="thumbnail video">
-                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                   </div>
-                  <span class="label">${it.orig.title}</span>
+                  <span class="label off">${it.orig.title}</span>
                 </a>
               </li>
             </g:if>
@@ -255,7 +261,9 @@ limitations under the License.
       </div>
     </noscript>
 
-    <p class="tab audios" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+    <div role="tablist">
+      <p class="tab audios" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+    </div>
     <div class="scroller audios" role="tabpanel">
       <ul class="gallery-audios gallery-tab">
         <g:each in="${binaryList}">
@@ -268,11 +276,11 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>
-                 data-content="${it.orig.uri.audio}" data-type="audio" title="${it.orig.title}">
+                 data-content="${it.orig.uri.audio}" data-type="audio" title="${(it.orig.title).encodeAsHTML()}">
                 <div class="thumbnail video">
-                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
-                <span class="label">${it.orig.title}</span>
+                <span class="label off">${it.orig.title}</span>
               </a>
             </li>
           </g:if>
@@ -294,11 +302,11 @@ limitations under the License.
           <g:each in="${binaryList}">
             <g:if test="${it.orig.uri.audio != '' }">
               <li>
-                <a class="group" href="${it.orig.uri.audio}" title="${it.orig.title}">
+                <a class="group" href="${it.orig.uri.audio}" title="${(it.orig.title).encodeAsHTML()}">
                   <div class="thumbnail video">
-                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
+                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                   </div>
-                  <span class="label">${it.orig.title}</span>
+                  <span class="label off">${it.orig.title}</span>
                 </a>
               </li>
             </g:if>

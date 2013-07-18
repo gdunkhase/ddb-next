@@ -26,8 +26,9 @@ import groovyx.net.http.Method
 class InstitutionController {
 
     private static final log = LogFactory.getLog(this)
-    
+
     def institutionService
+    def configurationService
 
     def show() {
         def allInstitution = institutionService.findAll()
@@ -48,9 +49,7 @@ class InstitutionController {
 
         // TODO: move to service
         def index = []
-        institutionByFirstLetter.each {
-            index.add(it)
-        }
+        institutionByFirstLetter.each { index.add(it) }
 
         render (view: 'institutionList',  model: [index: index, all: all, total: allInstitution?.total])
     }
@@ -58,16 +57,18 @@ class InstitutionController {
     def getJson() {
         render institutionService.findAll() as JSON
     }
-        
-    def showInstitutionsTreeByItemId() { // ToDo: rename to showInstitutionsTreeByItemId
+
+
+    def showInstitutionsTreeByItemId() {
         def id = params.id;
         def itemId = id;
         def vApiInstitution = new ApiInstitution();
         log.debug("read insitution by item id: ${id}");
-        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, grailsApplication.config.ddb.backend.url.toString());
-        def pageUrl = "http://www.deutsche-digitale-bibliothek.de"+request.forwardURI;
+        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
+        def pageUrl = configurationService.getSelfBaseUrl() + request.forwardURI
         if (selectedOrgXML) {
-            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, grailsApplication.config.ddb.backend.url.toString())
+            selectedOrgXML = selectedOrgXML["cortex-institution"] // fix for the changed xml-format in the new backend api
+            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
             if (jsonOrgParentHierarchy.size() == 1) {
                 if (jsonOrgParentHierarchy[0].id != id) {
@@ -79,24 +80,30 @@ class InstitutionController {
                 itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
             }
             log.debug("root itemId = ${itemId}");
-            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, grailsApplication.config.ddb.backend.url.toString())
+            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
             log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
-            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), grailsApplication.config.ddb.backend.url.toString())
+            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
             int countObjectsForProv = 0;
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {
                     countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
-                } 
+                }
                 catch (NumberFormatException ex) {
                     countObjectsForProv = -1;
                 }
             }
-            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl])
-        } 
-        else {
-           forward controller: 'error', action: "notfound"
-        }
-        
-    }
 
+            def organisationLogo
+            if(selectedOrgXML.logo == null || selectedOrgXML.logo.toString().trim().isEmpty()){
+                organisationLogo = g.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
+            }else{
+                organisationLogo = selectedOrgXML.logo
+            }
+            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, organisationLogo: organisationLogo, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl])
+        }
+        else {
+            forward controller: 'error', action: "notFound"
+        }
+
+    }
 }

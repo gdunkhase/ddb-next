@@ -16,4 +16,11 @@
 package de.ddb.next.exception
 
 class ItemNotFoundException extends Exception {
+    ItemNotFoundException() {
+        super()
+    }
+
+    ItemNotFoundException(String description) {
+        super(description)
+    }
 }

@@ -15,42 +15,43 @@
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 $(function() {
-
-  // workaround for ffox + ie click focus - prevents links that load dynamic
-  // content to be focussed/active.
-  $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
-
-  // Fix for back-button problem with the searchfield: DDBNEXT-389
-  if($.browser.msie){
-    var queryCache = $("#querycache");
-    var queryString = "";
-    if(queryCache.length > 0){
-      queryString = queryCache.val();
+  if (jsPageName == "results") {
+    // workaround for ffox + ie click focus - prevents links that load dynamic
+    // content to be focussed/active.
+    $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
+  
+    // Fix for back-button problem with the searchfield: DDBNEXT-389
+    if($.browser.msie){
+      var queryCache = $("#querycache");
+      var queryString = "";
+      if(queryCache.length > 0){
+        queryString = queryCache.val();
+      }
+      $("#form-search-header .query").val(queryString);
     }
-    $("#form-search-header .query").val(queryString);
-  }
-
-  if (window.history && history.pushState) {
-    historyedited = false;
-    historySupport = true;
-    $(window).bind('popstate', function(e) {
-     if (historyedited) {
-      stateManager(location.pathname + location.search);
-     }
-    });
-  }else{
-      historySupport = false;
-      // Utilized for browser that doesn't supports pushState.
-      // It will be used as reference URL for all the ajax actions
-      globalUrl = location.search.substring(1);
-  }
   
-  searchResultsInitializer();
-  
-  function stateManager(url){
-    $('#main-container').load(url+' .search-results-container', function(){
-      searchResultsInitializer();
-    });
+    if (window.history && history.pushState) {
+      historyedited = false;
+      historySupport = true;
+      $(window).bind('popstate', function(e) {
+       if (historyedited) {
+        stateManager(location.pathname + location.search);
+       }
+      });
+    }else{
+        historySupport = false;
+        // Utilized for browser that doesn't supports pushState.
+        // It will be used as reference URL for all the ajax actions
+        globalUrl = location.search.substring(1);
+    }
+    
+    searchResultsInitializer();
+    
+    function stateManager(url){
+      $('#main-container').load(url+' .search-results-container', function(){
+        searchResultsInitializer();
+      });
+    }
   }
 
 });
@@ -64,15 +65,124 @@ function historyManager(path){
   }
 }
 
-//Temporarily removed
-//function setHovercardEvents(){
-//    $('.thumbnail a').mouseenter(function(){
-//        $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').addClass('on');
-//    });
-//    $('.thumbnail a').mouseleave(function(){
-//        $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').removeClass('on');
-//    });
-//}
+function getLocalizedFacetValue(facetField, facetValue){
+  if(facetField=='affiliate_fct' || facetField=='keywords_fct' || facetField=='place_fct' || facetField=='provider_fct'){
+      return facetValue.toString();
+  }
+  if(facetField=='type_fct'){
+      return messages.ddbnext['type_fct_'+facetValue];
+  }
+  if(facetField=='time_fct'){
+      return messages.ddbnext['time_fct_'+facetValue];
+  }
+  if(facetField=='language_fct'){
+      return messages.ddbnext['language_fct_'+facetValue];
+  }
+  if(facetField=='sector_fct'){
+      return messages.ddbnext['sector_fct_'+facetValue];
+  }
+  return '';
+}
+
+function getLocalizedFacetField(facetField){
+  return messages.ddbnext['facet_'+facetField];
+}
+
+//Hovercard Information Item Manager
+HovercardInfoItem = function(element){
+  this.init(element);
+}
+
+$.extend(HovercardInfoItem.prototype,{
+  
+  infoButton: null,
+  hovercard: null,
+  iid:null,
+  
+  opened: false,
+  lock:false,
+  
+  hoverTime: 0,
+  hoverTimeout:300,
+  
+  init: function(element){
+    var currObjInstance = this;
+    this.infoButton = element;
+    this.hovercard = this.infoButton.find('.hovercard-info-item');
+    this.iid = this.hovercard.attr('data-iid');
+    
+    this.infoButton.mouseenter(function(){
+      var d = new Date();
+      currObjInstance.hoverTime = d.getTime();
+      currObjInstance.open();
+    });
+    this.hovercard.mouseenter(function(){
+      currObjInstance.lock = true;
+    });
+    this.hovercard.mouseleave(function(){
+      currObjInstance.close();
+    });
+    this.infoButton.mouseleave(function(){
+      setTimeout(function(){
+          var currentD = new Date();
+          if(!currObjInstance.lock && currObjInstance.hoverTime+currObjInstance.hoverTimeout-100<currentD.getTime())
+              currObjInstance.close();
+      },currObjInstance.hoverTimeout);
+    });
+  },
+  open: function(){
+    if(!this.opened){
+      this.opened = true;
+      this.hovercard.fadeIn('fast');
+      if(this.hovercard.find('.small-loader').length !=0){
+        this.fetchInformationItem();
+      }
+    }
+  },
+  close: function(){
+    this.hovercard.fadeOut('fast');
+    this.opened = false;
+    this.lock = false;
+  },
+  fetchInformationItem: function(){
+    var currObjInstance = this;
+    var request = $.ajax({
+      type: 'GET',
+      dataType: 'json',
+      async: true,
+      url: jsContextPath + '/informationitem/' + this.iid,
+      complete: function(data){
+        var content = currObjInstance.hovercard.find('ul.unstyled')
+        content.empty();
+        var JSONresponse = jQuery.parseJSON(data.responseText);
+        $.each(JSONresponse, function(key, value){
+          if(key !=='last_update'){
+            if(value != ""){
+              var li = $(document.createElement('li'));
+              var fieldName = $(document.createElement('span'));
+              var fieldContent = $(document.createElement('span'));
+              
+              fieldName.addClass('fieldName');
+              fieldContent.addClass('fieldContent');
+              
+              facetValues = new Array();
+              for(i=0;i<value.length;i++){
+                facetValues.push(value[i]);
+              }
+              
+              fieldName.text(getLocalizedFacetField(key));
+              fieldContent.text(facetValues.join());
+              
+              li.append(fieldName);
+              li.append(fieldContent);
+              content.append(li);
+            }
+          }
+        });
+      }
+    });
+  }
+});
 
 function searchResultsInitializer(){
   $('.results-paginator-options').removeClass('off');
@@ -80,9 +190,12 @@ function searchResultsInitializer(){
   $('.page-input').removeClass('off');
   $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
+//  $('.hovercard-info-item').removeClass('off');
+//  $('.hovercard-info-item').fadeOut('fast');
   
-//  setHovercardEvents();
-  
+  setHovercardEvents();
+  checkFavorites();
+
   $('.page-filter select').change(function(){
     var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
     fetchResultsList(addParamToCurrentUrl(paramsArray));
@@ -126,7 +239,7 @@ function searchResultsInitializer(){
       return path+'?'+tmp;
     }
   }
-  
+
   function removeParamFromUrl(arrayParamVal, path, urlString){
     var currentUrl = (historySupport)?location.search.substring(1):globalUrl;
     var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
@@ -155,20 +268,20 @@ function searchResultsInitializer(){
     }
   }
   
-function updateLanguageSwitch(params) {
-    params = params.replace(/\&?lang=[^\&]*/g, '');
-    if (params.length > 0) {
-        params += '&'
-    }
-    if (params.indexOf('&') == 0) {
-        params = params.substring(1);
-    }
-    var pattern = /(.*?\?).*?(lang=\w*)/;
-    $('.language-wrapper .selector').find('a[href]').each(function(){
-      var matches = pattern.exec($(this).attr('href'));
-      $(this).attr('href', matches[1] + params + matches[2]);
-    }); 
-}
+  function updateLanguageSwitch(params) {
+      params = params.replace(/\&?lang=[^\&]*/g, '');
+      if (params.length > 0) {
+          params += '&'
+      }
+      if (params.indexOf('&') == 0) {
+          params = params.substring(1);
+      }
+      var pattern = /(.*?\?).*?(lang=\w*)/;
+      $('.language-wrapper .selector').find('a[href]').each(function(){
+        var matches = pattern.exec($(this).attr('href'));
+        $(this).attr('href', matches[1] + params + matches[2]);
+      }); 
+  }
 
   function setSearchCookieParameter(arrayParamVal){
     var searchParameters = readCookie("searchParameters" + jsContextPath);
@@ -217,6 +330,7 @@ function updateLanguageSwitch(params) {
   
   $('.page-nav-result').click(function(){
     fetchResultsList(this.href);
+    $('html, body').animate({scrollTop: 0}, 1000) ;
     return false;
   });
   $('#form-search-header button').click(function(){
@@ -376,7 +490,8 @@ function updateLanguageSwitch(params) {
   $('.clear-filters').click(function(){
     removeSearchCookieParameter('facetValues[]');
   });
-  function fetchResultsList(url){
+  
+  function fetchResultsList(url, errorCallback){
     
     var divSearchResultsOverlayModal = $(document.createElement('div'));
     divSearchResultsOverlayModal.addClass('search-results-overlay-modal');
@@ -394,9 +509,9 @@ function updateLanguageSwitch(params) {
       dataType: 'json',
       async: true,
       url: url+'&reqType=ajax',
-      complete: function(data){
+      success: function(data){
         $('.search-results-list').fadeOut('fast', function(){
-        var JSONresponse = jQuery.parseJSON(data.responseText);
+        var JSONresponse = data;
         if(JSONresponse.numberOfResults==0){
             $('.search-noresults-content').removeClass("off");
             $('.search-results-content').addClass("off");
@@ -412,10 +527,10 @@ function updateLanguageSwitch(params) {
         $('.result-pages-count').html(JSONresponse.totalPages);
         $('.results-total').html(JSONresponse.numberOfResults);
         if (JSONresponse.numberOfResults == "1") {
-            $('#results-label').html(messages.ddbnext.Result_lowercase);
+            $('.results-label').html(messages.ddbnext.Result_lowercase);
         }
         else {
-            $('#results-label').html(messages.ddbnext.Results_lowercase);
+            $('.results-label').html(messages.ddbnext.Results_lowercase);
         }
         if(JSONresponse.paginationURL.nextPg){
           $(".page-nav .next-page").removeClass("off");
@@ -442,8 +557,28 @@ function updateLanguageSwitch(params) {
         divSearchResultsOverlayWaiting.remove();
         divSearchResultsOverlayModal.remove();
         
-//        setHovercardEvents();
+        setHovercardEvents();
+        checkFavorites();
         });
+      },
+      error: function(){
+        divSearchResultsOverlayImg.remove();
+        divSearchResultsOverlayWaiting.remove();
+        divSearchResultsOverlayModal.remove();
+        
+        var error_GeneralError =  messages.ddbnext.An_Error_Occured;
+        var errorContainer = $(document.createElement('div'));
+        var errorIcon = $(document.createElement('i'));
+        errorContainer.addClass('errors-container');
+        errorIcon.addClass('icon-exclamation-sign');
+        errorContainer.html(error_GeneralError);
+        errorContainer.prepend(errorIcon);
+        
+        $('.search-results-list').prepend(errorContainer);
+        
+        if(errorCallback){
+          errorCallback();
+        }
       }
     });
   }
@@ -464,6 +599,7 @@ function updateLanguageSwitch(params) {
     currentFacetValuesNotSelected: new Array(),
     currentPage: 1,
     searchFacetValuesTimeout: 0,
+    errorCaught: false,
     keyCode: {
         ALT: 18,
         BACKSPACE: 8,
@@ -626,12 +762,12 @@ function updateLanguageSwitch(params) {
           var paramsArray = new Array(new Array('facetValues[]', this.currentFacetField+'='+facetValue));
         }
         paramsArray.push(new Array('offset', 0));
-        fetchResultsList(addParamToCurrentUrl(paramsArray));
+        fetchResultsList(addParamToCurrentUrl(paramsArray), function(){currObjInstance.unselectFacetValue(selectedFacetValue, true);});
         
         $('.clear-filters').removeClass('off');
     },
     
-    unselectFacetValue: function(element){
+    unselectFacetValue: function(element,unselectWithoutFetch){
       var facetFieldFilter = element.parents('.facets-item');
       if(this.connectedflyoutWidget.opened){
           this.connectedflyoutWidget.close();
@@ -649,7 +785,9 @@ function updateLanguageSwitch(params) {
       if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
           removeSearchCookieParameter('facetValues[]');
       }
-      fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
+      if(!unselectWithoutFetch){
+        fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
+      }
       element.remove();
       
       if($('.facets-list').find('li[data-fctvalue]').length==0) $('.clear-filters').addClass('off');
@@ -683,8 +821,6 @@ function updateLanguageSwitch(params) {
                 return;
               }
             },500);
-          }else if(code==currObjInstance.keyCode.TAB){
-            currObjInstance.connectedflyoutWidget.close();
           }
       });
     },
@@ -711,11 +847,11 @@ function updateLanguageSwitch(params) {
             currObjInstance.connectedflyoutWidget.buildLeftContainer();
             currObjInstance.connectedflyoutWidget.parentMainElement.find('.input-search-fct-container').hide();
             $.each(fctValues, function(){
-                var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, currObjInstance.getLocalizedValue(fctField, this));
+                var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, getLocalizedFacetValue(fctField, this));
                 
                 selectedFacetValue.find('.facet-remove').click(function(){
-                  currObjInstance.unselectFacetValue(selectedFacetValue);
-                });
+                currObjInstance.unselectFacetValue(selectedFacetValue);
+              });
             });
             
             currObjInstance.connectedflyoutWidget.renderAddMoreFiltersButton(fctField);
@@ -742,24 +878,6 @@ function updateLanguageSwitch(params) {
     },
     getUrlVar: function(name){
       return this.getUrlVars()[name];
-    },
-    getLocalizedValue: function(facetField, facetValue){
-        if(facetField=='affiliate_fct' || facetField=='keywords_fct' || facetField=='place_fct' || facetField=='provider_fct'){
-            return facetValue.toString();
-        }
-        if(facetField=='type_fct'){
-            return messages.ddbnext['type_fct_'+facetValue];
-        }
-        if(facetField=='time_fct'){
-            return messages.ddbnext['time_fct_'+facetValue];
-        }
-        if(facetField=='language_fct'){
-            return messages.ddbnext['language_fct_'+facetValue];
-        }
-        if(facetField=='sector_fct'){
-            return messages.ddbnext['sector_fct_'+facetValue];
-        }
-        return '';
     }
   });
   
@@ -946,12 +1064,16 @@ function updateLanguageSwitch(params) {
                 var facetValueContainer = $(document.createElement('li'));
                 var facetValueAnchor = $(document.createElement('a'));
                 var spanCount = $(document.createElement('span'));
+                
+                facetValueAnchor.attr('href', '#');
+                
                 var facetValue = this.value;
                 var localizedValue = this.localizedValue;
                 
                 facetValueContainer.click(function(){
                   currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'), localizedValue.replace('<strong>','').replace('</strong>',''));
                   $(this).remove();
+                  return false;
                 });
                 
                 facetValueContainer.attr('data-fctvalue', facetValue);
@@ -1094,4 +1216,89 @@ function updateLanguageSwitch(params) {
   }
   initializeFacets();
   // -- End Facet Manager
+  
+  function setHovercardEvents(){
+    //  $('.thumbnail a').mouseenter(function(){
+    //      $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').addClass('on');
+    //  });
+    //  $('.thumbnail a').mouseleave(function(){
+    //      $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').removeClass('on');
+    //  });
+    $('.information').each(function(){
+      new HovercardInfoItem($(this));
+    });
+  }
 };
+
+/**
+ * AJAX request to check if a result hit is already stored in the list of favorites.
+ *
+ * Install a click event handler to add a result hit to the list of favorites.
+ */
+function checkFavorites() {
+  var itemIds = [];
+
+  // collect all item ids on the page
+  $(".search-results .summary-main .persist").each(function() {
+    itemIds.push(extractItemId($(this).attr("href")));
+  });
+
+  // check if a result hit is already stored in the list of favorites
+  $.ajax({
+      type: "POST",
+      url: jsContextPath + "/apis/favorites/_get",
+      contentType : "application/json",
+      data: JSON.stringify(itemIds),
+      success: function(favoriteItemIds) {
+        $.each(itemIds, function(index, itemId) {
+          var div = $("#favorite-" + itemId);
+
+          if ($.inArray(itemId, favoriteItemIds) >= 0) {
+            disableFavorite(div);
+          }
+          else {
+            div.click(function() {
+              // add a result hit to the list of favorites
+              $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
+                $("#favorite-confirmation").modal("show");
+                disableFavorite(div);
+              });
+            });
+          }
+        });
+      }
+  });
+}
+
+/**
+ * Disable a favorite button.
+ *
+ * @param div DIV element which handles the favorite event
+ */
+function disableFavorite(div) {
+  div.unbind("click");
+  div.removeAttr("title");
+  div.removeClass("add-to-favorites");
+  div.addClass("added-to-favorites");
+}
+
+/**
+ * Extract the item id from the given URL.
+ *
+ * @param url the URL containing the item id
+ *
+ * @returns item id
+ */
+function extractItemId(url) {
+  var result = null;
+  var parts = url.split("/");
+
+  result = parts[parts.length - 1];
+  
+  var queryParameters = result.indexOf("?");
+  
+  if (queryParameters >= 0) {
+    result = result.substring(0, queryParameters);
+  }
+  return result;
+}

@@ -1,0 +1,94 @@
+/*
+ * Copyright (C) 2013 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+.openid-facebook {
+  background: transparent url("../images/icons/openid.png") no-repeat -80px 0px;
+  width: 150px;
+  height: 50px;
+}
+
+.openid-twitter {
+  background: transparent url("../images/icons/openid.png") no-repeat -80px -50px;
+  width: 150px;
+  height: 50px;
+} 
+
+.openid-google {
+  background: transparent url("../images/icons/openid.png") no-repeat -80px -200px;
+  width: 150px;
+  height: 50px;
+}
+
+.openid-yahoo {
+  background: transparent url("../images/icons/openid.png") no-repeat -80px -250px;
+  width: 150px;
+  height: 50px;
+}
+
+.login .spacer-vertical {
+  margin-top: 15px;
+}
+
+@media (min-width: 768px) {
+  .login .dialog {
+    border-right: 1px solid #3e3a37;
+    margin-left: 0px;
+  }
+  .login .openid {
+    margin-left: 30px;
+  }
+}
+@media (max-width: 767px) {
+  .login .dialog {
+    margin-bottom: 40px;
+    margin-left: 0px;
+  }
+  .login .openid {
+    margin-left: 0px;
+  }
+}
+
+.login .feedback {
+  margin-left: 0px;
+}
+
+.login .login-error {
+  color: #A5003B;
+  margin-bottom: 20px;
+}
+
+.login .login-error div {
+  width: 90%;
+}
+
+.login #login-username {
+  width: 200px;
+}
+
+.login #login-password {
+  width: 200px;
+}
+
+.login .login-button {
+  width: 100px;
+}
+
+.login .login-link {
+  padding-left: 17px;
+  height: 25px;
+  line-height: 20px;
+  background: url(../images/icons/list_arrows.png) no-repeat 0px 1px;
+}

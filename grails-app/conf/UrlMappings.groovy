@@ -19,7 +19,7 @@ class UrlMappings {
         //@formatter:off
         "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
         //@formatter:on
-
+        
         "/searchresults/$q?" {
             controller="search"
             action="results"
@@ -28,6 +28,11 @@ class UrlMappings {
         "/facets/$q?" {
             controller="facets"
             action="facetsList"
+        }
+        
+        "/informationitem/$id"{
+            controller="search"
+            action="informationItem"
         }
 
         "/content/$dir/$id?" {
@@ -55,6 +60,26 @@ class UrlMappings {
             action="findById"
         }
 
+        "/apis/favorites/" {
+            controller="favorites"
+            action="getFavorites"
+        }
+
+        "/apis/favorites/_delete" {
+            controller="favorites"
+            action=[POST: "deleteFavorites"]
+        }
+
+        "/apis/favorites/_get" {
+            controller="favorites"
+            action=[POST: "filterFavorites"]
+        }
+
+        "/apis/favorites/$id" {
+            controller="favorites"
+            action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
+        }
+
         "/about-us/institutions" {
             controller="institution"
             action="show"
@@ -72,23 +97,90 @@ class UrlMappings {
 
         "/entity/$id" {
             controller="entity"
-            action="show"
+            action="index"
         }
-		
-		"/binary/$filename**" {
-			controller="apis"
-			action="binary"
-		}
+
+        "/entity/ajax/searchresults" {
+            controller="entity"
+            action="getAjaxSearchResultsAsJson"
+        }
+
+        "/binary/$filename**" {
+            controller="apis"
+            action="binary"
+        }
 
         "/static/$filename**" {
             controller="apis"
             action="staticFiles"
         }
 
-        "500"(controller: "error", action: "serverError")
-        "500"(controller: "error", action: "uncaughtException", exception: Throwable)
+        "/user/registration" {
+            controller="user"
+            action="registration"
+        }
+        
+        "/user/resetPassword" {
+            controller="user"
+            action="passwordResetPage"
+        }
 
-        "404"(controller: "error", action: "notFound")
+        "/user/profile" {
+            controller="user"
+            action="profile"
+        }
+
+        "/user/favorites" {
+            controller="user"
+            action="favorites"
+        }
+
+        "/user/confirm/$id/$token" {
+            controller="user"
+            action="confirm"
+        }
+
+        "/user/changePassword" {
+            controller="user"
+            action="passwordChangePage"
+        }
+        "/user/delete" {
+            controller="user"
+            action="delete"
+        }
+
+        "/login" {
+            controller="user"
+            action="index"
+        }
+
+        "/login/doLogin" {
+            controller="user"
+            action="doLogin"
+        }
+
+        "/login/doLogout" {
+            controller="user"
+            action="doLogout"
+        }
+
+        "/login/openId" {
+            controller="user"
+            action="requestOpenIdLogin"
+        }
+
+        "/login/doOpenIdLogin" {
+            controller="user"
+            action="doOpenIdLogin"
+        }
+
+        "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
+        "500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)
+        "500"(controller: "error", action: "notFound", exception: de.ddb.next.exception.ItemNotFoundException)
+        "500"(controller: "error", action: "conflict", exception: de.ddb.next.exception.ConflictException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
+        "500"(controller: "error", action: "uncaughtException")
 
     }
 }

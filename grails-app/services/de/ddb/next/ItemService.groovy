@@ -15,12 +15,15 @@
  */
 package de.ddb.next
 
+import net.sf.json.JSONNull;
+
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.codehaus.groovy.grails.web.util.WebUtils;
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
-
+import org.ccil.cowan.tagsoup.Parser;
 import groovyx.net.http.HTTPBuilder
 
 class ItemService {
@@ -41,51 +44,49 @@ class ItemService {
 
     def transactional = false
     def grailsApplication
+    def configurationService
     LinkGenerator grailsLinkGenerator
 
     def findItemById(id) {
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
 
-        /* TODO remove this hack, once the server deliver the right content
-         type*/
-        http.parser.'application/json' = http.parser.'application/xml'
-
-        final def componentsPath = "/access/" + id + "/components/"
+        final def componentsPath = "/items/" + id + "/"
         final def viewPath = componentsPath + "view"
 
-        def institution, item, title, fields, viewerUri, pageLabel
-        http.request( GET) { req ->
-            uri.path = viewPath
-
-            response.success = { resp, xml ->
-                institution= xml.institution
-                item = xml.item
-
-                title = shortenTitle(id, item)
-
-                fields = xml.item.fields.field.findAll()
-                viewerUri = buildViewerUri(item, componentsPath)
-
-                return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
-                    'fields': fields, pageLabel: xml.pagelabel]
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp ->
-                log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """
-                return response
-            }
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), viewPath)
+        if(!apiResponse.isOk()){
+            log.error "findItemById: xml file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
+        def xml = apiResponse.getResponse()
+
+        //def institution= xml.institution
+        def institution= xml.item.institution
+
+        Parser tagsoupParser = new Parser()
+        XmlSlurper slurper = new XmlSlurper(tagsoupParser)
+
+        String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
+        if(xml.item.institution.logo != null && !xml.item.institution.logo.toString().trim().isEmpty()){
+            institutionLogoUrl = slurper.parseText(xml.item.institution.logo.toString()).text()
+        }
+
+        String originUrl = slurper.parseText(xml.item.origin.toString()).text()
+
+        def item = xml.item
+
+        def title = shortenTitle(id, item)
+
+        def fields = xml.item.fields.field.findAll()
+        def viewerUri = buildViewerUri(item, componentsPath)
+
+        return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
+            'fields': fields, pageLabel: xml.pagelabel, 'institutionImage': institutionLogoUrl, 'originUrl': originUrl]
+
     }
 
     private getItemTitle(id) {
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
 
         /* TODO remove this hack, once the server deliver the right content
          type*/
@@ -97,7 +98,11 @@ class ItemService {
         http.request( GET) { req ->
             uri.path = titlePath
 
-            response.success = { resp, html -> return html }
+            response.success = { resp, html ->
+                log.info "getItemTitle(): Current request uri: 200, "+uri
+
+                return html
+            }
 
             response.'404' = { return '404' }
 
@@ -110,7 +115,7 @@ class ItemService {
 
     private shortenTitle(id, item) {
 
-        def title = item.title.text()
+        def title = item.title
 
         def hasBinary = !fetchBinaryList(id).isEmpty()
 
@@ -135,15 +140,18 @@ class ItemService {
 
 
     private def buildViewerUri(item, componentsPath) {
-        if(item.viewers.viewer == null || item.viewers.viewer.isEmpty()) {
+        if(item.viewers instanceof JSONNull){
+            return ''
+        }
+        if(item.viewers?.viewer == null || item.viewers?.viewer?.isEmpty()) {
             return ''
         }
 
-        def viewerPrefix = item.viewers.viewer.uri.toString()
+        def viewerPrefix = item.viewers.viewer.url.toString()
 
         if(viewerPrefix.contains(SOURCE_PLACEHOLDER)) {
             def withoutPlaceholder = viewerPrefix.toString() - SOURCE_PLACEHOLDER
-            def binaryServerUrl = grailsApplication.config.ddb.binary.url
+            def binaryServerUrl = configurationService.getBinaryUrl()
 
             //Security check: if the binaryServerUrl is configured with an ending ".../binary/", this has to be removed
             int firstOccuranceOfBinaryString = binaryServerUrl.indexOf("/binary/")
@@ -164,8 +172,8 @@ class ItemService {
 
     private def fetchBinaryList(id) {
 
-        def http = new HTTPBuilder(grailsApplication.config.ddb.backend.url.toString())
-        ApiConsumer.setProxy(http, grailsApplication.config.ddb.backend.url.toString())
+        def http = new HTTPBuilder(configurationService.getBackendUrl())
+        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
         http.parser.'application/json' = http.parser.'application/xml'
         final def binariesPath= "/access/" + id + "/components/binaries"
 
@@ -173,6 +181,7 @@ class ItemService {
             uri.path = binariesPath
 
             response.success = { resp, xml ->
+                log.info "fetchBinaryList(): Current request uri: 200, "+uri
                 def binaries = xml
                 return binaries.binary.list()
             }
@@ -193,6 +202,7 @@ class ItemService {
         String position
         String path
         String type
+        String htmlStrip
         //creation of a bi-dimensional list containing the binaries separated for position
         binaries.each { x ->
             if(x.'@position'.toString() != position){
@@ -216,28 +226,36 @@ class ItemService {
                 if(path.contains(ORIG)){
                     if(type.contains(IMAGE)){
                         binaryMap.'orig'.'uri'.'image' = BINARY_SERVER_URI + z.'@path'
-                        if(!binaryMap.'orig'.'title') binaryMap.'orig'.'title' = z.'@name'
+                        if(!binaryMap.'orig'.'title') {
+                            htmlStrip = z.'@name'
+                            binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                        }
                     }
                     else if(type.contains(AUDIO)){
                         binaryMap.'orig'.'uri'.'audio' = BINARY_SERVER_URI + z.'@path'
-                        binaryMap.'orig'.'title' = z.'@name'
+                        htmlStrip = z.'@name'
+                        binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     }
                     else if(type.contains(VIDEOMP4)||type.contains(VIDEOFLV)){
                         binaryMap.'orig'.'uri'.'video' = BINARY_SERVER_URI + z.'@path'
-                        binaryMap.'orig'.'title' = z.'@name'
+                        htmlStrip = z.'@name'
+                        binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     }
                     binaryMap.'checkValue' = "1";
                 }
                 else if(path.contains(PREVIEW)) {
-                    binaryMap.'preview'.'title' = z.'@name'
+                    htmlStrip = z.'@name'
+                    binaryMap.'preview'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
                     binaryMap.'checkValue' = "1";
                 } else if (path.contains(THUMBNAIL)) {
-                    binaryMap.'thumbnail'.'title' = z.'@name'
+                    htmlStrip = z.'@name'
+                    binaryMap.'thumbnail'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
                     binaryMap.'checkValue' = "1";
                 } else if (path.contains(FULL)) {
-                    binaryMap.'full'.'title' = z.'@name'
+                    htmlStrip = z.'@name'
+                    binaryMap.'full'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
                     binaryMap.'checkValue' = "1";
                 }
@@ -271,12 +289,22 @@ class ItemService {
 
     def getParent(itemId){
         final def parentsPath = "/hierarchy/" + itemId + "/parent/"
-        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), parentsPath, [:]);
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), parentsPath)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return apiResponse.getResponse()
     }
 
     def getChildren(itemId){
         final def childrenPath = "/hierarchy/" + itemId + "/children/"
-        return ApiConsumer.getTextAsJson(grailsApplication.config.ddb.backend.url.toString(), childrenPath, [:]);
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), childrenPath)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return apiResponse.getResponse()
     }
 
     private def log(list) {

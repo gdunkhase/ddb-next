@@ -44,7 +44,7 @@ limitations under the License.
           <g:each in="${(facets.selectedFacets)}">
             <g:if test="${mit == it.field}">
               <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
-                <a class="h3" href="${facets.mainFacetsUrl[it.field]}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
+                <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
                 <g:if test="${it.facetValues.size() > 0}">
                   <ul class="unstyled">
                     <g:facetListRender facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></g:facetListRender>
@@ -62,7 +62,7 @@ limitations under the License.
         </label>
       </div>
       <div>
-        <a href="${clearFilters}" class="clear-filters button"><g:message code="ddbnext.Clear_filters"/></a>
+        <a href="${clearFilters.encodeAsHTML()}" class="clear-filters button"><g:message code="ddbnext.Clear_filters"/></a>
       </div>
     </div>
     

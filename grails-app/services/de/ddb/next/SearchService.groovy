@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletRequest
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.codehaus.groovy.grails.web.util.WebUtils;
+
 import org.springframework.context.i18n.LocaleContextHolder
 
 /**
@@ -39,6 +41,8 @@ class SearchService {
 
     //Autowire the grails application bean
     def grailsApplication
+    
+    def configurationService
 
     //CharacterEncoding of query-String
     private characterEncoding = "UTF-8"
@@ -150,6 +154,7 @@ class SearchService {
         def res = []
         //We want only the first 10 facets
         urlQuery["facet.limit"] = 10
+
         urlQuery["facet"].each{
             if(it != "grid_preview"){
                 emptyFacets.remove(it)
@@ -157,7 +162,13 @@ class SearchService {
                 tmpUrlQuery["rows"]=1
                 tmpUrlQuery["offset"]=0
                 tmpUrlQuery.remove(it)
-                ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', tmpUrlQuery).facets.each{ facet->
+                def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, tmpUrlQuery)
+                if(!apiResponse.isOk()){
+                    log.error "Json: Json file was not found"
+                    apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+                }
+                def jsonResp = apiResponse.getResponse()
+                jsonResp.facets.each{ facet->
                     if(facet.field==it){
                         res.add(facet)
                     }
@@ -433,7 +444,7 @@ class SearchService {
      */
     def getSelectedFacetValues(List facets, String fctName, int numberOfElements, String matcher, Locale locale){
         def res = [type: fctName, values: []]
-        def allFacetFilters = grailsApplication.config.ddb.backend.facets.filter
+        def allFacetFilters = configurationService.getFacetsFilter()
 
         facets.each{
             if(it.field==fctName){

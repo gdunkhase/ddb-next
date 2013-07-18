@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+
 @font-face {
   font-family: KarbidWeb;
   src: url("fonts/KarbidWeb.eot")
@@ -71,25 +73,6 @@ select,input[type="file"] {
 select {
   width: auto;
   background-color: #ffffff;
-}
-
-.btn-primary {
-  background-color: #006dcc;
-  *background-color: #0044cc;
-  background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc),
-    to(#0044cc));
-  background-image: -webkit-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -o-linear-gradient(top, #0088cc, #0044cc);
-  background-image: linear-gradient(to bottom, #0088cc, #0044cc);
-  border-color: #0044cc #0044cc #002a80;
-}
-
-.btn-primary:hover,.btn-primary:active,.btn-primary.active,.btn-primary.disabled,.btn-primary[disabled]
-  {
-  color: #ffffff;
-  background-color: #0044cc;
-  *background-color: #003bb3;
 }
 
 .nav-list>.active>a,.nav-list>.active>a:hover {
@@ -437,6 +420,37 @@ header .language-wrapper >a,.header .language-wrapper >a {
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 46px -42px;
 }
 
+
+header .login-wrapper:hover .selector,.header .login-wrapper:hover .selector {
+  display: block;
+  margin-right: 15px;
+}
+
+header .login-wrapper,.header .login-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+header .login-username,.header .login-username {
+  display: inline-block;
+}
+
+header .login-dropdown,.header .login-dropdown {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 3px -40px;
+  cursor: pointer;
+}
+
+header .header-spacer,.header .header-spacer {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  margin: 0px 10px 0 10px;
+  border-right: 2px solid #e9e5e2;
+}
+
 #form-search-header .link-adv-search {
   font-size: 0.938em;
   display: inline-block;
@@ -531,6 +545,11 @@ header .language-wrapper >a,.header .language-wrapper >a {
   font-size: 1em;
 }
 
+.form-horizontal .control-label {
+  width: 180px;
+  margin-right: 10px;
+}
+
 .nav .tooltip {
   width: 321px !important;
 }
@@ -580,6 +599,10 @@ header .selector,.header .selector {
   -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+header .selector.logout,.header .selector.logout {
+  right: -20px;
+}
+
 header .selector li,.header .selector li {
   float: none;
   cursor: pointer;
@@ -619,9 +642,10 @@ header .language-widget form,.header .language-widget form {
 }
 
 .brand img {
-  margin: 0px;
+  margin: 0 0 0 10px;
   height: 90px;
 }
+
 
 .btn-navbar {
   height: 30px;
@@ -671,9 +695,30 @@ header .language-widget form,.header .language-widget form {
     margin-left: 60px;
   }
 }
+
+@media (max-width: 767px) {
+  header.ie-mobile .span7 {
+    width: 75%;
+    float: left;
+  }
+  header.ie-mobile .toolbar {
+    width: 20%;
+    float: left;
+  }
+  header.ie-mobile .navigation {
+    margin-bottom: 30px;
+  }
+}
+
 @media (min-width: 980px) and (max-width: 1199px) {
-  #form-search-header .link-adv-search, .header .link-adv-search {
+  #form-search-header .link-adv-search, #form-search-header .link-adv-search {
     margin-left: 40px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .header .link-adv-search {
+    margin-left: 130px !important;
   }
 }
 /* mobile view header - end */
@@ -777,7 +822,7 @@ header .language-widget form,.header .language-widget form {
   }
 }
 
-@media (max-width: 479px) {
+@media (max-width: 480px) {
   #form-search input {
     width: 80%;
   }
@@ -910,6 +955,14 @@ noscript .caption {
   }
 }
 
+@media (max-width: 767px) {
+  .carousel a.previous {
+    left: -12px;
+  }
+  .carousel a.next {
+    right: -20px;
+  }
+}
 /* carousel controls responsiveness - end */
 .carousel a.next:hover {
   background-position: 0 -200px;
@@ -1298,4 +1351,58 @@ select {
   top: -9px;
   background-color: #fff;
 }
+
+/* responsive genaral rules */
+@media (max-width: 767px) {
+  body {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  h1,h2,h3,h4 {
+    font-size: 1.5em;
+    line-height: 1.125em;
+  }
+
+  h1,h1 a {
+    font-size: 1.5em;
+  }
+
+  h2,h2 a {
+    font-size: 1.250em;
+  }
+
+  h3,h3 a {
+    font-size: 1em;
+  }
+}
+/* responsive genaral rules - end */
 /* genaral rules - end */
+
+/* errors */
+.errors-container {
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: red 1px solid;
+}
+.errors-container ul {
+  margin:0;
+}
+.errors-container i {
+  margin: 3px 5px 0 0;
+}
+/* errors - end */
+
+/* messages */
+.messages-container {
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: green 1px solid;
+}
+.messages-container ul {
+  margin:0;
+}
+.messages-container i {
+  margin: 3px 5px 0 0;
+}
+/* messages - end */

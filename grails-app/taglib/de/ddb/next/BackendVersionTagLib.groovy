@@ -15,9 +15,17 @@
  */
 package de.ddb.next
 
+import org.codehaus.groovy.grails.web.util.WebUtils;
+
 class BackendVersionTagLib {
-	def backendVersion = {
-		attrs, body ->
-		out << ApiConsumer.getText(grailsApplication.config.ddb.backend.url, "/version", null)
-	}
+    def configurationService
+
+    def backendVersion = { attrs, body ->
+        def apiResponse = ApiConsumer.getText(configurationService.getBackendUrl(), "/version")
+        if(!apiResponse.isOk()){
+            log.error "Text: text file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        out << apiResponse.getResponse()
+    }
 }

@@ -16,8 +16,12 @@
 
 class BootStrap {
 
+    def configurationService
+
     def init = { servletContext ->
+        configurationService.logConfigurationSettings()
     }
+
     def destroy = {
     }
 }

@@ -37,6 +37,7 @@ class ApisService {
 
     //Autowire the grails application bean
     def grailsApplication
+    def configurationService
 
     def transactional=false
 
@@ -148,69 +149,5 @@ class ApisService {
         }
 
         return query
-    }
-
-    /**
-     * It fetches (in an asynchronous way) all the properties to be merged inside the json response when a new search is done
-     * @param docs - the docs array
-     * @return the array containing all the properties requested
-     */
-    def fetchItemsProperties(docs){
-        if(docs && docs.size() > 0){
-            def threadNumber = (docs.size()<20)?docs.size():20
-            def baseUrl = grailsApplication.config.ddb.backend.url.toString()
-            try {
-                def http = new AsyncHTTPBuilder(
-                        poolSize: threadNumber,
-                        uri: baseUrl)
-                ApiConsumer.setProxy(http, baseUrl)
-                def itemsPropertiesResponses = []
-                docs.each {
-                    def currentItem = it
-                    itemsPropertiesResponses << http.request(Method.GET, XML){
-                        uri.path = '/access/'+currentItem.id+'/components/indexing-profile'
-                        headers.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-                        response.success = { resp, xml ->
-                            def jsonSubresp = new JsonSlurper().parseText(xml.toString())
-
-                            def timeFct = (jsonSubresp.properties.time_fct)? jsonSubresp.properties.time_fct: ""
-                            def placeFct = (jsonSubresp.properties.place_fct)? jsonSubresp.properties.place_fct: ""
-                            def affiliateFct = (jsonSubresp.properties.affiliate_fct)? jsonSubresp.properties.affiliate_fct: ""
-                            def keywordsFct = (jsonSubresp.properties.keywords_fct)?jsonSubresp.properties.keywords_fct: ""
-                            def typeFct = (jsonSubresp.properties.type_fct)?jsonSubresp.properties.type_fct: ""
-                            def sectorFct = (jsonSubresp.properties.sector_fct)?jsonSubresp.properties.sector_fct: ""
-                            def providerFct = (jsonSubresp.properties.provider_fct)?jsonSubresp.properties.provider_fct: ""
-
-                            def properties = [time_fct: timeFct, place_fct: placeFct, affiliate_fct:affiliateFct, keywords_fct:keywordsFct, type_fct:typeFct, sector_fct:sectorFct, provider_fct:providerFct, last_update: jsonSubresp.properties.last_update ]
-
-                            return properties
-                        }
-                    }
-                }
-                def timeout = 60000
-                def time = 0
-                def result = []
-                while ( true ) {
-                    if ( itemsPropertiesResponses.every{ it.done ? it.get() : 0 } ) break
-                        Thread.sleep 1
-                    time += 1
-                    if ( time > timeout ) return result
-                }
-                itemsPropertiesResponses.each{
-                    result.add(it.get())
-                }
-                http.shutdown()
-                return result
-            } catch (groovyx.net.http.HttpResponseException ex) {
-                log.error "A HttpResponseException occured", ex
-                return null
-            } catch (java.net.ConnectException ex) {
-                log.error "A ConnectException occured", ex
-                return null
-            } catch (java.lang.Exception ex) {
-                log.error "An unexpected exception occured", ex
-                return null
-            }
-        }
     }
 }

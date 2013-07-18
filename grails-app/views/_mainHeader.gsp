@@ -84,8 +84,21 @@ limitations under the License.
                   params="[dir: 'tutorial']">
                   <g:message code="ddbnext.Tutorial" />
                 </g:link></li>
-            </ul></li>
-          <li class=""><a>
+            </ul></li>            
+            <g:isLoggedIn>
+              <li class="">
+                <g:link controller="user" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
+                <ul class="nav">
+                  <li class="">
+                    <g:link controller="user" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
+                  </li>
+                  <li class="">
+                    <g:link controller="user" action="profile"><g:message code="ddbnext.Profile" /></g:link>
+                  </li>
+                </ul>
+              </li>            
+            </g:isLoggedIn>            
+            <li class=""><a>
               <g:message code="ddbnext.ChangeLanguage" />
             </a>
             <ul class="nav">
@@ -101,14 +114,26 @@ limitations under the License.
               </li>              
             </ul>
           </li>
+          <li class="">
+            <g:isNotLoggedIn>
+              <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
+            </g:isNotLoggedIn>
+            <g:isLoggedIn>
+              <g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /> (<g:getUserName />)</g:link>              
+            </g:isLoggedIn>
+          </li>
         </ul>
       </div>
     </div>
   </div>
 </header>
+<header class="hidden-phone">
 <!--<![endif]-->
 
-<header class="hidden-phone">
+<!--[if IE]>
+<header class="ie-mobile">
+<![endif]-->
+
   <h1 class="invisible-but-readable">
     <g:message code="ddbnext.Heading_Header" />
   </h1>
@@ -197,10 +222,47 @@ limitations under the License.
                     </li>
                   </ul>
                 </li>
+                <g:isLoggedIn>
+                  <li
+                    class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "favorites"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"]]}">active-default</g:isMappingActive>">
+                    <g:link controller="user" action="favorites">
+                      <g:message code="ddbnext.MyDDB" />
+                    </g:link>
+                    <ul>
+                      <li
+                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "favorites"]]}">active-default</g:isMappingActive>">
+                        <g:link controller="user" action="favorites">
+                          <g:message code="ddbnext.Favorites" />
+                        </g:link>
+                      </li>
+                      <li
+                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"]]}">active-default</g:isMappingActive>">
+                        <g:link controller="user" action="profile">
+                          <g:message code="ddbnext.Profile" />
+                        </g:link>
+                      </li>
+                    </ul>
+                  </li>
+                </g:isLoggedIn>
               </ul>
             </div>
           </div>
           <div class="span5 toolbar">
+            <g:isNotLoggedIn>
+              <div class="login-wrapper">
+                <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
+              </div>
+            </g:isNotLoggedIn>
+            <g:isLoggedIn>
+              <div class="login-wrapper">
+                <g:message code="ddbnext.You_are_currently_logged_in_as" /> 
+                <g:link controller="user" action="profile" class="login-username"><g:getUserName /></g:link><div class="login-dropdown"></div>
+                <ul class="selector logout">
+                  <li><g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link></li>
+                </ul>
+              </div>
+            </g:isLoggedIn>
+            <div class="header-spacer"></div>
             <div class="language-wrapper">
               <a href="#"> <g:currentLanguage />
               </a>

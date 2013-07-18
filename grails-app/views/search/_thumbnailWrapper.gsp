@@ -16,44 +16,30 @@ limitations under the License.
 <%@page import="java.awt.event.ItemEvent"%>
 <div class="thumbnail-wrapper <g:if test="${viewType != 'grid'}">span2</g:if>">
   <div class="thumbnail">
-    <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: item.id, hitNumber: hitNumber]">
+    <g:link class="persist" controller="${ controller }" action="${ action }" params="${params + [id: item.id, hitNumber: hitNumber]}">
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<g:removeTags>${item.preview.title}</g:removeTags>" />
     </g:link>
   </div>
-  <div class="information">
-    <div class="hovercard-info-item">
+  <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn>">
+    <div class="hovercard-info-item" data-iid="${item.id}">
       <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
       <ul class="unstyled">
-        <g:each in="${item.properties}">
-          <g:if test="${item.properties[it.key] && it.key != 'last_update'}">
-            <li>
-              <span class="fieldName"><g:message code="${'ddbnext.facet_'+it.key}" /></span>
-              <span class="fieldContent">
-              <g:each status="i" in="${item.properties[it.key]}" var="key">
-                <g:if test="${(i!=0)}">
-                  ,
-                </g:if>
-                <g:if test="${it.key == 'affiliate_fct' || it.key == 'keywords_fct' || it.key == 'place_fct' || it.key == 'provider_fct'}">
-                    ${key}
-                </g:if>
-                <g:if test="${it.key == 'type_fct' }">
-                  <g:message code="ddbnext.type_fct_${key}"/>
-                </g:if>
-                <g:if test="${it.key == 'time_fct' }">
-                  <g:message code="ddbnext.time_fct_${key}"/>
-                </g:if>
-                <g:if test="${it.key == 'language_fct' }">
-                  <g:message code="ddbnext.language_fct_${key}"/>
-                </g:if>
-                <g:if test="${it.key == 'sector_fct' }">
-                  <g:message code="ddbnext.sector_fct_${key}"/>
-                </g:if>
-              </g:each>
-              </span>
-            </li>
-          </g:if>
-        </g:each>
+        <li>
+          <div class="small-loader"></div>
+        </li>
       </ul>
     </div>
   </div>
+  <g:isLoggedIn>
+    <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>">
+    </div>
+    <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-body">
+        <p><g:message code="ddbnext.Added_To_Favorites"/></p>
+      </div>
+      <div class="modal-footer">
+        <button id="modal-btn-ok" class="btn-padding" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </g:isLoggedIn>
 </div>

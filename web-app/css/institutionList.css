@@ -58,9 +58,12 @@
   margin: -24px 0 0 -24px;
 }
 
-.view-type-switch #view-institution-list.selected:before,.view-type-switch #view-institution-list.selected:hover:before,.view-type-switch #view-institution-list.selected:focus:before
-  {
+.view-type-switch #view-institution-list.selected:before,.view-type-switch #view-institution-list.selected:hover:before,.view-type-switch #view-institution-list.selected:focus:before {
   margin: -24px 0 0 -48px;
+}
+
+.view-type-switch .ie8-version #view-institution-list.selected:before,.view-type-switch .ie8-version #view-institution-list.selected:hover:before,.view-type-switch .ie8-version #view-institution-list.selected:focus:before {
+  margin: -24px 0 0 0;
 }
 
 .view-type-switch #view-institution-map:before {
@@ -71,9 +74,14 @@
   margin: -48px 0 0 -24px;
 }
 
-.view-type-switch #view-institution-map.selected:before,.view-type-switch #view-institution-map.selected:hover:before,.view-type-switch #view-institution-map.selected:focus:before{
+.view-type-switch #view-institution-map.selected:before,.view-type-switch #view-institution-map.selected:hover:before,.view-type-switch #view-institution-map.selected:focus:before {
   margin: -48px 0 0 -48px;
 }
+
+.view-type-switch .ie8-version #view-institution-map.selected:before, .view-type-switch .ie8-version #view-institution-map.selected:hover:before,.view-type-switch .ie8-version #view-institution-map.selected:focus:before {
+  margin: -48px 0 0 0;
+}
+
 .institution-listitem {
   list-style: none;
 }
@@ -214,4 +222,36 @@ div.sector-facet>label:hover {
   height: 100%;
   position: absolute;
   background-color: #FFFFFF;
+}
+
+.institutionlist .multiselect-container{
+  left: 0;
+  right: 0;
+  z-index:1002;
+}
+
+.institutionlist .btn-group > .btn:last-child, .btn-group > .dropdown-toggle, .institutionlist .multiselect-container{
+  webkit-border-radius: 0;
+  border-radius: 0;
+  -moz-border-radius: 0;
+}
+
+.institutionlist .btn-group, .institutionlist .btn-group > .btn:last-child, .btn-group > .dropdown-toggle{
+  width: 100%!important;
+}
+
+.institutionlist .btn .caret {
+  margin-top: 8px;
+  margin-left: 5px;
+}
+
+.institutionlist .filter.visible-phone #filter-title {
+  border-bottom: none;
+}
+
+@media (max-width: 767px){
+  #institution-list{
+    padding-bottom: 10px;
+    border-bottom: 2px solid #EFEBE8;
+  }
 }

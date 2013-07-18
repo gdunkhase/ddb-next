@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import de.ddb.next.exception.BackendErrorException;
+import de.ddb.next.exception.ItemNotFoundException;
 import grails.util.Environment
 
 /**
@@ -22,6 +24,7 @@ import grails.util.Environment
  */
 class ErrorController {
 
+    def configurationService
 
     def uncaughtException() {
         log.error "uncaughtException(): An uncaught exception occured in the frontend."
@@ -33,64 +36,218 @@ class ErrorController {
      * @return Either the 500_development view or the 500_production view, dependent on the environment
      */
     def serverError() {
-
-
+        def exceptionMessage = ""
+        
         //Lot of logging to make bugfixing easier
         log.error "serverError(): The user will be redirected to the 500 page."
         if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
             try{
-                log.error "Source of the error is: '"+request.exception.getMessage()+"'"
+                log.error "serverError(): Source of the error is: '"+exceptionMessage+"'"
                 def stackElements = request.exception.getStackTrace();
                 for(stackElement in stackElements){
                     log.error "Stack: "+stackElement.getClassName()+"."+stackElement.getMethodName()+" ["+stackElement.getLineNumber()+"]"
                 }
 
             }catch(Throwable ex){
-                log.error "Grails did not provide a valid error object", ex
+                log.error "serverError(): Grails did not provide a valid error object", ex
             }
         }else{
-            log.error "Grails did not provide an error object. No stacktrace available. Most probably an earlier try-catch already consumed it. Check your log."
+            log.error "serverError(): Grails did not provide an error object. No stacktrace available. Most probably an earlier try-catch already consumed it. Check your log."
         }
 
         // Return response code 500
         response.status = 500
+        response.setHeader("Error-Message", exceptionMessage)
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
-        def contentTypeFromConfig = grailsApplication.config.grails.mime.types["html"][0]
-        def encodingFromConfig = grailsApplication.config.grails.views.gsp.encoding
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
 
         // Return the view dependent on the configured environment (PROD vs DEV)
         if ( Environment.PRODUCTION == Environment.getCurrent() ) {
 
             // Production: show a nice error message
-            log.error "Return view '505_production'"
+            log.error "serverError(): Return view '500_production'"
             return render(view:'500_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
         } else {
             // Not it production? show an ugly, developer-focused error message
-            log.error "Return view '505_development'"
+            log.error "serverError(): Return view '500_development'"
             return render(view:'500_development', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
         }
     }
 
     /**
-     * Handler method for error 400 situations
+     * Handler method for error 409 situations
+     * @return The conflict view
+     */
+    def conflict() {
+
+        // Here we have the possibility to add further logging to identify if some 409 urls were called
+
+        def exceptionMessage = ""
+        def apiResponse
+
+        // Does it come from a automatically handled backend request?
+        if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
+        }
+
+        apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
+
+        // Return response code 409
+        response.status = 409
+        response.setHeader("Error-Message", exceptionMessage)
+        
+        // The content type and encoding of the error page (should be explicitly set, otherwise the mime
+        // could be text/json if an API was called and the layout would be messed up
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
+
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Return the 409 view
+            log.error "notFound(): Return view '409'"
+            return render(view:'409_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        } else {
+
+            // Not it production? show an ugly, developer-focused error message
+            log.error "notFound(): Return view '409_development'"
+            return render(view:'409_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+            
+        }
+        
+    }
+
+    /**
+     * Handler method for error 404 situations
      * @return The notfound view
      */
     def notFound() {
 
         // Here we have the possibility to add further logging to identify if some 404 urls were called
 
-        // Return response code 400
-        response.status = 404
+        def exceptionMessage = ""
+        def apiResponse
 
+        // Does it come from a automatically handled backend request?
+        if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
+        }
+
+        apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
+
+        // Return response code 404
+        response.status = 404
+        response.setHeader("Error-Message", exceptionMessage)
+        
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
-        def contentTypeFromConfig = grailsApplication.config.grails.mime.types["html"][0]
-        def encodingFromConfig = grailsApplication.config.grails.views.gsp.encoding
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
 
-        // Return the 404 view
-        log.error "Return view 'notfound'"
-        return render(view:'notfound', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Return the 404 view
+            log.error "notFound(): Return view '404'"
+            return render(view:'404_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        } else {
+
+            // Not it production? show an ugly, developer-focused error message
+            log.error "notFound(): Return view '404_development'"
+            return render(view:'404_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+            
+        }
+        
     }
+
+     /**
+     * Handler method for error 401 situations
+     * @return The auth view
+     */
+    def auth() {
+
+        def exceptionMessage = ""
+        def apiResponse
+
+        // Does it come from a automatically handled backend request?
+        if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
+        }
+
+        apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
+
+        // Return response code 401
+        response.status = 401
+        response.setHeader("Error-Message", exceptionMessage)
+        
+        // The content type and encoding of the error page (should be explicitly set, otherwise the mime
+        // could be text/json if an API was called and the layout would be messed up
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
+
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Return the 404 view
+            log.error "auth(): Return view '401'"
+            return render(view:'401_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        } else {
+
+            // Not it production? show an ugly, developer-focused error message
+            log.error "auth(): Return view '401_development'"
+            return render(view:'401_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+            
+        }
+        
+    }
+
+     /**
+     * Handler method for error 400 situations
+     * @return The bad-request view
+     */
+    def badRequest() {
+
+        def exceptionMessage = ""
+        def apiResponse
+
+        // Does it come from a automatically handled backend request?
+        if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
+        }
+
+        apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
+
+        // Return response code 400
+        response.status = 400
+        response.setHeader("Error-Message", exceptionMessage)
+        
+        // The content type and encoding of the error page (should be explicitly set, otherwise the mime
+        // could be text/json if an API was called and the layout would be messed up
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
+
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Return the 400 view
+            log.error "badRequest(): Return view '400'"
+            return render(view:'400_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        } else {
+
+            // Not it production? show an ugly, developer-focused error message
+            log.error "auth(): Return view '400_development'"
+            return render(view:'400_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+            
+        }
+        
+    }
+
 }

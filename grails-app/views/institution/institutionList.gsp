@@ -25,15 +25,26 @@ limitations under the License.
 </head>
 <body>
   <h1><g:message code="ddbnext.Institutions" /></h1>
-  
   <div class="row">
     <div class="view-type-switch span12 off">
-      <div>
-        <button id="view-institution-map" class="selected" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Label" /></button>
+      <!--[if lt IE 9]>
+      <div class="ie8-version">
+      <![endif]-->
+        <button id="view-institution-map" class="selected"
+          type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />">
+          <g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Label" />
+        </button>
+      <!--[if lt IE 9]>
       </div>
-      <div>
-        <button id="view-institution-list" type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsListButton_Title" />"><g:message code="ddbnext.InstitutionsList_ViewAsListButton_Label" /></button>
+      <div class="ie8-version">
+      <![endif]-->
+        <button id="view-institution-list"
+          type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsListButton_Title" />">
+          <g:message code="ddbnext.InstitutionsList_ViewAsListButton_Label" />
+        </button>
+      <!--[if lt IE 9]>
       </div>
+      <![endif]-->
     </div>
   </div>
   <div class="row institutionlist">
@@ -47,6 +58,7 @@ limitations under the License.
     <noscript>
       </div>
     </noscript>
+    <g:render template="filterPhone" />
     <g:render template="pagination" />
       <div id="no-match-message">
         <g:message code="ddbnext.InstitutionPage_NoMatches" />
