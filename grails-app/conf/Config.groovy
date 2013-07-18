@@ -151,6 +151,7 @@ ddb.session.timeout=1800 // in sec -> 30min
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom = "do-not-reply@ddb.de"
+ddb.favorites.basedomain="http://dev.escidoc.org"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
@@ -278,7 +279,7 @@ compress {
 
 grails {
     mail {
-        host = "relay.fiz-karlsruhe.de"
+        host = "exchange.fiz-karlsruhe.de"
         port = 25
     }
 }
