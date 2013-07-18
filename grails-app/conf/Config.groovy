@@ -278,7 +278,7 @@ compress {
 
 grails {
     mail {
-        host = "ddbmail.deutsche-digitale-bibliothek.de"
+        host = "exchange.fiz-karlsruhe.de"
         port = 25
     }
 }
