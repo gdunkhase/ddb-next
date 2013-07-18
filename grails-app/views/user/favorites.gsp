@@ -169,13 +169,13 @@ limitations under the License.
   <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="msDeleteFavoritesLabel" aria-hidden="true">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="msDeleteFavoritesLabel">Delete favorites</h3>
+      <h3 id="msDeleteFavoritesLabel"><g:message code="ddbnext.delete_favorites" /></h3>
     </div>
     <div class="modal-body">
-      <p>Your favorites have been deleted successfully</p>
+      <p> <g:message code="ddbnext.delete_favorites_succ" /></p>
     </div>
     <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn-padding" data-dismiss="modal" aria-hidden="true"><g:message code="ddbnext.Close" /></button>
     </div>
   </div>
 </body>
