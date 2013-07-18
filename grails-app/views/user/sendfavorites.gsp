@@ -1,10 +1,3 @@
-<%--<html>
-<head>
-<title>- <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
-<meta name="page" content="favorites" />
-</head>
-
---%><g:set var="confBinary" value="/ddb-next"></g:set>
 <div id="favoritesModal" class="modal" tabindex="-1" role="dialog" >
 <div class="modal-body">
     <form method="POST" id="sendFavorites">

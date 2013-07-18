@@ -77,8 +77,8 @@ limitations under the License.
         <ul class="bookmarks-lists unstyled">
           <g:each in="${bookmarks.bookmarksLists}">
             <li class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br"><a class="h3" href="#"> ${it.name}
-            </a> <span class="bookmarks-list-number"> ${resultsNumber}</span> <a class="bookmarks-list-envelope" id="sendbookmarks"
-              href="http://localhost:8080/ddb-next/user/sendfavorites"
+            </a> <span class="bookmarks-list-number"> ${resultsNumber}</span> 
+            <a class="bookmarks-list-envelope" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}
             > <i class="icon-envelope"></i></a> <a class="bookmarks-list-edit" href="#"><i class="icon-edit"></i></a></li>
           </g:each>
         </ul>
@@ -114,9 +114,9 @@ limitations under the License.
               <div class="results-sorter">
                 <div class="row">
                   <div class="span6">
-                    <span><input type="checkbox" class="select-all" id="checkall"></span> <span><g:message
-                        code="ddbnext.HierarchyHelp_Leaf"
-                      ></g:message></span> <span> <a href="#"><i class="icon-arrow-up"></i></a> <a href="#"><i class="icon-arrow-down"></i></a>
+                    <span><input type="checkbox" class="select-all" id="checkall"></span> 
+                    <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
+                     <span> <a href="#"><i class="icon-arrow-up"></i></a> <a href="#"><i class="icon-arrow-down"></i></a>
                     </span>
                   </div>
                   <div class="span3 added-on">
@@ -144,7 +144,7 @@ limitations under the License.
         <h3 id="myModalLabel"></h3>
       </div>
       <div class="modal-body">
-        <form method="POST"  id="sendFavorites">
+        <form method="POST" id="sendFavorites">
           <fieldset>
             <legend>
               <g:message code="ddbnext.send_favorites" />
@@ -169,13 +169,13 @@ limitations under the License.
   <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="msDeleteFavoritesLabel" aria-hidden="true">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="msDeleteFavoritesLabel">Delete favorites</h3>
+      <h3 id="msDeleteFavoritesLabel"><g:message code="ddbnext.delete_favorites" /></h3>
     </div>
     <div class="modal-body">
-      <p>Your favorites have been deleted successfully</p>
+      <p> <g:message code="ddbnext.delete_favorites_succ" /></p>
     </div>
     <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn-padding" data-dismiss="modal" aria-hidden="true"><g:message code="ddbnext.Close" /></button>
     </div>
   </div>
 </body>
