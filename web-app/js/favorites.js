@@ -62,7 +62,6 @@ $(function() {
           window.setTimeout('location.reload()', 1500);
         }
       });
-      alert(jsContextPath);
       return false;
     });
     
