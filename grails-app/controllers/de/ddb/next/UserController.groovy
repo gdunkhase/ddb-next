@@ -175,6 +175,7 @@ class UserController {
                     temp["creationDate"]=formatDate(items,searchItem.id)
                     all.add(temp)
                 }
+
                 sessionService.setSessionAttributeIfAvailable("results", allRes)
                 if (request.method=="POST"){
                     try {
@@ -815,7 +816,7 @@ class UserController {
                 user.setLastname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                //user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
+                user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
                 log.info(user.toString())
 
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
