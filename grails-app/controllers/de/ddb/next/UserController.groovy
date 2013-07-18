@@ -175,6 +175,7 @@ class UserController {
                     temp["creationDate"]=formatDate(items,searchItem.id)
                     all.add(temp)
                 }
+
                 sessionService.setSessionAttributeIfAvailable("results", allRes)
                 if (request.method=="POST"){
                     try {
