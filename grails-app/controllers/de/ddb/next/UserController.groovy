@@ -122,7 +122,7 @@ class UserController {
             def totalResults= items.length()
 
             def dateTime = new Date()
-            dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+            dateTime = g.formatDate(date: dateTime, format: 'dd.MM.yyyy')
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
 
             if (totalResults <1){
