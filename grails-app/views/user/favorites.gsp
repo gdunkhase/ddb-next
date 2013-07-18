@@ -131,8 +131,12 @@ limitations under the License.
           </g:form>
         </g:if>
         <g:else>
-          <div class="alert">
-            <g:message code="ddbnext.no_favorites" />
+          <div class="messages-container">
+            <ul class="unstyled">
+              <li>
+                <span><g:message code="ddbnext.no_favorites" /></span>
+              </li>
+            </ul>
           </div>
         </g:else>
       </div>

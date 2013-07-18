@@ -14,19 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <html>
-  <head>
+<head>
 
-    <g:redirectIfNotLoggedIn />
-  
-    <title><g:message code="ddbnext.Profile" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-    
-    <meta name="page" content="userprofile" />
-    <meta name="layout" content="main" />
-  
-  </head>
+<g:redirectIfNotLoggedIn />
+
+<title><g:message code="ddbnext.Profile" /> - <g:message
+    code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+
+<meta name="page" content="userprofile" />
+<meta name="layout" content="main" />
+
+</head>
 
 <body>
-  <div class="container row">
     <g:form method="post" id="user-profile-form" name="user-profile-form" class="form-horizontal" url="[controller:'user', action:'saveProfile']" >
         <g:set var="disableForOpenId"></g:set>
         <g:set var="offForOpenId"></g:set>
@@ -45,9 +45,9 @@ limitations under the License.
           <g:renderMessages messages="${messages}"></g:renderMessages>
         </g:if>
         <input type="hidden" name="id" value="${ user.id }"/>
-        <div class="row well">
+        <div class="well">
             <div class="profile-nav">
-                <div class="profile-title"><g:message code="ddbnext.User_Profile"/> <g:getUserLabel /></div>
+                <div><h1><g:message code="ddbnext.User_Profile"/> <g:getUserLabel /></h1></div>
                 <div class="fr profile-links">
                     <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="user",action: 'favorites', params:[:])}">
                         <g:message code="ddbnext.Favorites" /> (${favoritesCount})
@@ -61,7 +61,7 @@ limitations under the License.
                 </div>
             </div>
 
-            <div class="span12 control-group">
+            <div class="control-group bt-white">
               <label class="control-label"><g:message code="ddbnext.Username" /></label>
               <div class="controls">
                 <div class="input-prepend">
@@ -71,7 +71,7 @@ limitations under the License.
               </div>
             </div>
     
-            <div class="span12 control-group">
+            <div class="control-group">
               <label class="control-label"><g:message code="ddbnext.User.First_Name" /></label>
               <div class="controls">
                 <div class="input-prepend">
@@ -81,7 +81,7 @@ limitations under the License.
               </div>
             </div>
     
-            <div class="span12 control-group ">
+            <div class="control-group ">
               <label class="control-label"><g:message code="ddbnext.User.Last_Name" /></label>
               <div class="controls">
                 <div class="input-prepend">
@@ -91,7 +91,7 @@ limitations under the License.
               </div>
             </div>
     
-            <div class="span12 control-group">
+            <div class="control-group">
               <label class="control-label"><g:message code="ddbnext.Email" /></label>
               <div class="controls">
                 <div class="input-prepend">
@@ -101,8 +101,8 @@ limitations under the License.
               </div>
             </div>
 
-            <div class="span12 control-group">
-              <label class="control-label"><g:message code="ddbnext.Newsletter_Subscription" /></label>
+            <div class="control-group">
+              <label class="checkbox-label control-label"><g:message code="ddbnext.Newsletter_Subscription" /></label>
               <div class="controls">
                 <div class="input-prepend">
                   <input type="checkbox" id="newsletter" class="profile-input" name="newsletter" ${newsletterCheck}>
@@ -110,7 +110,7 @@ limitations under the License.
               </div>
             </div>
 
-            <div class="span12 control-group">
+            <div class="control-group">
               <div class="controls">
                 <button type="submit" class="btn-padding" title="<g:message code="ddbnext.Save_Changes"/>"><g:message code="ddbnext.Save_Changes"/></button>
               </div>
@@ -122,6 +122,5 @@ limitations under the License.
           <li><a><g:message code="ddbnext.Enter_A_Valid_Email" /></a></li>
         </ul>
     </g:form>
-  </div>
 </body>
 </html>
