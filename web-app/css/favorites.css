@@ -32,19 +32,19 @@ hr {
   background-color: #efebe8;
 }
 
-.bookmarks-list a.h3 {
+.bookmarks-list a.h3, .bookmarks-list span.h3 {
   color: #3e3a37;
   font-size: 1.063em;
 }
 
-.bookmarks-lists a.h3 {
+.bookmarks-lists a.h3, .bookmarks-lists span.h3 {
   color: #3e3a37;
   text-decoration: none;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.bookmarks-list>a.h3 {
+.bookmarks-list>a.h3, .bookmarks-list>span.h3 {
   z-index: 10;
   display: block;
   padding: 0 35% 0 10px;
@@ -378,6 +378,10 @@ hr {
 .bookmarks-container .tooltip .arrow{
   left: 50%;
   margin-left: -17px;
+}
+
+#sendbookmarks {
+  cursor: pointer;
 }
 
 /* responsive */

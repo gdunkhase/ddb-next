@@ -48,6 +48,7 @@ limitations under the License.
             </div>
 
             <div class="control-group">
+              <label class="control-label"></label>
               <div class="controls">
                 <button type="submit" class="btn-padding" title="<g:message code="ddbnext.Reset_Password_Commit"/>"><g:message code="ddbnext.Reset_Password_Commit"/></button>
               </div>

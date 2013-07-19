@@ -17,7 +17,7 @@ limitations under the License.
 <%-- Set dummy variables --%>
 <g:set var="bookmarks" value="${bookmarks}"></g:set>
 <g:set var="bookmarks"
-  value="${[bookmarksLists: [[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false, items:[[id: '913f4d70-cdf6-11e2-8b8b-0800200c9a66', itemId: 'YV736GVWYNHQAF5GT2WPO36JAOXK3TMV', createdAt: '2012-11-10T06:42:55Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]], [id: 'a36413f0-cdf6-11e2-8b8b-0800200c9a66', itemId: 'TIPOUOBUDBR472NWI27L4N6TXPQ2T6PF', createdAt: '2012-11-10T06:43:15Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]]]]], bookmarksListSelectedID: '8b26a230-cdf6-11e2-8b8b-0800200c9a67']}"
+  value="${[bookmarksLists: [[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: g.message(code: 'ddbnext.All_Favorites') , isPublic: false, items:[[id: '913f4d70-cdf6-11e2-8b8b-0800200c9a66', itemId: 'YV736GVWYNHQAF5GT2WPO36JAOXK3TMV', createdAt: '2012-11-10T06:42:55Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]], [id: 'a36413f0-cdf6-11e2-8b8b-0800200c9a66', itemId: 'TIPOUOBUDBR472NWI27L4N6TXPQ2T6PF', createdAt: '2012-11-10T06:43:15Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]]]]], bookmarksListSelectedID: '8b26a230-cdf6-11e2-8b8b-0800200c9a67']}"
 ></g:set>
 <g:set var="navigationData"
   value="${[paginationURL: [firstPg: firstPg, lastPg: lastPg, prevPg: prevPg, nextPg: nextPg], page: page, totalPages: totalPages ]}"
@@ -76,10 +76,13 @@ limitations under the License.
       <div class="span3 bookmarks-container">
         <ul class="bookmarks-lists unstyled">
           <g:each in="${bookmarks.bookmarksLists}">
-            <li class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br"><a class="h3" href="#"> ${it.name}
-            </a> <span class="bookmarks-list-number"> ${resultsNumber}</span> 
-            <a class="bookmarks-list-envelope" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}
-            > <i class="icon-envelope"></i></a> <a class="bookmarks-list-edit" href="#"><i class="icon-edit"></i></a></li>
+            <li class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br">
+              <span class="h3"> ${it.name} </span>
+              <span class="bookmarks-list-number"> ${resultsNumber}</span> 
+              <a class="bookmarks-list-envelope" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}>
+                <i class="icon-envelope"></i>
+              </a>
+            </li>
           </g:each>
         </ul>
       </div>
@@ -144,9 +147,6 @@ limitations under the License.
   </div>
   <g:if test="${resultsNumber > 0}">
     <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <h3 id="myModalLabel"></h3>
-      </div>
       <div class="modal-body">
         <form method="POST" id="sendFavorites">
           <fieldset>

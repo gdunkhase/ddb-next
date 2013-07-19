@@ -111,6 +111,7 @@ limitations under the License.
             </div>
 
             <div class="control-group">
+              <label class="control-label"></label>
               <div class="controls">
                 <button type="submit" class="btn-padding" title="<g:message code="ddbnext.Save_Changes"/>"><g:message code="ddbnext.Save_Changes"/></button>
               </div>
