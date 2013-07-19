@@ -24,7 +24,6 @@ import org.codehaus.groovy.grails.web.util.WebUtils;
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 import org.ccil.cowan.tagsoup.Parser;
-import groovyx.net.http.HTTPBuilder
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -142,27 +141,14 @@ class ItemService {
     }
 
     private def fetchBinaryList(id) {
-
-        def http = new HTTPBuilder(configurationService.getBackendUrl())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
-        http.parser.'application/json' = http.parser.'application/xml'
-        final def binariesPath= "/access/" + id + "/components/binaries"
-
-        http.request( GET) { req ->
-            uri.path = binariesPath
-
-            response.success = { resp, xml ->
-                log.info "fetchBinaryList(): Current request uri: 200, "+uri
-                def binaries = xml
-                return binaries.binary.list()
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), "/access/" + id + "/components/binaries")
+        if (apiResponse.isOk()) {
+            def binaries = apiResponse.getResponse()
+            return binaries.binary.list()
+        }
+        else {
+            log.error "fetchBinaryList: XML file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
     }
 
