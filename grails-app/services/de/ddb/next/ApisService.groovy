@@ -18,7 +18,6 @@ package de.ddb.next
 import java.util.Map;
 
 import groovy.json.JsonSlurper
-import groovyx.net.http.AsyncHTTPBuilder
 import static groovyx.net.http.ContentType.*
 
 import groovy.json.*
