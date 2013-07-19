@@ -25,10 +25,10 @@ limitations under the License.
   <thead>
     <tr>
       <g:if test="${results.size() == 1}">
-        <th width="80%" style="margin-top:20px"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
+        <th width="70%" style="margin-top:20px"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
       </g:if>
       <g:else>
-        <th width="80%" style="margin-top:20px"><g:message code="ddbnext.Entity_Objects" /></th>
+        <th width="70%" style="margin-top:20px"><g:message code="ddbnext.Entity_Objects" /></th>
       </g:else>
       <th width="170px"></th>
     </tr>
@@ -45,7 +45,7 @@ limitations under the License.
       </g:if>
       
       <tr>
-        <td width="80%" height="130px" style="padding: 10px;">
+        <td width="70%" height="130px" style="padding: 10px;">
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }"
               action="${ action }" params="[id: it.id, hitNumber: hitNumber]"
