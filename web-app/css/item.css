@@ -19,8 +19,8 @@
   margin-right: 10px;
   background: url(../images/icons/list_backarrows.png) no-repeat 0px -40px
 }
-.rights {
-  margin: 30px 0px 30px 0px;
+.item-detail .rights {
+  margin: 0 0 27px 0;
 }
 .back-to-list {
   padding-left: 16px;
