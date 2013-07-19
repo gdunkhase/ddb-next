@@ -66,7 +66,7 @@ limitations under the License.
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="reg-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username" />" value="${user.username}" ${disableForOpenId}>
+                  <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username" />" value="${user.username}" ${disableForOpenId}>
                 </div>
               </div>
             </div>
@@ -76,7 +76,7 @@ limitations under the License.
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="reg-input" id="fname" name="fname" placeholder="<g:message code="ddbnext.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
+                  <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message code="ddbnext.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
                 </div>
               </div>
             </div>
@@ -86,7 +86,7 @@ limitations under the License.
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="reg-input" id="lname" name="lname" placeholder="<g:message code="ddbnext.User.Last_Name" />" value="${user.lastname}" ${disableForOpenId}>
+                  <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message code="ddbnext.User.Last_Name" />" value="${user.lastname}" ${disableForOpenId}>
                 </div>
               </div>
             </div>
@@ -96,7 +96,7 @@ limitations under the License.
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-envelope"></i></span>
-                  <input type="text" class="reg-input" id="email" name="email" placeholder="<g:message code="ddbnext.Email" />" value="${user.email}" ${disableForOpenId}>
+                  <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message code="ddbnext.Email" />" value="${user.email}" ${disableForOpenId}>
                 </div>
               </div>
             </div>

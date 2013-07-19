@@ -36,7 +36,9 @@
   padding-top: 8px;
 }
 
-#user-profile-form .control-group.bt-white {
+#user-profile-form .control-group.bt-white, 
+#password-change-form .control-group.bt-white, 
+#password-reset-form .control-group.bt-white {
   padding-top: 30px;
 }
 

@@ -42,7 +42,7 @@ limitations under the License.
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="reg-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username_Or_Email" />" value="${params.username}">
+                  <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username_Or_Email" />" value="${params.username}">
                 </div>
               </div>
             </div>

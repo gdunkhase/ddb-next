@@ -1269,6 +1269,11 @@ select {
   background-position: 0px -90px;
 }
 
+.profile-input {
+  height: 30px !important;
+  padding: 4px 6px !important;
+}
+
 .tooltip {
   color: #999;
   position: absolute;
