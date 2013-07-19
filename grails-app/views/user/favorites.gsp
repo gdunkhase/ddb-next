@@ -78,10 +78,17 @@ limitations under the License.
           <g:each in="${bookmarks.bookmarksLists}">
             <li class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br">
               <span class="h3"> ${it.name} </span>
-              <span class="bookmarks-list-number"> ${resultsNumber}</span> 
-              <a class="bookmarks-list-envelope" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}>
-                <i class="icon-envelope"></i>
-              </a>
+              <span class="bookmarks-list-number"> ${resultsNumber}</span>
+              <g:if test="${resultsNumber > 0}"> 
+                <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}>
+                  <i class="icon-envelope"></i>
+                </a>
+              </g:if>
+              <g:else>
+                <a class="bookmarks-list-envelope" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}>
+                  <i class="icon-envelope"></i>
+                </a>
+              </g:else>
             </li>
           </g:each>
         </ul>

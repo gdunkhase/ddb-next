@@ -1353,7 +1353,19 @@ select {
   cursor: default;
 }
 
-.tooltip .arrow{
+.form-horizontal .controls.checkbox {
+  margin-left: 190px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.form-horizontal label.checkbox-label {
+  width: 75%;
+  float: none;
+  text-align: left;
+}
+
+.tooltip .arrow {
   background: url("../images/icons/tooltip.png") -11px -12px no-repeat;
   width: 17px;
   height: 9px;
