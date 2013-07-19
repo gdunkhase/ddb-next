@@ -278,6 +278,10 @@ hr {
   margin-left: 36px;
 }
 
+.favorites-results-container .messages-container {
+  margin-top: 7px;
+}
+
 .remove-item-check {
   position: absolute;
   left: 10px;
