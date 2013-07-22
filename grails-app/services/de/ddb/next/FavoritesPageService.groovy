@@ -5,6 +5,7 @@ import org.codehaus.groovy.grails.web.json.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.springframework.web.context.request.RequestContextHolder
@@ -36,7 +37,7 @@ class FavoritesPageService {
     }
     
     def private createAllFavoritesLink(Integer offset,Integer rows,String order,Integer lastPgOffset){
-        return [firstPg:createFavoritesLinkNavigation(0,rows,order),prevPg:createFavoritesLinkNavigation(offset.toInteger()-rows,rows,order),nextPg:createFavoritesLinkNavigation(offset.toInteger()+rows,rows,order),lastPg:createFavoritesLinkNavigation(lastPgOffset,rows,order)]
+        return [firstPg:createFavoritesLinkNavigation(0,0,order),prevPg:createFavoritesLinkNavigation(0,0,order),nextPg:createFavoritesLinkNavigation(0,0,order),lastPg:createFavoritesLinkNavigation(0,0,order)]
     }
     def private createFavoritesLinkNavigation(offset,rows,order){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
@@ -119,6 +120,18 @@ class FavoritesPageService {
             log.info "getFavorites returns " + response.SC_UNAUTHORIZED
             return null
         }
-       
+    }
+    
+    private List addDateToFavResults(allRes, List items, Locale locale) {
+        def all = []
+        def temp = []
+        allRes.each { searchItem->
+            temp = []
+            temp = searchItem
+            temp["creationDate"]=formatDate(items,searchItem.id,locale).get("newdate")
+            temp["serverDate"]=formatDate(items,searchItem.id,locale).get("oldDate")
+            all.add(temp)
+        }
+        return all
     }
 }

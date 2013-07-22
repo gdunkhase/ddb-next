@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:set var="pageHitCounter" value="${0}" />
 <g:set var="offset" value="${0}" />
 <g:set var="index" value="${0}" />
 <div style="margin-top:20px; margin-bottom:20px">
@@ -35,9 +34,6 @@ limitations under the License.
   </thead>
   <tbody>
     <g:each in="${results}">
-      <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
-      <g:set var="hitNumber" value="${offset + pageHitCounter}" />
-      <g:set var="controller" value="item" />
       <g:set var="action" value="findById" />
       <g:if test="${it.preview.category == 'Institution'}">
         <g:set var="controller" value="institution" />
@@ -48,7 +44,7 @@ limitations under the License.
         <td width="70%" height="130px" style="padding: 10px;">
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }"
-              action="${ action }" params="[id: it.id, hitNumber: hitNumber]"
+              action="${ action }" params="[id: it.id]"
               title="${truncateHovercardTitle(title: it.label, length: 350)}">
               <g:truncateItemTitle title="${ it.preview.title }"
                 length="${ 100 }"></g:truncateItemTitle>

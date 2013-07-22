@@ -114,7 +114,6 @@ class UserController {
             if (params.rows){
                 rows = params.rows.toInteger()
             }
-
             def String result = favoritesPageService.getFavorites()
             List items = JSON.parse(result) as List
             def totalResults= items.length()
@@ -122,12 +121,13 @@ class UserController {
             def dateTime = new Date()
             dateTime = g.formatDate(date: dateTime, format: 'dd.MM.yyyy')
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
-
+            def lastPgOffset=0
             if (totalResults <1){
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
                     userName: userName,
-                    dateString: dateTime
+                    dateString: dateTime,
+                    createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(params.offset,params.rows,params.order,lastPgOffset),
                 ])
                 return
             }else{
@@ -141,7 +141,7 @@ class UserController {
                 def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
                 def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-                def lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
+                lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
                 
                 if (totalPages.toFloat()<page.toFloat()){
                     params.offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
@@ -153,37 +153,29 @@ class UserController {
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
-                def all = []
-                def temp = []
-                allRes.each { searchItem->
-                    temp = []
-                    temp = searchItem
-                    temp["creationDate"]=favoritesPageService.formatDate(items,searchItem.id,locale).get("newdate")
-                    temp["serverDate"]=favoritesPageService.formatDate(items,searchItem.id,locale).get("oldDate")
-                    all.add(temp)
-                }
+                def allResultsWithDate = favoritesPageService.addDateToFavResults(allRes, items, locale)
                 //Default ordering is newest on top == DESC
-                all.sort{a,b-> b.serverDate<=>a.serverDate}
+                allResultsWithDate.sort{a,b-> b.serverDate<=>a.serverDate}
+                sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, allResultsWithDate)
+                def allResultsOrdered = allResultsWithDate; //Used in the send-favorites listing
+                
                 def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"asc"])]
                 if (params.order=="asc"){
-                    all.sort{a,b-> a.serverDate<=>b.serverDate}
+                    allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
                     urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"desc"])
                     urlsForOrder["asc"]="#"
                 }else{
                     params.order="desc"
                 }
                 
-                def allResultsOrdered = all;
-
                 if (params.offset){
-                    resultsItems=all.drop(params.offset.toInteger())
+                    resultsItems=allResultsWithDate.drop(params.offset.toInteger())
                     resultsItems=resultsItems.take( rows)
                 }else{
                     params.offset=0
-                    resultsItems=all.take( rows)
+                    resultsItems=allResultsWithDate.take( rows)
                 }
                 
-                sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, all)
                 if (request.method=="POST"){
                     try {
                         sendMail {
@@ -225,6 +217,7 @@ class UserController {
             redirect(controller:"user", action:"index")
         }
     }
+
 
     def sendfavorites(){
         def results = sessionService.getSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS)
