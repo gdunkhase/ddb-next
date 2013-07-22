@@ -24,7 +24,7 @@ limitations under the License.
 ></g:set>
 <html>
 <head>
-<title>- <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title><g:message code="ddbnext.Favorites_List_Of" args="${[userName]}" default="ddbnext.Favorites_List_Of"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="favorites" />
 <meta name="layout" content="main" />
 </head>
@@ -37,11 +37,11 @@ limitations under the License.
         </h1>
       </div>
       <div class="print-header">
-        <h1>
-          <g:message code="ddbnext.Favorites_List_Of" 
+        <h3>
+          <g:message code="ddbnext.Favorites_List_Of_Printed" 
                      args="${[userName, dateString]}" 
                      default="ddbnext.Favorites_List_Of"/>
-        </h1>
+        </h3>
           <%--
           <div class="page-info">
             <span class="results-overall-index">1-2 </span> 
