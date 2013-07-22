@@ -15,10 +15,12 @@
  */
 package de.ddb.next
 
-import de.ddb.next.exception.BadRequestException
-import groovy.json.JsonSlurper
-import org.springframework.web.servlet.support.RequestContextUtils;
+import groovy.json.*
+import groovyx.net.http.HTTPBuilder
 
+import org.springframework.web.servlet.support.RequestContextUtils
+
+import de.ddb.next.exception.BadRequestException
 
 class SearchController {
 
@@ -149,7 +151,8 @@ class SearchController {
         catch (BadRequestException e) {
             //BadRequestException corresponds to 400-Error,
             //in this case will be caused by invalid query-syntax
-            List<String> errors = []
+            log.error("Bad Request: ${e.getMessage()}")
+            def errors = []
             errors.add("ddbnext.Error_Invalid_Search_Query")
             render(view: "/message/message", model: [errors: errors])
         }
