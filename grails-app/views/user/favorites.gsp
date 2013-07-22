@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
 <%-- Set dummy variables --%>
 <g:set var="bookmarks" value="${bookmarks}"></g:set>
@@ -126,7 +127,7 @@ limitations under the License.
                   <div class="span6">
                     <span><input type="checkbox" class="select-all" id="checkall"></span> 
                     <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
-                     <span> <a href="#"><i class="icon-arrow-up"></i></a> <a href="#"><i class="icon-arrow-down"></i></a>
+                     <span> <a href="${urlsForOrder["desc"]}"><i class="icon-arrow-up"></i></a> <a href="${urlsForOrder["asc"]}"><i class="icon-arrow-down"></i></a>
                     </span>
                   </div>
                   <div class="span3 added-on">

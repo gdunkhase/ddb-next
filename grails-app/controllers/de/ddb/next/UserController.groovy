@@ -155,29 +155,36 @@ class UserController {
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
-                if (params.offset){
-                    resultsItems=allRes.drop(params.offset.toInteger())
-                    resultsItems=resultsItems.take( rows)
-                }else{
-                    params.offset=0
-                    resultsItems=allRes.take( rows)
-                }
+
                 //TODO remove this dummy data
                 def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false]
                 def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
 
                 def all = []
                 def temp = []
-                resultsItems.each { searchItem->
+                allRes.each { searchItem->
                     temp = []
                     temp = searchItem
                     temp["creationDate"]=formatDate(items,searchItem.id).get("newdate")
                     temp["serverDate"]=formatDate(items,searchItem.id).get("oldDate")
                     all.add(temp)
                 }
-                
+                //Default ordering is newest on top == DESC
                 all.sort{a,b-> b.serverDate<=>a.serverDate}
-
+                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"asc"])]
+                if (params.order=="asc"){
+                    all.sort{a,b-> a.serverDate<=>b.serverDate}
+                    urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"desc"])
+                    urlsForOrder["asc"]="#"
+                }
+                
+                if (params.offset){
+                    resultsItems=all.drop(params.offset.toInteger())
+                    resultsItems=resultsItems.take( rows)
+                }else{
+                    params.offset=0
+                    resultsItems=all.take( rows)
+                }
 
                 sessionService.setSessionAttributeIfAvailable("results", allRes)
                 if (request.method=="POST"){
@@ -198,7 +205,7 @@ class UserController {
 
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
-                    results: all,
+                    results: resultsItems,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
@@ -214,7 +221,8 @@ class UserController {
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
                     userName: userName,
-                    dateString: dateTime
+                    dateString: dateTime,
+                    urlsForOrder:urlsForOrder
                 ])
             }
         }
@@ -299,7 +307,7 @@ class UserController {
     }
 
     def private createFavoritesLinkNavigation(offset,rows,order){
-        return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
+        return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:params.order])
     }
 
     def getFavorites() {
