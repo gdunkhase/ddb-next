@@ -82,7 +82,7 @@ hr {
   background-color: #efebe8;
 }
 
-.results-paginator-options {
+.favorites-results-container .results-paginator-options {
   text-align:right;
 }
 
@@ -104,6 +104,10 @@ hr {
   display:block;
 }
 
+.favorites-results-controls .page-nav {
+  font-size: 0.938em;
+}
+
 #favorites-remove .favorites-results-controls .submit{
   margin-top:8px;
   margin-left: 0;
@@ -113,6 +117,7 @@ hr {
   background: #efebe8;
   overflow: hidden;
   line-height: 28px;
+  font-size: 0.938em;
 }
 
 .results-sorter .select-all {
@@ -232,6 +237,7 @@ hr {
 
 .favorites-results .results-list .created-at{
   text-align:right;
+  font-size: 0.938em;
 }
 
 .favorites-results .results-list .created-at div{
