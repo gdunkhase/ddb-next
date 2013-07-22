@@ -36,7 +36,7 @@
   padding-left: 22px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -40px;
 }
-.institution {
+.item-detail .institution {
   margin-top: 1em;
   margin-bottom: 1em;
   padding-bottom: 10px;
@@ -44,11 +44,11 @@
   border-width: 0 0 5px;
   font-size: 0.938em;
 }
-.institution .span3 img {
+.item-detail .institution .span3 img {
   margin: 0 15px 0 0;
 }
 @media (min-width: 980px) {
-  .institution .span3 img {
+  .item-detail .institution .span3 img {
     float: right;
   }
 }
