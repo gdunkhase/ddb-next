@@ -17,9 +17,6 @@ package de.ddb.next
 
 import grails.converters.*
 
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-
 import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
@@ -45,14 +42,15 @@ import de.ddb.next.exception.ItemNotFoundException
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
+    private final static String SESSION_FAVORITES_RESULTS = "SESSION_FAVORITES_RESULTS_ATTRIBUTE"
 
     def aasService
     def sessionService
     def configurationService
     def messageSource
-    def bookmarksService
     def searchService
     def newsletterService
+    def favoritesPageService
 
     LinkGenerator grailsLinkGenerator
 
@@ -116,34 +114,34 @@ class UserController {
             if (params.rows){
                 rows = params.rows.toInteger()
             }
-
-            def String result = getFavorites()
+            def String result = favoritesPageService.getFavorites()
             List items = JSON.parse(result) as List
             def totalResults= items.length()
 
             def dateTime = new Date()
             dateTime = g.formatDate(date: dateTime, format: 'dd.MM.yyyy')
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
-
+            def lastPgOffset=0
             if (totalResults <1){
                 render(view: "favorites", model: [
                     resultsNumber: totalResults,
                     userName: userName,
-                    dateString: dateTime
+                    dateString: dateTime,
+                    createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(params.offset,params.rows,params.order,lastPgOffset),
                 ])
                 return
             }else{
-                def allRes = retriveItemMD(items)
+                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                def allRes = favoritesPageService.retriveItemMD(items,locale)
                 def resultsItems
 
-                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
                 urlQuery["offset"]=0
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
                 def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-                def lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
+                lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
                 
                 if (totalPages.toFloat()<page.toFloat()){
                     params.offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
@@ -155,31 +153,29 @@ class UserController {
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
+                def allResultsWithDate = favoritesPageService.addDateToFavResults(allRes, items, locale)
+                //Default ordering is newest on top == DESC
+                allResultsWithDate.sort{a,b-> b.serverDate<=>a.serverDate}
+                sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, allResultsWithDate)
+                def allResultsOrdered = allResultsWithDate; //Used in the send-favorites listing
+                
+                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"asc"])]
+                if (params.order=="asc"){
+                    allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
+                    urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"desc"])
+                    urlsForOrder["asc"]="#"
+                }else{
+                    params.order="desc"
+                }
+                
                 if (params.offset){
-                    resultsItems=allRes.drop(params.offset.toInteger())
+                    resultsItems=allResultsWithDate.drop(params.offset.toInteger())
                     resultsItems=resultsItems.take( rows)
                 }else{
                     params.offset=0
-                    resultsItems=allRes.take( rows)
-                }
-                //TODO remove this dummy data
-                def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false]
-                def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
-
-                def all = []
-                def temp = []
-                resultsItems.each { searchItem->
-                    temp = []
-                    temp = searchItem
-                    temp["creationDate"]=formatDate(items,searchItem.id).get("newdate")
-                    temp["serverDate"]=formatDate(items,searchItem.id).get("oldDate")
-                    all.add(temp)
+                    resultsItems=allResultsWithDate.take( rows)
                 }
                 
-                all.sort{a,b-> b.serverDate<=>a.serverDate}
-
-
-                sessionService.setSessionAttributeIfAvailable("results", allRes)
                 if (request.method=="POST"){
                     try {
                         sendMail {
@@ -198,23 +194,22 @@ class UserController {
 
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
-                    results: all,
+                    results: resultsItems,
+                    allResultsOrdered:allResultsOrdered,
+                    allFolders:favoritesPageService.getAllFoldersPerUser(),
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                    correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery["viewType"],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     page: page,
                     resultsNumber: totalResults,
-                    firstPg:createFavoritesLinkNavigation(urlQuery["offset"],rows,""),
-                    prevPg:createFavoritesLinkNavigation(params.offset.toInteger()-rows,rows,""),
-                    nextPg:createFavoritesLinkNavigation(params.offset.toInteger()+rows,rows,""),
-                    lastPg:createFavoritesLinkNavigation(lastPgOffset,rows,""),
+                    createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(params.offset,params.rows,params.order,lastPgOffset),
                     totalPages: totalPages,
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
                     userName: userName,
-                    dateString: dateTime
+                    dateString: dateTime,
+                    urlsForOrder:urlsForOrder
                 ])
             }
         }
@@ -223,96 +218,14 @@ class UserController {
         }
     }
 
-    /**
-     * Retrieve from Backend the Metadata for the items retrieved from the favorites list
-     * @param items
-     * @return
-     */
-    def private retriveItemMD(List items){
-        def totalResults= items.length()
-        def step = 20
-        def queryItems
-        def orQuery=""
-        def allRes = []
-        items.eachWithIndex() { it, i ->
-            if ( (i==0) || ( ((i>1)&&(i-1)%step==0)) ){
-                orQuery=it.itemId
-            }else if (i%step==0){
-                orQuery=orQuery + " OR "+ it.itemId
-                queryBackend(orQuery).each { item ->
-                    allRes.add(item)
-                }
-                orQuery=""
-            }else{
-                orQuery+=" OR "+ it.itemId
-            }
-        }
-        if (orQuery){
-            queryBackend(orQuery).each { item ->
-                allRes.add(item)
-            }
-        }
-        return allRes
-    }
 
-    def private queryBackend(String query){
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        params.query = "id:("+query+")"
-
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-        urlQuery["offset"]=0
-        urlQuery["rows"]=21
-        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
-        }
-        def resultsItems = apiResponse.getResponse()
-        return resultsItems["results"]["docs"]
-
-    }
     def sendfavorites(){
-        def results = sessionService.getSessionAttributeIfAvailable("results")
+        def results = sessionService.getSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS)
         def dateTime = new Date()
         dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
         render(view: "sendfavorites", model: [results: results, dateString:dateTime])
     }
 
-    def private formatDate(items,String id) {
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        def newDate
-        def oldDate
-        items.each { favItems ->
-            if (id== favItems.itemId){
-                String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-                SimpleDateFormat oldFormat = new SimpleDateFormat(pattern)
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
-                oldFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
-                newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
-                DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
-                def Date javaDate = oldFormat.parse(favItems.creationDate)
-                newDate = newFormat.format(javaDate)
-                oldDate = favItems.creationDate;
-            }
-        }
-        return [newdate:newDate.toString(),oldDate:oldDate]
-    }
-
-    def private createFavoritesLinkNavigation(offset,rows,order){
-        return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
-    }
-
-    def getFavorites() {
-        def User user = getUserFromSession()
-        if (user != null) {
-            def result = bookmarksService.findFavoritesByUserId(user.getId())
-            return result as JSON
-        }
-        else {
-            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
-            return null
-        }
-    }
     /* end favorites methods */
 
     def registration() {
@@ -433,7 +346,7 @@ class UserController {
                 }
             }
             //get favorites-count
-            def String result = getFavorites()
+            def String result = favoritesPageService.getFavorites()
             List items = JSON.parse(result) as List
             def favoritesCount = items.length()
 
