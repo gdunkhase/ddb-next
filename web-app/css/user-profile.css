@@ -46,3 +46,32 @@
   padding-top: 10px;
 }
 
+/* responsive design */
+
+@media (max-width: 1199px) {
+  #user-profile-form label.checkbox-label {
+    width: 60%;
+  }
+  #user-profile-form .controls.checkbox label.error {
+    margin-top: 4px;
+    margin-left: -216px;
+  }
+}
+
+@media (max-width: 767px) {
+  #user-profile-form label.checkbox-label {
+    width: 36%;
+  }
+}
+@media (max-width: 480px) {
+  #user-profile-form .controls.checkbox {
+    margin-left: 0;
+  }
+  #user-profile-form .controls.checkbox label.error {
+    margin-top: -14px;
+    margin-left: 4px;
+  }
+  #newsletter {
+    margin: 0 0 0;
+  }
+
