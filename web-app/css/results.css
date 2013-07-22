@@ -239,27 +239,33 @@
   margin: -24px 0 0 0;
 }
 
-.view-type-switch #view-list:hover:before{
+.view-type-switch #view-list:hover:before {
   margin: -24px 0 0 -24px;
 }
 
-.view-type-switch #view-list.selected:before,.view-type-switch #view-list.selected:hover:before,.view-type-switch #view-list.selected:focus:before
-  {
+.view-type-switch #view-list.selected:before,.view-type-switch #view-list.selected:hover:before,.view-type-switch #view-list.selected:focus:before {
   margin: -24px 0 0 -48px;
+}
+
+.view-type-switch .ie8-version #view-list.selected:before,.view-type-switch .ie8-version #view-list.selected:hover:before,.view-type-switch .ie8-version #view-list.selected:focus:before {
+  margin: -24px 0 0 0;
 }
 
 .view-type-switch #view-grid:before {
   margin: 0;
 }
 
-.view-type-switch #view-grid:hover:before{
+.view-type-switch #view-grid:hover:before {
   margin: 0 0 0 -24px;
 }
 
-.view-type-switch #view-grid.selected:before,.view-type-switch #view-grid.selected:hover:before,.view-type-switch #view-grid.selected:focus:before{
+.view-type-switch #view-grid.selected:before,.view-type-switch #view-grid.selected:hover:before,.view-type-switch #view-grid.selected:focus:before {
   margin: 0 0 0 -48px;
 }
 
+.view-type-switch .ie8-version #view-grid.selected:before,.view-type-switch .ie8-version #view-grid.selected:hover:before,.view-type-switch .ie8-version #view-grid.selected:focus:before {
+  margin: 0;
+}
 
 input[type="checkbox"],input[type="radio"] {
   margin-right: 6px;
