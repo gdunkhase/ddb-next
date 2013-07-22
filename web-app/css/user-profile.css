@@ -63,6 +63,7 @@
     width: 36%;
   }
 }
+
 @media (max-width: 480px) {
   #user-profile-form .controls.checkbox {
     margin-left: 0;
@@ -74,4 +75,4 @@
   #newsletter {
     margin: 0 0 0;
   }
-
+}
