@@ -15,19 +15,12 @@
  */
 package de.ddb.next
 
-import java.util.Map;
-
-import groovy.json.JsonSlurper
 import static groovyx.net.http.ContentType.*
-
 import groovy.json.*
-import groovyx.net.http.ContentType
-import org.apache.commons.logging.LogFactory
-import groovyx.net.http.Method
 
 /**
  * Set of services used in the ApisController for views/search
- * 
+ *
  * @author ema
  *
  */
@@ -49,7 +42,7 @@ class ApisService {
 
         if(queryParameters.rows)
             query["rows"] = queryParameters.rows
-			
+
 		if(queryParameters.callback)
 			query["callback"] = queryParameters.callback
 
