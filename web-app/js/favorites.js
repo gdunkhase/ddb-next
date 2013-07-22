@@ -62,6 +62,10 @@ $(function() {
           window.setTimeout('location.reload()', 1500);
         }
       });
+      $('#slaves input:checked').each(function() {
+        selected.push($(this).attr('checked', false));
+      });
+
       return false;
     });
     
