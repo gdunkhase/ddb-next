@@ -127,7 +127,7 @@ class UserController {
                     resultsNumber: totalResults,
                     userName: userName,
                     dateString: dateTime,
-                    createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(params.offset,params.rows,params.order,lastPgOffset),
+                    createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(0,0,"desc",0),
                 ])
                 return
             }else{
