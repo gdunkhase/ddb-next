@@ -36,7 +36,7 @@ class FavoritesPageService {
     }
     
     def private createAllFavoritesLink(Integer offset,Integer rows,String order,Integer lastPgOffset){
-        return [firstPg:createFavoritesLinkNavigation(offset,rows,order),prevPg:createFavoritesLinkNavigation(offset.toInteger()-rows,rows,order),nextPg:createFavoritesLinkNavigation(offset.toInteger()+rows,rows,order),lastPg:createFavoritesLinkNavigation(lastPgOffset,rows,order)]
+        return [firstPg:createFavoritesLinkNavigation(0,rows,order),prevPg:createFavoritesLinkNavigation(offset.toInteger()-rows,rows,order),nextPg:createFavoritesLinkNavigation(offset.toInteger()+rows,rows,order),lastPg:createFavoritesLinkNavigation(lastPgOffset,rows,order)]
     }
     def private createFavoritesLinkNavigation(offset,rows,order){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
@@ -108,6 +108,17 @@ class FavoritesPageService {
         }
         def resultsItems = apiResponse.getResponse()
         return resultsItems["results"]["docs"]
-
+    }
+    
+    def private getAllFoldersPerUser(){
+        def User user = getUserFromSession()
+        if (user != null) {
+            return bookmarksService.findAllFolders(user.getId())
+        }
+        else {
+            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
+            return null
+        }
+       
     }
 }

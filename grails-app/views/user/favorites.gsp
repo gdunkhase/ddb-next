@@ -15,11 +15,6 @@ limitations under the License.
 --%>
 <%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
-<%-- Set dummy variables --%>
-<g:set var="bookmarks" value="${bookmarks}"></g:set>
-<g:set var="bookmarks"
-  value="${[bookmarksLists: [[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: g.message(code: 'ddbnext.All_Favorites') , isPublic: false, items:[[id: '913f4d70-cdf6-11e2-8b8b-0800200c9a66', itemId: 'YV736GVWYNHQAF5GT2WPO36JAOXK3TMV', createdAt: '2012-11-10T06:42:55Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]], [id: 'a36413f0-cdf6-11e2-8b8b-0800200c9a66', itemId: 'TIPOUOBUDBR472NWI27L4N6TXPQ2T6PF', createdAt: '2012-11-10T06:43:15Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]]]]], bookmarksListSelectedID: '8b26a230-cdf6-11e2-8b8b-0800200c9a67']}"
-></g:set>
 <g:set var="navigationData"
   value="${[paginationURL: [firstPg: createAllFavoritesLink["firstPg"], lastPg: createAllFavoritesLink["lastPg"], prevPg: createAllFavoritesLink["prevPg"], nextPg: createAllFavoritesLink["nextPg"]], page: page, totalPages: totalPages ]}"
 ></g:set>
@@ -76,9 +71,9 @@ limitations under the License.
     <div class="row favorites-results-container">
       <div class="span3 bookmarks-container">
         <ul class="bookmarks-lists unstyled">
-          <g:each in="${bookmarks.bookmarksLists}">
-            <li class="bookmarks-list ${(it.id==bookmarks.bookmarksListSelectedID)?'active':''} bt bb bl br">
-              <span class="h3"> ${it.name} </span>
+          <g:each in="${allFolders}">
+            <li class="bookmarks-list bt bb bl br">
+              <span class="h3"> ${it.title.capitalize()} </span>
               <span class="bookmarks-list-number"> ${resultsNumber}</span>
               <g:if test="${resultsNumber > 0}"> 
                 <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}>
@@ -163,7 +158,7 @@ limitations under the License.
             </legend>
             <label><g:message code="ddbnext.Email" /></label> <input type="text" placeholder="Contact Email" type="email" name="email" required>
             <div class="favorites-results">
-              <g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
+              <g:favoritesEmailResultsRender results="${allResultsOrdered}"></g:favoritesEmailResultsRender>
             </div>
             <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
               <g:message code="ddbnext.Close" />

@@ -42,6 +42,7 @@ import de.ddb.next.exception.ItemNotFoundException
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
+    private final static String SESSION_FAVORITES_RESULTS = "SESSION_FAVORITES_RESULTS_ATTRIBUTE"
 
     def aasService
     def sessionService
@@ -152,11 +153,6 @@ class UserController {
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
-
-                //TODO remove this dummy data
-                def favList =[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: 'Favorites', isPublic: false]
-                def bookmarks =[bookmarksLists:favList, "bookmarksListSelectedID": '8b26a230-cdf6-11e2-8b8b-0800200c9a67']
-
                 def all = []
                 def temp = []
                 allRes.each { searchItem->
@@ -173,8 +169,12 @@ class UserController {
                     all.sort{a,b-> a.serverDate<=>b.serverDate}
                     urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"desc"])
                     urlsForOrder["asc"]="#"
+                }else{
+                    params.order="desc"
                 }
                 
+                def allResultsOrdered = all;
+
                 if (params.offset){
                     resultsItems=all.drop(params.offset.toInteger())
                     resultsItems=resultsItems.take( rows)
@@ -182,8 +182,8 @@ class UserController {
                     params.offset=0
                     resultsItems=all.take( rows)
                 }
-
-                sessionService.setSessionAttributeIfAvailable("results", allRes)
+                
+                sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, all)
                 if (request.method=="POST"){
                     try {
                         sendMail {
@@ -203,9 +203,10 @@ class UserController {
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
                     results: resultsItems,
+                    allResultsOrdered:allResultsOrdered,
+                    allFolders:favoritesPageService.getAllFoldersPerUser(),
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                    correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery["viewType"],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     page: page,
@@ -226,7 +227,7 @@ class UserController {
     }
 
     def sendfavorites(){
-        def results = sessionService.getSessionAttributeIfAvailable("results")
+        def results = sessionService.getSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS)
         def dateTime = new Date()
         dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
         render(view: "sendfavorites", model: [results: results, dateString:dateTime])
@@ -741,7 +742,7 @@ class UserController {
                 user.setLastname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                //user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
+                user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
                 log.info(user.toString())
 
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
