@@ -21,7 +21,7 @@ limitations under the License.
   value="${[bookmarksLists: [[id:'8b26a230-cdf6-11e2-8b8b-0800200c9a66', name: g.message(code: 'ddbnext.All_Favorites') , isPublic: false, items:[[id: '913f4d70-cdf6-11e2-8b8b-0800200c9a66', itemId: 'YV736GVWYNHQAF5GT2WPO36JAOXK3TMV', createdAt: '2012-11-10T06:42:55Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]], [id: 'a36413f0-cdf6-11e2-8b8b-0800200c9a66', itemId: 'TIPOUOBUDBR472NWI27L4N6TXPQ2T6PF', createdAt: '2012-11-10T06:43:15Z', preview:[title:'Nofretete', subtitle:'Büste', thumbnail: '/binary/DF5RWG35NM557SVSGOIGG6JS37MUYOFO/list/1.jpg', media:['text']]]]]], bookmarksListSelectedID: '8b26a230-cdf6-11e2-8b8b-0800200c9a67']}"
 ></g:set>
 <g:set var="navigationData"
-  value="${[paginationURL: [firstPg: firstPg, lastPg: lastPg, prevPg: prevPg, nextPg: nextPg], page: page, totalPages: totalPages ]}"
+  value="${[paginationURL: [firstPg: createAllFavoritesLink["firstPg"], lastPg: createAllFavoritesLink["lastPg"], prevPg: createAllFavoritesLink["prevPg"], nextPg: createAllFavoritesLink["nextPg"]], page: page, totalPages: totalPages ]}"
 ></g:set>
 <html>
 <head>
